@@ -1,2 +1,7 @@
-package com.soongsil.CoffeeChat.service;public class TestService {
+package com.soongsil.CoffeeChat.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class TestService {
 }

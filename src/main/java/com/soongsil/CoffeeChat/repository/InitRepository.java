@@ -1,2 +1,4 @@
-package com.soongsil.CoffeeChat.repository;public interface InitRepository {
+package com.soongsil.CoffeeChat.repository;
+
+public interface InitRepository{
 }
