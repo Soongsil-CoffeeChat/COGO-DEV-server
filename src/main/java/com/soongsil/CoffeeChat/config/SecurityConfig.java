@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.config;
 
+import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -11,6 +12,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final CustomOAuth2UserService customOAuth2UserService;
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService){
+        this.customOAuth2UserService=customOAuth2UserService;
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
         //csrf disable : stateless이기 때문에 끄기
@@ -25,9 +30,11 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        //oauth2(커스텀 꺼둔상태=Deafault)
+        //oauth2 (인증이 완료되면 리소스 서버로부터 데이터를 받아서 OAuth2UserService로 전달)
         http
-                .oauth2Login(Customizer.withDefaults());
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService)));
 
         //경로별 인가 작업
         http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
