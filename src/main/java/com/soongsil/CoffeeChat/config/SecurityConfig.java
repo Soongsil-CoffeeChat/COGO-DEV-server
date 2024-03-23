@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.config;
 
+import com.soongsil.CoffeeChat.config.jwt.JWTFilter;
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.config.oauth2.CustomSuccessHandler;
 import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +39,10 @@ public class SecurityConfig {
         //HTTP Basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
+        //특정 필터 이전에 JWTFilter 추가
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
 
         //oauth2로그인 (인증이 완료되면 리소스 서버로부터 데이터를 받아서 OAuth2UserService로 전달)
         //로그인 성공시 customSuccessHandler 호출
