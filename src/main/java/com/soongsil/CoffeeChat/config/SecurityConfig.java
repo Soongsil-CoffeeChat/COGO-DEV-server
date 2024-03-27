@@ -82,6 +82,7 @@ public class SecurityConfig {
         http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/reissue").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS (JWT로 인증 인가 사용할 것이므로)
