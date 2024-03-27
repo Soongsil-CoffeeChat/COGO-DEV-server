@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -35,21 +36,24 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
+        //토큰 생성
+        String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
+        String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
+        //Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기
+        response.setHeader("access", accessToken);
+        response.addCookie(createCookie("refresh", refreshToken));
+        response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
-        String token = jwtUtil.createJwt(username, role, 60*60*60L);
-
-        response.addCookie(createCookie("Authorization", token));
         response.sendRedirect("http://localhost:3000/");  //프론트의 url에 redirect
     }
 
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*60);
+        cookie.setMaxAge(24*60*60);  //24시간
         //cookie.setSecure(true);  //https에서만 쿠키가 사용되게끔 설정
         cookie.setPath("/");    //전역에서 쿠키가 보이게끔 설정
         cookie.setHttpOnly(true);  //JS가 쿠키를 가져가지 못하게 HTTPOnly설정
-
         return cookie;
     }
 }
