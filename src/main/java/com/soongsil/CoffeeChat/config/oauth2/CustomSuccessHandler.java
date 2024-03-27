@@ -2,6 +2,8 @@ package com.soongsil.CoffeeChat.config.oauth2;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.entity.Refresh;
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,14 +16,30 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 //로그인이 성공했을 때 받은 데이터들을 바탕으로 JWT발급을 위한 핸들러
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JWTUtil jwtUtil;
-    public CustomSuccessHandler(JWTUtil jwtUtil){
+    private RefreshRepository refreshRepository;
+    public CustomSuccessHandler(JWTUtil jwtUtil, RefreshRepository refreshRepository){
         this.jwtUtil=jwtUtil;
+        this.refreshRepository=refreshRepository;
+    }
+
+    private void addRefreshEntity(String username, String refresh, Long expiredMs) {
+        //refresh객체를 만들고 레포에 저장
+
+        Date date = new Date(System.currentTimeMillis() + expiredMs);
+
+        Refresh refreshEntity = new Refresh();
+        refreshEntity.setUsername(username);
+        refreshEntity.setRefresh(refresh);
+        refreshEntity.setExpiration(date.toString());
+
+        refreshRepository.save(refreshEntity);
     }
 
     @Override
