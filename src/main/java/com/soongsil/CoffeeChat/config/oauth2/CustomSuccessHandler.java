@@ -57,6 +57,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         //토큰 생성
         String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
         String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
+        //Refresh 토큰 저장
+        addRefreshEntity(username, refreshToken, 86400000L);
         //Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기
         response.setHeader("access", accessToken);
         response.addCookie(createCookie("refresh", refreshToken));
