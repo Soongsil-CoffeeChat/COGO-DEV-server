@@ -1,8 +1,10 @@
 package com.soongsil.CoffeeChat.config;
 
+import com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter;
 import com.soongsil.CoffeeChat.config.jwt.JWTFilter;
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.config.oauth2.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -24,12 +27,15 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
                           CustomSuccessHandler customSuccessHandler,
-                          JWTUtil jwtUtil){
+                          JWTUtil jwtUtil,
+                          RefreshRepository refreshRepository){
         this.customOAuth2UserService=customOAuth2UserService;
         this.customSuccessHandler=customSuccessHandler;
         this.jwtUtil=jwtUtil;
+        this.refreshRepository=refreshRepository;
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
@@ -67,6 +73,9 @@ public class SecurityConfig {
         //특정 필터 이전에 JWTFilter 추가
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        //기본으로 설정되어있는 LogoutFilter 바로 앞에 커스텀한 LogoutFilter 추가
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 
 
         //oauth2로그인 (인증이 완료되면 리소스 서버로부터 데이터를 받아서 OAuth2UserService로 전달)
