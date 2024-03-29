@@ -23,4 +23,6 @@ public class User {
 
     @Column
     private String role;
+
+    //TODO: 이제 추가적으로 입력받는 정보
 }
