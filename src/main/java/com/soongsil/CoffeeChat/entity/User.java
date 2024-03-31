@@ -7,9 +7,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
+@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column
