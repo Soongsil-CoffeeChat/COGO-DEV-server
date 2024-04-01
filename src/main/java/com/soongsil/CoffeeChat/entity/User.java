@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
@@ -27,4 +28,11 @@ public class User {
     @Column
     private String role;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_mentor", referencedColumnName = "mentor_id")
+    private Mentor mentor;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_mentee", referencedColumnName = "mentee_id")
+    private Mentee mentee;
 }

@@ -62,6 +62,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         //Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기
         response.setHeader("access", accessToken);
         response.addCookie(createCookie("refresh", refreshToken));
+
+        //login status넣어주기
+        if(role.equals("ROLE_A")) response.setHeader("loginStatus", "가입필요");
+        else if(role.equals("ROLE_MENTEE")||role.equals("ROLE_MENTOR")) response.setHeader("loginStatus", "가입완료");
+        //가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
+
         response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
         response.sendRedirect("http://localhost:3000/");  //프론트의 url에 redirect
