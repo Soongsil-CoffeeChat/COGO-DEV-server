@@ -1,19 +1,23 @@
 package com.soongsil.CoffeeChat.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import com.soongsil.CoffeeChat.dto.CreateMenteeRequest;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-public class Mentee extends User{
+@NoArgsConstructor
+public class Mentee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mentee_id")
+    private Long id;
+
     @Column(name = "phone_num")
     private String phoneNum;
 
@@ -21,8 +25,34 @@ public class Mentee extends User{
     private String birth;
 
     @Column
-    private String part;
+    private int grade;
+
+    @Column
+    private String major;
+
+    @Column
+    private String memo;
 
     @OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Application> applications = new HashSet<>();
+
+    @Builder
+    public Mentee(String phoneNum, String birth, int grade, String major, String memo){
+        this.phoneNum=phoneNum;
+        this.birth=birth;
+        this.grade=grade;
+        this.major=major;
+        this.memo=memo;
+    }
+
+    public static Mentee from(CreateMenteeRequest dto){
+        return Mentee.builder()
+                .phoneNum(dto.getPhoneNum())
+                .birth(dto.getBirth())
+                .grade(dto.getGrade())
+                .major(dto.getMajor())
+                .memo(dto.getMemo())
+                .build();
+    }
+
 }
