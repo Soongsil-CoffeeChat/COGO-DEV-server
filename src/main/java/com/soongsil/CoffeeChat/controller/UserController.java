@@ -9,10 +9,7 @@ import com.soongsil.CoffeeChat.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.USER_URI;
 
@@ -33,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/join/mentee")
-    public ResponseEntity<Mentee> joinWithMentor(Authentication authentication,
+    public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
                                                  @RequestBody CreateMenteeRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMenteeInformation(authentication.getName(), dto)
