@@ -8,8 +8,8 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
-@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
+//@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
+//@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,9 @@ public class User {
 
     @Column
     private String role;
+
+    @Column
+    private String picture;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_mentor", referencedColumnName = "mentor_id")
