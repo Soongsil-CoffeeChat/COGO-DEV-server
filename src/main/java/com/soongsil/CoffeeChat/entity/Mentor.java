@@ -26,6 +26,9 @@ public class Mentor{
     @Column
     private String part;
 
+    @Column
+    private String memo;
+
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Application> applications = new HashSet<>();
 
