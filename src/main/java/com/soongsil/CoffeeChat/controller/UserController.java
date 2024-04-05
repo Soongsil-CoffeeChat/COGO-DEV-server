@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/join/mentee")
-    public ResponseEntity<Mentee> joinWithMentor(Authentication authentication,
+    public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
                                                  @RequestBody CreateMenteeRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMenteeInformation(authentication.getName(), dto)

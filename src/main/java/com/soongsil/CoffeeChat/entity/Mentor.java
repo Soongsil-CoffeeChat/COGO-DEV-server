@@ -4,11 +4,14 @@ import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@Getter
 //@DiscriminatorValue("mentor")
 //@PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor{
@@ -27,13 +30,13 @@ public class Mentor{
     private String part;
 
     @Column
-    private String memo;
+    private String field;
 
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Application> applications = new HashSet<>();
 
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Club> clubs = new HashSet<>();
+    private List<Club> clubs = new ArrayList<>();
 
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PossibleDate> possibleDates = new HashSet<>();
