@@ -2,16 +2,15 @@ package com.soongsil.CoffeeChat.entity;
 
 import com.soongsil.CoffeeChat.dto.CreateMenteeRequest;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Mentee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +37,7 @@ public class Mentee {
     private String memo;
 
     @OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<Application> applications = new HashSet<>();
 
     @Builder

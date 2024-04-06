@@ -11,6 +11,8 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 //@DiscriminatorValue("mentor")
 //@PrimaryKeyJoinColumn(name = "mentor_id")
@@ -36,12 +38,15 @@ public class Mentor{
     @Column
     private String field;
 
+    @Builder.Default
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Application> applications = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Club> clubs = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PossibleDate> possibleDates = new HashSet<>();
 

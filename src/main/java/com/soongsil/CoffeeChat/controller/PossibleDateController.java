@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
-import com.soongsil.CoffeeChat.dto.CreatePossibleDateRequest;
+import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class PossibleDateController {
 
     @PostMapping()
     public ResponseEntity<?> addPossibleDate(Authentication authentication,
-                                             @RequestBody CreatePossibleDateRequest dto){
+                                             @RequestBody PossibleDateRequestDto dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 possibleDateService.createPossibleDate(dto, authentication.getName()));
     }

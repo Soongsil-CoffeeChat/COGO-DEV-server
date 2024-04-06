@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
+import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.service.MentorService;
@@ -22,6 +23,13 @@ public class MentorController {
     public ResponseEntity<List<ResponseMentorListInfo>>
     getMentorListByPart(Authentication authentication, @PathVariable("part") String part){
         return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
+    }
+
+    @GetMapping("/possibleDates")
+    public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates
+            (Authentication authentication){
+        return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor
+                (authentication.getName()));
     }
 
 }
