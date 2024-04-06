@@ -1,24 +1,25 @@
 package com.soongsil.CoffeeChat.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
-@Setter
 public class PossibleDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "possible_date_id")
     private Long id;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "mentor_id")
     private Mentor mentor;
@@ -34,4 +35,13 @@ public class PossibleDate {
 
     @Column
     private boolean apply;
+
+    public static  PossibleDate from(PossibleDateRequestDto dto){
+        return PossibleDate.builder()
+                .date(dto.getDate())
+                .startTime(dto.getStartTime())
+                .endTime(dto.getEndTime())
+                .apply(false)
+                .build();
+    }
 }
