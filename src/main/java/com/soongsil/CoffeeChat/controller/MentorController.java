@@ -25,11 +25,11 @@ public class MentorController {
         return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
     }
 
-    @GetMapping("/possibleDates")
+    @GetMapping("/possibleDates/{username}")
     public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates
-            (Authentication authentication){
-        return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor
-                (authentication.getName()));
+            (Authentication authentication,
+             @PathVariable("username") String username){
+        return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(username));
     }
 
 }
