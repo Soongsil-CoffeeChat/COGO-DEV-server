@@ -1,8 +1,14 @@
 package com.soongsil.CoffeeChat.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -17,11 +23,14 @@ public class PossibleDate {
     @JoinColumn(name = "mentor_id")
     private Mentor mentor;
 
-    @Column
-    private String date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    LocalDate date;
 
-    @Column
-    private String time;
+    @JsonFormat(pattern = "HH:mm")  //datetimeformat은 ss까지 전부 다 받아야 오류안남
+    LocalTime startTime;
+
+    @JsonFormat(pattern = "HH:mm")
+    LocalTime endTime;
 
     @Column
     private boolean apply;
