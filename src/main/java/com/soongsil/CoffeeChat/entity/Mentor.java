@@ -59,4 +59,8 @@ public class Mentor{
                 .part(dto.getPart())
                 .build();
     }
+
+    public void addPossibleDate(PossibleDate possibleDate){
+        this.possibleDates.add(possibleDate);
+    }
 }
