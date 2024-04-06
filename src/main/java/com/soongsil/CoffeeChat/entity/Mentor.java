@@ -20,6 +20,10 @@ public class Mentor{
     @Column(name = "mentor_id")
     private Long id;
 
+    @Column
+    private String picture;
+    //TODO: aws파지면 사진처리 해줘야됨
+
     @Column(name = "phone_num")
     private String phoneNum;
 
