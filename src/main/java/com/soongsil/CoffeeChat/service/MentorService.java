@@ -1,14 +1,15 @@
 package com.soongsil.CoffeeChat.service;
 
+import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
 import com.soongsil.CoffeeChat.entity.Mentor;
+import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.MentorRepository;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MentorService {
@@ -31,6 +32,18 @@ public class MentorService {
         for(Mentor mentor : mentorList){
             User user=userRepository.findByMentor(mentor);
             dtoList.add(ResponseMentorListInfo.toDto(mentor,user));
+        }
+        return dtoList;
+    }
+
+    public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
+        User user= userRepository.findByUsername(username);
+        Mentor mentor=user.getMentor();
+        Set<PossibleDate> possibleDateSet=mentor.getPossibleDates();
+        Iterator<PossibleDate> iter= possibleDateSet.iterator();
+        List<PossibleDateRequestDto> dtoList=new ArrayList<>();
+        while(iter.hasNext()){
+            dtoList.add(PossibleDateRequestDto.toDto(iter.next()));
         }
         return dtoList;
     }
