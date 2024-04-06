@@ -14,6 +14,7 @@ public class ResponseMentorListInfo {
     private String mentorName;
     private List<String> clubName;
     private String field;
+    private String username;
 
     public static ResponseMentorListInfo toDto(Mentor mentor, User user){
         List<Club> clubList=mentor.getClubs();
@@ -22,10 +23,11 @@ public class ResponseMentorListInfo {
             clubNameList.add(club.getName());
         }
         return ResponseMentorListInfo.builder()
-                .picture(user.getPicture())
+                .picture(mentor.getPicture())
                 .mentorName(user.getName())
                 .clubName(clubNameList)
                 .field(mentor.getField())
+                .username(user.getUsername())
                 .build();
     }
 }

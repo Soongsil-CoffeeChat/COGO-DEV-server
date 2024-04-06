@@ -6,7 +6,7 @@ public class RequestUri {
     public static final String CLUB_URI = prefix + "/club";
     public static final String MENTEE_URI = prefix + "/mentee";
     public static final String MENTOR_URI = prefix + "/mentor";
-    public static final String POSSIBLEDATE_URI = prefix + "/possibledate";
+    public static final String POSSIBLEDATE_URI = prefix + "/possibleDate";
     public static final String REFRESH_URI=prefix+"/refresh";
     public static final String USER_URI=prefix+"/user";
 }
