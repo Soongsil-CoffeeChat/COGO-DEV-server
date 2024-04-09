@@ -1,111 +1,114 @@
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.entity.Refresh;
-import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import io.jsonwebtoken.ExpiredJwtException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.entity.Refresh;
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class RefreshTokenService {
-    private final JWTUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
-    public RefreshTokenService(JWTUtil jwtUtil, RefreshRepository refreshRepository){
-        this.jwtUtil=jwtUtil;
-        this.refreshRepository=refreshRepository;
-    }
+	private final JWTUtil jwtUtil;
+	private final RefreshRepository refreshRepository;
 
-    private Cookie createCookie(String key, String value) {
+	public RefreshTokenService(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
+		this.jwtUtil = jwtUtil;
+		this.refreshRepository = refreshRepository;
+	}
 
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
-        //cookie.setSecure(true);
-        //cookie.setPath("/");
-        cookie.setHttpOnly(true);
+	private Cookie createCookie(String key, String value) {
 
-        return cookie;
-    }
+		Cookie cookie = new Cookie(key, value);
+		cookie.setMaxAge(24 * 60 * 60);
+		//cookie.setSecure(true);
+		//cookie.setPath("/");
+		cookie.setHttpOnly(true);
 
-    private void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
+		return cookie;
+	}
 
-        Date date = new Date(System.currentTimeMillis() + expiredMs);
+	private void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
 
-        Refresh refreshEntity = new Refresh();
-        refreshEntity.setUsername(username);
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
+		Date date = new Date(System.currentTimeMillis() + expiredMs);
 
-        refreshRepository.save(refreshEntity);
-    }
+		Refresh refreshEntity = new Refresh();
+		refreshEntity.setUsername(username);
+		refreshEntity.setRefresh(refresh);
+		refreshEntity.setExpiration(date.toString());
 
-    public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response){
-        //get refresh token
-        String refresh = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
+		refreshRepository.save(refreshEntity);
+	}
 
-            if (cookie.getName().equals("refresh")) {
+	public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+		//get refresh token
+		String refresh = null;
+		Cookie[] cookies = request.getCookies();
+		for (Cookie cookie : cookies) {
 
-                refresh = cookie.getValue();
-            }
-        }
+			if (cookie.getName().equals("refresh")) {
 
-        if (refresh == null) {
+				refresh = cookie.getValue();
+			}
+		}
 
-            //response status code 400 (refresh토큰이 들어오지 않음)
-            return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
-        }
+		if (refresh == null) {
 
-        //expired check
-        JWTUtil jwtUtil = null;
-        try {
-            jwtUtil.isExpired(refresh);
-        } catch (ExpiredJwtException e) {
+			//response status code 400 (refresh토큰이 들어오지 않음)
+			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
+		}
 
-            //response status code 400 (refresh 토큰이 만료됨)
-            return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
-        }
+		//expired check
+		JWTUtil jwtUtil = null;
+		try {
+			jwtUtil.isExpired(refresh);
+		} catch (ExpiredJwtException e) {
 
-        // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
-        String category = jwtUtil.getCategory(refresh);
+			//response status code 400 (refresh 토큰이 만료됨)
+			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
+		}
 
-        if (!category.equals("refresh")) {
+		// 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
+		String category = jwtUtil.getCategory(refresh);
 
-            //response status code 400 (들어온 토큰이 refresh토큰이 아님)
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
-        }
+		if (!category.equals("refresh")) {
 
-        //DB에 저장되어 있는지 확인
-        Boolean isExist = refreshRepository.existsByRefresh(refresh);
-        if (!isExist) {
+			//response status code 400 (들어온 토큰이 refresh토큰이 아님)
+			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+		}
 
-            //response body status code 400 (들어올 refresh토큰이 내 DB에 저장된 목록에 없음)
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
-        }
+		//DB에 저장되어 있는지 확인
+		Boolean isExist = refreshRepository.existsByRefresh(refresh);
+		if (!isExist) {
 
-        String username = jwtUtil.getUsername(refresh);
-        String role = jwtUtil.getRole(refresh);
+			//response body status code 400 (들어올 refresh토큰이 내 DB에 저장된 목록에 없음)
+			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+		}
 
-        //make new JWT
-        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+		String username = jwtUtil.getUsername(refresh);
+		String role = jwtUtil.getRole(refresh);
 
-        //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-        refreshRepository.deleteByRefresh(refresh);
-        addRefreshEntity(username, newRefresh, 86400000L);
+		//make new JWT
+		String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
+		String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
-        //response
-        response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+		//Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+		refreshRepository.deleteByRefresh(refresh);
+		addRefreshEntity(username, newRefresh, 86400000L);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+		//response
+		response.setHeader("access", newAccess);
+		response.addCookie(createCookie("refresh", newRefresh));
 
-    }
+		return new ResponseEntity<>(HttpStatus.OK);
+
+	}
 }

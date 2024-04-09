@@ -2,35 +2,35 @@ package com.soongsil.CoffeeChat.dto;
 
 import java.util.Map;
 
-public class GoogleResponse implements OAuth2Response{
-    private final Map<String, Object> attribute;
+public class GoogleResponse implements OAuth2Response {
+	private final Map<String, Object> attribute;
 
-    public GoogleResponse(Map<String, Object> attribute) {
+	public GoogleResponse(Map<String, Object> attribute) {
 
-        this.attribute = attribute;
-    }
+		this.attribute = attribute;
+	}
 
-    @Override
-    public String getProvider() {
+	@Override
+	public String getProvider() {
 
-        return "google";
-    }
+		return "google";
+	}
 
-    @Override
-    public String getProviderId() {
+	@Override
+	public String getProviderId() {
 
-        return attribute.get("sub").toString();
-    }
+		return attribute.get("sub").toString();
+	}
 
-    @Override
-    public String getEmail() {
+	@Override
+	public String getEmail() {
 
-        return attribute.get("email").toString();
-    }
+		return attribute.get("email").toString();
+	}
 
-    @Override
-    public String getName() {
+	@Override
+	public String getName() {
 
-        return attribute.get("name").toString();
-    }
+		return attribute.get("name").toString();
+	}
 }
