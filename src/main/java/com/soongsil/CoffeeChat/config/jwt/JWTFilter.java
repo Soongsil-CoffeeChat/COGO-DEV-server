@@ -24,15 +24,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
-public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
-	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
-
-	public JWTFilter(JWTUtil jwtUtil) {
-		this.jwtUtil = jwtUtil;
-	}
-
-
 public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
 	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
 
