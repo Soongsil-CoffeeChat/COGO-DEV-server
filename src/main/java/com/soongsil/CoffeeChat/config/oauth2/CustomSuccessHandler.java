@@ -21,6 +21,18 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+
+
 //로그인이 성공했을 때 받은 데이터들을 바탕으로 JWT발급을 위한 핸들러
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -60,7 +72,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		String role = auth.getAuthority();
 		//토큰 생성
 		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
-		//System.out.println("accessToken = " + accessToken);
+		System.out.println("accessToken = " + accessToken);
 		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
 		//Refresh 토큰 저장
 		addRefreshEntity(username, refreshToken, 86400000L);
