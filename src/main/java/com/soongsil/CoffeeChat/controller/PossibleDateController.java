@@ -1,6 +1,8 @@
 package com.soongsil.CoffeeChat.controller;
 
 
+import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
