@@ -2,35 +2,35 @@ package com.soongsil.CoffeeChat.dto;
 
 import java.util.Map;
 
-public class NaverResponse implements OAuth2Response{
-    private final Map<String, Object> attribute; //데이터 받을 Map
+public class NaverResponse implements OAuth2Response {
+	private final Map<String, Object> attribute; //데이터 받을 Map
 
-    public NaverResponse(Map<String, Object> attribute) {
+	public NaverResponse(Map<String, Object> attribute) {
 
-        this.attribute = (Map<String, Object>) attribute.get("response");
-    }
+		this.attribute = (Map<String, Object>)attribute.get("response");
+	}
 
-    @Override
-    public String getProvider() {
+	@Override
+	public String getProvider() {
 
-        return "naver";
-    }
+		return "naver";
+	}
 
-    @Override
-    public String getProviderId() {
+	@Override
+	public String getProviderId() {
 
-        return attribute.get("id").toString();
-    }
+		return attribute.get("id").toString();
+	}
 
-    @Override
-    public String getEmail() {
+	@Override
+	public String getEmail() {
 
-        return attribute.get("email").toString();
-    }
+		return attribute.get("email").toString();
+	}
 
-    @Override
-    public String getName() {
+	@Override
+	public String getName() {
 
-        return attribute.get("name").toString();
-    }
+		return attribute.get("name").toString();
+	}
 }

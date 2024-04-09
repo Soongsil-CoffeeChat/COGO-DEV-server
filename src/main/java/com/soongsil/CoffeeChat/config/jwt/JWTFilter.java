@@ -1,13 +1,21 @@
 package com.soongsil.CoffeeChat.config.jwt;
 
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.UserDTO;
-import com.soongsil.CoffeeChat.entity.User;
+
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -16,8 +24,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 
 public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
 	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
@@ -25,6 +31,15 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 	public JWTFilter(JWTUtil jwtUtil) {
 		this.jwtUtil = jwtUtil;
 	}
+
+
+public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
+	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
+
+	public JWTFilter(JWTUtil jwtUtil) {
+		this.jwtUtil = jwtUtil;
+	}
+
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

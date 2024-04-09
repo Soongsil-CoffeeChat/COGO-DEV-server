@@ -1,5 +1,16 @@
 package com.soongsil.CoffeeChat.config.oauth2;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.entity.Refresh;
@@ -20,6 +31,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+
 
 //로그인이 성공했을 때 받은 데이터들을 바탕으로 JWT발급을 위한 핸들러
 @Component
