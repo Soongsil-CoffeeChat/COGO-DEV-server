@@ -6,6 +6,10 @@ import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 import com.soongsil.CoffeeChat.service.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +21,12 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.USER_URI;
 @RestController
 @RequestMapping(USER_URI)
 @RequiredArgsConstructor
+@Tag(name="USER", description = "유저 관련 api")
 public class UserController {
     private final UserService userService;
     @PostMapping("/join/mentor")
+    @Operation(summary="멘토로 가입하기!")
+    @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
                                                  @RequestBody CreateMentorRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -28,6 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/join/mentee")
+    @Operation(summary="멘티로 가입하기!")
+    @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
                                                  @RequestBody CreateMenteeRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
