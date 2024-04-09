@@ -9,18 +9,16 @@ import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.MentorRepository;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final MentorRepository mentorRepository;
     private final MenteeRepository menteeRepository;
     private final UserRepository userRepository;
-    public UserService(MentorRepository mentorRepository, MenteeRepository menteeRepository, UserRepository userRepository){
-        this.menteeRepository=menteeRepository;
-        this.mentorRepository=mentorRepository;
-        this.userRepository=userRepository;
-    }
+
     @Transactional
     public Mentor saveMentorInformation(String username, CreateMentorRequest dto){
         User user= userRepository.findByUsername(username);
