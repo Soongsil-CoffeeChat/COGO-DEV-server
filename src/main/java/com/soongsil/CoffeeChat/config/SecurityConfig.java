@@ -1,15 +1,9 @@
 package com.soongsil.CoffeeChat.config;
 
-import com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.config.jwt.JWTFilter;
-import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.config.oauth2.CustomSuccessHandler;
-import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -20,7 +14,14 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.util.Collections;
+import com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.config.jwt.JWTFilter;
+import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.config.oauth2.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebSecurity

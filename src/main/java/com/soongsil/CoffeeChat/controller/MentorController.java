@@ -1,16 +1,19 @@
 package com.soongsil.CoffeeChat.controller;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
-import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
-import com.soongsil.CoffeeChat.entity.Mentor;
-import com.soongsil.CoffeeChat.service.MentorService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.MENTOR_URI;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
+import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
+import com.soongsil.CoffeeChat.service.MentorService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
+
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
@@ -16,14 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.POSSIBLEDATE_URI;
+import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
+import com.soongsil.CoffeeChat.service.PossibleDateService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(POSSIBLEDATE_URI)
 @RequiredArgsConstructor
 @Tag(name="POSSIBLEDATE", description = "커피챗 시간 관련 api")
 public class PossibleDateController {
-    private final PossibleDateService possibleDateService;
+	private final PossibleDateService possibleDateService;
 
     @PostMapping()
     @Operation(summary="멘토가 직접 커피챗 가능시간 추가하기")
