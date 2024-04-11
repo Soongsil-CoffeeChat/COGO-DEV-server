@@ -22,8 +22,8 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public Mentor saveMentorInformation(String username, CreateMentorRequest dto) {
-		User user = userRepository.findByUsername(username);
+	public Mentor saveMentorInformation(User user, CreateMentorRequest dto) {
+		//User user = userRepository.findByUsername(username);
 		user.setRole("ROLE_MENTEE");
 		Mentor mentor = Mentor.from(dto);
 		return mentorRepository.save(mentor);
