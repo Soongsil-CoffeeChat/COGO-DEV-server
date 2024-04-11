@@ -41,7 +41,6 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentor> joinWithMentor(@AuthenticationPrincipal User user,
                                                  @RequestBody CreateMentorRequest dto){
-        System.out.println("user.getName() = " + user.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMentorInformation(user, dto)
         );
