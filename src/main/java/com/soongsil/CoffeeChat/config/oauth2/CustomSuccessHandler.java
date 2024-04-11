@@ -37,7 +37,7 @@ import java.util.Iterator;
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final JWTUtil jwtUtil;
-	private RefreshRepository refreshRepository;
+	private final RefreshRepository refreshRepository;
 
 	public CustomSuccessHandler(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
 		this.jwtUtil = jwtUtil;
@@ -89,7 +89,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
-		response.sendRedirect("http://localhost:3000/");  //프론트의 url에 redirect
+		//response.sendRedirect("http://localhost:3000/");  //프론트의 url에 redirect
+		response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
 	}
 
 	private Cookie createCookie(String key, String value) {
