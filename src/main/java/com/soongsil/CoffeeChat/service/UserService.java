@@ -24,16 +24,18 @@ public class UserService {
 	@Transactional
 	public Mentor saveMentorInformation(String username, CreateMentorRequest dto) {
 		User user = userRepository.findByUsername(username);
-		user.setRole("ROLE_MENTEE");
+		user.setRole("ROLE_MENTOR");
 		Mentor mentor = Mentor.from(dto);
+		user.setMentor(mentor);
 		return mentorRepository.save(mentor);
 	}
 
 	@Transactional
 	public Mentee saveMenteeInformation(String username, CreateMenteeRequest dto) {
 		User user = userRepository.findByUsername(username);
-		user.setRole("ROLE_MENTOR");
+		user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
+		user.setMentee(mentee);
 		return menteeRepository.save(mentee);
 	}
 }

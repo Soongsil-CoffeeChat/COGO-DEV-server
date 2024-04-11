@@ -17,7 +17,7 @@ public class PossibleDateService {
 	private final PossibleDateRepository possibleDateRepository;
 	private final UserRepository userRepository;
 
-	public PossibleDate createPossibleDate(PossibleDateRequestDto dto,
+	public PossibleDateRequestDto createPossibleDate(PossibleDateRequestDto dto,
 		String username) {
 		User user = userRepository.findByUsername(username);
 		Mentor mentor = user.getMentor();
@@ -25,6 +25,6 @@ public class PossibleDateService {
 		possibleDate.setMentor(mentor);
 		mentor.addPossibleDate(possibleDate);
 		possibleDateRepository.save(possibleDate);
-		return possibleDate;
+		return dto;
 	}
 }
