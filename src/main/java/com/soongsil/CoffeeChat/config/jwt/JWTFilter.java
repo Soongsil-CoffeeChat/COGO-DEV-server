@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.config.jwt;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,10 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
 		// 헤더에서 access키에 담긴 토큰을 꺼냄
-		String accessToken = request.getHeader("authorization");
+		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+		//토큰꺼내기
+		String accessToken=authorization.split(" ")[1];
+		System.out.println("accessToken = " + accessToken);
 
 		// 토큰이 없다면 다음 필터로 넘김
 		if (accessToken == null) {
@@ -43,7 +47,6 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 
 			return;
 		}
-
 		//토큰 소멸 시간 검증
 		if (jwtUtil.isExpired(accessToken)) {
 
