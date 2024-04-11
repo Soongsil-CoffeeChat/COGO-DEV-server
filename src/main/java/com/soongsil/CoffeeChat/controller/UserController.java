@@ -39,10 +39,10 @@ public class UserController {
     @PostMapping("/join/mentor")
     @Operation(summary="멘토로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<Mentor> joinWithMentor(@AuthenticationPrincipal User user,
+    public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
                                                  @RequestBody CreateMentorRequest dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                userService.saveMentorInformation(user, dto)
+                userService.saveMentorInformation(authentication.getName(), dto)
         );
     }
 
@@ -51,6 +51,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
                                                  @RequestBody CreateMenteeRequest dto){
+        System.out.println("authentication.getName() = " + authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMenteeInformation(authentication.getName(), dto)
         );

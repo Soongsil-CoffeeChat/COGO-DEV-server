@@ -8,8 +8,10 @@ import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class ResponseMentorListInfo {
 	private String picture;
 	private String mentorName;
