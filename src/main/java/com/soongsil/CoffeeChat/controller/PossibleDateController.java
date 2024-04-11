@@ -34,8 +34,9 @@ public class PossibleDateController {
     @PostMapping()
     @Operation(summary="멘토가 직접 커피챗 가능시간 추가하기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-    public ResponseEntity<PossibleDate> addPossibleDate(Authentication authentication,
+    public ResponseEntity<PossibleDateRequestDto> addPossibleDate(Authentication authentication,
                                              @RequestBody PossibleDateRequestDto dto){
+        System.out.println("authentication.getName() = " + authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 possibleDateService.createPossibleDate(dto, authentication.getName()));
     }

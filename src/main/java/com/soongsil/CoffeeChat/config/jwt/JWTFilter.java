@@ -34,7 +34,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
-		// 헤더에서 access키에 담긴 토큰을 꺼냄
+		// 헤더에서 authorization키에 담긴 토큰을 꺼냄
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		//토큰꺼내기
 		String accessToken=authorization.split(" ")[1];
@@ -59,7 +59,9 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 
 		//토큰에서 username과 role 획득
 		String username = jwtUtil.getUsername(accessToken);
+		System.out.println("username = " + username);
 		String role = jwtUtil.getRole(accessToken);
+		System.out.println("role = " + role);
 
 		//userDTO를 생성하여 값 set
 		UserDTO userDTO = new UserDTO();
