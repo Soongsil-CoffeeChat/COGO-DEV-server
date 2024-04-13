@@ -3,6 +3,9 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import java.security.Principal;
+
+import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
@@ -31,13 +34,18 @@ import lombok.RequiredArgsConstructor;
 public class PossibleDateController {
 	private final PossibleDateService possibleDateService;
 
+    private String getUserNameByAuthentication(Authentication authentication) throws Exception {
+        CustomOAuth2User principal= (CustomOAuth2User)authentication.getPrincipal();
+        if(principal==null) throw new Exception(); //TODO : Exception 만들기
+        return principal.getUsername();
+    }
+
     @PostMapping()
     @Operation(summary="멘토가 직접 커피챗 가능시간 추가하기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
     public ResponseEntity<PossibleDateRequestDto> addPossibleDate(Authentication authentication,
-                                             @RequestBody PossibleDateRequestDto dto){
-        System.out.println("authentication.getName() = " + authentication.getName());
+                                             @RequestBody PossibleDateRequestDto dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                possibleDateService.createPossibleDate(dto, authentication.getName()));
+                possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication)));
     }
 }
