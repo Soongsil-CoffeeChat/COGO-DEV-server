@@ -38,13 +38,19 @@ import lombok.RequiredArgsConstructor;
 @Tag(name="USER", description = "유저 관련 api")
 public class UserController {
     private final UserService userService;
+
+    private String getUserNameByAuthentication(Authentication authentication) throws Exception {
+        CustomOAuth2User principal= (CustomOAuth2User)authentication.getPrincipal();
+        if(principal==null) throw new Exception(); //TODO : Exception 만들기
+        return principal.getUsername();
+    }
     @PostMapping("/join/mentor")
     @Operation(summary="멘토로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
-                                                 @RequestBody CreateMentorRequest dto){
+                                                 @RequestBody CreateMentorRequest dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                userService.saveMentorInformation(authentication.getName(), dto)
+                userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto)
         );
     }
 
@@ -52,10 +58,10 @@ public class UserController {
     @Operation(summary="멘티로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
-                                                 @RequestBody CreateMenteeRequest dto){
+                                                 @RequestBody CreateMenteeRequest dto) throws Exception {
         System.out.println("authentication.getName() = " + authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                userService.saveMenteeInformation(authentication.getName(), dto)
+                userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto)
         );
     }
 

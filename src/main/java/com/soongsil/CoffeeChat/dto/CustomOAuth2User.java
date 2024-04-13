@@ -36,7 +36,6 @@ public class CustomOAuth2User implements OAuth2User {
 
 	@Override
 	public String getName() {
-		//TODO: 원래 getName()상황이였음.
 		return userDTO.getName();
 	}
 
