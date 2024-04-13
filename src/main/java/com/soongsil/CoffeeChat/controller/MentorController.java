@@ -31,7 +31,7 @@ public class MentorController {
     @Operation(summary="파트별 멘토 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
     public ResponseEntity<List<ResponseMentorListInfo>>
-    getMentorListByPart(Authentication authentication, @PathVariable("part") String part){
+    getMentorListByPart(@PathVariable("part") String part){
         return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
     }
 
@@ -39,8 +39,7 @@ public class MentorController {
     @Operation(summary="멘토의 username으로 커피챗가능시간 불러오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
     public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates
-            (Authentication authentication,
-             @PathVariable("username") String username){
+            (@PathVariable("username") String username){
         return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(username));
     }
 
