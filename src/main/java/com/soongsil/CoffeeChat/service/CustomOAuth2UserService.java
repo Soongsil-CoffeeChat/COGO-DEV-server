@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.GoogleResponse;
+import com.soongsil.CoffeeChat.dto.KakaoResponse;
 import com.soongsil.CoffeeChat.dto.NaverResponse;
 import com.soongsil.CoffeeChat.dto.OAuth2Response;
 import com.soongsil.CoffeeChat.dto.UserDTO;
@@ -39,7 +40,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		} else if (registrationId.equals("google")) {
 
 			oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
-		} else {
+		} else if (registrationId.equals("kakao")){
+			oAuth2Response=new KakaoResponse(oAuth2User.getAttributes());
 
 			return null;
 		}
