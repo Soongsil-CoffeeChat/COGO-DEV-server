@@ -49,6 +49,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
                                                  @RequestBody CreateMentorRequest dto) throws Exception {
+        System.out.println("getUserNameByAuthentication(authentication) = " + getUserNameByAuthentication(authentication));
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto)
         );
@@ -59,7 +60,6 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
                                                  @RequestBody CreateMenteeRequest dto) throws Exception {
-        System.out.println("authentication.getName() = " + authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto)
         );
