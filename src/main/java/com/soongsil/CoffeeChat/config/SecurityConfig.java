@@ -94,8 +94,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/reissue").permitAll()
-                        .requestMatchers("/api/v1/user/join/**").hasRole("USER")
-                        .requestMatchers("/api/v1/**").hasAnyRole("MENTEE", "MENTOR") //로그인 제외하면 다 멘티나 멘토 아니면 접근불가
+                        .requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
+                        //.requestMatchers("/api/v1/**").hasAnyRole("MENTEE", "MENTOR") //로그인 제외하면 다 멘티나 멘토 아니면 접근불가
+                        .requestMatchers("api/v1/possibleDate/**").hasRole("MENTOR")
+                        .requestMatchers("api/v1/mentor/**").hasRole("MENTEE")
                         .anyRequest().authenticated());
         //세션 설정 : STATELESS (JWT로 인증 인가 사용할 것이므로)
         http
