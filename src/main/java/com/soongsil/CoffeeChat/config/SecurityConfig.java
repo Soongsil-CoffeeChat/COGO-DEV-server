@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.config;
 
+import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
@@ -28,100 +30,103 @@ import jakarta.servlet.http.HttpServletRequest;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomSuccessHandler customSuccessHandler;
-    private final JWTUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
-                          CustomSuccessHandler customSuccessHandler,
-                          JWTUtil jwtUtil,
-                          RefreshRepository refreshRepository){
-        this.customOAuth2UserService=customOAuth2UserService;
-        this.customSuccessHandler=customSuccessHandler;
-        this.jwtUtil=jwtUtil;
-        this.refreshRepository=refreshRepository;
-    }
+	private final CustomOAuth2UserService customOAuth2UserService;
+	private final CustomSuccessHandler customSuccessHandler;
+	private final JWTUtil jwtUtil;
+	private final RefreshRepository refreshRepository;
 
-    @Bean
-    public RoleHierarchy roleHierarchy() {
+	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+		CustomSuccessHandler customSuccessHandler,
+		JWTUtil jwtUtil,
+		RefreshRepository refreshRepository) {
+		this.customOAuth2UserService = customOAuth2UserService;
+		this.customSuccessHandler = customSuccessHandler;
+		this.jwtUtil = jwtUtil;
+		this.refreshRepository = refreshRepository;
+	}
 
-        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+	@Bean
+	public RoleHierarchy roleHierarchy() {
 
-        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MENTEE" +"ROLE_ADMIN > ROLE_MENTOR\n"+
-            "ROLE_MENTEE > ROLE_USER" + "ROLE_MENTOR > ROLE_USER");
+		RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
 
-        return hierarchy;
-    }
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
-        http
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+		hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MENTEE" + "ROLE_ADMIN > ROLE_MENTOR\n" +
+			"ROLE_MENTEE > ROLE_USER" + "ROLE_MENTOR > ROLE_USER");
 
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+		return hierarchy;
+	}
 
-                        CorsConfiguration configuration = new CorsConfiguration();
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+			.cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //프론트 서버의 주소
-                        configuration.setAllowedMethods(Collections.singletonList("*"));  //GET, POST, PUT등 모든 요청 허용
-                        configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));  //모든 헤더 허용
-                        configuration.setMaxAge(3600L);
+				@Override
+				public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
-                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));  //우리가 줄 데이터를 웹페이지에서 보이게 하기
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+					CorsConfiguration configuration = new CorsConfiguration();
 
-                        return configuration;
-                    }
-                }));
-        //csrf disable : stateless이기 때문에 끄기
-        http
-                .csrf((auth) -> auth.disable());
+					configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //프론트 서버의 주소
+					configuration.setAllowedMethods(Collections.singletonList("*"));  //GET, POST, PUT등 모든 요청 허용
+					configuration.setAllowCredentials(true);
+					configuration.setAllowedHeaders(Collections.singletonList("*"));  //모든 헤더 허용
+					configuration.setMaxAge(3600L);
 
-        //From 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
+					configuration.setExposedHeaders(
+						Collections.singletonList("Set-Cookie"));  //우리가 줄 데이터를 웹페이지에서 보이게 하기
+					configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
-        //HTTP Basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
-        //특정 필터 이전에 JWTFilter 추가
-        http
-                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
-        //기본으로 설정되어있는 LogoutFilter 바로 앞에 커스텀한 LogoutFilter 추가
-        http
-                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
+					return configuration;
+				}
+			}));
+		//csrf disable : stateless이기 때문에 끄기
+		http
+			.csrf((auth) -> auth.disable());
 
+		//From 로그인 방식 disable
+		http
+			.formLogin((auth) -> auth.disable());
 
-        //oauth2로그인 (인증이 완료되면 리소스 서버로부터 데이터를 받아서 OAuth2UserService로 전달)
-        //로그인 성공시 customSuccessHandler 호출
-        http
-                .oauth2Login((oauth2) -> oauth2
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
-                .successHandler(customSuccessHandler)
-                );
+		//HTTP Basic 인증 방식 disable
+		http
+			.httpBasic((auth) -> auth.disable());
+		//특정 필터 이전에 JWTFilter 추가
+		http
+			.addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		//기본으로 설정되어있는 LogoutFilter 바로 앞에 커스텀한 LogoutFilter 추가
+		http
+			.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 
-        //경로별 인가 작업
-        http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/reissue").permitAll()
-                        .requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
-                        //.requestMatchers("/api/v1/**").hasAnyRole("MENTEE", "MENTOR") //로그인 제외하면 다 멘티나 멘토 아니면 접근불가
-                        .requestMatchers("api/v1/possibleDate/**").hasRole("MENTOR")
-                        .requestMatchers("api/v1/mentor/**").hasRole("MENTEE")
-                        .anyRequest().authenticated());
-        //세션 설정 : STATELESS (JWT로 인증 인가 사용할 것이므로)
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        return http.build();
-    }
+		//oauth2로그인 (인증이 완료되면 리소스 서버로부터 데이터를 받아서 OAuth2UserService로 전달)
+		//로그인 성공시 customSuccessHandler 호출
+		http
+			.oauth2Login((oauth2) -> oauth2
+				.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+					.userService(customOAuth2UserService))
+				.successHandler(customSuccessHandler)
+			);
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
-    }
+		//경로별 인가 작업
+		http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
+			.authorizeHttpRequests((auth) -> auth
+				.requestMatchers("/").permitAll()
+				.requestMatchers("/reissue").permitAll()
+				.requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
+				//.requestMatchers("/api/v1/**").hasAnyRole("MENTEE", "MENTOR") //로그인 제외하면 다 멘티나 멘토 아니면 접근불가
+				.requestMatchers("api/v1/possibleDate/**").hasRole("MENTOR")
+				.requestMatchers("api/v1/mentor/**").hasRole("MENTEE")
+				.requestMatchers("/auth/email/**").permitAll()
+				.anyRequest().authenticated());
+		//세션 설정 : STATELESS (JWT로 인증 인가 사용할 것이므로)
+		http
+			.sessionManagement((session) -> session
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		return http.build();
+	}
+
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring()
+			.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+	}
 }
