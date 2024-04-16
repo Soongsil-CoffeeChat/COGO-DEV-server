@@ -16,11 +16,13 @@ import com.soongsil.CoffeeChat.service.ApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping(APPLICATION_URI)
 @RequiredArgsConstructor
+@Tag(name="APPLICATION", description = "Application 관련 api")
 public class ApplicationController {
 
 	private final ApplicationService applicationService;
@@ -32,7 +34,6 @@ public class ApplicationController {
 		Authentication authentication,
 		@RequestBody ApplicationCreateRequest request
 	) throws Exception {
-		System.out.println(((CustomOAuth2User)authentication.getPrincipal()).getUsername());
-		return ResponseEntity.ok(applicationService.createApplication(request, ((CustomOAuth2User)authentication.getPrincipal()).getUsername()));
+		return ResponseEntity.ok().body(applicationService.createApplication(request, ((CustomOAuth2User)authentication.getPrincipal()).getUsername()));
 	}
 }

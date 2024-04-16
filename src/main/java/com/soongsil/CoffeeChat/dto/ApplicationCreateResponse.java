@@ -6,8 +6,10 @@ import java.time.LocalTime;
 import com.soongsil.CoffeeChat.entity.Application;
 
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class ApplicationCreateResponse {
 	private LocalDate date;
 	private LocalTime startTime;
