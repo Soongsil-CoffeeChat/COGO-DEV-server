@@ -4,6 +4,8 @@ import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -38,6 +40,17 @@ public class SecurityConfig {
         this.customSuccessHandler=customSuccessHandler;
         this.jwtUtil=jwtUtil;
         this.refreshRepository=refreshRepository;
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MENTEE" +"ROLE_ADMIN > ROLE_MENTOR\n"+
+            "ROLE_MENTEE > ROLE_USER" + "ROLE_MENTOR > ROLE_USER");
+
+        return hierarchy;
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
