@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.config;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.*;
-
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;

@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +28,8 @@ public class ApplicationService {
 	private final EmailUtil emailUtil;
 
 	@Transactional
-	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws Exception {
+	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws
+		Exception {
 		Mentor findMentor = mentorRepository.findById(request.getMentorId())
 			.orElseThrow(Exception::new);
 		// User findMentorUser = userRepository.findByMentorId(findMentor.getId());

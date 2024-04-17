@@ -24,7 +24,6 @@ public class ApplicationCreateRequest {
 	@JsonProperty("mentor_id")
 	private Long mentorId;
 
-
 	public Application toEntity(Mentor mentor, Mentee mentee) {
 		return Application.builder()
 			.date(this.date)

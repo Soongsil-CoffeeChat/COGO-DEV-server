@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name="EMAIL", description = "Email 인증 관련 api")
+@Tag(name = "EMAIL", description = "Email 인증 관련 api")
 public class EmailController {
 
 	private final EmailUtil emailUtil;

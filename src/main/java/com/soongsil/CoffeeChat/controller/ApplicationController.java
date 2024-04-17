@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping(APPLICATION_URI)
 @RequiredArgsConstructor
-@Tag(name="APPLICATION", description = "Application 관련 api")
+@Tag(name = "APPLICATION", description = "Application 관련 api")
 public class ApplicationController {
 
 	private final ApplicationService applicationService;
@@ -34,6 +34,8 @@ public class ApplicationController {
 		Authentication authentication,
 		@RequestBody ApplicationCreateRequest request
 	) throws Exception {
-		return ResponseEntity.ok().body(applicationService.createApplication(request, ((CustomOAuth2User)authentication.getPrincipal()).getUsername()));
+		return ResponseEntity.ok()
+			.body(applicationService.createApplication(request,
+				((CustomOAuth2User)authentication.getPrincipal()).getUsername()));
 	}
 }

@@ -3,7 +3,6 @@ package com.soongsil.CoffeeChat.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 

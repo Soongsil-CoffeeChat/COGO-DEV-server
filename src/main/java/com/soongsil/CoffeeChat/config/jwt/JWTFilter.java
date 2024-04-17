@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.config.jwt;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,17 +11,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.UserDTO;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
 	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
@@ -37,7 +29,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 		// 헤더에서 authorization키에 담긴 토큰을 꺼냄
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		//토큰꺼내기
-		String accessToken=authorization.split(" ")[1];
+		String accessToken = authorization.split(" ")[1];
 		System.out.println("accessToken = " + accessToken);
 
 		// 토큰이 없다면 다음 필터로 넘김
