@@ -24,7 +24,7 @@ jobs:
 
     - name: 2) Convert to prod config
       run: |
-        mkdir -p ./src/main/resources
+        sudo mkdir -p ./src/main/resources
         cd ./src/main/resources
         [ -e "application.yml" ] && rm application.yml
         echo ${{ secrets.YML }} > application.yml
