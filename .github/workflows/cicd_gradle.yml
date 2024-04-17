@@ -15,43 +15,73 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: 1) Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - uses: actions/checkout@v3
+      - name: 1) Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-    - name: 2) Convert to prod config
-      run: |
-        sudo mkdir -p ./src/main/resources
-        cd ./src/main/resources
-        [ -e "application.yml" ] && rm application.yml
-        echo ${{ secrets.YML }} > application.yml
+      - name: 2) Convert to prod config
+        run: |
+          cd ./src/main/resources
+          [ -e "application.yml" ] && rm application.yml
+          echo "spring:" > application.yml
+          echo "  profiles:" >> application.yml
+          echo "    active: prod" >> application.yml
 
-    - name: 4) Grant permission
-      run: chmod +x ./gradlew
-    
-    - name: 5) Build with Gradle
-      run: ./gradlew clean build
-    
-    - name: 6) Build docker and push
-      run: |
-        docker login -u ${{secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD}}
-        docker build --platform linux/amd64 -t ${{ secrets.DOCKER_REPO }} . 
-        docker push ${{ secrets.DOCKER_REPO }}
-        
-    - name: 7) SSH conn and run docker(deployment)
-      uses: appleboy/ssh-action@v0.1.6
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
-        key: ${{ secrets.EC2_KEY }}
-        port: 22
-        script: |
-          sudo docker stop ${{ secrets.SERVER_NAME }}
-          sudo docker rm ${{ secrets.SERVER_NAME }}
-          sudo docker rmi ${{ secrets.DOCKER_REPO }}
-          sudo docker pull ${{ secrets.DOCKER_REPO }}
-          docker run --name ${{ secrets.SERVER_NAME }} -p 8080:8080 -d ${{ secrets.DOCKER_REPO }}
+      - name: 3) Set prod.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application-prod.yml
+        env:
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USER }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          spring.mail.host: ${{ secrets.MAIL_HOST }}
+          spring.mail.port: ${{ secrets.MAIL_PORT }}
+          spring.mail.sender: ${{ secrets.MAIL_SENDER }}
+          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
+          spring.jwt.secret: ${{ secrets.JWT_SECRET }}
+          spring.security.oauth2.client.registration.naver.client-id: ${{ NAVER_CLIENT_ID }}
+          spring.security.oauth2.client.registration.naver.client-secret: ${{ NAVER_CLIENT_SECRET }}
+          spring.security.oauth2.client.registration.naver.redirect-uri: ${{ NAVER_REDIRECT_URI }}
+          spring.security.oauth2.client.registration.google.client-id: ${{ GOOGLE_CLIENT_ID }}
+          spring.security.oauth2.client.registration.google.client-secret: ${{ GOOGLE_CLIENT_SECRET }}
+          spring.security.oauth2.client.registration.google.redirect-uri: ${{ GOOGLE_REDIRECT_URI }}
+          spring.security.oauth2.client.registration.kakao.client-id: ${{ KAKAO_CLIENT_ID }}
+          spring.security.oauth2.client.registration.kakao.client-secret: ${{ KAKAO_CLIENT_SECRET }}
+          spring.security.oauth2.client.registration.kakao.redirect-uri: ${{ KAKAO_REDIRECT_URI }}
+          spring.security.oauth2.client.provider.naver.authorization-uri: ${{ NAVER_AUTH_URI }}
+          spring.security.oauth2.client.provider.naver.token-uri: ${{ NAVER_TOKEN_URI }}
+          spring.security.oauth2.client.provider.naver.user-info-uri: ${{ NAVER_INFO_URI }}
+          spring.security.oauth2.client.provider.kakao.authorization-uri: ${{ KAKAO_AUTH_URI }}
+          spring.security.oauth2.client.provider.kakao.token-uri: ${{ KAKAO_TOKEN_URI }}
+          spring.security.oauth2.client.provider.kakao.user-info-uri: ${{ KAKAO_INFO_URI }}
+
+      - name: 4) Grant permission
+        run: chmod +x ./gradlew
+
+      - name: 5) Build with Gradle
+        run: ./gradlew clean build
+
+      - name: 6) Build docker and push
+        run: |
+          docker login -u ${{secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD}}
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKER_REPO }} . 
+          docker push ${{ secrets.DOCKER_REPO }}
+
+      - name: 7) SSH conn and run docker(deployment)
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+          port: 22
+          script: |
+            sudo docker stop ${{ secrets.SERVER_NAME }}
+            sudo docker rm ${{ secrets.SERVER_NAME }}
+            sudo docker rmi ${{ secrets.DOCKER_REPO }}
+            sudo docker pull ${{ secrets.DOCKER_REPO }}
+            docker run --name ${{ secrets.SERVER_NAME }} -p 8080:8080 -d ${{ secrets.DOCKER_REPO }}
   
