@@ -83,5 +83,5 @@ jobs:
             sudo docker rm ${{ secrets.SERVER_NAME }}
             sudo docker rmi ${{ secrets.DOCKER_REPO }}
             sudo docker pull ${{ secrets.DOCKER_REPO }}
-            docker run --name ${{ secrets.SERVER_NAME }} -p 8080:8080 -d ${{ secrets.DOCKER_REPO }}
+            docker run -e SPRING_PROFILES_ACTIVE=prod --name ${{ secrets.SERVER_NAME }} -p 8080:8080 -d ${{ secrets.DOCKER_REPO }}
   
