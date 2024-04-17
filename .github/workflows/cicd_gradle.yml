@@ -1,0 +1,56 @@
+name: SB CI/CD with Gradle
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: 1) Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: 2) Convert to prod config
+      run: |
+        cd ./src/main/resources
+        [ -e "application.yml" ] && rm application.yml
+        echo ${{ secrets.YML }} > application.yml
+
+    - name: 4) Grant permission
+      run: chmod +x ./gradlew
+    
+    - name: 5) Build with Gradle
+      run: ./gradlew clean build
+    
+    - name: 6) Build docker and push
+      run: |
+        docker login -u ${{secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD}}
+        docker build --platform linux/amd64 -t ${{ secrets.DOCKER_REPO }} . 
+        docker push ${{ secrets.DOCKER_REPO }}
+        
+    - name: 7) SSH conn and run docker(deployment)
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_KEY }}
+        port: 22
+        script: |
+          sudo docker stop ${{ secrets.SERVER_NAME }}
+          sudo docker rm ${{ secrets.SERVER_NAME }}
+          sudo docker rmi ${{ secrets.DOCKER_REPO }}
+          sudo docker pull ${{ secrets.DOCKER_REPO }}
+          docker run --name cogo-server -p 8080:8080 -d ${{ secrets.DOCKER_REPO }}
+  
