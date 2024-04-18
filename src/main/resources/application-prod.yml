@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${{ DB_URL }}
-    username: admin
-    password: ${{ DB_PASSWORD }}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     
   jpa:
     hibernate:
@@ -17,10 +17,10 @@ spring:
         show_sql: true
         
   mail:
-    host: ${{ MAIL_HOST}}
-    port: ${{ MAIL_PORT}}
-    sender: ${{ MAIL_SENDER }}
-    password: ${{ MAIL_PASSWORD }}
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    sender: ${MAIL_SENDER}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -29,7 +29,7 @@ spring:
             enable: true
             
   jwt:
-    secret: ${{ JWT_SECRET }}
+    secret: ${JWT_SECRET}
     
   security:
     oauth2:
@@ -37,33 +37,33 @@ spring:
         registration:
           naver:
             client-name: naver
-            client-id: ${{ NAVER_CLIENT_ID }}
-            client-secret: ${{ NAVER_CLIENT_SECRET }}
-            redirect-uri: ${{ NAVER_REDIRECT_URI }}
+            client-id: ${NAVER_CLIENT_ID}
+            client-secret: ${NAVER_CLIENT_SECRET}
+            redirect-uri: ${NAVER_REDIRECT_URI}
             authorization-grant-type: authorization_code
             scope: name,email
           google:
             client-name: google
-            client-id: ${{ GOOGLE_CLIENT_ID }}
-            client-secret: ${{ GOOGLE_CLIENT_SECRET }}
-            redirect-uri: ${{ GOOGLE_REDIRECT_URI }}
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: ${GOOGLE_REDIRECT_URI}
             authorization-grant-type: authorization_code
             scope: profile,email
           kakao:
             client-name: kakao
-            client-id: ${{ KAKAO_CLIENT_ID }}
-            client-secret: ${{ KAKAO_CLIENT_SECRET }}
-            redirect-uri: ${{ KAKAO_REDIRECT_URI }}
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: ${KAKAO_REDIRECT_URI}
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image
         provider:
           naver:
-            authorization-uri: ${{ NAVER_AUTH_URI }}
-            token-uri: ${{ NAVER_TOKEN_URI }}
-            user-info-uri: ${{ NAVER_INFO_URI }}
+            authorization-uri: ${NAVER_AUTH_URI}
+            token-uri: ${NAVER_TOKEN_URI}
+            user-info-uri: ${NAVER_INFO_URI}
             user-name-attribute: response
           kakao:
-            authorization-uri: ${{ KAKAO_AUTH_URI }}
-            token-uri: ${{ KAKAO_TOKEN_URI }}
-            user-info-uri: ${{ KAKAO_INFO_URI }}
+            authorization-uri: ${KAKAO_AUTH_URI}
+            token-uri: ${KAKAO_TOKEN_URI}
+            user-info-uri: ${KAKAO_INFO_URI}
             user-name-attribute: id
