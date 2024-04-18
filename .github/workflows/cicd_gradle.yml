@@ -23,39 +23,9 @@ jobs:
       - name: 2) Convert to prod config
         run: |
           cd ./src/main/resources
-          [ -e "application.yml" ] && rm application.yml
-          echo "spring:" > application.yml
-          echo "  profiles:" >> application.yml
-          echo "    active: prod" >> application.yml
+          touch ./application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
 
-      - name: 3) Set prod.yml
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ./src/main/resources/application-prod.yml
-        env:
-          spring.datasource.url: ${{ secrets.DB_URL }}
-          spring.datasource.username: ${{ secrets.DB_USER }}
-          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-          spring.mail.host: ${{ secrets.MAIL_HOST }}
-          spring.mail.port: ${{ secrets.MAIL_PORT }}
-          spring.mail.sender: ${{ secrets.MAIL_SENDER }}
-          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
-          spring.jwt.secret: ${{ secrets.JWT_SECRET }}
-          spring.security.oauth2.client.registration.naver.client-id: ${{ secrets.NAVER_CLIENT_ID }}
-          spring.security.oauth2.client.registration.naver.client-secret: ${{ secrets.NAVER_CLIENT_SECRET }}
-          spring.security.oauth2.client.registration.naver.redirect-uri: ${{ secrets.NAVER_REDIRECT_URI }}
-          spring.security.oauth2.client.registration.google.client-id: ${{ secrets.GOOGLE_CLIENT_ID }}
-          spring.security.oauth2.client.registration.google.client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-          spring.security.oauth2.client.registration.google.redirect-uri: ${{ secrets.GOOGLE_REDIRECT_URI }}
-          spring.security.oauth2.client.registration.kakao.client-id: ${{ secrets.KAKAO_CLIENT_ID }}
-          spring.security.oauth2.client.registration.kakao.client-secret: ${{ secrets.KAKAO_CLIENT_SECRET }}
-          spring.security.oauth2.client.registration.kakao.redirect-uri: ${{ secrets.KAKAO_REDIRECT_URI }}
-          spring.security.oauth2.client.provider.naver.authorization-uri: ${{ secrets.NAVER_AUTH_URI }}
-          spring.security.oauth2.client.provider.naver.token-uri: ${{ secrets.NAVER_TOKEN_URI }}
-          spring.security.oauth2.client.provider.naver.user-info-uri: ${{ secrets.NAVER_INFO_URI }}
-          spring.security.oauth2.client.provider.kakao.authorization-uri: ${{ secrets.KAKAO_AUTH_URI }}
-          spring.security.oauth2.client.provider.kakao.token-uri: ${{ secrets.KAKAO_TOKEN_URI }}
-          spring.security.oauth2.client.provider.kakao.user-info-uri: ${{ secrets.KAKAO_INFO_URI }}
 
       - name: 4) Grant permission
         run: chmod +x ./gradlew
