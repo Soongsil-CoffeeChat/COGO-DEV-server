@@ -53,6 +53,12 @@ dependencies {
 	// Mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	//S3
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.619'
+
+	// Apache Commons Codec for Base64
+	implementation 'commons-codec:commons-codec:1.15'
+
 
 }
 //
