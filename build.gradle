@@ -22,20 +22,42 @@ repositories {
 }
 
 dependencies {
+	// Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 	implementation 'io.swagger.core.v3:swagger-models-jakarta:2.2.7'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// Auth
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Core
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+
+	// JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+	// Mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//S3
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.619'
+
+	// Apache Commons Codec for Base64
+	implementation 'commons-codec:commons-codec:1.15'
 
 }
 //
