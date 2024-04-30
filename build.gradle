@@ -59,6 +59,9 @@ dependencies {
 	// Apache Commons Codec for Base64
 	implementation 'commons-codec:commons-codec:1.15'
 
+	// Mail
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 }
 //
 //tasks.named('test') {
