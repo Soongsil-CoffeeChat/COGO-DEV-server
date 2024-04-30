@@ -40,31 +40,31 @@ public class Mentee {
 	private int grade;
 
 	@Column
-	private String major;
+	private String part;
 
 	@Column
 	private String memo;
+
+	@Column
+	private String nickname;
 
 	@OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private Set<Application> applications = new HashSet<>();
 
 	@Builder
-	public Mentee(String phoneNum, String birth, int grade, String major, String memo) {
+	public Mentee(String phoneNum, String birth, int grade, String part, String memo) {
 		this.phoneNum = phoneNum;
 		this.birth = birth;
 		this.grade = grade;
-		this.major = major;
+		this.part = part;
 		this.memo = memo;
 	}
 
 	public static Mentee from(CreateMenteeRequest dto) {
 		return Mentee.builder()
-			.phoneNum(dto.getPhoneNum())
-			.birth(dto.getBirth())
-			.grade(dto.getGrade())
-			.major(dto.getMajor())
-			.memo(dto.getMemo())
+			.nickname(dto.getNickname())
+			.part(dto.getPart())
 			.build();
 	}
 

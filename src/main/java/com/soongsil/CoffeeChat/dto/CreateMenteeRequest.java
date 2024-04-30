@@ -4,9 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class CreateMenteeRequest {
-	private String phoneNum;
-	private String birth;
-	private int grade;
-	private String major;
-	private String memo;
+	//private String phoneNum;
+	//private String birth;
+	//private int grade;
+	private String nickname;
+	private String part;
+	//private String memo;
 }
