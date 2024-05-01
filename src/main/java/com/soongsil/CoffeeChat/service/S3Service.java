@@ -39,7 +39,8 @@ public class S3Service {
 	public String saveFile(String directory, String username, MultipartFile multipartFile) throws IOException {
 		//Long userId = getUserId(email);
 		String timeStamp = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
-		String originalFilename = directory + "/" + username + "/" + timeStamp + "_" + multipartFile.getOriginalFilename();
+		//String originalFilename = directory + "/" + username + "/" + timeStamp + "_" + multipartFile.getOriginalFilename();
+		String originalFilename = directory + "/" + username;
 
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(multipartFile.getSize());
