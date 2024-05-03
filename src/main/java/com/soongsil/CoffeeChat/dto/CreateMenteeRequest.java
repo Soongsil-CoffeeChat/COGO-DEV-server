@@ -9,5 +9,6 @@ public class CreateMenteeRequest {
 	//private int grade;
 	private String nickname;
 	private String part;
+	private String email;
 	//private String memo;
 }

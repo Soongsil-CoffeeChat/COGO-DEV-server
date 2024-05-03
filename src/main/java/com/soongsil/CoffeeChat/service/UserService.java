@@ -36,6 +36,8 @@ public class UserService {
 		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
 		user.setMentee(mentee);
+		//TODO:이메일 사용자가 지정한값으로 변경해야함
+		user.setEmail(dto.getEmail());
 		return menteeRepository.save(mentee);
 	}
 }
