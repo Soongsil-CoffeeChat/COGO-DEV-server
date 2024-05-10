@@ -90,8 +90,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
-		response.sendRedirect(" https://coffeego-ssu.web.app/login");  //프론트의 url에 redirect
-		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
+		//response.sendRedirect(" https://coffeego-ssu.web.app/login");  //프론트의 url에 redirect
+		response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
 	}
 
 	private Cookie createCookie(String key, String value) {
