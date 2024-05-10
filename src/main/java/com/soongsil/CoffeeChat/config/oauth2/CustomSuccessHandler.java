@@ -71,8 +71,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 		//토큰 생성
-		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
-		//String accessToken = jwtUtil.createJwt("access", username, role, 6000000000L);  //10분
+		//String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
+		String accessToken = jwtUtil.createJwt("access", username, role, 6000000000L);  //10분
 		System.out.println("accessToken = " + accessToken);
 		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
 		//Refresh 토큰 저장
@@ -91,8 +91,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
 		//response.sendRedirect(" https://coffeego-ssu.web.app/login");  //프론트의 url에 redirect
-		response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
-		//response.sendRedirect("https://cogo.life/swagger-ui/index.html");
+		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
+		response.sendRedirect("https://cogo.life/swagger-ui/index.html");
 	}
 
 	private Cookie createCookie(String key, String value) {
