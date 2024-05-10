@@ -105,7 +105,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/health-check").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
                         //.requestMatchers("/api/v1/**").hasAnyRole("MENTEE", "MENTOR") //로그인 제외하면 다 멘티나 멘토 아니면 접근불가
