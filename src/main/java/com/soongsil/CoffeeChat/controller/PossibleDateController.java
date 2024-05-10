@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(POSSIBLEDATE_URI)
 @RequiredArgsConstructor
 @Tag(name="POSSIBLEDATE", description = "커피챗 시간 관련 api")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class PossibleDateController {
 	private final PossibleDateService possibleDateService;
 
