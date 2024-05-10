@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(USER_URI)
 @RequiredArgsConstructor
 @Tag(name="USER", description = "유저 관련 api")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
     private final UserService userService;
 

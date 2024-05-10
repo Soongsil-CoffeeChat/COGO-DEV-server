@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(MENTOR_URI)
 @RestController
 @Tag(name="MENTOR", description = "멘토 관련 api")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class MentorController {
     private final MentorService mentorService;
     public MentorController(MentorService mentorService){

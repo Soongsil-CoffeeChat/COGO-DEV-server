@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/email")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class EmailController {
 	private final EmailUtil emailUtil;
 

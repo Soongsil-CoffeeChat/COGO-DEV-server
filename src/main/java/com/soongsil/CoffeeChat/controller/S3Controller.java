@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/s3")
 @Tag(name = "S3", description = "S3 관련 api")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class S3Controller {
 	private final S3Service s3Service;
 
