@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController  //RestController=Controller+ResponseBody
 @Tag(name="REFRESHTOKEN", description = "리프레쉬 토큰 관련 api")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급 및 2차회원가입 컨트롤러
 	private final JWTUtil jwtUtil;
 	private final RefreshTokenService refreshTokenService;
