@@ -15,7 +15,7 @@ public class CorsMvcConfig implements WebMvcConfigurer { //컨트롤러에서 �
 
 		corsRegistry.addMapping("/**")  //모든 경로에서 매핑 진행
 			.exposedHeaders("Set-Cookie")      //노출할 헤더값은 쿠키헤더
-			.allowedOrigins("http://localhost:3000");  //리액트서버주소에서 허용
+			.allowedOrigins("http://localhost:3000", "https://cogo.life/**");  //리액트서버주소에서 허용
 	}
 	/*
 	@Override
