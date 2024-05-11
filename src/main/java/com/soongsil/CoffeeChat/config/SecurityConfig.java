@@ -1,6 +1,8 @@
 package com.soongsil.CoffeeChat.config;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,15 +64,18 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        //configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //프론트 서버의 주소
-                        configuration.setAllowedOrigins(Collections.singletonList("*"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //프론트 서버의 주소
+                        //configuration.setAllowedOrigins(Collections.singletonList("*"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));  //GET, POST, PUT등 모든 요청 허용
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));  //모든 헤더 허용
                         configuration.setMaxAge(3600L);
-
+                        /*
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));  //우리가 줄 데이터를 웹페이지에서 보이게 하기
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                         */
+                        List<String> exposedHeaders = Arrays.asList("Set-Cookie", "Authorization");
+                        configuration.setExposedHeaders(exposedHeaders);
 
                         return configuration;
                     }
