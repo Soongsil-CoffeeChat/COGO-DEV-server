@@ -63,7 +63,13 @@ public class SecurityConfig {
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
                         CorsConfiguration configuration = new CorsConfiguration();
-
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 명시적 메소드 허용
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+                        configuration.setMaxAge(3600L);
+                        configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
+                        /*
                         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //프론트 서버의 주소
                         //configuration.setAllowedOrigins(Collections.singletonList("*"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));  //GET, POST, PUT등 모든 요청 허용
@@ -76,9 +82,11 @@ public class SecurityConfig {
                             Collections.singletonList("Set-Cookie"));  //우리가 줄 데이터를 웹페이지에서 보이게 하기
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
                         */
+
+                        /*
                         List<String> exposedHeaders = Arrays.asList("Set-Cookie", "Authorization");
                         configuration.setExposedHeaders(exposedHeaders);
-
+                         */
                         return configuration;
                     }
                 }));
@@ -113,6 +121,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(HttpMethod.OPTIONS).permitAll()  // OPTIONS 요청은 인증 없이 허용
                         .requestMatchers("/health-check").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
