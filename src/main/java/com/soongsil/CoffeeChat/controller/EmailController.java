@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/email")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class EmailController {
 	private final EmailUtil emailUtil;
 

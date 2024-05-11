@@ -23,7 +23,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(MENTOR_URI)
 @RestController
 @Tag(name="MENTOR", description = "멘토 관련 api")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class MentorController {
     private final MentorService mentorService;
     public MentorController(MentorService mentorService){
