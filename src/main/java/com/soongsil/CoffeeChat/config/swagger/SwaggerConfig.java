@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SwaggerConfig {
@@ -31,7 +32,7 @@ public class SwaggerConfig {
 		SecurityRequirement addSecurityItem = new SecurityRequirement();
 		addSecurityItem.addList("JWT");
 
-		return new OpenAPI()
+		return new OpenAPI().addServersItem(new Server().url("/"))
 			// Security 인증 컴포넌트 설정
 			.components(new Components().addSecuritySchemes("JWT", bearerAuth))
 			// API 마다 Security 인증 컴포넌트 설정
