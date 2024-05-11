@@ -121,7 +121,6 @@ public class SecurityConfig {
         //경로별 인가 작업
         http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.OPTIONS).permitAll()  // OPTIONS 요청은 인증 없이 허용
                         .requestMatchers("/health-check").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
@@ -139,6 +138,6 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/");
     }
 }
