@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/s3")
 @Tag(name = "S3", description = "S3 관련 api")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class S3Controller {
 	private final S3Service s3Service;
 

@@ -32,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(POSSIBLEDATE_URI)
 @RequiredArgsConstructor
 @Tag(name="POSSIBLEDATE", description = "커피챗 시간 관련 api")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class PossibleDateController {
 	private final PossibleDateService possibleDateService;
 
