@@ -13,9 +13,15 @@ public class CorsMvcConfig implements WebMvcConfigurer { //컨트롤러에서 �
 	@Override
 	public void addCorsMappings(CorsRegistry corsRegistry) {
 
-		corsRegistry.addMapping("/**")
-			.allowedOrigins("http://localhost:3000")
-			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 명시적 메소드 허용
-			.exposedHeaders("Set-Cookie");
+		corsRegistry.addMapping("/**")  //모든 경로에서 매핑 진행
+			.exposedHeaders("Set-Cookie")      //노출할 헤더값은 쿠키헤더
+			.allowedOrigins("http://localhost:3000", "https://cogo.life")
+			.allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
+			.exposedHeaders("Set-Cookie")
+			.allowedHeaders("*")
+			.allowCredentials(true)
+			.maxAge(3600);//노출할 헤더값은 쿠키헤더  //리액트서버주소에서 허용
+
+
 	}
 }
