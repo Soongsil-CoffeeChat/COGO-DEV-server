@@ -57,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
         http
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+            .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
 
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
@@ -70,15 +70,14 @@ public class SecurityConfig {
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));  //모든 헤더 허용
                         configuration.setMaxAge(3600L);
-
+                        
+                        /*
                         configuration.setExposedHeaders(
                             Collections.singletonList("Set-Cookie"));  //우리가 줄 데이터를 웹페이지에서 보이게 하기
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-                        /*
+                        */
                         List<String> exposedHeaders = Arrays.asList("Set-Cookie", "Authorization");
                         configuration.setExposedHeaders(exposedHeaders);
-
-                         */
 
                         return configuration;
                     }
