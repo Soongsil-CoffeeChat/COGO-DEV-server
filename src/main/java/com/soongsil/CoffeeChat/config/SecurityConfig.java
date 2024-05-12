@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +28,75 @@ import com.soongsil.CoffeeChat.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
+    private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
 
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+        CustomSuccessHandler customSuccessHandler,
+        JWTUtil jwtUtil,
+        RefreshRepository refreshRepository){
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.customSuccessHandler = customSuccessHandler;
+        this.jwtUtil = jwtUtil;
+        this.refreshRepository = refreshRepository;
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MENTEE" + "ROLE_ADMIN > ROLE_MENTOR\n" +
+            "ROLE_MENTEE > ROLE_USER" + "ROLE_MENTOR > ROLE_USER");
+        return hierarchy;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // 프론트 서버의 주소
+                configuration.setAllowedMethods(Collections.singletonList("*"));  // 모든 요청 메서드 허용
+                configuration.setAllowCredentials(true);
+                configuration.setAllowedHeaders(Collections.singletonList("*"));  // 모든 헤더 허용
+                configuration.setMaxAge(3600L);
+                configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));  // Set-Cookie 헤더 노출
+                configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                return configuration;
+            }))
+            .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+            .formLogin(formLogin -> formLogin.disable())  // 폼 로그인 비활성화
+            .httpBasic(httpBasic -> httpBasic.disable())  // HTTP Basic 인증 비활성화
+            .oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService))
+                .successHandler(customSuccessHandler))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
+                .requestMatchers("/health-check", "/", "/reissue").permitAll()
+                .requestMatchers("/api/v1/user/**", "/auth/**").hasRole("USER")
+                .requestMatchers("api/v1/possibleDate/**").hasRole("MENTOR")
+                .requestMatchers("api/v1/mentor/**").hasRole("MENTEE")
+                .anyRequest().authenticated())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
+            .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
+            .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+    }
+}
+
+/*
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -90,10 +159,8 @@ public class SecurityConfig {
         //기본으로 설정되어있는 LogoutFilter 바로 앞에 커스텀한 LogoutFilter 추가
         http
                 .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
-
-
         http
-            .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
         //oauth2로그인 (인증이 완료되면 리소스 서버로부터 데이터를 받아서 OAuth2UserService로 전달)
         //로그인 성공시 customSuccessHandler 호출
         http
@@ -102,10 +169,13 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
                 );
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class);
 
         //경로별 인가 작업
         http    //기본경로 "/" 제외한 나머지는 로그인해야만 사용가능
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  //preflight처리
                         .requestMatchers("/health-check", "/", "reissue").permitAll()
                         .requestMatchers("/api/v1/user/**", "auth/**").hasRole("USER")
                         //.requestMatchers("/api/v1/**").hasAnyRole("MENTEE", "MENTOR") //로그인 제외하면 다 멘티나 멘토 아니면 접근불가
@@ -125,3 +195,4 @@ public class SecurityConfig {
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
     }
 }
+*/
