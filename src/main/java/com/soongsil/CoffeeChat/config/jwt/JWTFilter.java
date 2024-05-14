@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,19 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
+
+		// 특정 경로들에 대해 필터 로직을 건너뛰도록 설정
+		if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+			// OPTIONS 요청일 경우 필터 처리를 건너뛰고 다음 필터로 진행
+			filterChain.doFilter(request, response);
+			return;
+		}
+		String path = request.getRequestURI();
+		if (path.startsWith("/health-check") || path.startsWith("/security-check") || path.startsWith("/reissue")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
 		// 헤더에서 authorization키에 담긴 토큰을 꺼냄
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		//토큰꺼내기
