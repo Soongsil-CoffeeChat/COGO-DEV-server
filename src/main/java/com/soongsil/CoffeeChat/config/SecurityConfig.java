@@ -1,5 +1,33 @@
 package com.soongsil.CoffeeChat.config;
 
+import java.util.Collections;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.config.jwt.JWTFilter;
+import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.config.oauth2.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+
+
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -76,7 +104,7 @@ public class SecurityConfig {
                 .successHandler(customSuccessHandler))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
-                .requestMatchers("/health-check", "/", "/reissue").permitAll()
+                .requestMatchers("/health-check", "/", "/reissue", "/security-check").permitAll()
                 .requestMatchers("/api/v1/user/**", "/auth/**").hasRole("USER")
                 .requestMatchers("api/v1/possibleDate/**").hasRole("MENTOR")
                 .requestMatchers("api/v1/mentor/**").hasRole("MENTEE")
@@ -95,6 +123,9 @@ public class SecurityConfig {
             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
     }
 }
+
+
+
 
 /*
 @Configuration
