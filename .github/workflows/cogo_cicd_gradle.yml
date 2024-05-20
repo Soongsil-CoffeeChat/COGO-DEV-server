@@ -1,4 +1,3 @@
-# gradlew 에러시 개행문자 오류
 name: Java CI with Gradle
 
 on:
@@ -22,6 +21,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      # Convert line endings to Unix format
+      - name: Convert line endings to Unix
+        run: |
+          sudo apt-get install dos2unix
+          dos2unix ./gradlew
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -56,4 +61,5 @@ jobs:
 
       - name: Delete old docker image
         run: sudo docker system prune -f
+
 
