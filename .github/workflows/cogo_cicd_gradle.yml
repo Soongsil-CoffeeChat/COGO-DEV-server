@@ -30,7 +30,7 @@ jobs:
         run: ./gradlew clean bootJar
 
       - name: Docker image build
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cogo-server .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/cogo_server .
 
       - name: Docker login
         uses: docker/login-action@v2
@@ -39,14 +39,14 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Docker Hub push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/cogo-server
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/cogo_server
 
   run-docker-image-on-ec2:
     needs: build-docker-image
     runs-on: self-hosted
     steps:
       - name: Docker pull
-        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cogo-server
+        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cogo_server
 
       - name: Docker stop container
         run: sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
