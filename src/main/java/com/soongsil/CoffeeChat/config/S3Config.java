@@ -27,8 +27,8 @@ public class S3Config {
 		// AmazonS3 클라이언트를 생성합니다. 이 클라이언트는 AWS S3 서비스와 상호 작용하는 데 사용됩니다.
 		// 클라이언트는 설정된 리전과 자격 증명을 사용합니다.
 		return AmazonS3ClientBuilder.standard()
-			.withRegion(region)
-			.withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-			.build();
+				.withRegion(region)
+				.withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+				.build();
 	}
 }

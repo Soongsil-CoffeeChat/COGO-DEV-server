@@ -55,6 +55,8 @@ dependencies {
 
 	//S3
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.619'
+	implementation 'com.amazonaws:aws-java-sdk-core:1.12.253'
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.253'
 
 	// Apache Commons Codec for Base64
 	implementation 'commons-codec:commons-codec:1.15'
