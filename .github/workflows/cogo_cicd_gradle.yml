@@ -72,6 +72,10 @@ jobs:
       # 새 컨테이너 실행
       - name: Docker run new container
         run: |
+          echo "DB_URL=${{ secrets.DB_URL }}"
+          echo "DB_NAME=${{ secrets.DB_NAME }}"
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}"
+          echo "DB_PW=${{ secrets.DB_PW }}"
           sudo docker run --name cogo --rm -d -p 8080:8080 \
           -e DB_URL=${{ secrets.DB_URL }} \
           -e DB_NAME=${{ secrets.DB_NAME }} \
