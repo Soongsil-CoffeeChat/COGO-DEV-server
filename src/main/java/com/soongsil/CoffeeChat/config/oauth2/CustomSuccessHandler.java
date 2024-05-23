@@ -71,8 +71,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 		//토큰 생성
-		//String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
-		String accessToken = jwtUtil.createJwt("access", username, role, 6000000000L);  //10분
+		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
+		//String accessToken = jwtUtil.createJwt("access", username, role, 6000000000L);  //10분
 		System.out.println("accessToken = " + accessToken);
 		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
 		//Refresh 토큰 저장
@@ -82,17 +82,20 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		response.addCookie(createCookie("refresh", refreshToken));
 
 		//login status넣어주기
-		if (role.equals("ROLE_A"))
-			response.setHeader("loginStatus", "가입필요");
+		if (role.equals("ROLE_USER"))
+			response.setHeader("loginStatus", "다시 로그인하세요");
 		else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR"))
 			response.setHeader("loginStatus", "가입완료");
 		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
-		//response.sendRedirect(" https://coffeego-ssu.web.app/login");  //프론트의 url에 redirect
-		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
-		response.sendRedirect("https://cogo.life/swagger-ui/index.html");
+		if(role.equals("ROLE_USER")){  //로그인은 성공했지만, 아직 Role값 변경 안됨
+			response.sendRedirect("https://coffeego-ssu.web.app/login");
+		}
+		//로그인 성공(멘토나 멘티로 가입 완료)
+		else response.sendRedirect("https://coffeego-ssu.web.app/");
+		//response.sendRedirect("https://cogo.life/swagger-ui/index.html");
 	}
 
 	private Cookie createCookie(String key, String value) {
