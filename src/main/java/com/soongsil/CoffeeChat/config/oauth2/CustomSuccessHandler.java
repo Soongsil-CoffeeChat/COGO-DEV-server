@@ -83,19 +83,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		//login status넣어주기
 		if (role.equals("ROLE_USER"))
-			response.setHeader("loginStatus", "다시 로그인하세요");
+			response.setHeader("loginStatus", "signup");
 		else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR"))
-			response.setHeader("loginStatus", "가입완료");
+			response.setHeader("loginStatus", "main");
 		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
 
-		if(role.equals("ROLE_USER")){  //로그인은 성공했지만, 아직 Role값 변경 안됨
-			response.sendRedirect("https://coffeego-ssu.web.app/login");
-		}
-		//로그인 성공(멘토나 멘티로 가입 완료)
-		else response.sendRedirect("https://coffeego-ssu.web.app/");
-		//response.sendRedirect("https://cogo.life/swagger-ui/index.html");
+		response.sendRedirect("http://localhost:3000/callback");
 	}
 
 	private Cookie createCookie(String key, String value) {
