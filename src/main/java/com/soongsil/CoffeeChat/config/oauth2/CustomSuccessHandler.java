@@ -77,15 +77,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
 		//Refresh 토큰 저장
 		addRefreshEntity(username, refreshToken, 86400000L);
-		//Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기
-		response.setHeader("access", accessToken);
+		//Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기 (리프레쉬 토큰만 넣은 후 reissue에서 액세스 토큰 발급)
+		//response.setHeader("access", accessToken);
 		response.addCookie(createCookie("refresh", refreshToken));
 
 		//login status넣어주기
 		if (role.equals("ROLE_USER"))
-			response.setHeader("loginStatus", "signup");
+			response.addCookie(createCookie("loginStatus", "signup"));
 		else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR"))
-			response.setHeader("loginStatus", "main");
+			response.addCookie(createCookie("loginStatus", "main"));
 		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
