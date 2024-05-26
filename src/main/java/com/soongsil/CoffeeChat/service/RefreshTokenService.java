@@ -107,7 +107,7 @@ public class RefreshTokenService {
 		//response
 		response.setHeader("access", newAccess);
 		response.setHeader("refresh", newRefresh);
-		//response.addCookie(createCookie("refresh", newRefresh));
+		response.addCookie(createCookie("refresh", newRefresh));
 
 		return new ResponseEntity<>(HttpStatus.OK);
 
