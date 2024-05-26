@@ -87,13 +87,12 @@ public class SecurityConfig {
         http
             .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // 프론트 서버의 주소
+                configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8080")); // 프론트 서버의 주소들 // 프론트 서버의 주소
                 configuration.setAllowedMethods(Collections.singletonList("*"));  // 모든 요청 메서드 허용
                 configuration.setAllowCredentials(true);
                 configuration.setAllowedHeaders(Collections.singletonList("*"));  // 모든 헤더 허용
                 configuration.setMaxAge(3600L);
-                configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));  // Set-Cookie 헤더 노출
-                configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));  // Set-Cookie 및 Authorization 헤더 노출
                 return configuration;
             }))
             .csrf(csrf -> csrf.disable())  // CSRF 비활성화
