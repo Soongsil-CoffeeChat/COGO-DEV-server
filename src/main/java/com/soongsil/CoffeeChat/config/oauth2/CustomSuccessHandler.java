@@ -89,8 +89,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
-
 		response.sendRedirect("http://localhost:3000/callback");
+		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
 	}
 
 	private Cookie createCookie(String key, String value) {
