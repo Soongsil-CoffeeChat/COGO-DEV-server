@@ -55,8 +55,9 @@ public class RefreshTokenService {
 		for (Cookie cookie : cookies) {
 
 			if (cookie.getName().equals("refresh")) {
-
 				refresh = cookie.getValue();
+				System.out.println("refresh = " + refresh);
+				System.out.println("리프레쉬토큰 찾음");
 			}
 		}
 
@@ -67,7 +68,6 @@ public class RefreshTokenService {
 		}
 
 		//expired check
-		JWTUtil jwtUtil = null;
 		try {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
