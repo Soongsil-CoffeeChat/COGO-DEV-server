@@ -51,9 +51,12 @@ public class RefreshTokenService {
 	public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
 		//get refresh token
 		String refresh = null;
+		String loginStatus=null;
 		Cookie[] cookies = request.getCookies();
 		for (Cookie cookie : cookies) {
-
+			if (cookie.getName().equals("loginStatus")){
+				loginStatus=cookie.getValue();
+			}
 			if (cookie.getName().equals("refresh")) {
 				refresh = cookie.getValue();
 				System.out.println("refresh = " + refresh);
@@ -107,6 +110,7 @@ public class RefreshTokenService {
 		//response
 		response.setHeader("access", newAccess);
 		response.setHeader("refresh", newRefresh);
+		response.setHeader("loginStatus", loginStatus);
 		response.addCookie(createCookie("refresh", newRefresh));
 
 		return new ResponseEntity<>(HttpStatus.OK);
