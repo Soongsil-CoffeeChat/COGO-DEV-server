@@ -40,6 +40,7 @@ public class RefreshTokenService {
 
 	public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
 		// Get refresh token
+		System.out.println("리이슈 api실행");
 		String refresh = null;
 		String loginStatus = null;
 		Cookie[] cookies = request.getCookies();
