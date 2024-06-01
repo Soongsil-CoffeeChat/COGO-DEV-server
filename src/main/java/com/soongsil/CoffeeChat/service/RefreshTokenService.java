@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import java.util.Date;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,6 @@ public class RefreshTokenService {
 
 	public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
 		// Get refresh token
-		System.out.println("리이슈 api실행");
 		String refresh = null;
 		String loginStatus = null;
 		Cookie[] cookies = request.getCookies();
@@ -98,31 +98,19 @@ public class RefreshTokenService {
 
 		// Response
 		response.setHeader("access", newAccess);
-		response.setHeader("refresh", newRefresh);
 		response.setHeader("loginStatus", loginStatus);
-		addSameSiteCookie(response, createCookie("refresh", newRefresh));
+
+		// SameSite 설정을 포함한 쿠키 추가
+		ResponseCookie responseCookie = ResponseCookie.from("refresh", newRefresh)
+				.httpOnly(true)
+				.secure(true)
+				.path("/")
+				.maxAge(24 * 60 * 60)
+				.sameSite("None")
+				.build();
+
+		response.addHeader("Set-Cookie", responseCookie.toString());
 
 		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	private Cookie createCookie(String key, String value) {
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(24 * 60 * 60);  // 24시간
-		cookie.setSecure(true);  // https에서만 쿠키가 사용되게끔 설정
-		cookie.setPath("/");    // 전역에서 쿠키가 보이게끔 설정
-		cookie.setHttpOnly(true);  // JS가 쿠키를 가져가지 못하게 HTTPOnly 설정
-		return cookie;
-	}
-
-	private void addSameSiteCookie(HttpServletResponse response, Cookie cookie) {
-		StringBuilder cookieString = new StringBuilder();
-		cookieString.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
-		cookieString.append("Max-Age=").append(cookie.getMaxAge()).append("; ");
-		cookieString.append("Path=").append(cookie.getPath()).append("; ");
-		cookieString.append("HttpOnly; ");
-		cookieString.append("SameSite=None; ");
-		cookieString.append("Secure");
-
-		response.addHeader("Set-Cookie", cookieString.toString());
 	}
 }
