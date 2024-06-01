@@ -45,8 +45,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	}
 
 	private void addRefreshEntity(String username, String refresh, Long expiredMs) {
-		//refresh객체를 만들고 레포에 저장
-
 		Date date = new Date(System.currentTimeMillis() + expiredMs);
 
 		Refresh refreshEntity = new Refresh();
@@ -59,10 +57,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-		Authentication authentication) throws IOException, ServletException {
+										Authentication authentication) throws IOException, ServletException {
 
-		//OAuth2User
-		CustomOAuth2User customUserDetails = (CustomOAuth2User)authentication.getPrincipal();
+		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
 		String username = customUserDetails.getUsername();
 
@@ -70,49 +67,44 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
-		//토큰 생성
+
 		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
-		//String accessToken = jwtUtil.createJwt("access", username, role, 6000000000L);  //10분
 		System.out.println("accessToken = " + accessToken);
 		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
-		//Refresh 토큰 저장
+
 		addRefreshEntity(username, refreshToken, 86400000L);
-		//Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기 (리프레쉬 토큰만 넣은 후 reissue에서 액세스 토큰 발급)
-		//response.setHeader("access", accessToken);
-		response.addCookie(createCookie("refresh", refreshToken));
 
-		//login status넣어주기
+		// Refresh 토큰 쿠키에 추가
+		addSameSiteCookie(response, createCookie("refresh", refreshToken));
+
+		// loginStatus 쿠키 추가
 		if (role.equals("ROLE_USER"))
-			response.addCookie(createCookie("loginStatus", "signup"));
+			addSameSiteCookie(response, createCookie("loginStatus", "signup"));
 		else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR"))
-			response.addCookie(createCookie("loginStatus", "main"));
-		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
+			addSameSiteCookie(response, createCookie("loginStatus", "main"));
 
-		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
-		//response.sendRedirect("https://localhost:3000/callback");
+		response.setStatus(HttpStatus.OK.value());
 		response.sendRedirect("https://cogo.life/swagger-ui/index.html");
 	}
-	/*
-	private Cookie createCookie(String key, String value) {
 
+	private Cookie createCookie(String key, String value) {
 		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(24 * 60 * 60);  //24시간
-		//cookie.setSecure(true);  //https에서만 쿠키가 사용되게끔 설정
-		cookie.setPath("/");    //전역에서 쿠키가 보이게끔 설정
-		cookie.setHttpOnly(true);  //JS가 쿠키를 가져가지 못하게 HTTPOnly설정
+		cookie.setMaxAge(24 * 60 * 60);  // 24시간
+		cookie.setSecure(true);  // https에서만 쿠키가 사용되게끔 설정
+		cookie.setPath("/");    // 전역에서 쿠키가 보이게끔 설정
+		cookie.setHttpOnly(true);  // JS가 쿠키를 가져가지 못하게 HTTPOnly 설정
 		return cookie;
 	}
 
-	 */
-	private Cookie createCookie(String key, String value) {
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(24 * 60 * 60);  //24시간
-		cookie.setSecure(true);  //https에서만 쿠키가 사용되게끔 설정
-		cookie.setPath("/");    //전역에서 쿠키가 보이게끔 설정
-		cookie.setHttpOnly(true);  //JS가 쿠키를 가져가지 못하게 HTTPOnly 설정
-		// SameSite=None 속성 추가
-		String cookieValue = String.format("%s; SameSite=None; Secure", value);
-		cookie.setValue(cookieValue);
-		return cookie;
+	private void addSameSiteCookie(HttpServletResponse response, Cookie cookie) {
+		StringBuilder cookieString = new StringBuilder();
+		cookieString.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
+		cookieString.append("Max-Age=").append(cookie.getMaxAge()).append("; ");
+		cookieString.append("Path=").append(cookie.getPath()).append("; ");
+		cookieString.append("HttpOnly; ");
+		cookieString.append("SameSite=None; ");
+		cookieString.append("Secure");
+
+		response.addHeader("Set-Cookie", cookieString.toString());
 	}
 }
