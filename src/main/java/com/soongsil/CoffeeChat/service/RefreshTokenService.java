@@ -25,16 +25,6 @@ public class RefreshTokenService {
 		this.refreshRepository = refreshRepository;
 	}
 
-	private Cookie createCookie(String key, String value) {
-
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(24 * 60 * 60);
-		//cookie.setSecure(true);
-		//cookie.setPath("/");
-		cookie.setHttpOnly(true);
-
-		return cookie;
-	}
 
 	private void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
 
@@ -49,71 +39,89 @@ public class RefreshTokenService {
 	}
 
 	public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
-		//get refresh token
+		// Get refresh token
 		String refresh = null;
-		String loginStatus=null;
+		String loginStatus = null;
 		Cookie[] cookies = request.getCookies();
-		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals("loginStatus")){
-				loginStatus=cookie.getValue();
-			}
-			if (cookie.getName().equals("refresh")) {
-				refresh = cookie.getValue();
-				System.out.println("refresh = " + refresh);
-				System.out.println("리프레쉬토큰 찾음");
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("loginStatus")) {
+					loginStatus = cookie.getValue();
+				}
+				if (cookie.getName().equals("refresh")) {
+					refresh = cookie.getValue();
+					System.out.println("refresh = " + refresh);
+					System.out.println("리프레쉬토큰 찾음");
+				}
 			}
 		}
 
 		if (refresh == null) {
-
-			//response status code 400 (refresh토큰이 들어오지 않음)
+			// Response status code 400 (refresh 토큰이 들어오지 않음)
 			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
 		}
 
-		//expired check
+		// Expired check
 		try {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
-
-			//response status code 400 (refresh 토큰이 만료됨)
+			// Response status code 400 (refresh 토큰이 만료됨)
 			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
 		}
 
-		// 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
+		// 토큰이 refresh인지 확인 (발급 시 페이로드에 명시)
 		String category = jwtUtil.getCategory(refresh);
 
 		if (!category.equals("refresh")) {
-
-			//response status code 400 (들어온 토큰이 refresh토큰이 아님)
+			// Response status code 400 (들어온 토큰이 refresh 토큰이 아님)
 			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
 		}
 
-		//DB에 저장되어 있는지 확인
+		// DB에 저장되어 있는지 확인
 		Boolean isExist = refreshRepository.existsByRefresh(refresh);
 		if (!isExist) {
-
-			//response body status code 400 (들어올 refresh토큰이 내 DB에 저장된 목록에 없음)
+			// Response status code 400 (들어온 refresh 토큰이 내 DB에 저장된 목록에 없음)
 			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
 		}
 
 		String username = jwtUtil.getUsername(refresh);
 		String role = jwtUtil.getRole(refresh);
 
-		//make new JWT
+		// Make new JWT
 		String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
 		String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
-		//Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+		// Refresh 토큰 저장: DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
 		refreshRepository.deleteByRefresh(refresh);
 		addRefreshEntity(username, newRefresh, 86400000L);
 
-		//response
+		// Response
 		response.setHeader("access", newAccess);
 		response.setHeader("refresh", newRefresh);
 		response.setHeader("loginStatus", loginStatus);
-		response.addCookie(createCookie("refresh", newRefresh));
+		addSameSiteCookie(response, createCookie("refresh", newRefresh));
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
+	private Cookie createCookie(String key, String value) {
+		Cookie cookie = new Cookie(key, value);
+		cookie.setMaxAge(24 * 60 * 60);  // 24시간
+		cookie.setSecure(true);  // https에서만 쿠키가 사용되게끔 설정
+		cookie.setPath("/");    // 전역에서 쿠키가 보이게끔 설정
+		cookie.setHttpOnly(true);  // JS가 쿠키를 가져가지 못하게 HTTPOnly 설정
+		return cookie;
+	}
+
+	private void addSameSiteCookie(HttpServletResponse response, Cookie cookie) {
+		StringBuilder cookieString = new StringBuilder();
+		cookieString.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
+		cookieString.append("Max-Age=").append(cookie.getMaxAge()).append("; ");
+		cookieString.append("Path=").append(cookie.getPath()).append("; ");
+		cookieString.append("HttpOnly; ");
+		cookieString.append("SameSite=None; ");
+		cookieString.append("Secure");
+
+		response.addHeader("Set-Cookie", cookieString.toString());
 	}
 }
