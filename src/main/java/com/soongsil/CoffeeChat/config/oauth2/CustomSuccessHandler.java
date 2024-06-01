@@ -86,7 +86,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		}
 
 		response.setStatus(HttpStatus.OK.value());
-		response.sendRedirect("https://cogo.life/swagger-ui/index.html");
+		//response.sendRedirect("https://cogo.life/swagger-ui/index.html");
+		response.sendRedirect("https://localhost:3000/callback");
 	}
 
 	private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
