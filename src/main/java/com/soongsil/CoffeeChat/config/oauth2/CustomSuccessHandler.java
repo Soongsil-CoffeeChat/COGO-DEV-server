@@ -89,10 +89,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
 
 		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
-		response.sendRedirect("http://localhost:3000/callback");
+		response.sendRedirect("https://localhost:3000/callback");
 		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
 	}
-
+	/*
 	private Cookie createCookie(String key, String value) {
 
 		Cookie cookie = new Cookie(key, value);
@@ -100,6 +100,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		//cookie.setSecure(true);  //https에서만 쿠키가 사용되게끔 설정
 		cookie.setPath("/");    //전역에서 쿠키가 보이게끔 설정
 		cookie.setHttpOnly(true);  //JS가 쿠키를 가져가지 못하게 HTTPOnly설정
+		return cookie;
+	}
+
+	 */
+	private Cookie createCookie(String key, String value) {
+		Cookie cookie = new Cookie(key, value);
+		cookie.setMaxAge(24 * 60 * 60);  //24시간
+		cookie.setSecure(true);  //https에서만 쿠키가 사용되게끔 설정
+		cookie.setPath("/");    //전역에서 쿠키가 보이게끔 설정
+		cookie.setHttpOnly(true);  //JS가 쿠키를 가져가지 못하게 HTTPOnly 설정
+		// SameSite=None 속성 추가
+		String cookieValue = String.format("%s; SameSite=None; Secure", value);
+		cookie.setValue(cookieValue);
 		return cookie;
 	}
 }
