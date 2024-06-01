@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -68,43 +69,35 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 
-		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
+		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  // 10분
 		System.out.println("accessToken = " + accessToken);
-		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
+		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); // 24시간
 
 		addRefreshEntity(username, refreshToken, 86400000L);
 
 		// Refresh 토큰 쿠키에 추가
-		addSameSiteCookie(response, createCookie("refresh", refreshToken));
+		addSameSiteCookie(response, "refresh", refreshToken);
 
 		// loginStatus 쿠키 추가
-		if (role.equals("ROLE_USER"))
-			addSameSiteCookie(response, createCookie("loginStatus", "signup"));
-		else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR"))
-			addSameSiteCookie(response, createCookie("loginStatus", "main"));
+		if (role.equals("ROLE_USER")) {
+			addSameSiteCookie(response, "loginStatus", "signup");
+		} else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR")) {
+			addSameSiteCookie(response, "loginStatus", "main");
+		}
 
 		response.setStatus(HttpStatus.OK.value());
 		response.sendRedirect("https://cogo.life/swagger-ui/index.html");
 	}
 
-	private Cookie createCookie(String key, String value) {
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(24 * 60 * 60);  // 24시간
-		cookie.setSecure(true);  // https에서만 쿠키가 사용되게끔 설정
-		cookie.setPath("/");    // 전역에서 쿠키가 보이게끔 설정
-		cookie.setHttpOnly(true);  // JS가 쿠키를 가져가지 못하게 HTTPOnly 설정
-		return cookie;
-	}
+	private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
+		ResponseCookie responseCookie = ResponseCookie.from(name, value)
+				.httpOnly(true)
+				.secure(true)
+				.path("/")
+				.maxAge(24 * 60 * 60)
+				.sameSite("None")
+				.build();
 
-	private void addSameSiteCookie(HttpServletResponse response, Cookie cookie) {
-		StringBuilder cookieString = new StringBuilder();
-		cookieString.append(cookie.getName()).append("=").append(cookie.getValue()).append("; ");
-		cookieString.append("Max-Age=").append(cookie.getMaxAge()).append("; ");
-		cookieString.append("Path=").append(cookie.getPath()).append("; ");
-		cookieString.append("HttpOnly; ");
-		cookieString.append("SameSite=None; ");
-		cookieString.append("Secure");
-
-		response.addHeader("Set-Cookie", cookieString.toString());
+		response.addHeader("Set-Cookie", responseCookie.toString());
 	}
 }
