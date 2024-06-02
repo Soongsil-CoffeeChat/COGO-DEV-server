@@ -92,7 +92,7 @@ public class SecurityConfig {
                 configuration.setAllowCredentials(true);
                 configuration.setAllowedHeaders(Collections.singletonList("*"));  // 모든 헤더 허용
                 configuration.setMaxAge(3600L);
-                configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));  // Set-Cookie 및 Authorization 헤더 노출
+                configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access", "loginStatus")); // Set-Cookie 및 Authorization 헤더 노출
                 return configuration;
             }))
             .csrf(csrf -> csrf.disable())  // CSRF 비활성화
