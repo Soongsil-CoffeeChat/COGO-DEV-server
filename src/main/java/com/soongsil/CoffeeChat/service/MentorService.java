@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
@@ -51,5 +52,13 @@ public class MentorService {
 			dtoList.add(PossibleDateRequestDto.toDto(iter.next()));
 		}
 		return dtoList;
+	}
+
+	@Transactional
+	public Mentor saveUserPicture(String username, String picture){
+		User user = userRepository.findByUsername(username);
+		Mentor mentor = user.getMentor();
+		mentor.setPicture(picture);
+		return mentorRepository.save(mentor);
 	}
 }
