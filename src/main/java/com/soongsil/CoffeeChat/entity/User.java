@@ -34,8 +34,8 @@ public class User {
 	@Column
 	private String role;
 
-	//    @Column
-	//    private String picture;
+	@Column
+	private String picture;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")

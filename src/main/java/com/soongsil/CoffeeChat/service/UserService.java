@@ -40,4 +40,11 @@ public class UserService {
 		user.setEmail(dto.getEmail());
 		return menteeRepository.save(mentee);
 	}
+
+	@Transactional
+	public User saveUserPicture(String username, String picture){
+		User user = userRepository.findByUsername(username);
+		user.setPicture(picture);
+		return userRepository.save(user);
+	}
 }
