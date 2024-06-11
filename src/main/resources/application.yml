@@ -13,14 +13,14 @@ spring:
     password: ${DB_PW}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+        show_sql: false
 
   mail:
     host: smtp.gmail.com
