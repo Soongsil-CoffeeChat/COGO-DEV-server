@@ -107,7 +107,7 @@ public class SecurityConfig {
                 .requestMatchers("/health-check", "/", "/reissue", "/security-check").permitAll()
                 .requestMatchers("/api/v1/user/**", "/auth/**").hasRole("USER")
                 .requestMatchers("/api/v1/possibleDate/**").hasAnyRole("MENTOR", "MENTEE")
-                .requestMatchers("/api/v1/mentor/**").hasAnyRole("MENTEE", "MENTEE")
+                .requestMatchers("/api/v1/mentor/**").hasAnyRole("MENTOR", "MENTEE")
                 .anyRequest().authenticated())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
