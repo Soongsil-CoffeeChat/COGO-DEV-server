@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 
+//서버다시올리기
 @OpenAPIDefinition(
 	servers = {
 		@Server(url = "https://cogo.life", description = "Production server"),
