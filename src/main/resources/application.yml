@@ -20,7 +20,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        show_sql: false
+        #show_sql: false
+
 
   mail:
     host: smtp.gmail.com
@@ -85,4 +86,7 @@ cloud:
     stack:
       auto: false
 
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
 
