@@ -4,33 +4,49 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soongsil.CoffeeChat.config.queryDSL.QueryDSLConfig;
+import com.soongsil.CoffeeChat.entity.*;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.core.Authentication;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.ActiveProfiles;
 
-import jakarta.servlet.http.HttpServletRequest;
 
 @SpringBootTest
+@Transactional
+@Import(QueryDSLConfig.class)
+//@Commit
 class CoffeeChatApplicationTests {
+
+	@Autowired
+	private EntityManager em;
+
+	@Autowired
+	private JPAQueryFactory queryFactory;
 
 	@Test
 	void contextLoads() {
-	}
-	@Test
-	void authenticationTest(Authentication authentication){
-		System.out.println("authentication.getName() = " + authentication.getName());
-	}
+		PossibleDate pd = new PossibleDate();
+		em.persist(pd);
+		JPAQueryFactory query=new JPAQueryFactory(em);
+		QPossibleDate qpd=new QPossibleDate("possibleDate");
 
-	public abstract class CorsUtils {
-		public static boolean isPreFlightRequest(HttpServletRequest request) {
-			return (HttpMethod.OPTIONS.matches(request.getMethod()) &&
-				request.getHeader(HttpHeaders.ORIGIN) != null &&
-				request.getHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD) != null);
-		}
-	}
+		PossibleDate result = queryFactory
+				.selectFrom(qpd)
+				.fetchOne();
 
+		Assertions.assertThat(result).isEqualTo(pd);
+		Assertions.assertThat(result.getId()).isEqualTo(pd.getId());
+	}
 }
+
