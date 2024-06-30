@@ -1,19 +1,13 @@
 package com.soongsil.CoffeeChat.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@Table
 //@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
 //@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {

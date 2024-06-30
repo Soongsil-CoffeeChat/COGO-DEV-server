@@ -17,11 +17,12 @@ import jakarta.persistence.OneToMany;
 import lombok.*;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
+@ToString(of = {"id", "picture", "part"})
 //@DiscriminatorValue("mentor")
 //@PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor {
@@ -32,7 +33,6 @@ public class Mentor {
 
 	@Column
 	private String picture;
-	//TODO: aws파지면 사진처리 해줘야됨
 
 	@Column(name = "phone_num")
 	private String phoneNum;
