@@ -9,7 +9,7 @@ import com.soongsil.CoffeeChat.config.queryDSL.QueryDSLConfig;
 import com.soongsil.CoffeeChat.entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

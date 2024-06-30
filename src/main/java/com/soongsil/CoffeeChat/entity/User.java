@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_table")
+@Table
 //@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
 //@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {
