@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//JPA Query Factory를 Bean으로 등록해두기
 @Configuration
 @RequiredArgsConstructor
 public class QueryDSLConfig {
