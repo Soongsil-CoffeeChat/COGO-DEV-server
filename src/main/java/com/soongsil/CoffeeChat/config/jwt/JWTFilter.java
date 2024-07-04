@@ -64,9 +64,11 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 		}
 		//토큰 소멸 시간 검증
 		if (jwtUtil.isExpired(accessToken)) {
-
 			System.out.println("token expired");
-			filterChain.doFilter(request, response);
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
+			response.setContentType("application/json");
+			response.getWriter().write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
+			//filterChain.doFilter(request, response);
 
 			//조건이 해당되면 메소드 종료 (필수)
 			return;
