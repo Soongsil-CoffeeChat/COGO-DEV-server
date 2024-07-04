@@ -33,7 +33,7 @@ public class MentorService {
 	}
 
 	public List<ResponseMentorListInfo> getMentorDtoListByPart(String part) {
-		List<Mentor> mentorList = findMentorListByPart(part);
+		List<Mentor> mentorList = findMentorListByPart(part);  //파트에 해당하는 멘토 전부 가져오기
 		List<ResponseMentorListInfo> dtoList = new ArrayList<>();
 		for (Mentor mentor : mentorList) {
 			User user = userRepository.findByMentor(mentor);
