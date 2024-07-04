@@ -35,7 +35,7 @@ public class MentorService {
 	public List<ResponseMentorListInfo> getMentorDtoListByPart(String part) {
 		List<Mentor> mentorList = findMentorListByPart(part);  //파트에 해당하는 멘토 전부 가져오기
 		List<ResponseMentorListInfo> dtoList = new ArrayList<>();
-		for (Mentor mentor : mentorList) {
+		for (Mentor mentor : mentorList) {  //찾아온 멘토들의 유저정보, 멘토정보를 가져와서 필요한 데이터들 dto로 생성
 			User user = userRepository.findByMentor(mentor);
 			dtoList.add(ResponseMentorListInfo.toDto(mentor, user));
 		}
