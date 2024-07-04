@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.Mentor;
+package com.soongsil.CoffeeChat.PostTestData;
 
 import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -23,7 +23,7 @@ import java.util.stream.LongStream;
 @SpringBootTest
 @Transactional
 @Commit
-public class MentorSaveTest {
+public class GetMentorList {
     @Autowired
     private MentorRepository mentorRepository;
     @Autowired
