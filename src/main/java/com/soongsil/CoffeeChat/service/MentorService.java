@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.repository.MentorRepository;
+import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 
 @Service
@@ -32,14 +33,15 @@ public class MentorService {
 		return mentorRepository.findAllByPart(part);
 	}
 
+	@Transactional
 	public List<ResponseMentorListInfo> getMentorDtoListByPart(String part) {
-		List<Mentor> mentorList = findMentorListByPart(part);  //파트에 해당하는 멘토 전부 가져오기
-		List<ResponseMentorListInfo> dtoList = new ArrayList<>();
-		for (Mentor mentor : mentorList) {  //찾아온 멘토들의 유저정보, 멘토정보를 가져와서 필요한 데이터들 dto로 생성
-			User user = userRepository.findByMentor(mentor);
-			dtoList.add(ResponseMentorListInfo.toDto(mentor, user));
+		//return mentorRepository.getMentorListByPart(part);
+		List<ResponseMentorListInfo> dtos=new ArrayList<>();
+		List<User> users=mentorRepository.getMentorListByPart2(part);
+		for(User user:users){
+			dtos.add(ResponseMentorListInfo.toDto(user.getMentor(), user));
 		}
-		return dtoList;
+		return dtos;
 	}
 
 	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
