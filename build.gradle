@@ -80,7 +80,7 @@ dependencies {
 	//쿼리 로깅할때 ? 없애기
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
-/*
+
 // Querydsl 빌드 옵션 설정
 def generated = 'src/main/generated'
 
@@ -100,7 +100,6 @@ clean {
 }
 
 
- */
 tasks.named('test') {
 	useJUnitPlatform()
 }
