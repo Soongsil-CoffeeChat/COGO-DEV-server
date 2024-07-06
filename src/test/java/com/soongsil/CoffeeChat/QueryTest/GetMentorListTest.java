@@ -30,7 +30,7 @@ public class GetMentorListTest {
     private JPAQueryFactory queryFactory;
 
     @Test
-    public void getMentorListByJoin(){
+    public void getMentorListByJoin(){  //일반 join으로 멘토 리스트 불러오기 테스트
 
         String searchPart="BE";
         List<Tuple> result= queryFactory

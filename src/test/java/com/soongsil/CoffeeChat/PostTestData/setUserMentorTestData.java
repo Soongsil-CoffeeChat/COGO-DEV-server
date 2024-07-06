@@ -1,18 +1,13 @@
 package com.soongsil.CoffeeChat.PostTestData;
 
-import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
-import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.repository.MentorRepository;
+import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 import com.soongsil.CoffeeChat.service.UserService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
-
-import java.util.stream.IntStream;
 
 @SpringBootTest
 @Transactional
