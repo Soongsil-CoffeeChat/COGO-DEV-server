@@ -28,20 +28,18 @@ public class MentorService {
 		this.userRepository = userRepository;
 	}
 
-	//사용되는 공통 private method
-	private List<Mentor> findMentorListByPart(String part) {
-		return mentorRepository.findAllByPart(part);
-	}
 
 	@Transactional
 	public List<ResponseMentorListInfo> getMentorDtoListByPart(String part) {
-		//return mentorRepository.getMentorListByPart(part);
+		return mentorRepository.getMentorListByPart(part); //일반join
+		/* //fetch join
 		List<ResponseMentorListInfo> dtos=new ArrayList<>();
 		List<User> users=mentorRepository.getMentorListByPart2(part);
 		for(User user:users){
 			dtos.add(ResponseMentorListInfo.toDto(user.getMentor(), user));
 		}
 		return dtos;
+		 */
 	}
 
 	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {

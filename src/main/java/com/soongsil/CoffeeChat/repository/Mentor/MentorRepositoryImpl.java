@@ -17,7 +17,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
     }
 
     @Override
-    public List<ResponseMentorListInfo> getMentorListByPart(String part) {
+    public List<ResponseMentorListInfo> getMentorListByPart(String part) { //일반 join
         return queryFactory
                 .select(new QResponseMentorListInfo(
                         mentor.picture,
@@ -32,7 +32,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
     }
 
     @Override
-    public List<User> getMentorListByPart2(String part) {
+    public List<User> getMentorListByPart2(String part) {  //fetch join
         return queryFactory
                 .selectFrom(user)
                 .join(user.mentor, mentor).fetchJoin()
