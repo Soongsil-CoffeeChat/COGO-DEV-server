@@ -1,29 +1,18 @@
 package com.soongsil.CoffeeChat.PostTestData;
 
-import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
-import com.soongsil.CoffeeChat.entity.Mentor;
-import com.soongsil.CoffeeChat.entity.PossibleDate;
-import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.repository.MentorRepository;
-import com.soongsil.CoffeeChat.repository.PossibleDateRepository;
+import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 import com.soongsil.CoffeeChat.service.UserService;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Optional;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-
 @SpringBootTest
 @Transactional
 @Commit
-public class GetMentorList {
+public class setUserMentorTestData {
     @Autowired
     private MentorRepository mentorRepository;
     @Autowired
@@ -32,7 +21,7 @@ public class GetMentorList {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
-
+/*
     @Test
     public void testCreate500UsersWithMentors() {
         IntStream.range(0, 500).forEach(i -> {
@@ -60,7 +49,7 @@ public class GetMentorList {
         assert(userCount == 500);
     }
 
-
+/*
     //멘토 500개생성
     @Test
     public void add500Mentors() {
@@ -94,6 +83,6 @@ public class GetMentorList {
             }
         });
     }
-
+*/
 
 }
