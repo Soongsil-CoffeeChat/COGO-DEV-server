@@ -11,7 +11,7 @@ import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
-import com.soongsil.CoffeeChat.repository.MentorRepository;
+import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.UserRepository;
 
 import jakarta.transaction.Transactional;

@@ -31,11 +31,11 @@ public class User {
 	@Column
 	private String picture;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")
 	private Mentor mentor;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_mentee", referencedColumnName = "mentee_id")
 	private Mentee mentee;
 }
