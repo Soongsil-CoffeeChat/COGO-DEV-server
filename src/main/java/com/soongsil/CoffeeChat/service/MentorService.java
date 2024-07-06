@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 
+import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ import com.soongsil.CoffeeChat.repository.UserRepository;
 public class MentorService {
 	private final MentorRepository mentorRepository;
 	private final UserRepository userRepository;
+	private final PossibleDateRepository possibleDateRepository;
 
 	public MentorService(MentorRepository mentorRepository,
-		UserRepository userRepository) {
+		UserRepository userRepository, PossibleDateRepository possibleDateRepository) {
 		this.mentorRepository = mentorRepository;
 		this.userRepository = userRepository;
+		this.possibleDateRepository=possibleDateRepository;
 	}
 
 
@@ -43,6 +46,8 @@ public class MentorService {
 	}
 
 	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
+		return possibleDateRepository.getPossibleDatesByUsername(username);
+		/*
 		User user = userRepository.findByUsername(username);
 		Mentor mentor = user.getMentor();
 		Set<PossibleDate> possibleDateSet = mentor.getPossibleDates();
@@ -52,6 +57,8 @@ public class MentorService {
 			dtoList.add(PossibleDateRequestDto.toDto(iter.next()));
 		}
 		return dtoList;
+
+		 */
 	}
 
 	@Transactional
