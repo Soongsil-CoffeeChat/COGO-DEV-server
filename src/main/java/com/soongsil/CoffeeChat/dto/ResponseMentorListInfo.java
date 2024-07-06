@@ -35,11 +35,14 @@ public class ResponseMentorListInfo {
 	}
 
 	public static ResponseMentorListInfo toDto(Mentor mentor, User user) {
+		/*
 		List<Club> clubList = mentor.getClubs();
 		List<String> clubNameList = new ArrayList<>();
 		for (Club club : clubList) {
 			clubNameList.add(club.getName());
 		}
+
+		 */
 		return ResponseMentorListInfo.builder()
 				.part(mentor.getPart())
 			.picture(mentor.getPicture())
