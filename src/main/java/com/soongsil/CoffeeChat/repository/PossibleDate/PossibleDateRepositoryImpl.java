@@ -29,7 +29,9 @@ public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom{
                 .from(user)
                 .join(user.mentor, mentor)
                 .join(mentor.possibleDates, possibleDate)
-                .where(user.username.eq(username))
+                .where(user.username.eq(username).and(
+                        possibleDate.isActive.isTrue()
+                ))
                 .fetch();
     }
 }

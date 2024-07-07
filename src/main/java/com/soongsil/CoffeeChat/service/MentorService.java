@@ -47,18 +47,6 @@ public class MentorService {
 
 	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
 		return possibleDateRepository.getPossibleDatesByUsername(username);
-		/*
-		User user = userRepository.findByUsername(username);
-		Mentor mentor = user.getMentor();
-		Set<PossibleDate> possibleDateSet = mentor.getPossibleDates();
-		Iterator<PossibleDate> iter = possibleDateSet.iterator();
-		List<PossibleDateRequestDto> dtoList = new ArrayList<>();
-		while (iter.hasNext()) {
-			dtoList.add(PossibleDateRequestDto.toDto(iter.next()));
-		}
-		return dtoList;
-
-		 */
 	}
 
 	@Transactional

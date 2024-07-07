@@ -36,14 +36,14 @@ public class PossibleDate {
 	LocalTime endTime;
 
 	@Column
-	private boolean apply;
+	private boolean isActive=true;
 
 	public static PossibleDate from(PossibleDateRequestDto dto) {
 		return PossibleDate.builder()
 			.date(dto.getDate())
 			.startTime(dto.getStartTime())
 			.endTime(dto.getEndTime())
-			.apply(false)
+			.isActive(true)
 			.build();
 	}
 }

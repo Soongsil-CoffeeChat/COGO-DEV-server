@@ -22,13 +22,13 @@ public class QPossibleDate extends EntityPathBase<PossibleDate> {
 
     public static final QPossibleDate possibleDate = new QPossibleDate("possibleDate");
 
-    public final BooleanPath apply = createBoolean("apply");
-
     public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
 
     public final TimePath<java.time.LocalTime> endTime = createTime("endTime", java.time.LocalTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final BooleanPath isActive = createBoolean("isActive");
 
     public final QMentor mentor;
 
