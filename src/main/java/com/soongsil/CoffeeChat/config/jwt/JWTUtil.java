@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +50,8 @@ public class JWTUtil {
 			.getExpiration()
 			.before(new Date());
 	}
+
+
 
 	public String getCategory(String token) {  //토큰의 카테고리 꺼내는 로직 추가
 		return Jwts.parser()

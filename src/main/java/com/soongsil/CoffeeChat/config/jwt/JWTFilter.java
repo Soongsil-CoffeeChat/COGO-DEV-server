@@ -73,6 +73,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 			//조건이 해당되면 메소드 종료 (필수)
 			return;
 		}
+		else System.out.println("expired로직 건너감");
 
 		//토큰에서 username과 role 획득
 		String username = jwtUtil.getUsername(accessToken);
