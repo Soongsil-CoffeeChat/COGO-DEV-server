@@ -88,7 +88,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		response.setStatus(HttpStatus.OK.value());
 		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html"); //서버 로컬 테스트용
-		response.sendRedirect("https://localhost:3000/callback");
+		response.sendRedirect("http://localhost:3000/callback");
 		//response.sendRedirect("https://coffeego-ssu.web.app/callback");
 	}
 

@@ -19,40 +19,36 @@ public class JWTUtil {
 
 	public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
 		secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8),
-			Jwts.SIG.HS256.key().build().getAlgorithm());
+				Jwts.SIG.HS256.key().build().getAlgorithm());
 	}
 
 	public String getUsername(String token) {
 		return Jwts.parser()
-			.verifyWith(secretKey)
-			.build()
-			.parseSignedClaims(token)
-			.getPayload()
-			.get("username", String.class);
+				.verifyWith(secretKey)
+				.build()
+				.parseSignedClaims(token)
+				.getPayload()
+				.get("username", String.class);
 	}
 
 	public String getRole(String token) {
 		return Jwts.parser()
-			.verifyWith(secretKey)
-			.build()
-			.parseSignedClaims(token)
-			.getPayload()
-			.get("role", String.class);
+				.verifyWith(secretKey)
+				.build()
+				.parseSignedClaims(token)
+				.getPayload()
+				.get("role", String.class);
 	}
 
 	public boolean isExpired(String token) {
 		try {
-			// JWT 파서 생성 및 비밀키 설정
-			var jwtParser = Jwts.parser().verifyWith(secretKey).build();
-
-			// 토큰 파싱 및 클레임 추출
-			var claims = jwtParser.parseSignedClaims(token).getPayload();
-
-			// 만료 시간 추출
-			var expiration = claims.getExpiration();
-
-			// 만료 여부 확인
-			return !expiration.before(new Date());
+			return Jwts.parser()
+					.verifyWith(secretKey)
+					.build()
+					.parseSignedClaims(token)
+					.getPayload()
+					.getExpiration()
+					.before(new Date());
 		} catch (ExpiredJwtException e) {
 			System.out.println("Token is expired: " + e.getMessage());
 			return true;
