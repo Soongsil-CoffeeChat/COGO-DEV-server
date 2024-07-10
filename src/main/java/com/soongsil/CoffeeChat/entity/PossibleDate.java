@@ -36,6 +36,7 @@ public class PossibleDate {
 	LocalTime endTime;
 
 	@Column
+	@Setter
 	private boolean isActive=true;
 
 	public static PossibleDate from(PossibleDateRequestDto dto) {

@@ -2,7 +2,7 @@ package com.soongsil.CoffeeChat.PostTestData;
 
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
-import com.soongsil.CoffeeChat.repository.UserRepository;
+import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

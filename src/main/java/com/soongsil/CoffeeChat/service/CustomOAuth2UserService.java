@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.repository.UserRepository;
+import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import jakarta.transaction.Transactional;
 
