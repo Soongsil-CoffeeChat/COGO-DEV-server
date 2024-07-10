@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
@@ -13,12 +14,15 @@ import lombok.Getter;
 @Getter
 public class ApplicationCreateRequest {
 	@JsonProperty("date")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
 	@JsonProperty("start_time")
+	@JsonFormat(pattern = "HH:mm")
 	private LocalTime startTime;
 
 	@JsonProperty("end_time")
+	@JsonFormat(pattern = "HH:mm")
 	private LocalTime endTime;
 
 	@JsonProperty("mentor_id")
