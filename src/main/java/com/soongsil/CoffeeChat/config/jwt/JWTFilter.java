@@ -62,18 +62,20 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 
 			return;
 		}
+		System.out.println("여기까진 들어옴");
 		//토큰 소멸 시간 검증
 		if (jwtUtil.isExpired(accessToken)) {
 			System.out.println("token expired");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
 			response.setContentType("application/json");
 			response.getWriter().write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
-			//filterChain.doFilter(request, response);
+			filterChain.doFilter(request, response);
 
 			//조건이 해당되면 메소드 종료 (필수)
 			return;
 		}
 		else System.out.println("expired로직 건너감");
+		System.out.println("여긴 실행됨?");
 
 		//토큰에서 username과 role 획득
 		String username = jwtUtil.getUsername(accessToken);

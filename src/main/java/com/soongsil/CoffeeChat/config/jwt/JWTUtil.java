@@ -42,15 +42,20 @@ public class JWTUtil {
 	}
 
 	public Boolean isExpired(String token) {
-		return Jwts.parser()
-			.verifyWith(secretKey)
-			.build()
-			.parseSignedClaims(token)
-			.getPayload()
-			.getExpiration()
-			.before(new Date());
-	}
+		System.out.println("여긴 실행됨");
 
+		try {
+			return Jwts.parser()
+					.verifyWith(secretKey)
+					.build()
+					.parseSignedClaims(token)
+					.getPayload()
+					.getExpiration()
+					.before(new Date());
+		}catch (Exception e){
+			return true;
+		}
+	}
 
 
 	public String getCategory(String token) {  //토큰의 카테고리 꺼내는 로직 추가
