@@ -1,16 +1,15 @@
 package com.soongsil.CoffeeChat.config.jwt;
 
 import java.nio.charset.StandardCharsets;
+import java.security.SignatureException;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Jwts;
 
 //JWT : username, role, 생성일, 만료일 포함, 0.12.3 버전 사용
 //username확인, role확인, 만료일 확인
@@ -41,21 +40,37 @@ public class JWTUtil {
 			.get("role", String.class);
 	}
 
-	public Boolean isExpired(String token) {
-		System.out.println("여긴 실행됨");
-
+	public boolean isExpired(String token) {
 		try {
-			return Jwts.parser()
-					.verifyWith(secretKey)
-					.build()
-					.parseSignedClaims(token)
-					.getPayload()
-					.getExpiration()
-					.before(new Date());
-		}catch (Exception e){
+			// JWT 파서 생성 및 비밀키 설정
+			var jwtParser = Jwts.parser().verifyWith(secretKey).build();
+
+			// 토큰 파싱 및 클레임 추출
+			var claims = jwtParser.parseSignedClaims(token).getPayload();
+
+			// 만료 시간 추출
+			var expiration = claims.getExpiration();
+
+			// 만료 여부 확인
+			return !expiration.before(new Date());
+		} catch (ExpiredJwtException e) {
+			System.out.println("Token is expired: " + e.getMessage());
 			return true;
+		} catch (MalformedJwtException e) {
+			System.out.println("Malformed token: " + e.getMessage());
+			return false;
+		} catch (UnsupportedJwtException e) {
+			System.out.println("Unsupported token: " + e.getMessage());
+			return false;
+		} catch (IllegalArgumentException e) {
+			System.out.println("Illegal argument token: " + e.getMessage());
+			return false;
+		} catch (Exception e) {
+			System.out.println("Invalid token: " + e.getMessage());
+			return false;
 		}
 	}
+
 
 
 	public String getCategory(String token) {  //토큰의 카테고리 꺼내는 로직 추가
