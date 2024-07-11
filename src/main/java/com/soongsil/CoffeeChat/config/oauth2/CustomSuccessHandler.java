@@ -69,7 +69,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
 
-		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  // 10분
+		//String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  // 10분
+		String accessToken = jwtUtil.createJwt("access", username, role, 180000L);  // 10분
 		System.out.println("accessToken = " + accessToken);
 		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); // 24시간
 
@@ -87,7 +88,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 		response.setStatus(HttpStatus.OK.value());
 		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html"); //서버 로컬 테스트용
-		response.sendRedirect("https://localhost:3000/callback");
+		response.sendRedirect("http://localhost:3000/callback");
 		//response.sendRedirect("https://coffeego-ssu.web.app/callback");
 	}
 
