@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import jakarta.mail.Message;
@@ -17,7 +18,8 @@ public class EmailUtil {
 
 	private final JavaMailSender javaMailSender;
 
-	public void sendMail(String receiver, String subject, String content) throws MessagingException {
+
+	public void sendMail(String receiver, String subject, String content) throws MessagingException, InterruptedException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 
 		message.setSubject(subject);
@@ -27,7 +29,7 @@ public class EmailUtil {
 		javaMailSender.send(message);
 	}
 
-	public String sendAuthenticationEmail(String receiver) throws MessagingException {
+	public String sendAuthenticationEmail(String receiver) throws MessagingException, InterruptedException {
 		String code = String.valueOf((int)((Math.random() * 900000) + 100000));
 
 		sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
@@ -36,14 +38,13 @@ public class EmailUtil {
 		return code;
 	}
 
-	public String sendApplicationMatchedEmail(String receiver, String mentorName, String menteeName, LocalDate date,
-		LocalTime startTime, LocalTime endTime) throws MessagingException {
+	public void sendApplicationMatchedEmail(String receiver, String mentorName, String menteeName, LocalDate date,
+		LocalTime startTime, LocalTime endTime) throws MessagingException, InterruptedException {
 		sendMail(receiver, "[COGO] 매칭이 성사되었습니다.",
 			createMessageTemplate("[COGO] 매칭 성사",
 				mentorName + " 멘토님과" + menteeName + " 멘티님의 매칭이 성사되었습니다!",
 				"일자: " + date + "\n시간: " + startTime + " ~ " + endTime + "\n"));
 
-		return "MAIL_SENT";
 	}
 
 	private String createMessageTemplate(String subject, String description, String mainContent) {
