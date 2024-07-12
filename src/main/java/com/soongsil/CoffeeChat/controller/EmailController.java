@@ -18,7 +18,7 @@ public class EmailController {
 	private final EmailUtil emailUtil;
 
 	@GetMapping()
-	public String sendAuthenticationMail(@RequestParam("email") String receiver) throws MessagingException {
+	public String sendAuthenticationMail(@RequestParam("email") String receiver) throws MessagingException, InterruptedException {
 		return emailUtil.sendAuthenticationEmail(receiver);
 	}
 }

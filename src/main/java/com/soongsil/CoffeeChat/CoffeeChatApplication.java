@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 //서버다시올리기
 @OpenAPIDefinition(
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 	}
 )
 @SpringBootApplication
+@EnableAsync
 public class CoffeeChatApplication {
 
 	public static void main(String[] args) {
