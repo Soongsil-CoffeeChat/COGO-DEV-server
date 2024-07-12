@@ -18,7 +18,9 @@ public class EmailUtil {
 	private final JavaMailSender javaMailSender;
 
 
+
 	public void sendMail(String receiver, String subject, String content) throws MessagingException {
+
 		MimeMessage message = javaMailSender.createMimeMessage();
 		message.setSubject(subject);
 		message.addRecipients(Message.RecipientType.TO, receiver);
