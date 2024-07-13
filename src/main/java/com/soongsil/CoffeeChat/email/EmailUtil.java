@@ -10,6 +10,7 @@ import jakarta.mail.internet.MimeMessage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class EmailUtil {
 
 	private final JavaMailSender javaMailSender;
 
-
+	@Async("mailExecutor")
 	public void sendMail(String receiver, String subject, String content) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		message.setSubject(subject);
@@ -26,13 +27,14 @@ public class EmailUtil {
 		javaMailSender.send(message);
 	}
 
-	public String sendAuthenticationEmail(String receiver) throws MessagingException, InterruptedException {
+	@Async("mailExecutor")
+	public CompletableFuture<String> sendAuthenticationEmail(String receiver) throws MessagingException, InterruptedException {
 		String code = String.valueOf((int)((Math.random() * 900000) + 100000));
 
 		sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
 				createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
 
-		return code;
+		return CompletableFuture.completedFuture(code);
 	}
 
 
