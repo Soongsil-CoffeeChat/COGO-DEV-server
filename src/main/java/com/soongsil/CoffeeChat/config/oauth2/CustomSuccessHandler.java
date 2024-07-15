@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -45,8 +46,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	}
 
 	private void addRefreshEntity(String username, String refresh, Long expiredMs) {
-		//refresh객체를 만들고 레포에 저장
-
 		Date date = new Date(System.currentTimeMillis() + expiredMs);
 
 		Refresh refreshEntity = new Refresh();
@@ -59,10 +58,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-		Authentication authentication) throws IOException, ServletException {
+										Authentication authentication) throws IOException, ServletException {
 
-		//OAuth2User
-		CustomOAuth2User customUserDetails = (CustomOAuth2User)authentication.getPrincipal();
+		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
 		String username = customUserDetails.getUsername();
 
@@ -70,36 +68,39 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
 		GrantedAuthority auth = iterator.next();
 		String role = auth.getAuthority();
-		//토큰 생성
-		String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  //10분
-		//String accessToken = jwtUtil.createJwt("access", username, role, 6000000000L);  //10분
+
+		//String accessToken = jwtUtil.createJwt("access", username, role, 600000L);  // 10분
+		String accessToken = jwtUtil.createJwt("access", username, role, 180000L);  // 10분
 		System.out.println("accessToken = " + accessToken);
-		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); //24시간
-		//Refresh 토큰 저장
+		String refreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); // 24시간
+
 		addRefreshEntity(username, refreshToken, 86400000L);
-		//Access토큰은 헤더에, Refresh 토큰은 쿠키에 담아 보내기
-		response.setHeader("access", accessToken);
-		response.addCookie(createCookie("refresh", refreshToken));
 
-		//login status넣어주기
-		if (role.equals("ROLE_USER"))
-			response.setHeader("loginStatus", "signup");
-		else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR"))
-			response.setHeader("loginStatus", "main");
-		//가입필요 : 추가정보 가입 request넣어줘야함  가입완료 : 발급받은 토큰으로 요청보내면됨
+		// Refresh 토큰 쿠키에 추가
+		addSameSiteCookie(response, "refresh", refreshToken);
 
-		response.setStatus(HttpStatus.OK.value());  //200으로 프론트에 반환쳐주기
+		// loginStatus 쿠키 추가
+		if (role.equals("ROLE_USER")) {
+			addSameSiteCookie(response, "loginStatus", "signup");
+		} else if (role.equals("ROLE_MENTEE") || role.equals("ROLE_MENTOR")) {
+			addSameSiteCookie(response, "loginStatus", "main");
+		}
 
+		response.setStatus(HttpStatus.OK.value());
+		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html"); //서버 로컬 테스트용
 		response.sendRedirect("http://localhost:3000/callback");
+		//response.sendRedirect("https://coffeego-ssu.web.app/callback");
 	}
 
-	private Cookie createCookie(String key, String value) {
+	private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
+		ResponseCookie responseCookie = ResponseCookie.from(name, value)
+				.httpOnly(true)
+				.secure(true)
+				.path("/")
+				.maxAge(24 * 60 * 60)
+				.sameSite("None")
+				.build();
 
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(24 * 60 * 60);  //24시간
-		//cookie.setSecure(true);  //https에서만 쿠키가 사용되게끔 설정
-		cookie.setPath("/");    //전역에서 쿠키가 보이게끔 설정
-		cookie.setHttpOnly(true);  //JS가 쿠키를 가져가지 못하게 HTTPOnly설정
-		return cookie;
+		response.addHeader("Set-Cookie", responseCookie.toString());
 	}
 }

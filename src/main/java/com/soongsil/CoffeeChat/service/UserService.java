@@ -8,8 +8,8 @@ import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
-import com.soongsil.CoffeeChat.repository.MentorRepository;
-import com.soongsil.CoffeeChat.repository.UserRepository;
+import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +36,15 @@ public class UserService {
 		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
 		user.setMentee(mentee);
-		//TODO:이메일 사용자가 지정한값으로 변경해야함
+		//이메일 사용자가 지정한값으로 변경해야함
 		user.setEmail(dto.getEmail());
 		return menteeRepository.save(mentee);
+	}
+
+	@Transactional
+	public User saveUserPicture(String username, String picture){
+		User user = userRepository.findByUsername(username);
+		user.setPicture(picture);
+		return userRepository.save(user);
 	}
 }

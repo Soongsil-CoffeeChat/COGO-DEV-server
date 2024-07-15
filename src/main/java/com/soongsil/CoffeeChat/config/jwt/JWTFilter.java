@@ -44,6 +44,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 		}
 		String path = request.getRequestURI();
 		if (path.startsWith("/health-check") || path.startsWith("/security-check") || path.startsWith("/reissue")) {
+			System.out.println("jwt필터 통과로직");
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -61,10 +62,13 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 
 			return;
 		}
+		System.out.println("여기까진 들어옴");
 		//토큰 소멸 시간 검증
 		if (jwtUtil.isExpired(accessToken)) {
-
 			System.out.println("token expired");
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
+			response.setContentType("application/json");
+			response.getWriter().write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
 			filterChain.doFilter(request, response);
 
 			//조건이 해당되면 메소드 종료 (필수)

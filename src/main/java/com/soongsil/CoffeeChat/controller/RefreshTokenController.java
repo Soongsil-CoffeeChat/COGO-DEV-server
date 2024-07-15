@@ -30,7 +30,7 @@ public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급
 
     @PostMapping("/reissue")
     @Operation(summary="리프레쉬 토큰으로 액세스 토큰 reissue")
-    @ApiResponse(responseCode = "200", description = "액세스토큰 재발급")
+    @ApiResponse(responseCode = "200", description = "헤더 : access, refresh, loginStatus")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
         return refreshTokenService.reissueByRefreshToken(request, response);
     }
