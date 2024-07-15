@@ -56,7 +56,7 @@ public class RefreshTokenService {
 				}
 			}
 		}
-
+		System.out.println("refresh = " + refresh);
 		if (refresh == null) {
 			// Response status code 400 (refresh 토큰이 들어오지 않음)
 			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
