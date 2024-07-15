@@ -15,8 +15,8 @@ public class CorsMvcConfig implements WebMvcConfigurer { //컨트롤러에서 �
 	public void addCorsMappings(CorsRegistry corsRegistry) {
 
 		corsRegistry.addMapping("/**")  //모든 경로에서 매핑 진행
-			.exposedHeaders("Set-Cookie")      //노출할 헤더값은 쿠키헤더
-			.allowedOrigins("http://localhost:3000", "https://cogo.life")
+			.exposedHeaders("Set-Cookie")      //노출할 헤더값은 쿠키헤더"
+			.allowedOrigins("https://localhost:3000", "https://cogo.life", "https://coffeego-ssu.web.app", "http://localhost:8080", "http://localhost:3000")
 			.allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
 			.allowedHeaders("*")
 			.allowCredentials(true)

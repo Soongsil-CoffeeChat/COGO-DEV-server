@@ -1,19 +1,16 @@
 package com.soongsil.CoffeeChat.entity;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import com.querydsl.core.annotations.QueryProjection;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@Table
+@NoArgsConstructor
 //@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
 //@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {
@@ -34,14 +31,15 @@ public class User {
 	@Column
 	private String role;
 
-	//    @Column
-	//    private String picture;
+	@Column
+	private String picture;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")
 	private Mentor mentor;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_mentee", referencedColumnName = "mentee_id")
 	private Mentee mentee;
+
 }

@@ -22,6 +22,7 @@ spring:
         format_sql: true
         show_sql: true
 
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -85,4 +86,7 @@ cloud:
     stack:
       auto: false
 
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
 

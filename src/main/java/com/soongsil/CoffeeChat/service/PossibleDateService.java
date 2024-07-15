@@ -6,8 +6,8 @@ import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.repository.PossibleDateRepository;
-import com.soongsil.CoffeeChat.repository.UserRepository;
+import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
+import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

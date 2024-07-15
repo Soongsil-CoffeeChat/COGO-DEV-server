@@ -6,24 +6,15 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString(of = {"id", "date", "startTime", "endTime", "apply"})
 public class PossibleDate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +22,7 @@ public class PossibleDate {
 	private Long id;
 
 	@Setter
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_id")
 	private Mentor mentor;
 
@@ -45,14 +36,15 @@ public class PossibleDate {
 	LocalTime endTime;
 
 	@Column
-	private boolean apply;
+	@Setter
+	private boolean isActive=true;
 
 	public static PossibleDate from(PossibleDateRequestDto dto) {
 		return PossibleDate.builder()
 			.date(dto.getDate())
 			.startTime(dto.getStartTime())
 			.endTime(dto.getEndTime())
-			.apply(false)
+			.isActive(true)
 			.build();
 	}
 }

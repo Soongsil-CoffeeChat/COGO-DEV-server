@@ -87,13 +87,13 @@ public class SecurityConfig {
         http
             .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); // 프론트 서버의 주소
+                configuration.setAllowedOrigins(Arrays.asList("https://localhost:3000", "http://localhost:8080", "http://localhost:3000",
+                        "https://cogo.life", "https://coffeego-ssu.web.app")); // 프론트 서버의 주소들 // 프론트 서버의 주소
                 configuration.setAllowedMethods(Collections.singletonList("*"));  // 모든 요청 메서드 허용
                 configuration.setAllowCredentials(true);
                 configuration.setAllowedHeaders(Collections.singletonList("*"));  // 모든 헤더 허용
                 configuration.setMaxAge(3600L);
-                configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));  // Set-Cookie 헤더 노출
-                configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access", "loginStatus")); // Set-Cookie 및 Authorization 헤더 노출
                 return configuration;
             }))
             .csrf(csrf -> csrf.disable())  // CSRF 비활성화
@@ -106,8 +106,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
                 .requestMatchers("/health-check", "/", "/reissue", "/security-check").permitAll()
                 .requestMatchers("/api/v1/user/**", "/auth/**").hasRole("USER")
-                .requestMatchers("/api/v1/possibleDate/**").hasRole("MENTOR")
-                .requestMatchers("/api/v1/mentor/**").hasRole("MENTEE")
+                .requestMatchers("/api/v1/possibleDate/**").hasAnyRole("MENTOR", "MENTEE")
+                .requestMatchers("/api/v1/mentor/**").hasAnyRole("MENTOR", "MENTEE")
                 .anyRequest().authenticated())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
