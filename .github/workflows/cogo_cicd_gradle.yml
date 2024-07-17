@@ -92,6 +92,8 @@ jobs:
           -e BUCKET_NAME=${{ secrets.BUCKET_NAME }} \
           -e S3_ACCESS=${{ secrets.S3_ACCESS }} \
           -e S3_SECRET=${{ secrets.S3_SECRET }} \
+          -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
+          -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
           ${{ secrets.DOCKERHUB_USERNAME }}/cogoserver
           sleep 5  # 컨테이너 실행 시간을 확보
           sudo docker ps -a  # 모든 컨테이너 목록 출력
