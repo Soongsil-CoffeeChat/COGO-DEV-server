@@ -82,6 +82,9 @@ dependencies {
 
 	//Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	//Cool SMS
+	implementation 'net.nurigo:sdk:4.2.7'
 }
 
 // Querydsl 빌드 옵션 설정

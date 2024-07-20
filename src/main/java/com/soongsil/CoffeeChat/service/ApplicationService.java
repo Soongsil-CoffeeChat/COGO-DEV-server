@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.email.EmailUtil;
+import com.soongsil.CoffeeChat.util.email.EmailUtil;
 import com.soongsil.CoffeeChat.dto.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.dto.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
