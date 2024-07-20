@@ -1,5 +1,8 @@
 package com.soongsil.CoffeeChat.service;
 
+import com.soongsil.CoffeeChat.util.sms.SmsUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.dto.CreateMenteeRequest;
@@ -14,12 +17,16 @@ import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 	private final MentorRepository mentorRepository;
 	private final MenteeRepository menteeRepository;
 	private final UserRepository userRepository;
+	private final SmsUtil smsUtil;
 
 	@Transactional
 	public Mentor saveMentorInformation(String username, CreateMentorRequest dto) {
@@ -46,5 +53,24 @@ public class UserService {
 		User user = userRepository.findByUsername(username);
 		user.setPicture(picture);
 		return userRepository.save(user);
+	}
+
+	public ResponseEntity<Map<String, String>> getSmsCode(String to){
+		Map<String, String> response = new HashMap<>();
+		String result = smsUtil.sendOne(to);
+		if (result != null) {
+			response.put("verificationCode", result);
+			response.put("message", "Verification code sent successfully");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			response.put("message", "Failed to send verification code");
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public ResponseEntity<User> saveUserPhone(String phone, String username){
+		User user=userRepository.findByUsername(username);
+		user.setPhone(phone);
+		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
 }
