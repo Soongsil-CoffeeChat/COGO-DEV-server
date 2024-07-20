@@ -94,6 +94,3 @@ logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
-coolsms:
-  SMS_KEY: ${SMS_KEY}
-  SMS_SECRET: ${SMS_SECRET}
