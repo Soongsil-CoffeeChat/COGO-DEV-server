@@ -2,6 +2,9 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,6 +34,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(USER_URI)
@@ -64,7 +69,7 @@ public class UserController {
         );
     }
 
-    @PutMapping("save/picture")
+    @PutMapping("/save/picture")
     @Operation(summary="이미지 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserPicture(Authentication authentication,
@@ -72,6 +77,25 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUserPicture(getUserNameByAuthentication(authentication), picture));
     }
 
+    @GetMapping("/sms")
+    @Operation(summary = "SMS 인증 요청하기", description = "전화번호로 SMS 인증번호를 요청합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "인증 요청 성공",
+                    content = @Content(mediaType = "application/json", schema = @Schema(example = "{\n\"verificationCode\": \"1234\",\n\"message\": \"Verification code sent successfully\"\n}"))),
+            @ApiResponse(responseCode = "400", description = "인증번호 전송 실패",
+                    content = @Content(mediaType = "application/json", schema = @Schema(example = "{\n\"message\": \"Failed to send verification code\"\n}")))
+    })
+    public ResponseEntity<Map<String, String>> getSmsCode(Authentication authentication,
+                                                          @RequestParam("phone") String phone){
+        return userService.getSmsCode(phone);
+    }
 
+    @PostMapping("/phone")
+    @Operation(summary="이미지 저장하기")
+    @ApiResponse(responseCode = "200", description = "성공!")
+    public ResponseEntity<User> saveUserPhone(Authentication authentication,
+                                              @RequestParam("phone") String phone) throws Exception {
+        return userService.saveUserPhone(phone, getUserNameByAuthentication(authentication));
+    }
 
 }
