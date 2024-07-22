@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.email;
+package com.soongsil.CoffeeChat.util.email;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
