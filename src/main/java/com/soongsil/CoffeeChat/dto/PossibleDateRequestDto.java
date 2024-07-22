@@ -23,11 +23,14 @@ public class PossibleDateRequestDto {
 	@JsonFormat(pattern = "HH:mm")
 	private LocalTime endTime;
 
+	private Long possibleDateId;
+
 	@QueryProjection
-	public PossibleDateRequestDto(LocalDate date, LocalTime startTime, LocalTime endTime) {
+	public PossibleDateRequestDto(LocalDate date, LocalTime startTime, LocalTime endTime, Long possibleDateId) {
 		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
+		this.possibleDateId=possibleDateId;
 	}
 
 	public static PossibleDateRequestDto toDto(PossibleDate possibleDate) {

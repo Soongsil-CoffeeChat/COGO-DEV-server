@@ -14,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString(of = {"id", "date", "startTime", "endTime", "apply"})
+@ToString(of = {"id", "date", "startTime", "endTime", "isActive"})
 public class PossibleDate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +37,7 @@ public class PossibleDate {
 
 	@Column
 	@Setter
+	@Builder.Default
 	private boolean isActive=true;
 
 	public static PossibleDate from(PossibleDateRequestDto dto) {
