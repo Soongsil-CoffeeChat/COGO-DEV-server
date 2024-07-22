@@ -20,6 +20,9 @@ public class User {
 	private Long id;
 
 	@Column
+	private String phone;  //전화번호
+
+	@Column
 	private String username;
 
 	@Column

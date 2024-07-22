@@ -1,4 +1,4 @@
-/*
+
 package com.soongsil.CoffeeChat.config.oauth2;
 
 import java.io.IOException;
@@ -106,7 +106,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	}
 }
 
- */
+/*
 package com.soongsil.CoffeeChat.config.oauth2;
 
 import java.io.IOException;
@@ -194,6 +194,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	}
 }
 
+ */
 
 
 
