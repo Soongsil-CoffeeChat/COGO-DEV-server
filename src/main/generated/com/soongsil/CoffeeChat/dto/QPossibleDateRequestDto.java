@@ -13,8 +13,8 @@ public class QPossibleDateRequestDto extends ConstructorExpression<PossibleDateR
 
     private static final long serialVersionUID = -203748687L;
 
-    public QPossibleDateRequestDto(com.querydsl.core.types.Expression<java.time.LocalDate> date, com.querydsl.core.types.Expression<java.time.LocalTime> startTime, com.querydsl.core.types.Expression<java.time.LocalTime> endTime) {
-        super(PossibleDateRequestDto.class, new Class<?>[]{java.time.LocalDate.class, java.time.LocalTime.class, java.time.LocalTime.class}, date, startTime, endTime);
+    public QPossibleDateRequestDto(com.querydsl.core.types.Expression<java.time.LocalDate> date, com.querydsl.core.types.Expression<java.time.LocalTime> startTime, com.querydsl.core.types.Expression<java.time.LocalTime> endTime, com.querydsl.core.types.Expression<Long> possibleDateId) {
+        super(PossibleDateRequestDto.class, new Class<?>[]{java.time.LocalDate.class, java.time.LocalTime.class, java.time.LocalTime.class, long.class}, date, startTime, endTime, possibleDateId);
     }
 
 }
