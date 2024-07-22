@@ -1,0 +1,760 @@
+2024-07-23 05:05:21 [main] [transactionId=] [threadId=] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.soongsil.CoffeeChat.Concurrency.ConcurrencyTest]: ConcurrencyTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-07-23 05:05:21 [main] [transactionId=] [threadId=] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.soongsil.CoffeeChat.CoffeeChatApplication for test class com.soongsil.CoffeeChat.Concurrency.ConcurrencyTest
+2024-07-23 05:05:21 [main] [transactionId=] [threadId=] INFO  c.s.C.Concurrency.ConcurrencyTest - Starting ConcurrencyTest using Java 17.0.11 with PID 9483 (started by kimkyohwee in /Users/kimkyohwee/Documents/BE프로젝트/CoffeeChat/CoffeeChat-Server)
+2024-07-23 05:05:21 [main] [transactionId=] [threadId=] DEBUG c.s.C.Concurrency.ConcurrencyTest - Running with Spring Boot v3.2.2, Spring v6.1.3
+2024-07-23 05:05:21 [main] [transactionId=] [threadId=] INFO  c.s.C.Concurrency.ConcurrencyTest - No active profile set, falling back to 1 default profile: "default"
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 73 ms. Found 6 JPA repository interfaces.
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.ApplicationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.MenteeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.Mentor.MentorRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.RefreshRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.User.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration boolean -> org.hibernate.type.BasicTypeReference@46894dc5
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration boolean -> org.hibernate.type.BasicTypeReference@46894dc5
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Boolean -> org.hibernate.type.BasicTypeReference@46894dc5
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration numeric_boolean -> org.hibernate.type.BasicTypeReference@596afb2f
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.NumericBooleanConverter -> org.hibernate.type.BasicTypeReference@596afb2f
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration true_false -> org.hibernate.type.BasicTypeReference@79ba0285
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.TrueFalseConverter -> org.hibernate.type.BasicTypeReference@79ba0285
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration yes_no -> org.hibernate.type.BasicTypeReference@6df2a206
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.YesNoConverter -> org.hibernate.type.BasicTypeReference@6df2a206
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte -> org.hibernate.type.BasicTypeReference@61993d18
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte -> org.hibernate.type.BasicTypeReference@61993d18
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Byte -> org.hibernate.type.BasicTypeReference@61993d18
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration binary -> org.hibernate.type.BasicTypeReference@6f240187
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte[] -> org.hibernate.type.BasicTypeReference@6f240187
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration [B -> org.hibernate.type.BasicTypeReference@6f240187
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration binary_wrapper -> org.hibernate.type.BasicTypeReference@16e07bae
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration wrapper-binary -> org.hibernate.type.BasicTypeReference@16e07bae
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration image -> org.hibernate.type.BasicTypeReference@598778cc
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration blob -> org.hibernate.type.BasicTypeReference@3386ed8
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Blob -> org.hibernate.type.BasicTypeReference@3386ed8
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_blob -> org.hibernate.type.BasicTypeReference@727453a3
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_blob_wrapper -> org.hibernate.type.BasicTypeReference@67dc6b48
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration short -> org.hibernate.type.BasicTypeReference@57f2e67
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration short -> org.hibernate.type.BasicTypeReference@57f2e67
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Short -> org.hibernate.type.BasicTypeReference@57f2e67
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration integer -> org.hibernate.type.BasicTypeReference@4571cebe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration int -> org.hibernate.type.BasicTypeReference@4571cebe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Integer -> org.hibernate.type.BasicTypeReference@4571cebe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration long -> org.hibernate.type.BasicTypeReference@154864f8
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration long -> org.hibernate.type.BasicTypeReference@154864f8
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Long -> org.hibernate.type.BasicTypeReference@154864f8
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration float -> org.hibernate.type.BasicTypeReference@11cadb32
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration float -> org.hibernate.type.BasicTypeReference@11cadb32
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Float -> org.hibernate.type.BasicTypeReference@11cadb32
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration double -> org.hibernate.type.BasicTypeReference@6d3ad37a
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration double -> org.hibernate.type.BasicTypeReference@6d3ad37a
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Double -> org.hibernate.type.BasicTypeReference@6d3ad37a
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration big_integer -> org.hibernate.type.BasicTypeReference@26f5e45d
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.math.BigInteger -> org.hibernate.type.BasicTypeReference@26f5e45d
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration big_decimal -> org.hibernate.type.BasicTypeReference@704c3bdf
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.math.BigDecimal -> org.hibernate.type.BasicTypeReference@704c3bdf
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration character -> org.hibernate.type.BasicTypeReference@37986daf
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration char -> org.hibernate.type.BasicTypeReference@37986daf
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Character -> org.hibernate.type.BasicTypeReference@37986daf
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration character_nchar -> org.hibernate.type.BasicTypeReference@c82d925
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration string -> org.hibernate.type.BasicTypeReference@55c03e4
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.String -> org.hibernate.type.BasicTypeReference@55c03e4
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration nstring -> org.hibernate.type.BasicTypeReference@14df5253
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration characters -> org.hibernate.type.BasicTypeReference@605eb072
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration char[] -> org.hibernate.type.BasicTypeReference@605eb072
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration [C -> org.hibernate.type.BasicTypeReference@605eb072
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration wrapper-characters -> org.hibernate.type.BasicTypeReference@7a0f06ad
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration text -> org.hibernate.type.BasicTypeReference@1fa9692b
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ntext -> org.hibernate.type.BasicTypeReference@710afd47
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration clob -> org.hibernate.type.BasicTypeReference@64420e34
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Clob -> org.hibernate.type.BasicTypeReference@64420e34
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration nclob -> org.hibernate.type.BasicTypeReference@667a467f
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.NClob -> org.hibernate.type.BasicTypeReference@667a467f
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob -> org.hibernate.type.BasicTypeReference@324e8baa
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob_char_array -> org.hibernate.type.BasicTypeReference@1488a861
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob_character_array -> org.hibernate.type.BasicTypeReference@604f376a
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob -> org.hibernate.type.BasicTypeReference@5432dca2
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob_character_array -> org.hibernate.type.BasicTypeReference@12670e55
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob_char_array -> org.hibernate.type.BasicTypeReference@43fd77d8
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Duration -> org.hibernate.type.BasicTypeReference@5a90fcaa
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Duration -> org.hibernate.type.BasicTypeReference@5a90fcaa
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalDateTime -> org.hibernate.type.BasicTypeReference@1805ec96
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalDateTime -> org.hibernate.type.BasicTypeReference@1805ec96
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalDate -> org.hibernate.type.BasicTypeReference@32ba5c65
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalDate -> org.hibernate.type.BasicTypeReference@32ba5c65
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalTime -> org.hibernate.type.BasicTypeReference@1ad1be5d
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalTime -> org.hibernate.type.BasicTypeReference@1ad1be5d
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTime -> org.hibernate.type.BasicTypeReference@47797401
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetDateTime -> org.hibernate.type.BasicTypeReference@47797401
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTimeWithTimezone -> org.hibernate.type.BasicTypeReference@702f4124
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@10166230
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTime -> org.hibernate.type.BasicTypeReference@7221539
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetTime -> org.hibernate.type.BasicTypeReference@7221539
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeUtc -> org.hibernate.type.BasicTypeReference@b77b0a0
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeWithTimezone -> org.hibernate.type.BasicTypeReference@15be68b
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@22ff1372
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTime -> org.hibernate.type.BasicTypeReference@356341c9
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZonedDateTime -> org.hibernate.type.BasicTypeReference@356341c9
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTimeWithTimezone -> org.hibernate.type.BasicTypeReference@3a70575
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@5d96d434
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration date -> org.hibernate.type.BasicTypeReference@7283877
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Date -> org.hibernate.type.BasicTypeReference@7283877
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration time -> org.hibernate.type.BasicTypeReference@286a4c52
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Time -> org.hibernate.type.BasicTypeReference@286a4c52
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration timestamp -> org.hibernate.type.BasicTypeReference@13dd7887
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Timestamp -> org.hibernate.type.BasicTypeReference@13dd7887
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Date -> org.hibernate.type.BasicTypeReference@13dd7887
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar -> org.hibernate.type.BasicTypeReference@780129bc
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Calendar -> org.hibernate.type.BasicTypeReference@780129bc
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.GregorianCalendar -> org.hibernate.type.BasicTypeReference@780129bc
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar_date -> org.hibernate.type.BasicTypeReference@3e2c4d4b
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar_time -> org.hibernate.type.BasicTypeReference@44de8e00
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration instant -> org.hibernate.type.BasicTypeReference@3cbfdf5c
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Instant -> org.hibernate.type.BasicTypeReference@3cbfdf5c
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid -> org.hibernate.type.BasicTypeReference@4d825dbe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.UUID -> org.hibernate.type.BasicTypeReference@4d825dbe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration pg-uuid -> org.hibernate.type.BasicTypeReference@4d825dbe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid-binary -> org.hibernate.type.BasicTypeReference@11180750
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid-char -> org.hibernate.type.BasicTypeReference@210635fd
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration class -> org.hibernate.type.BasicTypeReference@63814bbe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Class -> org.hibernate.type.BasicTypeReference@63814bbe
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration currency -> org.hibernate.type.BasicTypeReference@3cb195dd
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Currency -> org.hibernate.type.BasicTypeReference@3cb195dd
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Currency -> org.hibernate.type.BasicTypeReference@3cb195dd
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration locale -> org.hibernate.type.BasicTypeReference@6dc2279c
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Locale -> org.hibernate.type.BasicTypeReference@6dc2279c
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration serializable -> org.hibernate.type.BasicTypeReference@7d7b4e04
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.io.Serializable -> org.hibernate.type.BasicTypeReference@7d7b4e04
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration timezone -> org.hibernate.type.BasicTypeReference@144e36ae
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.TimeZone -> org.hibernate.type.BasicTypeReference@144e36ae
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZoneOffset -> org.hibernate.type.BasicTypeReference@24615687
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZoneOffset -> org.hibernate.type.BasicTypeReference@24615687
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration url -> org.hibernate.type.BasicTypeReference@58636b50
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.net.URL -> org.hibernate.type.BasicTypeReference@58636b50
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration vector -> org.hibernate.type.BasicTypeReference@7f4f1536
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration row_version -> org.hibernate.type.BasicTypeReference@1ad1b737
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration object -> org.hibernate.type.JavaObjectType@15cee630
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Object -> org.hibernate.type.JavaObjectType@15cee630
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration null -> org.hibernate.type.NullType@39a8e2fa
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_date -> org.hibernate.type.BasicTypeReference@2f9addd4
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_time -> org.hibernate.type.BasicTypeReference@1c43df76
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_timestamp -> org.hibernate.type.BasicTypeReference@ff2266c
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar -> org.hibernate.type.BasicTypeReference@71b3ba5a
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar_date -> org.hibernate.type.BasicTypeReference@83ebdc5
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar_time -> org.hibernate.type.BasicTypeReference@a047bdb
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_binary -> org.hibernate.type.BasicTypeReference@14dbfdb1
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_serializable -> org.hibernate.type.BasicTypeReference@7856f41a
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3d02ff64
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(12, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2e013ba1) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2d8c729f)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(-9, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@740ee00f) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@430106cf)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(-3, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@647af13d) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2aac6fa7)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4003, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@29a1ec65) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@625db0e0)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4001, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@511d568f) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@1805ca5c)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4002, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3e61cffd) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3134b261)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2004, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@aa633e6) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3cc74fc4)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2005, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@c697186) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@185a7dd0)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2011, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2358443e) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@25e796fe)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NCharTypeDescriptor) replaced previous registration(CharTypeDescriptor)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NVarcharTypeDescriptor) replaced previous registration(VarcharTypeDescriptor)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(LongNVarcharTypeDescriptor) replaced previous registration(LongVarcharTypeDescriptor)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NClobTypeDescriptor(DEFAULT)) replaced previous registration(ClobTypeDescriptor(DEFAULT))
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(2005, ClobTypeDescriptor(STREAM_BINDING)) replaced previous registration(ClobTypeDescriptor(DEFAULT))
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration null -> org.hibernate.type.NullType@10f397d0
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Type registration key [null] overrode previous entry : `org.hibernate.type.NullType@39a8e2fa`
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.DurationType -> basicType@1(java.time.Duration,2)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Duration -> basicType@1(java.time.Duration,2)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Duration -> basicType@1(java.time.Duration,2)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.OffsetDateTimeType -> basicType@2(java.time.OffsetDateTime,3003)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTime -> basicType@2(java.time.OffsetDateTime,3003)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetDateTime -> basicType@2(java.time.OffsetDateTime,3003)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.ZonedDateTimeType -> basicType@3(java.time.ZonedDateTime,3003)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTime -> basicType@3(java.time.ZonedDateTime,3003)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZonedDateTime -> basicType@3(java.time.ZonedDateTime,3003)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.OffsetTimeType -> basicType@4(java.time.OffsetTime,3007)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTime -> basicType@4(java.time.OffsetTime,3007)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetTime -> basicType@4(java.time.OffsetTime,3007)
+2024-07-23 05:05:22 [main] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@6e78177b] to MetadataBuildingContext [org.hibernate.boot.internal.MetadataBuildingContextRootImpl@4ec37a42]
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@6e78177b] to SessionFactoryImplementor [org.hibernate.internal.SessionFactoryImpl@363d29dd]
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678723448 | took 1ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentee` where 1=0
+select * from `cogo-local`.`Mentee` where 1=0;
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678723451 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678723460 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678723469 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678723478 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentee` where 1=0
+select * from `cogo-local`.`Mentee` where 1=0;
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678723479 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] TRACE o.h.type.spi.TypeConfiguration$Scope - Handling #sessionFactoryCreated from [org.hibernate.internal.SessionFactoryImpl@363d29dd] for TypeConfiguration
+2024-07-23 05:05:23 [main] [transactionId=] [threadId=] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@316975be, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6b09fcda, org.springframework.security.web.context.SecurityContextHolderFilter@17734113, org.springframework.security.web.header.HeaderWriterFilter@49e3b86b, org.springframework.web.filter.CorsFilter@5cf4c93, com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter@55cd41f7, org.springframework.security.web.authentication.logout.LogoutFilter@6dd0e2f4, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@10587ce5, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@33dcbdc2, com.soongsil.CoffeeChat.config.jwt.JWTFilter@2ff30a75, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@307ca947, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@b38dc7d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@d15f98a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@704c3ca2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@746cb25d, org.springframework.security.web.session.SessionManagementFilter@771c4015, org.springframework.security.web.access.ExceptionTranslationFilter@686279e0, org.springframework.security.web.access.intercept.AuthorizationFilter@45c57dbd]
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Ant [pattern='/v3/api-docs/**']
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Ant [pattern='/swagger-ui/**']
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-resources/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-07-23 05:05:24 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Ant [pattern='/swagger-resources/**']
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  c.s.C.Concurrency.ConcurrencyTest - Started ConcurrencyTest in 3.386 seconds (process running for 4.006)
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    select
+        m1_0.mentor_id,
+        m1_0.birth,
+        m1_0.field,
+        m1_0.part,
+        m1_0.phone_num,
+        m1_0.picture 
+    from
+        Mentor m1_0 
+    where
+        m1_0.mentor_id=?
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725412 | took 0ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select m1_0.mentor_id,m1_0.birth,m1_0.field,m1_0.part,m1_0.phone_num,m1_0.picture from Mentor m1_0 where m1_0.mentor_id=?
+select m1_0.mentor_id,m1_0.birth,m1_0.field,m1_0.part,m1_0.phone_num,m1_0.picture from Mentor m1_0 where m1_0.mentor_id=1;
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725419 | took 0ms | commit | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    select
+        m1_0.mentee_id,
+        m1_0.birth,
+        m1_0.grade,
+        m1_0.memo,
+        m1_0.nickname,
+        m1_0.part,
+        m1_0.phone_num,
+        m1_0.picture 
+    from
+        Mentee m1_0 
+    where
+        m1_0.mentee_id=?
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725421 | took 0ms | statement | connection 3| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select m1_0.mentee_id,m1_0.birth,m1_0.grade,m1_0.memo,m1_0.nickname,m1_0.part,m1_0.phone_num,m1_0.picture from Mentee m1_0 where m1_0.mentee_id=?
+select m1_0.mentee_id,m1_0.birth,m1_0.grade,m1_0.memo,m1_0.nickname,m1_0.part,m1_0.phone_num,m1_0.picture from Mentee m1_0 where m1_0.mentee_id=1;
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725422 | took 0ms | commit | connection 3| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    select
+        pd1_0.possible_date_id,
+        pd1_0.date,
+        pd1_0.endTime,
+        pd1_0.isActive,
+        pd1_0.mentor_id,
+        pd1_0.startTime 
+    from
+        PossibleDate pd1_0 
+    where
+        pd1_0.possible_date_id=?
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725425 | took 0ms | statement | connection 4| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=?
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=2001;
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    update
+        PossibleDate 
+    set
+        date=?,
+        endTime=?,
+        isActive=?,
+        mentor_id=?,
+        startTime=? 
+    where
+        possible_date_id=?
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725437 | took 1ms | statement | connection 4| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+update PossibleDate set date=?,endTime=?,isActive=?,mentor_id=?,startTime=? where possible_date_id=?
+update PossibleDate set date='2024-06-25T00:00:00.000+0900',endTime='1970-01-01T11:00:00.000+0900',isActive=true,mentor_id=1,startTime='1970-01-01T10:00:00.000+0900' where possible_date_id=2001;
+2024-07-23 05:05:25 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678725439 | took 1ms | commit | connection 4| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 시작
+2024-07-23 05:05:25 [Thread-2] [transactionId=2] [threadId=140] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 시작
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] DEBUG org.hibernate.SQL - 
+    select
+        pd1_0.possible_date_id,
+        pd1_0.date,
+        pd1_0.endTime,
+        pd1_0.isActive,
+        pd1_0.mentor_id,
+        pd1_0.startTime 
+    from
+        PossibleDate pd1_0 
+    where
+        pd1_0.possible_date_id=?
+2024-07-23 05:05:25 [Thread-2] [transactionId=2] [threadId=140] DEBUG org.hibernate.SQL - 
+    select
+        pd1_0.possible_date_id,
+        pd1_0.date,
+        pd1_0.endTime,
+        pd1_0.isActive,
+        pd1_0.mentor_id,
+        pd1_0.startTime 
+    from
+        PossibleDate pd1_0 
+    where
+        pd1_0.possible_date_id=?
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] INFO  p6spy - #1721678725441 | took 0ms | statement | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=?
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=2001;
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        Application
+        (accept, date, endTime, mentee_id, mentor_id, startTime) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] INFO  p6spy - #1721678725445 | took 0ms | statement | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+insert into Application (accept,date,endTime,mentee_id,mentor_id,startTime) values (?,?,?,?,?,?)
+insert into Application (accept,date,endTime,mentee_id,mentor_id,startTime) values ('UNMATCHED','2024-06-25T00:00:00.000+0900','1970-01-01T11:00:00.000+0900',1,1,'1970-01-01T10:00:00.000+0900');
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] INFO  c.s.C.service.ApplicationService - aaaApplication 생성: com.soongsil.CoffeeChat.entity.Application@12024369
+2024-07-23 05:05:25 [Thread-1] [transactionId=1] [threadId=139] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 종료
+2024-07-23 05:05:25 [Thread-1] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    update
+        PossibleDate 
+    set
+        date=?,
+        endTime=?,
+        isActive=?,
+        mentor_id=?,
+        startTime=? 
+    where
+        possible_date_id=?
+2024-07-23 05:05:25 [Thread-1] [transactionId=] [threadId=] INFO  p6spy - #1721678725450 | took 0ms | statement | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+update PossibleDate set date=?,endTime=?,isActive=?,mentor_id=?,startTime=? where possible_date_id=?
+update PossibleDate set date='2024-06-25T00:00:00.000+0900',endTime='1970-01-01T11:00:00.000+0900',isActive=false,mentor_id=1,startTime='1970-01-01T10:00:00.000+0900' where possible_date_id=2001;
+2024-07-23 05:05:25 [Thread-1] [transactionId=] [threadId=] INFO  p6spy - #1721678725451 | took 0ms | commit | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:05:25 [Thread-2] [transactionId=2] [threadId=140] INFO  p6spy - #1721678725451 | took 10ms | statement | connection 5| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=?
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=2001;
+2024-07-23 05:05:25 [Thread-2] [transactionId=2] [threadId=140] ERROR c.s.C.service.ApplicationService - aaaAplication 생성 실패-Active하지 않음.
+2024-07-23 05:05:25 [Thread-2] [transactionId=2] [threadId=140] ERROR c.s.C.service.ApplicationService - aaaAplication 생성중 에러: 
+java.lang.Exception: The PossibleDate is already booked or does not exist.
+	at com.soongsil.CoffeeChat.service.ApplicationService.createApplicationIfPossible(ApplicationService.java:129)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:351)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:765)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:385)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:765)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:717)
+	at com.soongsil.CoffeeChat.service.ApplicationService$$SpringCGLIB$$0.createApplicationIfPossible(<generated>)
+	at com.soongsil.CoffeeChat.Concurrency.ConcurrencyTest.lambda$testConcurrency$1(ConcurrencyTest.java:57)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+2024-07-23 05:05:25 [Thread-2] [transactionId=2] [threadId=140] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 종료
+2024-07-23 05:05:25 [Thread-2] [transactionId=] [threadId=] INFO  p6spy - #1721678725453 | took 0ms | commit | connection 5| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:05:25 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-07-23 05:05:25 [SpringApplicationShutdownHook] [transactionId=] [threadId=] TRACE o.h.type.spi.TypeConfiguration$Scope - Handling #sessionFactoryClosed from [org.hibernate.internal.SessionFactoryImpl@363d29dd] for TypeConfiguration
+2024-07-23 05:05:25 [SpringApplicationShutdownHook] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Un-scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration$Scope@57589e0b] from SessionFactory [org.hibernate.internal.SessionFactoryImpl@363d29dd]
+2024-07-23 05:05:25 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-07-23 05:05:25 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-07-23 05:09:32 [main] [transactionId=] [threadId=] INFO  o.s.t.c.s.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.soongsil.CoffeeChat.Concurrency.ConcurrencyTest]: ConcurrencyTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-07-23 05:09:32 [main] [transactionId=] [threadId=] INFO  o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.soongsil.CoffeeChat.CoffeeChatApplication for test class com.soongsil.CoffeeChat.Concurrency.ConcurrencyTest
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  c.s.C.Concurrency.ConcurrencyTest - Starting ConcurrencyTest using Java 17.0.11 with PID 9498 (started by kimkyohwee in /Users/kimkyohwee/Documents/BE프로젝트/CoffeeChat/CoffeeChat-Server)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG c.s.C.Concurrency.ConcurrencyTest - Running with Spring Boot v3.2.2, Spring v6.1.3
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  c.s.C.Concurrency.ConcurrencyTest - No active profile set, falling back to 1 default profile: "default"
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 68 ms. Found 6 JPA repository interfaces.
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.ApplicationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.MenteeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.Mentor.MentorRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.RefreshRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.User.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration boolean -> org.hibernate.type.BasicTypeReference@308a9264
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration boolean -> org.hibernate.type.BasicTypeReference@308a9264
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Boolean -> org.hibernate.type.BasicTypeReference@308a9264
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration numeric_boolean -> org.hibernate.type.BasicTypeReference@7da77305
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.NumericBooleanConverter -> org.hibernate.type.BasicTypeReference@7da77305
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration true_false -> org.hibernate.type.BasicTypeReference@3cdfbbef
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.TrueFalseConverter -> org.hibernate.type.BasicTypeReference@3cdfbbef
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration yes_no -> org.hibernate.type.BasicTypeReference@7a1ddbf1
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.YesNoConverter -> org.hibernate.type.BasicTypeReference@7a1ddbf1
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte -> org.hibernate.type.BasicTypeReference@1e606f64
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte -> org.hibernate.type.BasicTypeReference@1e606f64
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Byte -> org.hibernate.type.BasicTypeReference@1e606f64
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration binary -> org.hibernate.type.BasicTypeReference@581918f6
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte[] -> org.hibernate.type.BasicTypeReference@581918f6
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration [B -> org.hibernate.type.BasicTypeReference@581918f6
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration binary_wrapper -> org.hibernate.type.BasicTypeReference@100807ca
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration wrapper-binary -> org.hibernate.type.BasicTypeReference@100807ca
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration image -> org.hibernate.type.BasicTypeReference@c67395
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration blob -> org.hibernate.type.BasicTypeReference@5fc7255c
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Blob -> org.hibernate.type.BasicTypeReference@5fc7255c
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_blob -> org.hibernate.type.BasicTypeReference@20a47036
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_blob_wrapper -> org.hibernate.type.BasicTypeReference@70c205bf
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration short -> org.hibernate.type.BasicTypeReference@43ab9ae9
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration short -> org.hibernate.type.BasicTypeReference@43ab9ae9
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Short -> org.hibernate.type.BasicTypeReference@43ab9ae9
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration integer -> org.hibernate.type.BasicTypeReference@2520aa05
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration int -> org.hibernate.type.BasicTypeReference@2520aa05
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Integer -> org.hibernate.type.BasicTypeReference@2520aa05
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration long -> org.hibernate.type.BasicTypeReference@26865b57
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration long -> org.hibernate.type.BasicTypeReference@26865b57
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Long -> org.hibernate.type.BasicTypeReference@26865b57
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration float -> org.hibernate.type.BasicTypeReference@46894dc5
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration float -> org.hibernate.type.BasicTypeReference@46894dc5
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Float -> org.hibernate.type.BasicTypeReference@46894dc5
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration double -> org.hibernate.type.BasicTypeReference@596afb2f
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration double -> org.hibernate.type.BasicTypeReference@596afb2f
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Double -> org.hibernate.type.BasicTypeReference@596afb2f
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration big_integer -> org.hibernate.type.BasicTypeReference@79ba0285
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.math.BigInteger -> org.hibernate.type.BasicTypeReference@79ba0285
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration big_decimal -> org.hibernate.type.BasicTypeReference@6df2a206
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.math.BigDecimal -> org.hibernate.type.BasicTypeReference@6df2a206
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration character -> org.hibernate.type.BasicTypeReference@61993d18
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration char -> org.hibernate.type.BasicTypeReference@61993d18
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Character -> org.hibernate.type.BasicTypeReference@61993d18
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration character_nchar -> org.hibernate.type.BasicTypeReference@6f240187
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration string -> org.hibernate.type.BasicTypeReference@46a388cc
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.String -> org.hibernate.type.BasicTypeReference@46a388cc
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration nstring -> org.hibernate.type.BasicTypeReference@3e39f08c
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration characters -> org.hibernate.type.BasicTypeReference@16e07bae
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration char[] -> org.hibernate.type.BasicTypeReference@16e07bae
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration [C -> org.hibernate.type.BasicTypeReference@16e07bae
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration wrapper-characters -> org.hibernate.type.BasicTypeReference@598778cc
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration text -> org.hibernate.type.BasicTypeReference@3386ed8
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ntext -> org.hibernate.type.BasicTypeReference@727453a3
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration clob -> org.hibernate.type.BasicTypeReference@67dc6b48
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Clob -> org.hibernate.type.BasicTypeReference@67dc6b48
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration nclob -> org.hibernate.type.BasicTypeReference@57f2e67
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.NClob -> org.hibernate.type.BasicTypeReference@57f2e67
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob -> org.hibernate.type.BasicTypeReference@4571cebe
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob_char_array -> org.hibernate.type.BasicTypeReference@154864f8
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob_character_array -> org.hibernate.type.BasicTypeReference@11cadb32
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob -> org.hibernate.type.BasicTypeReference@6d3ad37a
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob_character_array -> org.hibernate.type.BasicTypeReference@26f5e45d
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob_char_array -> org.hibernate.type.BasicTypeReference@704c3bdf
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Duration -> org.hibernate.type.BasicTypeReference@37986daf
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Duration -> org.hibernate.type.BasicTypeReference@37986daf
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalDateTime -> org.hibernate.type.BasicTypeReference@c82d925
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalDateTime -> org.hibernate.type.BasicTypeReference@c82d925
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalDate -> org.hibernate.type.BasicTypeReference@55c03e4
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalDate -> org.hibernate.type.BasicTypeReference@55c03e4
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalTime -> org.hibernate.type.BasicTypeReference@14df5253
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalTime -> org.hibernate.type.BasicTypeReference@14df5253
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTime -> org.hibernate.type.BasicTypeReference@605eb072
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetDateTime -> org.hibernate.type.BasicTypeReference@605eb072
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTimeWithTimezone -> org.hibernate.type.BasicTypeReference@7a0f06ad
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@1fa9692b
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTime -> org.hibernate.type.BasicTypeReference@710afd47
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetTime -> org.hibernate.type.BasicTypeReference@710afd47
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeUtc -> org.hibernate.type.BasicTypeReference@64420e34
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeWithTimezone -> org.hibernate.type.BasicTypeReference@667a467f
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@324e8baa
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTime -> org.hibernate.type.BasicTypeReference@1488a861
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZonedDateTime -> org.hibernate.type.BasicTypeReference@1488a861
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTimeWithTimezone -> org.hibernate.type.BasicTypeReference@604f376a
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@5432dca2
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration date -> org.hibernate.type.BasicTypeReference@12670e55
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Date -> org.hibernate.type.BasicTypeReference@12670e55
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration time -> org.hibernate.type.BasicTypeReference@43fd77d8
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Time -> org.hibernate.type.BasicTypeReference@43fd77d8
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration timestamp -> org.hibernate.type.BasicTypeReference@5a90fcaa
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Timestamp -> org.hibernate.type.BasicTypeReference@5a90fcaa
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Date -> org.hibernate.type.BasicTypeReference@5a90fcaa
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar -> org.hibernate.type.BasicTypeReference@1805ec96
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Calendar -> org.hibernate.type.BasicTypeReference@1805ec96
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.GregorianCalendar -> org.hibernate.type.BasicTypeReference@1805ec96
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar_date -> org.hibernate.type.BasicTypeReference@32ba5c65
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar_time -> org.hibernate.type.BasicTypeReference@1ad1be5d
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration instant -> org.hibernate.type.BasicTypeReference@47797401
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Instant -> org.hibernate.type.BasicTypeReference@47797401
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid -> org.hibernate.type.BasicTypeReference@702f4124
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.UUID -> org.hibernate.type.BasicTypeReference@702f4124
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration pg-uuid -> org.hibernate.type.BasicTypeReference@702f4124
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid-binary -> org.hibernate.type.BasicTypeReference@10166230
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid-char -> org.hibernate.type.BasicTypeReference@7221539
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration class -> org.hibernate.type.BasicTypeReference@b77b0a0
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Class -> org.hibernate.type.BasicTypeReference@b77b0a0
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration currency -> org.hibernate.type.BasicTypeReference@15be68b
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Currency -> org.hibernate.type.BasicTypeReference@15be68b
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Currency -> org.hibernate.type.BasicTypeReference@15be68b
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration locale -> org.hibernate.type.BasicTypeReference@22ff1372
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Locale -> org.hibernate.type.BasicTypeReference@22ff1372
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration serializable -> org.hibernate.type.BasicTypeReference@356341c9
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.io.Serializable -> org.hibernate.type.BasicTypeReference@356341c9
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration timezone -> org.hibernate.type.BasicTypeReference@3a70575
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.TimeZone -> org.hibernate.type.BasicTypeReference@3a70575
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZoneOffset -> org.hibernate.type.BasicTypeReference@5d96d434
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZoneOffset -> org.hibernate.type.BasicTypeReference@5d96d434
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration url -> org.hibernate.type.BasicTypeReference@7283877
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.net.URL -> org.hibernate.type.BasicTypeReference@7283877
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration vector -> org.hibernate.type.BasicTypeReference@286a4c52
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration row_version -> org.hibernate.type.BasicTypeReference@13dd7887
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration object -> org.hibernate.type.JavaObjectType@17136390
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Object -> org.hibernate.type.JavaObjectType@17136390
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration null -> org.hibernate.type.NullType@64c95480
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_date -> org.hibernate.type.BasicTypeReference@69499c6f
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_time -> org.hibernate.type.BasicTypeReference@3451fc88
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_timestamp -> org.hibernate.type.BasicTypeReference@1e0294a7
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar -> org.hibernate.type.BasicTypeReference@3041beb3
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar_date -> org.hibernate.type.BasicTypeReference@15cee630
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar_time -> org.hibernate.type.BasicTypeReference@2e40fdbd
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_binary -> org.hibernate.type.BasicTypeReference@246de37e
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_serializable -> org.hibernate.type.BasicTypeReference@19647566
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@31dbf5bb
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(12, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@74e2cfc5) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@4a5d5b38)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(-9, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@7a47f0be) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2d8087da)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(-3, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@4f7ef948) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@6fdaef04)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4003, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@2a5d2041) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3cacc87)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4001, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3bc6c10f) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3dcbbbc)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4002, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@4040ccae) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@15bb8ed5)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2004, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@18f8ebd4) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@7e1fb22c)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2005, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@38fc34fd) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@7178d811)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2011, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@2e013ba1) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@2d8c729f)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NCharTypeDescriptor) replaced previous registration(CharTypeDescriptor)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NVarcharTypeDescriptor) replaced previous registration(VarcharTypeDescriptor)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(LongNVarcharTypeDescriptor) replaced previous registration(LongVarcharTypeDescriptor)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NClobTypeDescriptor(DEFAULT)) replaced previous registration(ClobTypeDescriptor(DEFAULT))
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(2005, ClobTypeDescriptor(STREAM_BINDING)) replaced previous registration(ClobTypeDescriptor(DEFAULT))
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration null -> org.hibernate.type.NullType@2ba318c2
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Type registration key [null] overrode previous entry : `org.hibernate.type.NullType@64c95480`
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.DurationType -> basicType@1(java.time.Duration,2)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Duration -> basicType@1(java.time.Duration,2)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Duration -> basicType@1(java.time.Duration,2)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.OffsetDateTimeType -> basicType@2(java.time.OffsetDateTime,3003)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTime -> basicType@2(java.time.OffsetDateTime,3003)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetDateTime -> basicType@2(java.time.OffsetDateTime,3003)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.ZonedDateTimeType -> basicType@3(java.time.ZonedDateTime,3003)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTime -> basicType@3(java.time.ZonedDateTime,3003)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZonedDateTime -> basicType@3(java.time.ZonedDateTime,3003)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.OffsetTimeType -> basicType@4(java.time.OffsetTime,3007)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTime -> basicType@4(java.time.OffsetTime,3007)
+2024-07-23 05:09:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetTime -> basicType@4(java.time.OffsetTime,3007)
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@67c2b55d] to MetadataBuildingContext [org.hibernate.boot.internal.MetadataBuildingContextRootImpl@5db04bd2]
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@67c2b55d] to SessionFactoryImplementor [org.hibernate.internal.SessionFactoryImpl@7b9f7087]
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678974478 | took 1ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentee` where 1=0
+select * from `cogo-local`.`Mentee` where 1=0;
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678974480 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678974491 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678974501 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678974509 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentee` where 1=0
+select * from `cogo-local`.`Mentee` where 1=0;
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678974510 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select * from `cogo-local`.`Mentor` where 1=0
+select * from `cogo-local`.`Mentor` where 1=0;
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] TRACE o.h.type.spi.TypeConfiguration$Scope - Handling #sessionFactoryCreated from [org.hibernate.internal.SessionFactoryImpl@7b9f7087] for TypeConfiguration
+2024-07-23 05:09:34 [main] [transactionId=] [threadId=] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1da77a43, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@63604641, org.springframework.security.web.context.SecurityContextHolderFilter@36573ec5, org.springframework.security.web.header.HeaderWriterFilter@6ba3eee9, org.springframework.web.filter.CorsFilter@1313dea8, com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter@74bca236, org.springframework.security.web.authentication.logout.LogoutFilter@34989ceb, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@293ccbdd, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@64a009e7, com.soongsil.CoffeeChat.config.jwt.JWTFilter@526fbb80, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@3b42d7df, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@33dcbdc2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1ef6977b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@674cd2da, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3e37c38f, org.springframework.security.web.session.SessionManagementFilter@3c634a04, org.springframework.security.web.access.ExceptionTranslationFilter@214738c1, org.springframework.security.web.access.intercept.AuthorizationFilter@2cbb9702]
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/v3/api-docs/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Ant [pattern='/v3/api-docs/**']
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-ui/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Ant [pattern='/swagger-ui/**']
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Ant [pattern='/swagger-resources/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-07-23 05:09:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Ant [pattern='/swagger-resources/**']
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  c.s.C.Concurrency.ConcurrencyTest - Started ConcurrencyTest in 3.285 seconds (process running for 3.86)
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    select
+        m1_0.mentor_id,
+        m1_0.birth,
+        m1_0.field,
+        m1_0.part,
+        m1_0.phone_num,
+        m1_0.picture 
+    from
+        Mentor m1_0 
+    where
+        m1_0.mentor_id=?
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976490 | took 0ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select m1_0.mentor_id,m1_0.birth,m1_0.field,m1_0.part,m1_0.phone_num,m1_0.picture from Mentor m1_0 where m1_0.mentor_id=?
+select m1_0.mentor_id,m1_0.birth,m1_0.field,m1_0.part,m1_0.phone_num,m1_0.picture from Mentor m1_0 where m1_0.mentor_id=1;
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976497 | took 0ms | commit | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    select
+        m1_0.mentee_id,
+        m1_0.birth,
+        m1_0.grade,
+        m1_0.memo,
+        m1_0.nickname,
+        m1_0.part,
+        m1_0.phone_num,
+        m1_0.picture 
+    from
+        Mentee m1_0 
+    where
+        m1_0.mentee_id=?
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976499 | took 0ms | statement | connection 3| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select m1_0.mentee_id,m1_0.birth,m1_0.grade,m1_0.memo,m1_0.nickname,m1_0.part,m1_0.phone_num,m1_0.picture from Mentee m1_0 where m1_0.mentee_id=?
+select m1_0.mentee_id,m1_0.birth,m1_0.grade,m1_0.memo,m1_0.nickname,m1_0.part,m1_0.phone_num,m1_0.picture from Mentee m1_0 where m1_0.mentee_id=1;
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976500 | took 0ms | commit | connection 3| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    select
+        pd1_0.possible_date_id,
+        pd1_0.date,
+        pd1_0.endTime,
+        pd1_0.isActive,
+        pd1_0.mentor_id,
+        pd1_0.startTime 
+    from
+        PossibleDate pd1_0 
+    where
+        pd1_0.possible_date_id=?
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976503 | took 0ms | statement | connection 4| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=?
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=2002;
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    update
+        PossibleDate 
+    set
+        date=?,
+        endTime=?,
+        isActive=?,
+        mentor_id=?,
+        startTime=? 
+    where
+        possible_date_id=?
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976516 | took 1ms | statement | connection 4| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+update PossibleDate set date=?,endTime=?,isActive=?,mentor_id=?,startTime=? where possible_date_id=?
+update PossibleDate set date='2024-06-25T00:00:00.000+0900',endTime='1970-01-01T11:00:00.000+0900',isActive=true,mentor_id=1,startTime='1970-01-01T10:00:00.000+0900' where possible_date_id=2002;
+2024-07-23 05:09:36 [main] [transactionId=] [threadId=] INFO  p6spy - #1721678976517 | took 0ms | commit | connection 4| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 시작
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 시작
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] DEBUG org.hibernate.SQL - 
+    select
+        pd1_0.possible_date_id,
+        pd1_0.date,
+        pd1_0.endTime,
+        pd1_0.isActive,
+        pd1_0.mentor_id,
+        pd1_0.startTime 
+    from
+        PossibleDate pd1_0 
+    where
+        pd1_0.possible_date_id=?
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] DEBUG org.hibernate.SQL - 
+    select
+        pd1_0.possible_date_id,
+        pd1_0.date,
+        pd1_0.endTime,
+        pd1_0.isActive,
+        pd1_0.mentor_id,
+        pd1_0.startTime 
+    from
+        PossibleDate pd1_0 
+    where
+        pd1_0.possible_date_id=?
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] INFO  p6spy - #1721678976519 | took 0ms | statement | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=?
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=2002;
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] INFO  p6spy - #1721678976520 | took 0ms | statement | connection 5| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=?
+select pd1_0.possible_date_id,pd1_0.date,pd1_0.endTime,pd1_0.isActive,pd1_0.mentor_id,pd1_0.startTime from PossibleDate pd1_0 where pd1_0.possible_date_id=2002;
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        Application
+        (accept, date, endTime, mentee_id, mentor_id, startTime) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        Application
+        (accept, date, endTime, mentee_id, mentor_id, startTime) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] INFO  p6spy - #1721678976523 | took 0ms | statement | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+insert into Application (accept,date,endTime,mentee_id,mentor_id,startTime) values (?,?,?,?,?,?)
+insert into Application (accept,date,endTime,mentee_id,mentor_id,startTime) values ('UNMATCHED','2024-06-25T00:00:00.000+0900','1970-01-01T11:00:00.000+0900',1,1,'1970-01-01T10:00:00.000+0900');
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] INFO  p6spy - #1721678976523 | took 0ms | statement | connection 5| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+insert into Application (accept,date,endTime,mentee_id,mentor_id,startTime) values (?,?,?,?,?,?)
+insert into Application (accept,date,endTime,mentee_id,mentor_id,startTime) values ('UNMATCHED','2024-06-25T00:00:00.000+0900','1970-01-01T11:00:00.000+0900',1,1,'1970-01-01T10:00:00.000+0900');
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] INFO  c.s.C.service.ApplicationService - aaaApplication 생성: com.soongsil.CoffeeChat.entity.Application@7f941ded
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] INFO  c.s.C.service.ApplicationService - aaaApplication 생성: com.soongsil.CoffeeChat.entity.Application@1340867a
+2024-07-23 05:09:36 [Thread-1] [transactionId=2] [threadId=139] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 종료
+2024-07-23 05:09:36 [Thread-2] [transactionId=1] [threadId=140] INFO  c.s.C.service.ApplicationService - aaa트랜잭션 종료
+2024-07-23 05:09:36 [Thread-2] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    update
+        PossibleDate 
+    set
+        date=?,
+        endTime=?,
+        isActive=?,
+        mentor_id=?,
+        startTime=? 
+    where
+        possible_date_id=?
+2024-07-23 05:09:36 [Thread-1] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    update
+        PossibleDate 
+    set
+        date=?,
+        endTime=?,
+        isActive=?,
+        mentor_id=?,
+        startTime=? 
+    where
+        possible_date_id=?
+2024-07-23 05:09:36 [Thread-1] [transactionId=] [threadId=] INFO  p6spy - #1721678976528 | took 0ms | statement | connection 5| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+update PossibleDate set date=?,endTime=?,isActive=?,mentor_id=?,startTime=? where possible_date_id=?
+update PossibleDate set date='2024-06-25T00:00:00.000+0900',endTime='1970-01-01T11:00:00.000+0900',isActive=false,mentor_id=1,startTime='1970-01-01T10:00:00.000+0900' where possible_date_id=2002;
+2024-07-23 05:09:36 [Thread-1] [transactionId=] [threadId=] INFO  p6spy - #1721678976529 | took 0ms | commit | connection 5| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:09:36 [Thread-2] [transactionId=] [threadId=] INFO  p6spy - #1721678976529 | took 1ms | statement | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+update PossibleDate set date=?,endTime=?,isActive=?,mentor_id=?,startTime=? where possible_date_id=?
+update PossibleDate set date='2024-06-25T00:00:00.000+0900',endTime='1970-01-01T11:00:00.000+0900',isActive=false,mentor_id=1,startTime='1970-01-01T10:00:00.000+0900' where possible_date_id=2002;
+2024-07-23 05:09:36 [Thread-2] [transactionId=] [threadId=] INFO  p6spy - #1721678976530 | took 0ms | commit | connection 6| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+;
+2024-07-23 05:09:36 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-07-23 05:09:36 [SpringApplicationShutdownHook] [transactionId=] [threadId=] TRACE o.h.type.spi.TypeConfiguration$Scope - Handling #sessionFactoryClosed from [org.hibernate.internal.SessionFactoryImpl@7b9f7087] for TypeConfiguration
+2024-07-23 05:09:36 [SpringApplicationShutdownHook] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Un-scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration$Scope@69852d58] from SessionFactory [org.hibernate.internal.SessionFactoryImpl@7b9f7087]
+2024-07-23 05:09:36 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-07-23 05:09:36 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
