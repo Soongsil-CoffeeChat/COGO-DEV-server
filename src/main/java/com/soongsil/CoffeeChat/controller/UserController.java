@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @PostMapping("/phone")
-    @Operation(summary="이미지 저장하기")
+    @Operation(summary="번호 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserPhone(Authentication authentication,
                                               @RequestParam("phone") String phone) throws Exception {
