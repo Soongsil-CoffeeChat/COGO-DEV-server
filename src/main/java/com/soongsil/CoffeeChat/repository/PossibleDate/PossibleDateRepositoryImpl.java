@@ -24,7 +24,8 @@ public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom{
                 select(new QPossibleDateRequestDto(
                         possibleDate.date,
                         possibleDate.startTime,
-                        possibleDate.endTime
+                        possibleDate.endTime,
+                        possibleDate.id.as("possibleDateId")
                 ))
                 .from(user)
                 .join(user.mentor, mentor)
