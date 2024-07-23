@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -45,48 +48,62 @@ public class ApplicationService {
 	@Autowired
 	private ApplicationContext applicationContext; // 프록시를 통해 자신을 호출하기 위해 ApplicationContext 주입
 
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
+
+
 	@Transactional
 	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws Exception {
-		// 필요한 엔티티들 영속성 컨텍스트에 모두 올리기
-		System.out.println("mentorid: " + request.getMentorId() + ", " + request.getDate() + ", " + request.getStartTime() + ", " + request.getEndTime());
-		User findMentorUser = userRepository.findByMentorIdWithFetch(request.getMentorId());
-		Mentor findMentor = findMentorUser.getMentor();
-		User findMenteeUser = userRepository.findByUsername(userName);
-		Mentee findMentee = findMenteeUser.getMentee();
+		String lockKey = "lock:" + request.getMentorId() + ":" + request.getStartTime();  //락 이름
+		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-// 사용자가 신청한 시간대에 해당하는 PossibleDate의 Active 변경로직
-		LocalTime startTime = request.getStartTime();
-
-// 특정 mentorId와 startTime을 가진 PossibleDate 엔티티를 가져오는 JPQL 쿼리
-		TypedQuery<PossibleDate> query = em.createQuery(
-				"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime",
-				PossibleDate.class);
-		query.setParameter("mentorId", request.getMentorId());
-		query.setParameter("startTime", startTime);
-
-// 결과를 가져옴
-		Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
-
-// 찾은 PossibleDate의 Active상태 변경
-		if (possibleDateOpt.isPresent()) {
-			PossibleDate possibleDate = possibleDateOpt.get();
-			System.out.println("possibleDate.getId() = " + possibleDate.getId());
-			possibleDate.setActive(false);
-			possibleDateRepository.save(possibleDate);
-		} else {
-			throw new Exception("NOT FOUND"); // 500에러
+		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10, TimeUnit.SECONDS);  //락은 10초만 유지
+		if (!isLockAcquired) {  //락 획득 못함
+			throw new IllegalStateException("Lock을 획득하지 못하였습니다.");
 		}
 
-// 성사된 커피챗 생성후 반환
-		Application savedApplication = applicationRepository.save(request.toEntity(findMentor, findMentee));
+		try {
+			System.out.println("mentorid: " + request.getMentorId() + ", " + request.getDate() + ", " + request.getStartTime() + ", " + request.getEndTime());
+			User findMentorUser = userRepository.findByMentorIdWithFetch(request.getMentorId());
+			Mentor findMentor = findMentorUser.getMentor();
+			User findMenteeUser = userRepository.findByUsername(userName);
+			Mentee findMentee = findMenteeUser.getMentee();
 
-// 비동기 메일 발송 메서드를 프록시를 통해 호출
-		ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
-		proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(), findMentorUser.getName(),
-				findMenteeUser.getName(), savedApplication.getDate(), savedApplication.getStartTime(),
-				savedApplication.getEndTime());
+			LocalTime startTime = request.getStartTime();
+			LocalDate date=request.getDate();
+			//possibleDate 불러오는 JPQL
+			TypedQuery<PossibleDate> query = em.createQuery(
+					"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
+					PossibleDate.class);
+			query.setParameter("mentorId", request.getMentorId());
+			query.setParameter("startTime", startTime);
+			query.setParameter("date", date);
 
-		return ApplicationCreateResponse.from(savedApplication);
+			Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
+
+			if (possibleDateOpt.isPresent()) {
+				PossibleDate possibleDate = possibleDateOpt.get();
+				if (!possibleDate.isActive()) {  //이미 신청된 possibleDate
+					throw new IllegalStateException("이미 신청된 시간입니다.");
+				}
+				System.out.println("possibleDate.getId() = " + possibleDate.getId());
+				possibleDate.setActive(false);
+				possibleDateRepository.save(possibleDate);
+			} else {
+				throw new Exception("NOT FOUND");
+			}
+
+			Application savedApplication = applicationRepository.save(request.toEntity(findMentor, findMentee));
+
+			ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
+			proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(), findMentorUser.getName(),
+					findMenteeUser.getName(), savedApplication.getDate(), savedApplication.getStartTime(),
+					savedApplication.getEndTime());
+
+			return ApplicationCreateResponse.from(savedApplication);
+		} finally {
+			redisTemplate.delete(lockKey);
+		}
 	}
 
 	@Async("mailExecutor")
