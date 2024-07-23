@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -54,12 +56,12 @@ public class ApplicationService {
 
 	@Transactional
 	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws Exception {
-		String lockKey = "lock:" + request.getMentorId() + ":" + request.getStartTime();  //락 이름
+		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+ request.getStartTime();
 		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10, TimeUnit.SECONDS);  //락은 10초만 유지
-		if (!isLockAcquired) {  //락 획득 못함
-			throw new IllegalStateException("Lock을 획득하지 못하였습니다.");
+		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10, TimeUnit.SECONDS);
+		if (!isLockAcquired) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Lock을 획득하지 못하였습니다.");  //409반환
 		}
 
 		try {
@@ -70,8 +72,9 @@ public class ApplicationService {
 			Mentee findMentee = findMenteeUser.getMentee();
 
 			LocalTime startTime = request.getStartTime();
-			LocalDate date=request.getDate();
-			//possibleDate 불러오는 JPQL
+			LocalDate date = request.getDate();
+
+			// possibleDate 불러오는 JPQL
 			TypedQuery<PossibleDate> query = em.createQuery(
 					"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
 					PossibleDate.class);
@@ -83,8 +86,8 @@ public class ApplicationService {
 
 			if (possibleDateOpt.isPresent()) {
 				PossibleDate possibleDate = possibleDateOpt.get();
-				if (!possibleDate.isActive()) {  //이미 신청된 possibleDate
-					throw new IllegalStateException("이미 신청된 시간입니다.");
+				if (!possibleDate.isActive()) {
+					throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
 				}
 				System.out.println("possibleDate.getId() = " + possibleDate.getId());
 				possibleDate.setActive(false);
