@@ -56,6 +56,7 @@ public class ApplicationService {
 
 	@Transactional
 	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws Exception {
+		System.out.println("여긴들어옴");
 		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+ request.getStartTime();
 		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 

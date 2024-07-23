@@ -10,7 +10,9 @@ import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class ApplicationCreateRequest {
 	@JsonProperty("date")
