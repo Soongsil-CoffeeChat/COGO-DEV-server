@@ -28,6 +28,13 @@ public class ApplicationCreateRequest {
 	@JsonProperty("mentor_id")
 	private Long mentorId;
 
+	public ApplicationCreateRequest(LocalDate date, LocalTime startTime, LocalTime endTime, Long mentorId) {
+		this.date=date;
+		this.startTime=startTime;
+		this.endTime=endTime;
+		this.mentorId=mentorId;
+	}
+
 	public Application toEntity(Mentor mentor, Mentee mentee) {
 		return Application.builder()
 			.date(this.date)
