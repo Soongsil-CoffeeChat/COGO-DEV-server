@@ -10,7 +10,9 @@ import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 public class ApplicationCreateRequest {
 	@JsonProperty("date")
@@ -27,6 +29,13 @@ public class ApplicationCreateRequest {
 
 	@JsonProperty("mentor_id")
 	private Long mentorId;
+
+	public ApplicationCreateRequest(LocalDate date, LocalTime startTime, LocalTime endTime, Long mentorId) {
+		this.date=date;
+		this.startTime=startTime;
+		this.endTime=endTime;
+		this.mentorId=mentorId;
+	}
 
 	public Application toEntity(Mentor mentor, Mentee mentee) {
 		return Application.builder()
