@@ -5,13 +5,7 @@ import java.util.Set;
 
 import com.soongsil.CoffeeChat.dto.MentorDto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -35,6 +29,9 @@ public class Mentor {
 	@Column
 	private int club;
 
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
+	private Introduction introduction;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
