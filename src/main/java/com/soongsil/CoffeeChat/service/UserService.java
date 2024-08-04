@@ -94,4 +94,9 @@ public class UserService {
 		user.setPhoneNum(dto.getPhoneNum());
 		return userRepository.save(user);
 	}
+
+	public ChangeUserInfoDto findUserInfo(String username){
+		User user=userRepository.findByUsername(username);
+		return ChangeUserInfoDto.toDto(user);
+	}
 }
