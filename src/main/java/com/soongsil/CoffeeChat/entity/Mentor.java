@@ -30,7 +30,7 @@ public class Mentor {
 	private Long id;
 
 	@Column
-	private String part;
+	private int part;
 
 	@Column
 	private int club;
@@ -45,7 +45,7 @@ public class Mentor {
 	private Set<PossibleDate> possibleDates = new HashSet<>();
 
 	@Builder
-	public Mentor(int club, String part) {
+	public Mentor(int club, int part) {
 		this.club=club;
 		this.part = part;
 	}

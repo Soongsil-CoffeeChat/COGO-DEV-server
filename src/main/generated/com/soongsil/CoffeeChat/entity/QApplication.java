@@ -24,17 +24,13 @@ public class QApplication extends EntityPathBase<Application> {
 
     public final EnumPath<com.soongsil.CoffeeChat.enums.ApplicationStatus> accept = createEnum("accept", com.soongsil.CoffeeChat.enums.ApplicationStatus.class);
 
-    public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
-
-    public final TimePath<java.time.LocalTime> endTime = createTime("endTime", java.time.LocalTime.class);
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final StringPath memo = createString("memo");
 
     public final QMentee mentee;
 
     public final QMentor mentor;
-
-    public final TimePath<java.time.LocalTime> startTime = createTime("startTime", java.time.LocalTime.class);
 
     public QApplication(String variable) {
         this(Application.class, forVariable(variable), INITS);

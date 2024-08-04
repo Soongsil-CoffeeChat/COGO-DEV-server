@@ -22,19 +22,11 @@ public class QMentor extends EntityPathBase<Mentor> {
 
     public final SetPath<Application, QApplication> applications = this.<Application, QApplication>createSet("applications", Application.class, QApplication.class, PathInits.DIRECT2);
 
-    public final StringPath birth = createString("birth");
-
-    public final ListPath<Club, QClub> clubs = this.<Club, QClub>createList("clubs", Club.class, QClub.class, PathInits.DIRECT2);
-
-    public final StringPath field = createString("field");
+    public final NumberPath<Integer> club = createNumber("club", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath part = createString("part");
-
-    public final StringPath phoneNum = createString("phoneNum");
-
-    public final StringPath picture = createString("picture");
+    public final NumberPath<Integer> part = createNumber("part", Integer.class);
 
     public final SetPath<PossibleDate, QPossibleDate> possibleDates = this.<PossibleDate, QPossibleDate>createSet("possibleDates", PossibleDate.class, QPossibleDate.class, PathInits.DIRECT2);
 

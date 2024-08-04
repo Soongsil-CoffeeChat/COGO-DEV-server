@@ -7,7 +7,8 @@ import com.soongsil.CoffeeChat.entity.User;
 import java.util.List;
 
 public interface MentorRepositoryCustom {
-    List<ResponseMentorListInfo> getMentorListByPart(String part);  //일반 join
-    List<User> getMentorListByPart2(String part); //fetch join
+    List<ResponseMentorListInfo> getMentorListByPart(int part);  //일반 join
+    List<ResponseMentorListInfo> getMentorListByClub(int club);
+    List<User> getMentorListByPart2(int part); //fetch join
 
 }

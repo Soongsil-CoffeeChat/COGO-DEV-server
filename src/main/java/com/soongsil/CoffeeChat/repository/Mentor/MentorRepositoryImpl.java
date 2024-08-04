@@ -17,14 +17,14 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
     }
 
     @Override
-    public List<ResponseMentorListInfo> getMentorListByPart(String part) { //일반 join
+    public List<ResponseMentorListInfo> getMentorListByPart(int part) { //일반 join
         return queryFactory
                 .select(new QResponseMentorListInfo(
-                        mentor.picture,
+                        user.picture,
                         user.name.as("mentorName"),
-                        mentor.field,
-                        user.username,
-                        mentor.part))
+                        mentor.part,
+                        mentor.club,
+                        user.username))
                 .from(user)
                 .join(user.mentor, mentor)
                 .where(mentor.part.eq(part))
@@ -32,7 +32,22 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
     }
 
     @Override
-    public List<User> getMentorListByPart2(String part) {  //fetch join
+    public List<ResponseMentorListInfo> getMentorListByClub(int club) { //일반 join
+        return queryFactory
+                .select(new QResponseMentorListInfo(
+                        user.picture,
+                        user.name.as("mentorName"),
+                        mentor.part,
+                        mentor.club,
+                        user.username))
+                .from(user)
+                .join(user.mentor, mentor)
+                .where(mentor.club.eq(club))
+                .fetch();
+    }
+
+    @Override
+    public List<User> getMentorListByPart2(int part) {  //fetch join
         return queryFactory
                 .selectFrom(user)
                 .join(user.mentor, mentor).fetchJoin()
