@@ -52,7 +52,7 @@ public class QPossibleDate extends EntityPathBase<PossibleDate> {
 
     public QPossibleDate(Class<? extends PossibleDate> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.mentor = inits.isInitialized("mentor") ? new QMentor(forProperty("mentor")) : null;
+        this.mentor = inits.isInitialized("mentor") ? new QMentor(forProperty("mentor"), inits.get("mentor")) : null;
     }
 
 }

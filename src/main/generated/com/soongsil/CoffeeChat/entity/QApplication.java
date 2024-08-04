@@ -51,7 +51,7 @@ public class QApplication extends EntityPathBase<Application> {
     public QApplication(Class<? extends Application> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.mentee = inits.isInitialized("mentee") ? new QMentee(forProperty("mentee")) : null;
-        this.mentor = inits.isInitialized("mentor") ? new QMentor(forProperty("mentor")) : null;
+        this.mentor = inits.isInitialized("mentor") ? new QMentor(forProperty("mentor"), inits.get("mentor")) : null;
     }
 
 }

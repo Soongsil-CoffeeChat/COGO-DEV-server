@@ -59,7 +59,7 @@ public class QUser extends EntityPathBase<User> {
     public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.mentee = inits.isInitialized("mentee") ? new QMentee(forProperty("mentee")) : null;
-        this.mentor = inits.isInitialized("mentor") ? new QMentor(forProperty("mentor")) : null;
+        this.mentor = inits.isInitialized("mentor") ? new QMentor(forProperty("mentor"), inits.get("mentor")) : null;
     }
 
 }

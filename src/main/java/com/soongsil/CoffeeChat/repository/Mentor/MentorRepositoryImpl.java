@@ -3,9 +3,12 @@ package com.soongsil.CoffeeChat.repository.Mentor;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.dto.QResponseMentorListInfo;
 import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
+import com.soongsil.CoffeeChat.entity.QIntroduction;
 import com.soongsil.CoffeeChat.entity.User;
 
 import java.util.List;
+
+import static com.soongsil.CoffeeChat.entity.QIntroduction.introduction;
 import static com.soongsil.CoffeeChat.entity.QMentor.mentor;
 import static com.soongsil.CoffeeChat.entity.QUser.user;
 
@@ -24,9 +27,14 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
                         user.name.as("mentorName"),
                         mentor.part,
                         mentor.club,
-                        user.username))
+                        user.username,
+                        mentor.id.as("mentorId"),
+                        introduction.title,
+                        introduction.description
+                        ))
                 .from(user)
                 .join(user.mentor, mentor)
+                .join(mentor.introduction, introduction)
                 .where(mentor.part.eq(part))
                 .fetch();
     }
@@ -39,9 +47,14 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
                         user.name.as("mentorName"),
                         mentor.part,
                         mentor.club,
-                        user.username))
+                        user.username,
+                        mentor.id.as("mentorId"),
+                        introduction.title,
+                        introduction.description
+                        ))
                 .from(user)
                 .join(user.mentor, mentor)
+                .join(mentor.introduction, introduction)
                 .where(mentor.club.eq(club))
                 .fetch();
     }
