@@ -1,12 +1,13 @@
 package com.soongsil.CoffeeChat.service;
 
+import com.soongsil.CoffeeChat.dto.JoinUserDto;
 import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.dto.CreateMenteeRequest;
-import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
+import com.soongsil.CoffeeChat.dto.MenteeDto;
+import com.soongsil.CoffeeChat.dto.MentorDto;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -29,7 +30,15 @@ public class UserService {
 	private final SmsUtil smsUtil;
 
 	@Transactional
-	public Mentor saveMentorInformation(String username, CreateMentorRequest dto) {
+	public User saveUserInformation(String username, JoinUserDto dto){
+		User user=userRepository.findByUsername(username);
+		user.setName(dto.getName());
+		user.setPhoneNum(dto.getPhoneNum());
+		return userRepository.save(user);
+	}
+
+	@Transactional
+	public Mentor saveMentorInformation(String username, MentorDto dto) {
 		User user = userRepository.findByUsername(username);
 		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTOR");
 		Mentor mentor = Mentor.from(dto);
@@ -38,13 +47,11 @@ public class UserService {
 	}
 
 	@Transactional
-	public Mentee saveMenteeInformation(String username, CreateMenteeRequest dto) {
+	public Mentee saveMenteeInformation(String username, MenteeDto dto) {
 		User user = userRepository.findByUsername(username);
 		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
 		user.setMentee(mentee);
-		//이메일 사용자가 지정한값으로 변경해야함
-		user.setEmail(dto.getEmail());
 		return menteeRepository.save(mentee);
 	}
 
@@ -70,7 +77,7 @@ public class UserService {
 
 	public ResponseEntity<User> saveUserPhone(String phone, String username){
 		User user=userRepository.findByUsername(username);
-		user.setPhone(phone);
+		user.setPhoneNum(phone);
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
 }
