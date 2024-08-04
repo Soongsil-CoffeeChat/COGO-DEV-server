@@ -35,9 +35,11 @@ public class MentorService {
 		return mentorRepository.getMentorListByClub(club); //일반join
 	}
 
+	public List<ResponseMentorListInfo> getMentorDtoListByPartAndClub(int part, int club) {
+		return mentorRepository.getMentorListByPartAndClub(part, club);
+	}
+
 	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
 		return possibleDateRepository.getPossibleDatesByUsername(username);
 	}
-
-
 }
