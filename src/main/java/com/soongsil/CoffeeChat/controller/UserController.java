@@ -4,6 +4,7 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import com.soongsil.CoffeeChat.dto.ChangeUserInfoDto;
 import com.soongsil.CoffeeChat.dto.JoinUserDto;
+import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,6 +39,7 @@ import java.util.Map;
 @Tag(name="USER", description = "유저 관련 api")
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
     private String getUserNameByAuthentication(Authentication authentication) throws Exception {
         CustomOAuth2User principal= (CustomOAuth2User)authentication.getPrincipal();
@@ -118,6 +120,13 @@ public class UserController {
     public ResponseEntity<User> saveUserEmail(Authentication authentication,
                                               @RequestBody ChangeUserInfoDto dto) throws Exception {
         return new ResponseEntity<>(userService.changeUserInfo(dto, getUserNameByAuthentication(authentication)), HttpStatus.OK);
+    }
+
+    @GetMapping()
+    @Operation(summary="기본정보 조회")
+    @ApiResponse(responseCode = "200", description = "성공!")
+    public ResponseEntity<ChangeUserInfoDto> getUserInfo(Authentication authentication) throws Exception {
+        return new ResponseEntity<>(userService.findUserInfo(getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
 }

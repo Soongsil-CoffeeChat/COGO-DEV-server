@@ -16,9 +16,7 @@ public class ApplicationCreateResponse {
 
 	public static ApplicationCreateResponse from(Application application) {
 		return ApplicationCreateResponse.builder()
-			.date(application.getDate())
-			.startTime(application.getStartTime())
-			.endTime(application.getEndTime())
+
 			.build();
 	}
 }

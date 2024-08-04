@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.soongsil.CoffeeChat.entity.Club;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 
@@ -20,36 +19,24 @@ import lombok.Setter;
 public class ResponseMentorListInfo {
 	private String picture;
 	private String mentorName;
-	//private List<String> clubName;
-	private String field;
+	private int part;
+	private int club;
 	private String username;
-	private String part;
+	private Long mentorId;
+	private String title;
+	private String description;
+
 
 	@QueryProjection
-	public ResponseMentorListInfo(String picture, String mentorName, String field, String username, String part) {
+	public ResponseMentorListInfo(String picture, String mentorName, int part, int club, String username,Long mentorId, String title, String description) {
 		this.picture = picture;
 		this.mentorName = mentorName;
-		this.field = field;
+		this.part=part;
+		this.club=club;
 		this.username = username;
-		this.part = part;
+		this.mentorId=mentorId;
+		this.title=title;
+		this.description=description;
 	}
 
-	public static ResponseMentorListInfo toDto(Mentor mentor, User user) {
-		/*
-		List<Club> clubList = mentor.getClubs();
-		List<String> clubNameList = new ArrayList<>();
-		for (Club club : clubList) {
-			clubNameList.add(club.getName());
-		}
-
-		 */
-		return ResponseMentorListInfo.builder()
-				.part(mentor.getPart())
-			.picture(mentor.getPicture())
-			.mentorName(user.getName())
-			//.clubName(clubNameList)
-			.field(mentor.getField())
-			.username(user.getUsername())
-			.build();
-	}
 }
