@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.service;
 
+import com.soongsil.CoffeeChat.dto.ChangeUserInfoDto;
 import com.soongsil.CoffeeChat.dto.JoinUserDto;
 import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 import org.springframework.http.HttpStatus;
@@ -84,6 +85,13 @@ public class UserService {
 	public User saveUserEmail(String email, String username){
 		User user=userRepository.findByUsername(username);
 		user.setEmail(email);
+		return userRepository.save(user);
+	}
+
+	public User changeUserInfo(ChangeUserInfoDto dto, String username){
+		User user=userRepository.findByUsername(username);
+		user.setEmail(dto.getEmail());
+		user.setPhoneNum(dto.getPhoneNum());
 		return userRepository.save(user);
 	}
 }

@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import com.soongsil.CoffeeChat.dto.ChangeUserInfoDto;
 import com.soongsil.CoffeeChat.dto.JoinUserDto;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -109,6 +110,14 @@ public class UserController {
     public ResponseEntity<User> saveUserEmail(Authentication authentication,
                                               @RequestParam("email") String email) throws Exception {
         return new ResponseEntity<>(userService.saveUserEmail(email, getUserNameByAuthentication(authentication)), HttpStatus.OK);
+    }
+
+    @PutMapping()
+    @Operation(summary="사용자 정보 수정")
+    @ApiResponse(responseCode = "200", description = "성공!")
+    public ResponseEntity<User> saveUserEmail(Authentication authentication,
+                                              @RequestBody ChangeUserInfoDto dto) throws Exception {
+        return new ResponseEntity<>(userService.changeUserInfo(dto, getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
 }
