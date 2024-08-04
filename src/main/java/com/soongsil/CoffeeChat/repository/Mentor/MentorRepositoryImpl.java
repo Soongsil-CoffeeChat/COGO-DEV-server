@@ -60,6 +60,26 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
     }
 
     @Override
+    public List<ResponseMentorListInfo> getMentorListByPartAndClub(int part, int club) { //일반 join
+        return queryFactory
+                .select(new QResponseMentorListInfo(
+                        user.picture,
+                        user.name.as("mentorName"),
+                        mentor.part,
+                        mentor.club,
+                        user.username,
+                        mentor.id.as("mentorId"),
+                        introduction.title,
+                        introduction.description
+                ))
+                .from(user)
+                .join(user.mentor, mentor)
+                .join(mentor.introduction, introduction)
+                .where(mentor.club.eq(club).and(mentor.part.eq(part)))
+                .fetch();
+    }
+
+    @Override
     public List<User> getMentorListByPart2(int part) {  //fetch join
         return queryFactory
                 .selectFrom(user)
