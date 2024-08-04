@@ -5,13 +5,7 @@ import java.util.Set;
 
 import com.soongsil.CoffeeChat.dto.MentorDto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -30,11 +24,14 @@ public class Mentor {
 	private Long id;
 
 	@Column
-	private String part;
+	private int part;
 
 	@Column
 	private int club;
 
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
+	private Introduction introduction;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -45,7 +42,7 @@ public class Mentor {
 	private Set<PossibleDate> possibleDates = new HashSet<>();
 
 	@Builder
-	public Mentor(int club, String part) {
+	public Mentor(int club, int part) {
 		this.club=club;
 		this.part = part;
 	}

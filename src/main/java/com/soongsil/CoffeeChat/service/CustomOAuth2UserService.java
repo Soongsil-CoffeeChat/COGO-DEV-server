@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.service;
 
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.Oauth.*;
+import com.soongsil.CoffeeChat.dto.UserDTO;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
