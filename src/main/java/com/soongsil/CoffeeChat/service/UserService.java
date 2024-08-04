@@ -80,4 +80,10 @@ public class UserService {
 		user.setPhoneNum(phone);
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
+
+	public User saveUserEmail(String email, String username){
+		User user=userRepository.findByUsername(username);
+		user.setEmail(email);
+		return userRepository.save(user);
+	}
 }
