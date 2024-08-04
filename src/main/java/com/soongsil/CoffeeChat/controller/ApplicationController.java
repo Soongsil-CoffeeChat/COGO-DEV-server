@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.dto.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.dto.ApplicationCreateResponse;
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;
