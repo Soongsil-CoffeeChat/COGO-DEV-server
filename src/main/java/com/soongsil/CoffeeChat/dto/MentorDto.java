@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateMentorRequest {
-	private String phoneNum;
-	private String birth;
+public class MentorDto {
 	private String part;
-
+	private int club;
 }

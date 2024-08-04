@@ -2,22 +2,21 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import com.soongsil.CoffeeChat.dto.JoinUserDto;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soongsil.CoffeeChat.dto.CreateMenteeRequest;
-import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.MenteeDto;
+import com.soongsil.CoffeeChat.dto.MentorDto;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -27,13 +26,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
@@ -49,27 +43,38 @@ public class UserController {
         if(principal==null) throw new Exception(); //TODO : Exception 만들기
         return principal.getUsername();
     }
-    @PostMapping("/join/mentor")
+
+    @PostMapping()
+    @Operation(summary="기본정보 기입")
+    @ApiResponse(responseCode = "200", description = "성공!")
+    public ResponseEntity<User> joinWithMentor(Authentication authentication,
+                                                 @RequestBody JoinUserDto dto) throws Exception {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                userService.saveUserInformation(getUserNameByAuthentication(authentication), dto)
+        );
+    }
+
+    @PostMapping("/mentor")
     @Operation(summary="멘토로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
-                                                 @RequestBody CreateMentorRequest dto) throws Exception {
+                                                 @RequestBody MentorDto dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto)
         );
     }
 
-    @PostMapping("/join/mentee")
+    @PostMapping("/mentee")
     @Operation(summary="멘티로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
-                                                 @RequestBody CreateMenteeRequest dto) throws Exception {
+                                                 @RequestBody MenteeDto dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto)
         );
     }
 
-    @PutMapping("/save/picture")
+    @PutMapping("/picture")
     @Operation(summary="이미지 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserPicture(Authentication authentication,

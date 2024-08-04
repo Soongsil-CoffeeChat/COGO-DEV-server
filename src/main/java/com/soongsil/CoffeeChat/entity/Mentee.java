@@ -3,7 +3,7 @@ package com.soongsil.CoffeeChat.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.CreateMenteeRequest;
+import com.soongsil.CoffeeChat.dto.MenteeDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -62,9 +62,8 @@ public class Mentee {
 		this.memo = memo;
 	}
 
-	public static Mentee from(CreateMenteeRequest dto) {
+	public static Mentee from(MenteeDto dto) {
 		return Mentee.builder()
-			.nickname(dto.getNickname())
 			.part(dto.getPart())
 			.build();
 	}
