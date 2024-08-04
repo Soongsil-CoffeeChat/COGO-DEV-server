@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.soongsil.CoffeeChat.entity.Application;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,9 +16,7 @@ public class ApplicationCreateResponse {
 
 	public static ApplicationCreateResponse from(Application application) {
 		return ApplicationCreateResponse.builder()
-			.date(application.getDate())
-			.startTime(application.getStartTime())
-			.endTime(application.getEndTime())
+
 			.build();
 	}
 }

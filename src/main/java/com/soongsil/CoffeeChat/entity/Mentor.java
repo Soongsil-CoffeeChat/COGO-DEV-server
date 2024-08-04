@@ -1,19 +1,11 @@
 package com.soongsil.CoffeeChat.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
+import com.soongsil.CoffeeChat.dto.MentorDto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -22,7 +14,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@ToString(of = {"id", "picture", "part"})
+@ToString(of = {"id","part", "club"})
 //@DiscriminatorValue("mentor")
 //@PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor {
@@ -32,19 +24,14 @@ public class Mentor {
 	private Long id;
 
 	@Column
-	private String picture;
-
-	@Column(name = "phone_num")
-	private String phoneNum;
+	private int part;
 
 	@Column
-	private String birth;
+	private int club;
 
-	@Column
-	private String part;
-
-	@Column
-	private String field;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
+	private Introduction introduction;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -52,25 +39,19 @@ public class Mentor {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Club> clubs = new ArrayList<>();
-
-	@Builder.Default
-	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<PossibleDate> possibleDates = new HashSet<>();
 
 	@Builder
-	public Mentor(String phoneNum, String birth, String part) {
-		this.phoneNum = phoneNum;
-		this.birth = birth;
+	public Mentor(int club, int part) {
+		this.club=club;
 		this.part = part;
 	}
 
-	public static Mentor from(CreateMentorRequest dto) {
+	public static Mentor from(MentorDto dto) {
 		return Mentor.builder()
-			.phoneNum(dto.getPhoneNum())
-			.birth(dto.getBirth())
-			.part(dto.getPart())
-			.build();
+				.club(dto.getClub())
+				.part(dto.getPart())
+				.build();
 	}
 
 	public void addPossibleDate(PossibleDate possibleDate) {
