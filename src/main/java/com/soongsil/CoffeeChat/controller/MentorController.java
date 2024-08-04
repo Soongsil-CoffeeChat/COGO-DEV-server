@@ -4,7 +4,7 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

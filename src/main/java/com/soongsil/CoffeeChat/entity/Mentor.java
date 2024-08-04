@@ -1,11 +1,9 @@
 package com.soongsil.CoffeeChat.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.CreateMentorRequest;
+import com.soongsil.CoffeeChat.dto.MentorDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,10 +50,11 @@ public class Mentor {
 		this.part = part;
 	}
 
-	public static Mentor from(CreateMentorRequest dto) {
+	public static Mentor from(MentorDto dto) {
 		return Mentor.builder()
-			.part(dto.getPart())
-			.build();
+				.club(dto.getClub())
+				.part(dto.getPart())
+				.build();
 	}
 
 	public void addPossibleDate(PossibleDate possibleDate) {
