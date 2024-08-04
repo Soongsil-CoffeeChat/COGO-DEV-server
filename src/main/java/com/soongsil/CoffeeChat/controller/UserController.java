@@ -95,12 +95,20 @@ public class UserController {
         return userService.getSmsCode(phone);
     }
 
-    @PostMapping("/phone")
+    @PutMapping("/phone")
     @Operation(summary="번호 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserPhone(Authentication authentication,
                                               @RequestParam("phone") String phone) throws Exception {
         return userService.saveUserPhone(phone, getUserNameByAuthentication(authentication));
+    }
+
+    @PutMapping("/email")
+    @Operation(summary="메일 저장하기")
+    @ApiResponse(responseCode = "200", description = "성공!")
+    public ResponseEntity<User> saveUserEmail(Authentication authentication,
+                                              @RequestParam("email") String email) throws Exception {
+        return new ResponseEntity<>(userService.saveUserEmail(email, getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
 }
