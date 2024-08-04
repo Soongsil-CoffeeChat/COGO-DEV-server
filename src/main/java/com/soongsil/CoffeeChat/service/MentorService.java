@@ -27,29 +27,17 @@ public class MentorService {
 		this.possibleDateRepository=possibleDateRepository;
 	}
 
-
-	@Transactional
-	public List<ResponseMentorListInfo> getMentorDtoListByPart(String part) {
+	public List<ResponseMentorListInfo> getMentorDtoListByPart(int part) {
 		return mentorRepository.getMentorListByPart(part); //일반join
-		/* //fetch join
-		List<ResponseMentorListInfo> dtos=new ArrayList<>();
-		List<User> users=mentorRepository.getMentorListByPart2(part);
-		for(User user:users){
-			dtos.add(ResponseMentorListInfo.toDto(user.getMentor(), user));
-		}
-		return dtos;
-		 */
+	}
+
+	public List<ResponseMentorListInfo> getMentorDtoListByClub(int club) {
+		return mentorRepository.getMentorListByClub(club); //일반join
 	}
 
 	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
 		return possibleDateRepository.getPossibleDatesByUsername(username);
 	}
 
-	@Transactional
-	public Mentor saveUserPicture(String username, String picture){
-		User user = userRepository.findByUsername(username);
-		Mentor mentor = user.getMentor();
-		mentor.setPicture(picture);
-		return mentorRepository.save(mentor);
-	}
+
 }
