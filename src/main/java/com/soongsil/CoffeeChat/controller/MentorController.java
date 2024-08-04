@@ -48,7 +48,7 @@ public class MentorController {
     }
 
     @GetMapping("/{part}/{club}")
-    @Operation(summary="동아리별 멘토 리스트 가져오기")
+    @Operation(summary="파트+동아리별 멘토 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
     public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@PathVariable("part") int part,
                                                                             @PathVariable("club") int club){
