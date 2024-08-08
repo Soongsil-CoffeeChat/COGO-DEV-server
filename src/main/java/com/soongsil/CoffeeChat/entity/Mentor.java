@@ -6,8 +6,25 @@ import java.util.Set;
 import com.soongsil.CoffeeChat.dto.MentorDto;
 import com.soongsil.CoffeeChat.enums.MentorPart;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,7 +32,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@ToString(of = {"id","part", "club"})
+@ToString(of = {"id", "part", "club"})
 //@DiscriminatorValue("mentor")
 //@PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor {
@@ -45,15 +62,15 @@ public class Mentor {
 
 	@Builder
 	public Mentor(int club, String part) {
-		this.club=club;
+		this.club = club;
 		this.part = MentorPart.valueOf(part);
 	}
 
 	public static Mentor from(MentorDto dto) {
 		return Mentor.builder()
-				.club(dto.getClub())
-				.part(MentorPart.valueOf(dto.getPart()))
-				.build();
+			.club(dto.getClub())
+			.part(MentorPart.valueOf(dto.getPart()))
+			.build();
 	}
 
 	public void addPossibleDate(PossibleDate possibleDate) {
