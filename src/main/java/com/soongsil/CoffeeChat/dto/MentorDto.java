@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MentorDto {
-	private int part;
+	private String part;
 	private int club;
 }
