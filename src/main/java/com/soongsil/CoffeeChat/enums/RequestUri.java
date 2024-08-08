@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.enums;
 
 public class RequestUri {
-	private static final String prefix = "/api/v2";
+	private static final String prefix = "/api/v1";
 	public static final String APPLICATION_URI = prefix + "/application";
 	public static final String CLUB_URI = prefix + "/club";
 	public static final String MENTEE_URI = prefix + "/mentee";
