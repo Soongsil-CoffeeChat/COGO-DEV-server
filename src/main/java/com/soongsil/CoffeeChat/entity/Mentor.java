@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.soongsil.CoffeeChat.dto.MentorDto;
+import com.soongsil.CoffeeChat.enums.MentorPart;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +25,8 @@ public class Mentor {
 	private Long id;
 
 	@Column
-	private int part;
+	@Enumerated(EnumType.STRING)
+	private MentorPart part;
 
 	@Column
 	private int club;
@@ -42,15 +44,15 @@ public class Mentor {
 	private Set<PossibleDate> possibleDates = new HashSet<>();
 
 	@Builder
-	public Mentor(int club, int part) {
+	public Mentor(int club, String part) {
 		this.club=club;
-		this.part = part;
+		this.part = MentorPart.valueOf(part);
 	}
 
 	public static Mentor from(MentorDto dto) {
 		return Mentor.builder()
 				.club(dto.getClub())
-				.part(dto.getPart())
+				.part(MentorPart.valueOf(dto.getPart()))
 				.build();
 	}
 
