@@ -1,8 +1,10 @@
 package com.soongsil.CoffeeChat.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Introduction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "introduction_id")
