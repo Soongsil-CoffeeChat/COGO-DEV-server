@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.soongsil.CoffeeChat.dto.MentorDto;
+import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +17,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@ToString(of = {"id","part", "club"})
+@ToString(of = {"id", "part", "club"})
 //@DiscriminatorValue("mentor")
 //@PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor {
@@ -24,10 +27,12 @@ public class Mentor {
 	private Long id;
 
 	@Column
-	private int part;
+	@Enumerated(EnumType.STRING)
+	private PartEnum part;
 
 	@Column
-	private int club;
+	@Enumerated(EnumType.STRING)
+	private ClubEnum club;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
@@ -42,16 +47,16 @@ public class Mentor {
 	private Set<PossibleDate> possibleDates = new HashSet<>();
 
 	@Builder
-	public Mentor(int club, int part) {
-		this.club=club;
-		this.part = part;
+	public Mentor(String club, String part) {
+		this.club = ClubEnum.valueOf(club);
+		this.part = PartEnum.valueOf(part);
 	}
 
 	public static Mentor from(MentorDto dto) {
 		return Mentor.builder()
-				.club(dto.getClub())
-				.part(dto.getPart())
-				.build();
+			.club(dto.getClub())
+			.part(dto.getPart())
+			.build();
 	}
 
 	public void addPossibleDate(PossibleDate possibleDate) {
