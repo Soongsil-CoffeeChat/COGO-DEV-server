@@ -39,9 +39,9 @@ public class ApplicationCreateRequest {
 
 	public Application toEntity(Mentor mentor, Mentee mentee) {
 		return Application.builder()
-			.date(this.date)
-			.startTime(this.startTime)
-			.endTime(this.endTime)
+
+
+
 			.mentor(mentor)
 			.mentee(mentee)
 			.build();

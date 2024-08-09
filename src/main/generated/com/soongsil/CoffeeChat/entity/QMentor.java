@@ -18,36 +18,41 @@ public class QMentor extends EntityPathBase<Mentor> {
 
     private static final long serialVersionUID = 899494585L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QMentor mentor = new QMentor("mentor");
 
     public final SetPath<Application, QApplication> applications = this.<Application, QApplication>createSet("applications", Application.class, QApplication.class, PathInits.DIRECT2);
 
-    public final StringPath birth = createString("birth");
-
-    public final ListPath<Club, QClub> clubs = this.<Club, QClub>createList("clubs", Club.class, QClub.class, PathInits.DIRECT2);
-
-    public final StringPath field = createString("field");
+    public final NumberPath<Integer> club = createNumber("club", Integer.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath part = createString("part");
+    public final QIntroduction introduction;
 
-    public final StringPath phoneNum = createString("phoneNum");
-
-    public final StringPath picture = createString("picture");
+    public final NumberPath<Integer> part = createNumber("part", Integer.class);
 
     public final SetPath<PossibleDate, QPossibleDate> possibleDates = this.<PossibleDate, QPossibleDate>createSet("possibleDates", PossibleDate.class, QPossibleDate.class, PathInits.DIRECT2);
 
     public QMentor(String variable) {
-        super(Mentor.class, forVariable(variable));
+        this(Mentor.class, forVariable(variable), INITS);
     }
 
     public QMentor(Path<? extends Mentor> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMentor(PathMetadata metadata) {
-        super(Mentor.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMentor(PathMetadata metadata, PathInits inits) {
+        this(Mentor.class, metadata, inits);
+    }
+
+    public QMentor(Class<? extends Mentor> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.introduction = inits.isInitialized("introduction") ? new QIntroduction(forProperty("introduction")) : null;
     }
 
 }

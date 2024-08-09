@@ -33,16 +33,7 @@ public class Application {
 	private Mentee mentee;
 
 	@Column
-	private LocalDate date;
-
-	@Column
-	private LocalTime startTime;
-
-	@Column
-	private LocalTime endTime;
-
-	// @Column
-	// private String question;
+	private String memo;
 
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")

@@ -20,9 +20,6 @@ public class User {
 	private Long id;
 
 	@Column
-	private String phone;  //전화번호
-
-	@Column
 	private String username;
 
 	@Column
@@ -33,6 +30,9 @@ public class User {
 
 	@Column
 	private String role;
+
+	@Column
+	private String phoneNum;  //전화번호
 
 	@Column
 	private String picture;
