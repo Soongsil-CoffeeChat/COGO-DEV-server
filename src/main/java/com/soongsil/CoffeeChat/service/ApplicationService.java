@@ -98,12 +98,14 @@ public class ApplicationService {
 			}
 
 			Application savedApplication = applicationRepository.save(request.toEntity(findMentor, findMentee));
-
+/*
 			ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
 			proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(), findMentorUser.getName(),
 					findMenteeUser.getName(), savedApplication.getDate(), savedApplication.getStartTime(),
 					savedApplication.getEndTime());
 
+
+ */
 			return ApplicationCreateResponse.from(savedApplication);
 		} finally {
 			redisTemplate.delete(lockKey);
@@ -136,9 +138,9 @@ public class ApplicationService {
 				Application application = Application.builder()
 						.mentor(mentor)
 						.mentee(mentee)
-						.date(possibleDate.getDate())
-						.startTime(possibleDate.getStartTime())
-						.endTime(possibleDate.getEndTime())
+
+
+
 						.accept(ApplicationStatus.UNMATCHED)
 						.build();
 				em.persist(application);
