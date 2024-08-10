@@ -1,11 +1,14 @@
 package com.soongsil.CoffeeChat.dto;
 
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class MentorDto {
-	private String part;
-	private int club;
+	private PartEnum part;
+	private ClubEnum club;
 }
