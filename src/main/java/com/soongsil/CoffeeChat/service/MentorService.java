@@ -37,8 +37,8 @@ public class MentorService {
 		return mentorRepository.getMentorListByPartAndClub(part, club);
 	}
 
-	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
-		return possibleDateRepository.getPossibleDatesByUsername(username);
+	public List<PossibleDateRequestDto> findPossibleDateListByMentor(Long mentorId) {
+		return possibleDateRepository.getPossibleDatesById(mentorId);
 	}
 
 	public ResponseMentorInfo getMentorDtobyId(Long mentorId) {
