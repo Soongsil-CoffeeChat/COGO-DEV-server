@@ -4,7 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.soongsil.CoffeeChat.dto.MentorDto;
-import com.soongsil.CoffeeChat.enums.MentorPart;
+import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,10 +46,11 @@ public class Mentor {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	private MentorPart part;
+	private PartEnum part;
 
 	@Column
-	private int club;
+	@Enumerated(EnumType.STRING)
+	private ClubEnum club;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
@@ -61,15 +65,15 @@ public class Mentor {
 	private Set<PossibleDate> possibleDates = new HashSet<>();
 
 	@Builder
-	public Mentor(int club, String part) {
-		this.club = club;
-		this.part = MentorPart.valueOf(part);
+	public Mentor(String club, String part) {
+		this.club = ClubEnum.valueOf(club);
+		this.part = PartEnum.valueOf(part);
 	}
 
 	public static Mentor from(MentorDto dto) {
 		return Mentor.builder()
 			.club(dto.getClub())
-			.part(MentorPart.valueOf(dto.getPart()))
+			.part(dto.getPart())
 			.build();
 	}
 
