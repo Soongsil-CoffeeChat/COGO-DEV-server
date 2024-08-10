@@ -69,8 +69,8 @@ public class MentorController {
 	@GetMapping("/possibleDates/{username}")
 	@Operation(summary = "멘토의 username으로 커피챗가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates(@PathVariable("username") String username) {
-		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(username));
+	public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates(@PathVariable("mentorId") Long mentorId) {
+		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));
 	}
 
 }
