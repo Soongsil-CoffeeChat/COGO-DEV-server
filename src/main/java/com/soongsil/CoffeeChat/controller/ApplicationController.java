@@ -37,6 +37,7 @@ public class ApplicationController {
     ) throws Exception {
         return ResponseEntity.ok()
                 .body(applicationService.createApplication(request,
-                        ((CustomOAuth2User)authentication.getPrincipal()).getUsername()));
+                        ((CustomOAuth2User)authentication.getPrincipal()).getUsername())
+                );
     }
 }
