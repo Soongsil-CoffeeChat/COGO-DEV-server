@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.controller.Exception.enums;
+package com.soongsil.CoffeeChat.controller.exception.enums;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

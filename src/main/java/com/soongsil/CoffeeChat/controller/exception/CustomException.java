@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.controller.Exception;
+package com.soongsil.CoffeeChat.controller.exception;
 
 import org.springframework.http.HttpStatusCode;
 
