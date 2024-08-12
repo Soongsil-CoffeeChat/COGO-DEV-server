@@ -7,8 +7,9 @@ import java.util.List;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
-import com.soongsil.CoffeeChat.entity.Mentor;
 
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -42,33 +43,33 @@ public class MentorController {
 	@Operation(summary = "멘토 상세 정보 조회")
 	@ApiResponse(responseCode = "200", description = "멘토 상세 정보 DTO 반환")
 	public ResponseEntity<ResponseMentorInfo> getMentorInfo(@PathVariable("mentorId") Long mentorId) {
-		return ResponseEntity.ok().body(mentorService.getMentorDtobyId(mentorId));
+		return ResponseEntity.ok().body(mentorService.getMentorDtoByIdWithJoin(mentorId));
 	}
 
-	@GetMapping("/{part}")
+	@GetMapping("/part")
 	@Operation(summary = "파트별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByPart(@PathVariable("part") int part) {
+	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByPart(@RequestParam("part") PartEnum part) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
 	}
 
-	@GetMapping("/{club}")
+	@GetMapping("/club")
 	@Operation(summary = "동아리별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@PathVariable("club") int club) {
+	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@RequestParam("club") ClubEnum club) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByClub(club));
 	}
 
-	@GetMapping("/{part}/{club}")
+	@GetMapping("/part/club")
 	@Operation(summary = "파트+동아리별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@PathVariable("part") int part,
-		@PathVariable("club") int club) {
+	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@RequestParam("part") PartEnum part,
+		@RequestParam("club") ClubEnum club) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPartAndClub(part, club));
 	}
 
-	@GetMapping("/{username}/possibleDates")
-	@Operation(summary = "멘토의 username으로 커피챗가능시간 불러오기")
+	@GetMapping("/{mentorId}/possibleDates")
+	@Operation(summary = "멘토ID로 커피챗가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
 	public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates(@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));

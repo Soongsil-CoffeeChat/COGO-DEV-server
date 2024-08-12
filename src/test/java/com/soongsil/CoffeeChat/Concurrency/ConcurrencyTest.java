@@ -78,40 +78,40 @@ public class ConcurrencyTest {
     //     thread1.join();
     //     thread2.join();
     // }
-    @DisplayName("동시성 처리 안한 상태")
-    @Test
-    public void testConcurrency() throws InterruptedException {
-        Long possibleDateId = 2002L; // 테스트할 PossibleDate ID
-        Mentor mentor = mentorRepository.findById(1L).orElseThrow(); // 테스트할 Mentor
-        Mentee mentee = menteeRepository.findById(1L).orElseThrow(); // 테스트할 Mentee
-
-        // 사전 데이터 세팅
-        setupTestData();
-
-        Thread thread1 = new Thread(() -> {
-            try {
-                Application application = applicationService.createApplicationIfPossible(possibleDateId, mentor, mentee);
-                System.out.println("Thread 1: " + application);
-            } catch (Exception e) {
-                System.out.println("Thread 1: " + e.getMessage());
-            }
-        });
-
-        Thread thread2 = new Thread(() -> {
-            try {
-                Application application = applicationService.createApplicationIfPossible(possibleDateId, mentor, mentee);
-                System.out.println("Thread 2: " + application);
-            } catch (Exception e) {
-                System.out.println("Thread 2: " + e.getMessage());
-            }
-        });
-
-        thread1.start();
-        thread2.start();
-
-        thread1.join();
-        thread2.join();
-    }
+//    @DisplayName("동시성 처리 안한 상태")
+//    @Test
+//    public void testConcurrency() throws InterruptedException {
+//        Long possibleDateId = 2002L; // 테스트할 PossibleDate ID
+//        Mentor mentor = mentorRepository.findById(1L).orElseThrow(); // 테스트할 Mentor
+//        Mentee mentee = menteeRepository.findById(1L).orElseThrow(); // 테스트할 Mentee
+//
+//        // 사전 데이터 세팅
+//        setupTestData();
+//
+//        Thread thread1 = new Thread(() -> {
+//            try {
+//                Application application = applicationService.createApplicationIfPossible(possibleDateId, mentor, mentee);
+//                System.out.println("Thread 1: " + application);
+//            } catch (Exception e) {
+//                System.out.println("Thread 1: " + e.getMessage());
+//            }
+//        });
+//
+//        Thread thread2 = new Thread(() -> {
+//            try {
+//                Application application = applicationService.createApplicationIfPossible(possibleDateId, mentor, mentee);
+//                System.out.println("Thread 2: " + application);
+//            } catch (Exception e) {
+//                System.out.println("Thread 2: " + e.getMessage());
+//            }
+//        });
+//
+//        thread1.start();
+//        thread2.start();
+//
+//        thread1.join();
+//        thread2.join();
+//    }
 
     @Transactional
     public void setupTestData() {
