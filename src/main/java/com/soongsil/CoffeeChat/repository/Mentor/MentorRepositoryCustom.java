@@ -10,6 +10,6 @@ public interface MentorRepositoryCustom {
     List<ResponseMentorListInfo> getMentorListByPart(int part);  //일반 join
     List<ResponseMentorListInfo> getMentorListByClub(int club);
     List<ResponseMentorListInfo> getMentorListByPartAndClub(int part, int club);
-    List<User> getMentorListByPart2(int part); //fetch join
+    List<User> getMentorListByPartWithFetch(int part); //fetch join
 
 }

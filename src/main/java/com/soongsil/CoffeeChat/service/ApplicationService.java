@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -202,6 +203,7 @@ public class ApplicationService {
 				APPLICATION_NOT_FOUND.getHttpStatusCode(),
 				APPLICATION_NOT_FOUND.getErrorMessage()
 			));
+		//TODO: toDTO 빌더 만들어두고, join으로 묶자
 		return ApplicationGetResponse.builder()
 			.menteeId(findApplication.getMentee().getId())
 			.mentorId(findApplication.getMentor().getId())
@@ -211,7 +213,13 @@ public class ApplicationService {
 	}
 
 	public List<ApplicationGetResponse> getApplications(String username) {
-		Long findMentorId = userRepository.findByUsername(username).getMentor().getId();
-		return applicationRepository.findApplicationsByMentorId(findMentorId);
+		//TODO: JOIN문으로 변경
+		List<ApplicationGetResponse> dtos=new ArrayList<>();
+		Mentor findMentor=userRepository.findByUsername(username).getMentor();
+		List<Application> findApplications=applicationRepository.findApplicationByMentor(findMentor);
+		for(Application app:findApplications){
+			dtos.add(ApplicationGetResponse.toDto(app));
+		}
+		return dtos;
 	}
 }

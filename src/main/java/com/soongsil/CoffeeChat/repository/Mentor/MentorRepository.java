@@ -14,5 +14,5 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> , MentorRe
 
 	List<Mentor> findAllByPart(String part);
 	List<ResponseMentorListInfo> getMentorListByPart(String part);  //일반 join
-	List<User> getMentorListByPart2(String part); //fetch join
+	List<User> getMentorListByPartWithFetch(String part); //fetch join
 }

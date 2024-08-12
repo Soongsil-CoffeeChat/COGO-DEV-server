@@ -46,6 +46,7 @@ public class MentorService {
 	}
 
 	public ResponseMentorInfo getMentorDtobyId(Long mentorId) {
+		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)
 			.orElseThrow(() -> new CustomException(
 				MEMBER_NOT_FOUND.getHttpStatusCode(),
