@@ -4,11 +4,12 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode
 
 import java.util.List;
 
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
@@ -29,15 +30,15 @@ public class MentorService {
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
 
-	public List<ResponseMentorListInfo> getMentorDtoListByPart(int part) {
+	public List<ResponseMentorListInfo> getMentorDtoListByPart(PartEnum part) {
 		return mentorRepository.getMentorListByPart(part); //일반join
 	}
 
-	public List<ResponseMentorListInfo> getMentorDtoListByClub(int club) {
+	public List<ResponseMentorListInfo> getMentorDtoListByClub(ClubEnum club) {
 		return mentorRepository.getMentorListByClub(club); //일반join
 	}
 
-	public List<ResponseMentorListInfo> getMentorDtoListByPartAndClub(int part, int club) {
+	public List<ResponseMentorListInfo> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
 		return mentorRepository.getMentorListByPartAndClub(part, club);
 	}
 
@@ -45,7 +46,8 @@ public class MentorService {
 		return possibleDateRepository.getPossibleDatesById(mentorId);
 	}
 
-	public ResponseMentorInfo getMentorDtobyId(Long mentorId) {
+	public ResponseMentorInfo getMentorDtoById(Long mentorId) {
+		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)
 			.orElseThrow(() -> new CustomException(
 				MEMBER_NOT_FOUND.getHttpStatusCode(),
@@ -55,6 +57,10 @@ public class MentorService {
 			findMentor,
 			userRepository.findByMentor(findMentor)
 		);
+	}
+
+	public ResponseMentorInfo getMentorDtoByIdWithJoin(Long mentorId){
+		return mentorRepository.getMentorInfoByMentorId(mentorId);
 	}
 
 	@Transactional

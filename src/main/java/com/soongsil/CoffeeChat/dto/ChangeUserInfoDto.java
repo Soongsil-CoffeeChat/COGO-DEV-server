@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangeUserInfoDto {
+    private String name;
     private String email;
     private String phoneNum;
 
     public static ChangeUserInfoDto toDto(User user){
         return ChangeUserInfoDto.builder()
+                .name(user.getName())
                 .email(user.getEmail())
                 .phoneNum(user.getPhoneNum())
                 .build();

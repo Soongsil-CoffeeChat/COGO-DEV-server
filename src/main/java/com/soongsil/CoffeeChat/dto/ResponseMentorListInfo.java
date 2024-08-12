@@ -7,6 +7,8 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -19,8 +21,8 @@ import lombok.Setter;
 public class ResponseMentorListInfo {
 	private String picture;
 	private String mentorName;
-	private int part;
-	private int club;
+	private PartEnum part;
+	private ClubEnum club;
 	private String username;
 	private Long mentorId;
 	private String title;
@@ -28,7 +30,7 @@ public class ResponseMentorListInfo {
 
 
 	@QueryProjection
-	public ResponseMentorListInfo(String picture, String mentorName, int part, int club, String username,Long mentorId, String title, String description) {
+	public ResponseMentorListInfo(String picture, String mentorName, PartEnum part, ClubEnum club, String username,Long mentorId, String title, String description) {
 		this.picture = picture;
 		this.mentorName = mentorName;
 		this.part=part;

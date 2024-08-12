@@ -39,6 +39,7 @@ public class ApplicationController {
 		Authentication authentication,
 		@RequestBody ApplicationCreateRequest request
 	) throws Exception {
+		//TODO: 멘티id dto에서 빼야됨 (authentication에서 mentee정보 긁어오는식으로 수정)
 		return ResponseEntity.ok()
 			.body(applicationService.createApplication(request,
 				((CustomOAuth2User)authentication.getPrincipal()).getUsername())
@@ -51,6 +52,7 @@ public class ApplicationController {
 	public ResponseEntity<ApplicationGetResponse> getApplication(
 		@PathVariable Long applicationId
 	) {
+		//TODO: 여기서도 반환할때 possibleDateId 말고, 날짜+시간 다 넣어서 보내주기(DTO변경필요)
 		return ResponseEntity.ok()
 			.body(applicationService.getApplication(
 				applicationId
@@ -63,6 +65,7 @@ public class ApplicationController {
 	public ResponseEntity<List<ApplicationGetResponse>> getApplications(
 		Authentication authentication
 	) {
+		//TODO: Unmatched된 COGO만 불러와야 하고, 반환할때 possibleDateId 말고, 날짜+시간 다 넣어서 보내주기(DTO변경필요)
 		return ResponseEntity.ok()
 			.body(applicationService.getApplications(
 				((CustomOAuth2User)authentication.getPrincipal()).getUsername())
