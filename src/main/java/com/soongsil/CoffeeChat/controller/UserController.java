@@ -94,19 +94,19 @@ public class UserController {
                     content = @Content(mediaType = "application/json", schema = @Schema(example = "{\n\"message\": \"Failed to send verification code\"\n}")))
     })
     public ResponseEntity<Map<String, String>> getSmsCode(Authentication authentication,
-                                                          @RequestParam("phone") String phone){
-        return userService.getSmsCode(phone);
+                                                          @RequestParam("phoneNum") String phoneNum){
+        return userService.getSmsCode(phoneNum);
     }
 
-    @PutMapping("/phone")
+    @PatchMapping("/phone")
     @Operation(summary="번호 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserPhone(Authentication authentication,
-                                              @RequestParam("phone") String phone) throws Exception {
-        return userService.saveUserPhone(phone, getUserNameByAuthentication(authentication));
+                                              @RequestParam("phoneNum") String phoneNum) throws Exception {
+        return userService.saveUserPhone(phoneNum, getUserNameByAuthentication(authentication));
     }
 
-    @PutMapping("/email")
+    @PatchMapping("/email")
     @Operation(summary="메일 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserEmail(Authentication authentication,
@@ -114,7 +114,7 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUserEmail(email, getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PatchMapping()
     @Operation(summary="사용자 정보 수정")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserEmail(Authentication authentication,
