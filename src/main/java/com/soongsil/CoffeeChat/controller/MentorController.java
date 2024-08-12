@@ -67,8 +67,8 @@ public class MentorController {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPartAndClub(part, club));
 	}
 
-	@GetMapping("/{username}/possibleDates")
-	@Operation(summary = "멘토의 username으로 커피챗가능시간 불러오기")
+	@GetMapping("/{mentorId}/possibleDates")
+	@Operation(summary = "멘토ID로 커피챗가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
 	public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates(@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));
