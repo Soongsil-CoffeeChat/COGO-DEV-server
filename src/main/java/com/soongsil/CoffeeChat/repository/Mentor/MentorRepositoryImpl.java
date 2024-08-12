@@ -32,7 +32,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
                         introduction.title,
                         introduction.description
                         ))
-                .from(user)
+                .from(user)mentorcontro
                 .join(user.mentor, mentor)
                 .join(mentor.introduction, introduction)
                 .where(mentor.part.eq(part))
