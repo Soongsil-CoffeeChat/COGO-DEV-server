@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -195,7 +196,7 @@ public class ApplicationService {
 		}
 	}
 
-	public ApplicationGetResponse getApplication(Long applicationId, String username) {
+	public ApplicationGetResponse getApplication(Long applicationId) {
 		Application findApplication = applicationRepository.findById(applicationId)
 			.orElseThrow(() -> new CustomException(
 				APPLICATION_NOT_FOUND.getHttpStatusCode(),
@@ -207,5 +208,10 @@ public class ApplicationService {
 			.memo(findApplication.getMemo())
 			.possibleDateId(findApplication.getPossibleDate().getId())
 			.build();
+	}
+
+	public List<ApplicationGetResponse> getApplications(String username) {
+		Long findMentorId = userRepository.findByUsername(username).getMentor().getId();
+		return applicationRepository.findApplicationsByMentorId(findMentorId);
 	}
 }

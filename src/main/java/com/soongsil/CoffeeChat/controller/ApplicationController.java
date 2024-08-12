@@ -2,6 +2,8 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,12 +49,22 @@ public class ApplicationController {
 	@Operation(summary = "특정 COGO 조회")
 	@ApiResponse(responseCode = "200", description = "COGO 세부 정보 반환")
 	public ResponseEntity<ApplicationGetResponse> getApplication(
-		Authentication authentication,
 		@PathVariable Long applicationId
 	) {
 		return ResponseEntity.ok()
 			.body(applicationService.getApplication(
-				applicationId,
+				applicationId
+			);
+	}
+
+	@GetMapping
+	@Operation(summary = "신청 받은 COGO 전체 조회")
+	@ApiResponse(responseCode = "200", description = "COGO LIST 반환")
+	public ResponseEntity<List<ApplicationGetResponse>> getApplications(
+		Authentication authentication
+	) {
+		return ResponseEntity.ok()
+			.body(applicationService.getApplications(
 				((CustomOAuth2User)authentication.getPrincipal()).getUsername())
 			);
 	}
