@@ -54,7 +54,7 @@ public class ApplicationController {
 		return ResponseEntity.ok()
 			.body(applicationService.getApplication(
 				applicationId
-			);
+			));
 	}
 
 	@GetMapping

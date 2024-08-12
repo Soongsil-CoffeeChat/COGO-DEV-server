@@ -2,6 +2,8 @@ package com.soongsil.CoffeeChat.entity;
 
 import com.querydsl.core.annotations.QueryProjection;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +13,8 @@ import lombok.Setter;
 @Setter
 @Table
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 //@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
 //@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {
