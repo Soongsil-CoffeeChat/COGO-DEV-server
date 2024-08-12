@@ -2,14 +2,16 @@ package com.soongsil.CoffeeChat.repository.Mentor;
 
 import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
 import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 
 
 import java.util.List;
 
 public interface MentorRepositoryCustom {
-    List<ResponseMentorListInfo> getMentorListByPart(int part);  //일반 join
-    List<ResponseMentorListInfo> getMentorListByClub(int club);
-    List<ResponseMentorListInfo> getMentorListByPartAndClub(int part, int club);
-    List<User> getMentorListByPartWithFetch(int part); //fetch join
+    List<ResponseMentorListInfo> getMentorListByPart(PartEnum part);  //일반 join
+    List<ResponseMentorListInfo> getMentorListByClub(ClubEnum club);
+    List<ResponseMentorListInfo> getMentorListByPartAndClub(PartEnum part, ClubEnum club);
+    List<User> getMentorListByPartWithFetch(PartEnum part); //fetch join
 
 }
