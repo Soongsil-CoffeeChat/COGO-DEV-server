@@ -4,6 +4,8 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode
 
 import java.util.List;
 
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +31,15 @@ public class MentorService {
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
 
-	public List<ResponseMentorListInfo> getMentorDtoListByPart(int part) {
+	public List<ResponseMentorListInfo> getMentorDtoListByPart(PartEnum part) {
 		return mentorRepository.getMentorListByPart(part); //일반join
 	}
 
-	public List<ResponseMentorListInfo> getMentorDtoListByClub(int club) {
+	public List<ResponseMentorListInfo> getMentorDtoListByClub(ClubEnum club) {
 		return mentorRepository.getMentorListByClub(club); //일반join
 	}
 
-	public List<ResponseMentorListInfo> getMentorDtoListByPartAndClub(int part, int club) {
+	public List<ResponseMentorListInfo> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
 		return mentorRepository.getMentorListByPartAndClub(part, club);
 	}
 
