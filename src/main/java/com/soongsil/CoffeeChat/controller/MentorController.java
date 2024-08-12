@@ -46,25 +46,25 @@ public class MentorController {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoByIdWithJoin(mentorId));
 	}
 
-	@GetMapping("/{part}")
+	@GetMapping("/part")
 	@Operation(summary = "파트별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByPart(@PathVariable("part") PartEnum part) {
+	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByPart(@RequestParam("part") PartEnum part) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
 	}
 
-	@GetMapping("/{club}")
+	@GetMapping("/club")
 	@Operation(summary = "동아리별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@PathVariable("club") ClubEnum club) {
+	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@RequestParam("club") ClubEnum club) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByClub(club));
 	}
 
-	@GetMapping("/{part}/{club}")
+	@GetMapping("/part/club")
 	@Operation(summary = "파트+동아리별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@PathVariable("part") PartEnum part,
-		@PathVariable("club") ClubEnum club) {
+	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@RequestParam("part") PartEnum part,
+		@RequestParam("club") ClubEnum club) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPartAndClub(part, club));
 	}
 
