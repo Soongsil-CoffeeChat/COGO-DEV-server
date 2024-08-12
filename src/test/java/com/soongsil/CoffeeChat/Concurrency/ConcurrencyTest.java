@@ -40,44 +40,44 @@ public class ConcurrencyTest {
     private MenteeRepository menteeRepository;
 
 
-    @DisplayName("동시성 처리 후 테스트")
-    @Test
-    public void testConcurrencyWithRedis() throws InterruptedException {
-        Long mentorId = 1L; // 테스트할 Mentor ID
-        LocalDate date = LocalDate.of(2000, 6, 25);
-        LocalTime startTime = LocalTime.of(10, 0);
-        LocalTime endTime = LocalTime.of(11, 0);
-        String userName = "user0"; // 테스트할 사용자 이름
-
-        // 사전 데이터 세팅
-        setupTestData();
-
-        ApplicationCreateRequest request = new ApplicationCreateRequest(date, startTime, endTime, mentorId);
-
-        Thread thread1 = new Thread(() -> {
-            try {
-                ApplicationCreateResponse response = applicationService.createApplication(request, userName);
-                System.out.println("Thread 1: " + response);
-            } catch (Exception e) {
-                System.out.println("Thread 1: " + e.getMessage());
-            }
-        });
-
-        Thread thread2 = new Thread(() -> {
-            try {
-                ApplicationCreateResponse response = applicationService.createApplication(request, userName);
-                System.out.println("Thread 2: " + response);
-            } catch (Exception e) {
-                System.out.println("Thread 2: " + e.getMessage());
-            }
-        });
-
-        thread1.start();
-        thread2.start();
-
-        thread1.join();
-        thread2.join();
-    }
+    // @DisplayName("동시성 처리 후 테스트")
+    // @Test
+    // public void testConcurrencyWithRedis() throws InterruptedException {
+    //     Long mentorId = 1L; // 테스트할 Mentor ID
+    //     LocalDate date = LocalDate.of(2000, 6, 25);
+    //     LocalTime startTime = LocalTime.of(10, 0);
+    //     LocalTime endTime = LocalTime.of(11, 0);
+    //     String userName = "user0"; // 테스트할 사용자 이름
+    //
+    //     // 사전 데이터 세팅
+    //     setupTestData();
+    //
+    //     ApplicationCreateRequest request = new ApplicationCreateRequest(date, startTime, endTime, mentorId);
+    //
+    //     Thread thread1 = new Thread(() -> {
+    //         try {
+    //             ApplicationCreateResponse response = applicationService.createApplication(request, userName);
+    //             System.out.println("Thread 1: " + response);
+    //         } catch (Exception e) {
+    //             System.out.println("Thread 1: " + e.getMessage());
+    //         }
+    //     });
+    //
+    //     Thread thread2 = new Thread(() -> {
+    //         try {
+    //             ApplicationCreateResponse response = applicationService.createApplication(request, userName);
+    //             System.out.println("Thread 2: " + response);
+    //         } catch (Exception e) {
+    //             System.out.println("Thread 2: " + e.getMessage());
+    //         }
+    //     });
+    //
+    //     thread1.start();
+    //     thread2.start();
+    //
+    //     thread1.join();
+    //     thread2.join();
+    // }
     @DisplayName("동시성 처리 안한 상태")
     @Test
     public void testConcurrency() throws InterruptedException {

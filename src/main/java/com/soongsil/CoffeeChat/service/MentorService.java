@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.controller.Exception.CustomException;
-import com.soongsil.CoffeeChat.controller.Exception.enums.MentorErrorCode;
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
 import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
