@@ -4,6 +4,7 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
+import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -73,4 +74,18 @@ public class MentorController {
 		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));
 	}
 
+	@PatchMapping
+	@Operation(summary = "멘토의 세부 정보 수정")
+	@ApiResponse(responseCode = "200", description = "변경된 멘토 세부 정보를 반환")
+	public ResponseEntity<ResponseMentorInfo> updateMentorInfo(
+		Authentication authentication,
+		@RequestBody MentorUpdateRequestDto mentorUpdateRequestDto
+	) {
+		return ResponseEntity.ok()
+			.body(
+				mentorService.updateMentorInfo(
+					((CustomOAuth2User)authentication.getPrincipal()).getUsername(),
+					mentorUpdateRequestDto)
+			);
+	}
 }
