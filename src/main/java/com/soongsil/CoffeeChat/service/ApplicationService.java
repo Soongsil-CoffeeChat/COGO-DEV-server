@@ -1,9 +1,12 @@
 package com.soongsil.CoffeeChat.service;
 
+import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.*;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode;
+import com.soongsil.CoffeeChat.dto.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.entity.*;
 import com.soongsil.CoffeeChat.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
@@ -17,7 +20,6 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -32,10 +34,9 @@ import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -141,7 +142,8 @@ public class ApplicationService {
 				MEMBER_NOT_FOUND.getErrorMessage())
 			);
 		return ApplicationCreateResponse.from(
-			applicationRepository.save(request.toEntity(findMentor, findMentee, request.getMemo()))
+			applicationRepository.save(
+				request.toEntity(findMentor, findMentee, request.getMemo(), requestedPossibleDate))
 		);
 	}
 
@@ -193,4 +195,17 @@ public class ApplicationService {
 		}
 	}
 
+	public ApplicationGetResponse getApplication(Long applicationId, String username) {
+		Application findApplication = applicationRepository.findById(applicationId)
+			.orElseThrow(() -> new CustomException(
+				APPLICATION_NOT_FOUND.getHttpStatusCode(),
+				APPLICATION_NOT_FOUND.getErrorMessage()
+			));
+		return ApplicationGetResponse.builder()
+			.menteeId(findApplication.getMentee().getId())
+			.mentorId(findApplication.getMentor().getId())
+			.memo(findApplication.getMemo())
+			.possibleDateId(findApplication.getPossibleDate().getId())
+			.build();
+	}
 }
