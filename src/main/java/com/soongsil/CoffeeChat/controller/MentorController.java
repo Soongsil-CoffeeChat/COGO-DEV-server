@@ -7,7 +7,6 @@ import java.util.List;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
-import com.soongsil.CoffeeChat.entity.Mentor;
 
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
@@ -44,7 +43,7 @@ public class MentorController {
 	@Operation(summary = "멘토 상세 정보 조회")
 	@ApiResponse(responseCode = "200", description = "멘토 상세 정보 DTO 반환")
 	public ResponseEntity<ResponseMentorInfo> getMentorInfo(@PathVariable("mentorId") Long mentorId) {
-		return ResponseEntity.ok().body(mentorService.getMentorDtobyId(mentorId));
+		return ResponseEntity.ok().body(mentorService.getMentorDtoByIdWithJoin(mentorId));
 	}
 
 	@GetMapping("/{part}")

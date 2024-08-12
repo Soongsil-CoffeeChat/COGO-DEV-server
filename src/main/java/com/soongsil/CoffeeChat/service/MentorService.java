@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
 import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
@@ -47,7 +46,7 @@ public class MentorService {
 		return possibleDateRepository.getPossibleDatesById(mentorId);
 	}
 
-	public ResponseMentorInfo getMentorDtobyId(Long mentorId) {
+	public ResponseMentorInfo getMentorDtoById(Long mentorId) {
 		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)
 			.orElseThrow(() -> new CustomException(
@@ -58,6 +57,10 @@ public class MentorService {
 			findMentor,
 			userRepository.findByMentor(findMentor)
 		);
+	}
+
+	public ResponseMentorInfo getMentorDtoByIdWithJoin(Long mentorId){
+		return mentorRepository.getMentorInfoByMentorId(mentorId);
 	}
 
 	@Transactional

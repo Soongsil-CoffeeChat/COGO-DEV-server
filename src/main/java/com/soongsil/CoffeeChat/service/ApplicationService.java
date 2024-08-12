@@ -115,6 +115,7 @@ public class ApplicationService {
 		// 		} finally {
 		// 			redisTemplate.delete(lockKey);
 		// 		}
+		//TODO: Fetch Join
 		// 가능시간 체크
 		PossibleDate requestedPossibleDate = possibleDateRepository.findById(request.getPossibleDateId())
 			.orElseThrow(() -> new CustomException(

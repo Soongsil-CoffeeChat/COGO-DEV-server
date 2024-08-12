@@ -17996,3 +17996,1002 @@ Caused by: java.sql.SQLSyntaxErrorException: Key column 'mentor_introduction' do
 2024-08-12 21:37:24 [SpringApplicationShutdownHook] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Un-scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration$Scope@3eaadf97] from SessionFactory [org.hibernate.internal.SessionFactoryImpl@54fbaa65]
 2024-08-12 21:37:24 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2024-08-12 21:37:24 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-08-12 22:46:32 [main] [transactionId=] [threadId=] INFO  c.s.CoffeeChat.CoffeeChatApplication - Starting CoffeeChatApplication using Java 17.0.11 with PID 45961 (/Users/kimkyohwee/Documents/BE프로젝트/CoffeeChat/CoffeeChat-Server/out/production/classes started by kimkyohwee in /Users/kimkyohwee/Documents/BE프로젝트/CoffeeChat/CoffeeChat-Server)
+2024-08-12 22:46:32 [main] [transactionId=] [threadId=] DEBUG c.s.CoffeeChat.CoffeeChatApplication - Running with Spring Boot v3.2.2, Spring v6.1.3
+2024-08-12 22:46:32 [main] [transactionId=] [threadId=] INFO  c.s.CoffeeChat.CoffeeChatApplication - No active profile set, falling back to 1 default profile: "default"
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 70 ms. Found 6 JPA repository interfaces.
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.ApplicationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.MenteeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.Mentor.MentorRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.RefreshRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.soongsil.CoffeeChat.repository.User.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 762 ms
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration boolean -> org.hibernate.type.BasicTypeReference@7462ba4b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration boolean -> org.hibernate.type.BasicTypeReference@7462ba4b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Boolean -> org.hibernate.type.BasicTypeReference@7462ba4b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration numeric_boolean -> org.hibernate.type.BasicTypeReference@4b09d1c3
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.NumericBooleanConverter -> org.hibernate.type.BasicTypeReference@4b09d1c3
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration true_false -> org.hibernate.type.BasicTypeReference@18811c42
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.TrueFalseConverter -> org.hibernate.type.BasicTypeReference@18811c42
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration yes_no -> org.hibernate.type.BasicTypeReference@627acb38
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.YesNoConverter -> org.hibernate.type.BasicTypeReference@627acb38
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte -> org.hibernate.type.BasicTypeReference@32b95de
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte -> org.hibernate.type.BasicTypeReference@32b95de
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Byte -> org.hibernate.type.BasicTypeReference@32b95de
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration binary -> org.hibernate.type.BasicTypeReference@629cbb1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration byte[] -> org.hibernate.type.BasicTypeReference@629cbb1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration [B -> org.hibernate.type.BasicTypeReference@629cbb1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration binary_wrapper -> org.hibernate.type.BasicTypeReference@7d977a20
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration wrapper-binary -> org.hibernate.type.BasicTypeReference@7d977a20
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration image -> org.hibernate.type.BasicTypeReference@35ab4260
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration blob -> org.hibernate.type.BasicTypeReference@76134b9b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Blob -> org.hibernate.type.BasicTypeReference@76134b9b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_blob -> org.hibernate.type.BasicTypeReference@38667005
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_blob_wrapper -> org.hibernate.type.BasicTypeReference@7ee64b53
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration short -> org.hibernate.type.BasicTypeReference@1131aead
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration short -> org.hibernate.type.BasicTypeReference@1131aead
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Short -> org.hibernate.type.BasicTypeReference@1131aead
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration integer -> org.hibernate.type.BasicTypeReference@7d126083
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration int -> org.hibernate.type.BasicTypeReference@7d126083
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Integer -> org.hibernate.type.BasicTypeReference@7d126083
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration long -> org.hibernate.type.BasicTypeReference@76ffc17c
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration long -> org.hibernate.type.BasicTypeReference@76ffc17c
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Long -> org.hibernate.type.BasicTypeReference@76ffc17c
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration float -> org.hibernate.type.BasicTypeReference@3a8fb023
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration float -> org.hibernate.type.BasicTypeReference@3a8fb023
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Float -> org.hibernate.type.BasicTypeReference@3a8fb023
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration double -> org.hibernate.type.BasicTypeReference@26d73519
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration double -> org.hibernate.type.BasicTypeReference@26d73519
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Double -> org.hibernate.type.BasicTypeReference@26d73519
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration big_integer -> org.hibernate.type.BasicTypeReference@48af5f38
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.math.BigInteger -> org.hibernate.type.BasicTypeReference@48af5f38
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration big_decimal -> org.hibernate.type.BasicTypeReference@40538370
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.math.BigDecimal -> org.hibernate.type.BasicTypeReference@40538370
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration character -> org.hibernate.type.BasicTypeReference@71a2df1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration char -> org.hibernate.type.BasicTypeReference@71a2df1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Character -> org.hibernate.type.BasicTypeReference@71a2df1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration character_nchar -> org.hibernate.type.BasicTypeReference@18faaff6
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration string -> org.hibernate.type.BasicTypeReference@2a9e754e
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.String -> org.hibernate.type.BasicTypeReference@2a9e754e
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration nstring -> org.hibernate.type.BasicTypeReference@760a2b6e
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration characters -> org.hibernate.type.BasicTypeReference@20a9f5fb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration char[] -> org.hibernate.type.BasicTypeReference@20a9f5fb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration [C -> org.hibernate.type.BasicTypeReference@20a9f5fb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration wrapper-characters -> org.hibernate.type.BasicTypeReference@6d617b07
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration text -> org.hibernate.type.BasicTypeReference@340c57e0
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ntext -> org.hibernate.type.BasicTypeReference@137a4b54
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration clob -> org.hibernate.type.BasicTypeReference@7c9372ed
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Clob -> org.hibernate.type.BasicTypeReference@7c9372ed
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration nclob -> org.hibernate.type.BasicTypeReference@1acc873b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.NClob -> org.hibernate.type.BasicTypeReference@1acc873b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob -> org.hibernate.type.BasicTypeReference@4ca970d5
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob_char_array -> org.hibernate.type.BasicTypeReference@dc8b2ff
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_clob_character_array -> org.hibernate.type.BasicTypeReference@6a2badb1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob -> org.hibernate.type.BasicTypeReference@14201a90
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob_character_array -> org.hibernate.type.BasicTypeReference@1308ef19
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration materialized_nclob_char_array -> org.hibernate.type.BasicTypeReference@5b1ff8cd
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Duration -> org.hibernate.type.BasicTypeReference@6cee903a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Duration -> org.hibernate.type.BasicTypeReference@6cee903a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalDateTime -> org.hibernate.type.BasicTypeReference@780ee3ad
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalDateTime -> org.hibernate.type.BasicTypeReference@780ee3ad
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalDate -> org.hibernate.type.BasicTypeReference@2c2aab92
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalDate -> org.hibernate.type.BasicTypeReference@2c2aab92
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration LocalTime -> org.hibernate.type.BasicTypeReference@857f74a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.LocalTime -> org.hibernate.type.BasicTypeReference@857f74a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTime -> org.hibernate.type.BasicTypeReference@10a0d93a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetDateTime -> org.hibernate.type.BasicTypeReference@10a0d93a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTimeWithTimezone -> org.hibernate.type.BasicTypeReference@1f3c5308
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@66b31d46
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTime -> org.hibernate.type.BasicTypeReference@51e94b7d
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetTime -> org.hibernate.type.BasicTypeReference@51e94b7d
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeUtc -> org.hibernate.type.BasicTypeReference@47162173
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeWithTimezone -> org.hibernate.type.BasicTypeReference@3a4f8e8a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@4468fda8
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTime -> org.hibernate.type.BasicTypeReference@5fc1e4fb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZonedDateTime -> org.hibernate.type.BasicTypeReference@5fc1e4fb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTimeWithTimezone -> org.hibernate.type.BasicTypeReference@29aa4bc9
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTimeWithoutTimezone -> org.hibernate.type.BasicTypeReference@6fd7aba8
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration date -> org.hibernate.type.BasicTypeReference@6c519e47
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Date -> org.hibernate.type.BasicTypeReference@6c519e47
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration time -> org.hibernate.type.BasicTypeReference@3ce7490a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Time -> org.hibernate.type.BasicTypeReference@3ce7490a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration timestamp -> org.hibernate.type.BasicTypeReference@4768b95c
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.sql.Timestamp -> org.hibernate.type.BasicTypeReference@4768b95c
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Date -> org.hibernate.type.BasicTypeReference@4768b95c
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar -> org.hibernate.type.BasicTypeReference@1530d0f2
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Calendar -> org.hibernate.type.BasicTypeReference@1530d0f2
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.GregorianCalendar -> org.hibernate.type.BasicTypeReference@1530d0f2
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar_date -> org.hibernate.type.BasicTypeReference@7573c7b5
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration calendar_time -> org.hibernate.type.BasicTypeReference@73da7f08
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration instant -> org.hibernate.type.BasicTypeReference@717a8a76
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Instant -> org.hibernate.type.BasicTypeReference@717a8a76
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid -> org.hibernate.type.BasicTypeReference@62de73eb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.UUID -> org.hibernate.type.BasicTypeReference@62de73eb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration pg-uuid -> org.hibernate.type.BasicTypeReference@62de73eb
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid-binary -> org.hibernate.type.BasicTypeReference@97b5e6a
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration uuid-char -> org.hibernate.type.BasicTypeReference@29f95272
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration class -> org.hibernate.type.BasicTypeReference@c754401
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Class -> org.hibernate.type.BasicTypeReference@c754401
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration currency -> org.hibernate.type.BasicTypeReference@1da53f4f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Currency -> org.hibernate.type.BasicTypeReference@1da53f4f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Currency -> org.hibernate.type.BasicTypeReference@1da53f4f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration locale -> org.hibernate.type.BasicTypeReference@4e7eba9f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.Locale -> org.hibernate.type.BasicTypeReference@4e7eba9f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration serializable -> org.hibernate.type.BasicTypeReference@2df71be0
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.io.Serializable -> org.hibernate.type.BasicTypeReference@2df71be0
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration timezone -> org.hibernate.type.BasicTypeReference@b841713
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.util.TimeZone -> org.hibernate.type.BasicTypeReference@b841713
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZoneOffset -> org.hibernate.type.BasicTypeReference@3fef1e6b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZoneOffset -> org.hibernate.type.BasicTypeReference@3fef1e6b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration url -> org.hibernate.type.BasicTypeReference@4fee14b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.net.URL -> org.hibernate.type.BasicTypeReference@4fee14b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration vector -> org.hibernate.type.BasicTypeReference@11c3d22f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration row_version -> org.hibernate.type.BasicTypeReference@3a54638b
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration object -> org.hibernate.type.JavaObjectType@6533629
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.lang.Object -> org.hibernate.type.JavaObjectType@6533629
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration null -> org.hibernate.type.NullType@223cbf0d
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_date -> org.hibernate.type.BasicTypeReference@4a4ff5ed
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_time -> org.hibernate.type.BasicTypeReference@5ddb302
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_timestamp -> org.hibernate.type.BasicTypeReference@4b7ab7ab
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar -> org.hibernate.type.BasicTypeReference@cf9bd1e
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar_date -> org.hibernate.type.BasicTypeReference@39acd1f1
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_calendar_time -> org.hibernate.type.BasicTypeReference@51813065
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_binary -> org.hibernate.type.BasicTypeReference@4f581211
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration imm_serializable -> org.hibernate.type.BasicTypeReference@e0847a9
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4cd90c36
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(12, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@7305cfb1) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@582c1f8d)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(-9, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@71687d8f) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@443253a6)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(-3, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@191774d6) replaced previous registration(org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@21ffc00e)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4003, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@134955bb) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@45b08b17)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4001, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@6723e6b3) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@3883b5e9)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(4002, org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@61becbcf) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@20171cdc)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2004, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@58f97013) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@7d70ba18)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2005, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@6a07e6ca) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@726ef6aa)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.sql.spi.DdlTypeRegistry - addDescriptor(2011, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@6104691c) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@195cbf5e)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NCharTypeDescriptor) replaced previous registration(CharTypeDescriptor)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NVarcharTypeDescriptor) replaced previous registration(VarcharTypeDescriptor)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(LongNVarcharTypeDescriptor) replaced previous registration(LongVarcharTypeDescriptor)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(NClobTypeDescriptor(DEFAULT)) replaced previous registration(ClobTypeDescriptor(DEFAULT))
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.t.d.jdbc.spi.JdbcTypeRegistry - addDescriptor(2005, ClobTypeDescriptor(STREAM_BINDING)) replaced previous registration(ClobTypeDescriptor(DEFAULT))
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration null -> org.hibernate.type.NullType@5fd4e67f
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Type registration key [null] overrode previous entry : `org.hibernate.type.NullType@223cbf0d`
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.DurationType -> basicType@1(java.time.Duration,2)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration Duration -> basicType@1(java.time.Duration,2)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.Duration -> basicType@1(java.time.Duration,2)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.OffsetDateTimeType -> basicType@2(java.time.OffsetDateTime,3003)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetDateTime -> basicType@2(java.time.OffsetDateTime,3003)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetDateTime -> basicType@2(java.time.OffsetDateTime,3003)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.ZonedDateTimeType -> basicType@3(java.time.ZonedDateTime,3003)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration ZonedDateTime -> basicType@3(java.time.ZonedDateTime,3003)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.ZonedDateTime -> basicType@3(java.time.ZonedDateTime,3003)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration org.hibernate.type.OffsetTimeType -> basicType@4(java.time.OffsetTime,3007)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration OffsetTime -> basicType@4(java.time.OffsetTime,3007)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.hibernate.type.BasicTypeRegistry - Adding type registration java.time.OffsetTime -> basicType@4(java.time.OffsetTime,3007)
+2024-08-12 22:46:33 [main] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@4eb48298] to MetadataBuildingContext [org.hibernate.boot.internal.MetadataBuildingContextRootImpl@2d3bb944]
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration@4eb48298] to SessionFactoryImplementor [org.hibernate.internal.SessionFactoryImpl@5af47414]
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       drop 
+       foreign key FK8kh8w7no9sulg3pndjsaksm07
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394382 | took 50ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       drop 
+       foreign key FK8kh8w7no9sulg3pndjsaksm07
+
+    alter table Application 
+       drop 
+       foreign key FK8kh8w7no9sulg3pndjsaksm07;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       drop 
+       foreign key FKpd9woc1pqnmd32ku3j1nqcha8
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394394 | took 11ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       drop 
+       foreign key FKpd9woc1pqnmd32ku3j1nqcha8
+
+    alter table Application 
+       drop 
+       foreign key FKpd9woc1pqnmd32ku3j1nqcha8;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       drop 
+       foreign key FKohjibsdevd7mwn5kssk0lf1fv
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394401 | took 7ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       drop 
+       foreign key FKohjibsdevd7mwn5kssk0lf1fv
+
+    alter table Application 
+       drop 
+       foreign key FKohjibsdevd7mwn5kssk0lf1fv;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Mentor 
+       drop 
+       foreign key FKhthvsdqwyr3p97g7ek094r90f
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394409 | took 8ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Mentor 
+       drop 
+       foreign key FKhthvsdqwyr3p97g7ek094r90f
+
+    alter table Mentor 
+       drop 
+       foreign key FKhthvsdqwyr3p97g7ek094r90f;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Mentor 
+       drop 
+       foreign key FKhthvsdqwyr3p97g7ek094r90f" via JDBC [Can't DROP 'FKhthvsdqwyr3p97g7ek094r90f'; check that column/key exists]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Mentor 
+       drop 
+       foreign key FKhthvsdqwyr3p97g7ek094r90f" via JDBC [Can't DROP 'FKhthvsdqwyr3p97g7ek094r90f'; check that column/key exists]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:470)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropConstraintsTablesSequences(SchemaDropperImpl.java:242)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:215)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:185)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:155)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:115)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:244)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1820)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.soongsil.CoffeeChat.CoffeeChatApplication.main(CoffeeChatApplication.java:22)
+Caused by: java.sql.SQLSyntaxErrorException: Can't DROP 'FKhthvsdqwyr3p97g7ek094r90f'; check that column/key exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at com.p6spy.engine.wrapper.StatementWrapper.execute(StatementWrapper.java:115)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 40 common frames omitted
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table PossibleDate 
+       drop 
+       foreign key FKr8bu03rfgyjtiimmtsu23389
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394418 | took 7ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table PossibleDate 
+       drop 
+       foreign key FKr8bu03rfgyjtiimmtsu23389
+
+    alter table PossibleDate 
+       drop 
+       foreign key FKr8bu03rfgyjtiimmtsu23389;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table User 
+       drop 
+       foreign key FKd8bqph9uejx4p62aywyh692u1
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394425 | took 6ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table User 
+       drop 
+       foreign key FKd8bqph9uejx4p62aywyh692u1
+
+    alter table User 
+       drop 
+       foreign key FKd8bqph9uejx4p62aywyh692u1;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table User 
+       drop 
+       foreign key FKb06u1te2qae5gn3i7y9cm0i0y
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394430 | took 5ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table User 
+       drop 
+       foreign key FKb06u1te2qae5gn3i7y9cm0i0y
+
+    alter table User 
+       drop 
+       foreign key FKb06u1te2qae5gn3i7y9cm0i0y;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists Application
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394436 | took 5ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists Application
+
+    drop table if exists Application;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists Introduction
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394439 | took 3ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists Introduction
+
+    drop table if exists Introduction;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists Mentee
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394442 | took 2ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists Mentee
+
+    drop table if exists Mentee;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists Mentor
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394443 | took 0ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists Mentor
+
+    drop table if exists Mentor;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    drop table if exists Mentor" via JDBC [Cannot drop table 'mentor' referenced by a foreign key constraint 'FKa69afi8ngf3x94mccbyq6vy3s' on table 'Club'.]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    drop table if exists Mentor" via JDBC [Cannot drop table 'mentor' referenced by a foreign key constraint 'FKa69afi8ngf3x94mccbyq6vy3s' on table 'Club'.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropTables(SchemaDropperImpl.java:377)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropConstraintsTablesSequences(SchemaDropperImpl.java:253)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:215)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:185)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:155)
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:115)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:244)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1820)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.soongsil.CoffeeChat.CoffeeChatApplication.main(CoffeeChatApplication.java:22)
+Caused by: java.sql.SQLException: Cannot drop table 'mentor' referenced by a foreign key constraint 'FKa69afi8ngf3x94mccbyq6vy3s' on table 'Club'.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:130)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at com.p6spy.engine.wrapper.StatementWrapper.execute(StatementWrapper.java:115)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 40 common frames omitted
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists PossibleDate
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394446 | took 2ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists PossibleDate
+
+    drop table if exists PossibleDate;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists Refresh
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394449 | took 2ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists Refresh
+
+    drop table if exists Refresh;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    drop table if exists User
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394453 | took 3ms | statement | connection 1| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    drop table if exists User
+
+    drop table if exists User;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table Application (
+        application_id bigint not null auto_increment,
+        mentee_id bigint,
+        mentor_id bigint,
+        possible_date_id bigint,
+        memo varchar(255),
+        accept VARCHAR(255) DEFAULT 'UNMATCHED',
+        primary key (application_id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394462 | took 6ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table Application (
+        application_id bigint not null auto_increment,
+        mentee_id bigint,
+        mentor_id bigint,
+        possible_date_id bigint,
+        memo varchar(255),
+        accept VARCHAR(255) DEFAULT 'UNMATCHED',
+        primary key (application_id)
+    ) engine=InnoDB
+
+    create table Application (
+        application_id bigint not null auto_increment,
+        mentee_id bigint,
+        mentor_id bigint,
+        possible_date_id bigint,
+        memo varchar(255),
+        accept VARCHAR(255) DEFAULT 'UNMATCHED',
+        primary key (application_id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table Introduction (
+        introduction_id bigint not null auto_increment,
+        answer1 varchar(255),
+        answer2 varchar(255),
+        description varchar(255),
+        title varchar(255),
+        primary key (introduction_id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394469 | took 6ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table Introduction (
+        introduction_id bigint not null auto_increment,
+        answer1 varchar(255),
+        answer2 varchar(255),
+        description varchar(255),
+        title varchar(255),
+        primary key (introduction_id)
+    ) engine=InnoDB
+
+    create table Introduction (
+        introduction_id bigint not null auto_increment,
+        answer1 varchar(255),
+        answer2 varchar(255),
+        description varchar(255),
+        title varchar(255),
+        primary key (introduction_id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table Mentee (
+        mentee_id bigint not null auto_increment,
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentee_id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394475 | took 5ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table Mentee (
+        mentee_id bigint not null auto_increment,
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentee_id)
+    ) engine=InnoDB
+
+    create table Mentee (
+        mentee_id bigint not null auto_increment,
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentee_id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table Mentor (
+        mentor_id bigint not null auto_increment,
+        mentor_introduction bigint,
+        club enum ('GDSC','YOURSSU','UMC','LIKELION'),
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentor_id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394476 | took 0ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table Mentor (
+        mentor_id bigint not null auto_increment,
+        mentor_introduction bigint,
+        club enum ('GDSC','YOURSSU','UMC','LIKELION'),
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentor_id)
+    ) engine=InnoDB
+
+    create table Mentor (
+        mentor_id bigint not null auto_increment,
+        mentor_introduction bigint,
+        club enum ('GDSC','YOURSSU','UMC','LIKELION'),
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentor_id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    create table Mentor (
+        mentor_id bigint not null auto_increment,
+        mentor_introduction bigint,
+        club enum ('GDSC','YOURSSU','UMC','LIKELION'),
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentor_id)
+    ) engine=InnoDB" via JDBC [Table 'mentor' already exists]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    create table Mentor (
+        mentor_id bigint not null auto_increment,
+        mentor_introduction bigint,
+        club enum ('GDSC','YOURSSU','UMC','LIKELION'),
+        part enum ('FE','BE','PM','DESIGN'),
+        primary key (mentor_id)
+    ) engine=InnoDB" via JDBC [Table 'mentor' already exists]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createTables(SchemaCreatorImpl.java:420)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createSequencesTablesConstraints(SchemaCreatorImpl.java:340)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createFromMetadata(SchemaCreatorImpl.java:239)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:172)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1820)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.soongsil.CoffeeChat.CoffeeChatApplication.main(CoffeeChatApplication.java:22)
+Caused by: java.sql.SQLSyntaxErrorException: Table 'mentor' already exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at com.p6spy.engine.wrapper.StatementWrapper.execute(StatementWrapper.java:115)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 40 common frames omitted
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table PossibleDate (
+        date date,
+        endTime time(6),
+        isActive bit,
+        startTime time(6),
+        mentor_id bigint,
+        possible_date_id bigint not null auto_increment,
+        primary key (possible_date_id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394479 | took 2ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table PossibleDate (
+        date date,
+        endTime time(6),
+        isActive bit,
+        startTime time(6),
+        mentor_id bigint,
+        possible_date_id bigint not null auto_increment,
+        primary key (possible_date_id)
+    ) engine=InnoDB
+
+    create table PossibleDate (
+        date date,
+        endTime time(6),
+        isActive bit,
+        startTime time(6),
+        mentor_id bigint,
+        possible_date_id bigint not null auto_increment,
+        primary key (possible_date_id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table Refresh (
+        id bigint not null auto_increment,
+        expiration varchar(255),
+        refresh varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394481 | took 2ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table Refresh (
+        id bigint not null auto_increment,
+        expiration varchar(255),
+        refresh varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+
+    create table Refresh (
+        id bigint not null auto_increment,
+        expiration varchar(255),
+        refresh varchar(255),
+        username varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    create table User (
+        user_id bigint not null auto_increment,
+        user_mentee bigint,
+        user_mentor bigint,
+        email varchar(255),
+        name varchar(255),
+        phoneNum varchar(255),
+        picture varchar(255),
+        role varchar(255),
+        username varchar(255),
+        primary key (user_id)
+    ) engine=InnoDB
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394485 | took 2ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    create table User (
+        user_id bigint not null auto_increment,
+        user_mentee bigint,
+        user_mentor bigint,
+        email varchar(255),
+        name varchar(255),
+        phoneNum varchar(255),
+        picture varchar(255),
+        role varchar(255),
+        username varchar(255),
+        primary key (user_id)
+    ) engine=InnoDB
+
+    create table User (
+        user_id bigint not null auto_increment,
+        user_mentee bigint,
+        user_mentor bigint,
+        email varchar(255),
+        name varchar(255),
+        phoneNum varchar(255),
+        picture varchar(255),
+        role varchar(255),
+        username varchar(255),
+        primary key (user_id)
+    ) engine=InnoDB;
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       add constraint UK_4esdtl19hhaqci2wxmrsi3a1d unique (possible_date_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394490 | took 4ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       add constraint UK_4esdtl19hhaqci2wxmrsi3a1d unique (possible_date_id)
+
+    alter table Application 
+       add constraint UK_4esdtl19hhaqci2wxmrsi3a1d unique (possible_date_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Mentor 
+       add constraint UK_q1bnlwuhs82q8yg9sugcv9i2t unique (mentor_introduction)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394490 | took 0ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Mentor 
+       add constraint UK_q1bnlwuhs82q8yg9sugcv9i2t unique (mentor_introduction)
+
+    alter table Mentor 
+       add constraint UK_q1bnlwuhs82q8yg9sugcv9i2t unique (mentor_introduction);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Mentor 
+       add constraint UK_q1bnlwuhs82q8yg9sugcv9i2t unique (mentor_introduction)" via JDBC [Key column 'mentor_introduction' doesn't exist in table]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Mentor 
+       add constraint UK_q1bnlwuhs82q8yg9sugcv9i2t unique (mentor_introduction)" via JDBC [Key column 'mentor_introduction' doesn't exist in table]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createTableConstraints(SchemaCreatorImpl.java:393)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createSequencesTablesConstraints(SchemaCreatorImpl.java:351)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createFromMetadata(SchemaCreatorImpl.java:239)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:172)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1820)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.soongsil.CoffeeChat.CoffeeChatApplication.main(CoffeeChatApplication.java:22)
+Caused by: java.sql.SQLSyntaxErrorException: Key column 'mentor_introduction' doesn't exist in table
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at com.p6spy.engine.wrapper.StatementWrapper.execute(StatementWrapper.java:115)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 40 common frames omitted
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table User 
+       add constraint UK_lc9moypm41adanqklg8nenmal unique (user_mentee)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394493 | took 2ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table User 
+       add constraint UK_lc9moypm41adanqklg8nenmal unique (user_mentee)
+
+    alter table User 
+       add constraint UK_lc9moypm41adanqklg8nenmal unique (user_mentee);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table User 
+       add constraint UK_3tggmai9ph5bnfjy0wat5ltb5 unique (user_mentor)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394497 | took 3ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table User 
+       add constraint UK_3tggmai9ph5bnfjy0wat5ltb5 unique (user_mentor)
+
+    alter table User 
+       add constraint UK_3tggmai9ph5bnfjy0wat5ltb5 unique (user_mentor);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       add constraint FK8kh8w7no9sulg3pndjsaksm07 
+       foreign key (mentee_id) 
+       references Mentee (mentee_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394512 | took 14ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       add constraint FK8kh8w7no9sulg3pndjsaksm07 
+       foreign key (mentee_id) 
+       references Mentee (mentee_id)
+
+    alter table Application 
+       add constraint FK8kh8w7no9sulg3pndjsaksm07 
+       foreign key (mentee_id) 
+       references Mentee (mentee_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       add constraint FKpd9woc1pqnmd32ku3j1nqcha8 
+       foreign key (mentor_id) 
+       references Mentor (mentor_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394525 | took 13ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       add constraint FKpd9woc1pqnmd32ku3j1nqcha8 
+       foreign key (mentor_id) 
+       references Mentor (mentor_id)
+
+    alter table Application 
+       add constraint FKpd9woc1pqnmd32ku3j1nqcha8 
+       foreign key (mentor_id) 
+       references Mentor (mentor_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Application 
+       add constraint FKohjibsdevd7mwn5kssk0lf1fv 
+       foreign key (possible_date_id) 
+       references PossibleDate (possible_date_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394538 | took 12ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Application 
+       add constraint FKohjibsdevd7mwn5kssk0lf1fv 
+       foreign key (possible_date_id) 
+       references PossibleDate (possible_date_id)
+
+    alter table Application 
+       add constraint FKohjibsdevd7mwn5kssk0lf1fv 
+       foreign key (possible_date_id) 
+       references PossibleDate (possible_date_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table Mentor 
+       add constraint FKhthvsdqwyr3p97g7ek094r90f 
+       foreign key (mentor_introduction) 
+       references Introduction (introduction_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394539 | took 0ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table Mentor 
+       add constraint FKhthvsdqwyr3p97g7ek094r90f 
+       foreign key (mentor_introduction) 
+       references Introduction (introduction_id)
+
+    alter table Mentor 
+       add constraint FKhthvsdqwyr3p97g7ek094r90f 
+       foreign key (mentor_introduction) 
+       references Introduction (introduction_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] WARN  o.h.t.s.i.ExceptionHandlerLoggedImpl - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Mentor 
+       add constraint FKhthvsdqwyr3p97g7ek094r90f 
+       foreign key (mentor_introduction) 
+       references Introduction (introduction_id)" via JDBC [Key column 'mentor_introduction' doesn't exist in table]
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Mentor 
+       add constraint FKhthvsdqwyr3p97g7ek094r90f 
+       foreign key (mentor_introduction) 
+       references Introduction (introduction_id)" via JDBC [Key column 'mentor_introduction' doesn't exist in table]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:94)
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:233)
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:217)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createForeignKeys(SchemaCreatorImpl.java:303)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.createFromMetadata(SchemaCreatorImpl.java:250)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.performCreation(SchemaCreatorImpl.java:172)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:142)
+	at org.hibernate.tool.schema.internal.SchemaCreatorImpl.doCreation(SchemaCreatorImpl.java:118)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:256)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$5(SchemaManagementToolCoordinator.java:145)
+	at java.base/java.util.HashMap.forEach(HashMap.java:1421)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:142)
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:37)
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:35)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:315)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:450)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1507)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:75)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:376)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1820)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1769)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1231)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:949)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:334)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343)
+	at com.soongsil.CoffeeChat.CoffeeChatApplication.main(CoffeeChatApplication.java:22)
+Caused by: java.sql.SQLSyntaxErrorException: Key column 'mentor_introduction' doesn't exist in table
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:770)
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:653)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:94)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at com.p6spy.engine.wrapper.StatementWrapper.execute(StatementWrapper.java:115)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:80)
+	... 39 common frames omitted
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table PossibleDate 
+       add constraint FKr8bu03rfgyjtiimmtsu23389 
+       foreign key (mentor_id) 
+       references Mentor (mentor_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394550 | took 10ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table PossibleDate 
+       add constraint FKr8bu03rfgyjtiimmtsu23389 
+       foreign key (mentor_id) 
+       references Mentor (mentor_id)
+
+    alter table PossibleDate 
+       add constraint FKr8bu03rfgyjtiimmtsu23389 
+       foreign key (mentor_id) 
+       references Mentor (mentor_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table User 
+       add constraint FKd8bqph9uejx4p62aywyh692u1 
+       foreign key (user_mentee) 
+       references Mentee (mentee_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394561 | took 11ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table User 
+       add constraint FKd8bqph9uejx4p62aywyh692u1 
+       foreign key (user_mentee) 
+       references Mentee (mentee_id)
+
+    alter table User 
+       add constraint FKd8bqph9uejx4p62aywyh692u1 
+       foreign key (user_mentee) 
+       references Mentee (mentee_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] DEBUG org.hibernate.SQL - 
+    alter table User 
+       add constraint FKb06u1te2qae5gn3i7y9cm0i0y 
+       foreign key (user_mentor) 
+       references Mentor (mentor_id)
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  p6spy - #1723470394577 | took 16ms | statement | connection 2| url jdbc:mysql:// localhost:3306/cogo-local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+
+    alter table User 
+       add constraint FKb06u1te2qae5gn3i7y9cm0i0y 
+       foreign key (user_mentor) 
+       references Mentor (mentor_id)
+
+    alter table User 
+       add constraint FKb06u1te2qae5gn3i7y9cm0i0y 
+       foreign key (user_mentor) 
+       references Mentor (mentor_id);
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] TRACE o.h.type.spi.TypeConfiguration$Scope - Handling #sessionFactoryCreated from [org.hibernate.internal.SessionFactoryImpl@5af47414] for TypeConfiguration
+2024-08-12 22:46:34 [main] [transactionId=] [threadId=] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@74a15f4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@125c443, org.springframework.security.web.context.SecurityContextHolderFilter@69bf351e, org.springframework.security.web.header.HeaderWriterFilter@6ea48ca1, org.springframework.web.filter.CorsFilter@71d94ab, com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter@21f3a99c, org.springframework.security.web.authentication.logout.LogoutFilter@328a1843, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@150a201b, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@27af14bd, com.soongsil.CoffeeChat.config.jwt.JWTFilter@76c1ede3, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@48515dfc, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@59e938a4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@654e793f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@29e9d47b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@323a47fe, org.springframework.security.web.session.SessionManagementFilter@52d04234, org.springframework.security.web.access.ExceptionTranslationFilter@216fe151, org.springframework.security.web.access.intercept.AuthorizationFilter@794ffe22]
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Mvc [pattern='/v3/api-docs/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Mvc [pattern='/v3/api-docs/**']
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Mvc [pattern='/swagger-ui/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Mvc [pattern='/swagger-ui/**']
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] WARN  o.s.s.c.a.web.builders.WebSecurity - You are asking Spring Security to ignore Mvc [pattern='/swagger-resources/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  o.s.s.web.DefaultSecurityFilterChain - Will not secure Mvc [pattern='/swagger-resources/**']
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2024-08-12 22:46:35 [main] [transactionId=] [threadId=] INFO  c.s.CoffeeChat.CoffeeChatApplication - Started CoffeeChatApplication in 3.232 seconds (process running for 3.558)
+2024-08-12 22:46:40 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-08-12 22:46:40 [SpringApplicationShutdownHook] [transactionId=] [threadId=] TRACE o.h.type.spi.TypeConfiguration$Scope - Handling #sessionFactoryClosed from [org.hibernate.internal.SessionFactoryImpl@5af47414] for TypeConfiguration
+2024-08-12 22:46:40 [SpringApplicationShutdownHook] [transactionId=] [threadId=] DEBUG o.h.type.spi.TypeConfiguration$Scope - Un-scoping TypeConfiguration [org.hibernate.type.spi.TypeConfiguration$Scope@41afa0e] from SessionFactory [org.hibernate.internal.SessionFactoryImpl@5af47414]
+2024-08-12 22:46:40 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-08-12 22:46:40 [SpringApplicationShutdownHook] [transactionId=] [threadId=] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
