@@ -1,9 +1,12 @@
 package com.soongsil.CoffeeChat.repository.Mentor;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soongsil.CoffeeChat.dto.QResponseMentorInfo;
 import com.soongsil.CoffeeChat.dto.QResponseMentorListInfo;
+import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
 import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
 
+import com.soongsil.CoffeeChat.entity.QIntroduction;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
@@ -92,4 +95,27 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom{
                 .where(mentor.part.eq(part))
                 .fetch();
     }
+
+    @Override
+    public ResponseMentorInfo getMentorInfoByMentorId(Long mentorId){
+        return queryFactory
+                .select(new QResponseMentorInfo(
+                        mentor.id.as("mentorId"),
+                        user.name.as("mentorName"),
+                        mentor.part,
+                        introduction.title.as("introductionTitle"),
+                        introduction.description.as("introductionDescription"),
+                        introduction.answer1.as("introductionAnswer1"),
+                        introduction.answer2.as("introductionAnswer2"),
+                        user.picture.as("imageUrl")
+                ))
+                .from(user)
+                .join(user.mentor, mentor)
+                .join(mentor.introduction, introduction)
+                .where(mentor.id.eq(mentorId))
+                .fetchOne();
+    }
+
+
+
 }
