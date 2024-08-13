@@ -1,7 +1,10 @@
 package com.soongsil.CoffeeChat.controller;
 
+import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
@@ -15,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController  //RestController=Controller+ResponseBody
 @Tag(name = "REFRESHTOKEN", description = "리프레쉬 토큰 관련 api")
+@RequestMapping(REFRESH_URI)
 public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급 및 2차회원가입 컨트롤러
 	private final JWTUtil jwtUtil;
 	private final RefreshTokenService refreshTokenService;
@@ -24,7 +28,7 @@ public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급
 		this.refreshTokenService = refreshTokenService;
 	}
 
-	@PostMapping("/reissue")
+	@PostMapping
 	@Operation(summary = "리프레쉬 토큰으로 액세스 토큰 reissue")
 	@ApiResponse(responseCode = "200", description = "헤더 : access, refresh, loginStatus")
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {

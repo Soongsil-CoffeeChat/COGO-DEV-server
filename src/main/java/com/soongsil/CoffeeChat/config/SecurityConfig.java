@@ -75,9 +75,9 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
 				.requestMatchers("/health-check", "/", "/reissue", "/security-check").permitAll()
-				.requestMatchers("/api/v1/user/**", "/auth/**").hasRole("USER")
-				.requestMatchers("/api/v1/possibleDate/**").hasAnyRole("MENTOR", "MENTEE")
-				.requestMatchers("/api/v1/mentor/**").hasAnyRole("MENTOR", "MENTEE")
+				.requestMatchers("/api/v2/user/**", "/auth/**").hasRole("USER")
+				.requestMatchers("/api/v2/possibleDate/**").hasAnyRole("MENTOR", "MENTEE")
+				.requestMatchers("/api/v2/mentor/**").hasAnyRole("MENTOR", "MENTEE")
 				.anyRequest().authenticated())
 			.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
