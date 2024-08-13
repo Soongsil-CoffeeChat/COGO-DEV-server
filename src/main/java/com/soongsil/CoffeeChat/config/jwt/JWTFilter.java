@@ -16,7 +16,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
 	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
 
@@ -71,6 +73,9 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 		//토큰에서 username과 role 획득
 		String username = jwtUtil.getUsername(accessToken);
 		String role = jwtUtil.getRole(accessToken);
+
+		log.info("[*] Current User: " + username);
+		log.info("[*] Current User Role: " + role);
 
 		//userDTO를 생성하여 값 set
 		UserDTO userDTO = new UserDTO();
