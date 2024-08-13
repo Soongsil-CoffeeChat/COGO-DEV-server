@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.*;
+import static com.soongsil.CoffeeChat.enums.ApplicationStatus.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,6 +24,7 @@ import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.ApplicationCreateRequestDto;
 import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
 import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
+import com.soongsil.CoffeeChat.dto.ApplicationMatchResponseDto;
 import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -242,4 +244,36 @@ public class ApplicationService {
 		}
 		return dtos;
 	}
+
+	@Transactional
+	public ApplicationMatchResponseDto updateApplicationStatus(Long applicationId, String decision) {
+		Application findApplication = applicationRepository.findById(applicationId)
+			.orElseThrow(() -> new CustomException(
+				APPLICATION_NOT_FOUND.getHttpStatusCode(),
+				APPLICATION_NOT_FOUND.getErrorMessage())
+			);
+
+		ApplicationMatchResponseDto responseDto = ApplicationMatchResponseDto.builder()
+			.applicationId(applicationId)
+			.build();
+
+		switch (decision) {
+			case "reject" -> {
+				log.warn("[*] Application({}) is deleted", applicationId);
+				applicationRepository.deleteById(applicationId);
+				responseDto.setStatus("REJECTED");
+			}
+			case "accept" -> {
+				findApplication.setAccept(MATCHED);
+				responseDto.setStatus(MATCHED.name());
+			}
+			default -> throw new CustomException(
+				INVALID_MATCH_STATUS.getHttpStatusCode(),
+				INVALID_MATCH_STATUS.getErrorMessage()
+			);
+		}
+
+		return responseDto;
+	}
+
 }
