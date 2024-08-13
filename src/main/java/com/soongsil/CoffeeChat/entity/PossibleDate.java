@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,7 +53,7 @@ public class PossibleDate {
 	@Builder.Default
 	private boolean isActive = true;
 
-	public static PossibleDate from(PossibleDateCreateGetDto dto) {
+	public static PossibleDate from(PossibleDateCreateRequestDto dto) {
 		return PossibleDate.builder()
 			.date(dto.getDate())
 			.startTime(dto.getStartTime())
