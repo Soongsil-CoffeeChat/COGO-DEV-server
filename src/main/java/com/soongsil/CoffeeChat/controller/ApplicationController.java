@@ -60,16 +60,18 @@ public class ApplicationController {
 			));
 	}
 
-	@GetMapping
-	@Operation(summary = "신청 받은 COGO 전체 조회")
-	@ApiResponse(responseCode = "200", description = "COGO LIST 반환")
+	@GetMapping("/status")
+	@Operation(summary = "신청 받은 COGO 조회 (MATCHED/UNMATCHED)")
+	@ApiResponse(responseCode = "200", description = "조건에 맞는 COGO LIST 반환")
 	public ResponseEntity<List<ApplicationGetResponseDto>> getApplications(
-		Authentication authentication
+		Authentication authentication,
+		@RequestParam("status") String applicationStatus
 	) {
 		return ResponseEntity.ok()
 			.body(applicationService.getApplications(
-				((CustomOAuth2User)authentication.getPrincipal()).getUsername())
-			);
+				((CustomOAuth2User)authentication.getPrincipal()).getUsername(),
+				applicationStatus
+			));
 	}
 
 	@PatchMapping("/{applicationId}/decision")
