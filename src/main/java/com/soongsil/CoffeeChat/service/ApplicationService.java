@@ -27,6 +27,7 @@ import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
+import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
@@ -140,7 +141,8 @@ public class ApplicationService {
 		requestedPossibleDate.setActive(false);
 		possibleDateRepository.save(requestedPossibleDate);
 		log.info(
-			"[*] PossibleDate(id:" + requestedPossibleDate.getId() + ") is just preempted: " + requestedPossibleDate.isActive()
+			"[*] PossibleDate(id:" + requestedPossibleDate.getId() + ") is just preempted: "
+				+ requestedPossibleDate.isActive()
 		);
 
 		// COGO 저장
@@ -210,12 +212,14 @@ public class ApplicationService {
 				APPLICATION_NOT_FOUND.getHttpStatusCode(),
 				APPLICATION_NOT_FOUND.getErrorMessage()
 			));
+		User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
 		//TODO: toDTO 빌더 만들어두고, join으로 묶자
 		return ApplicationGetResponseDto.builder()
-			.menteeId(findApplication.getMentee().getId())
-			.mentorId(findApplication.getMentor().getId())
+			.menteeName(findMenteeUser.getName())
 			.memo(findApplication.getMemo())
-			.possibleDateId(findApplication.getPossibleDate().getId())
+			.date(findApplication.getPossibleDate().getDate())
+			.startTime(findApplication.getPossibleDate().getStartTime())
+			.endTime(findApplication.getPossibleDate().getEndTime())
 			.build();
 	}
 

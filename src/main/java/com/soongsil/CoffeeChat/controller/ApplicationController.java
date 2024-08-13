@@ -51,7 +51,6 @@ public class ApplicationController {
 	public ResponseEntity<ApplicationGetResponseDto> getApplication(
 		@PathVariable Long applicationId
 	) {
-		//TODO: 여기서도 반환할때 possibleDateId 말고, 날짜+시간 다 넣어서 보내주기(DTO변경필요)
 		return ResponseEntity.ok()
 			.body(applicationService.getApplication(
 				applicationId
