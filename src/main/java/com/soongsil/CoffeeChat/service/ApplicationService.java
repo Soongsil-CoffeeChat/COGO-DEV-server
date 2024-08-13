@@ -4,15 +4,11 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErro
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.*;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode;
-import com.soongsil.CoffeeChat.dto.ApplicationGetResponse;
-import com.soongsil.CoffeeChat.entity.*;
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
-import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
-
-import jakarta.mail.MessagingException;
-import jakarta.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,23 +19,27 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.util.email.EmailUtil;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateRequest;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateResponse;
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.ApplicationCreateRequestDto;
+import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
+import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
+import com.soongsil.CoffeeChat.entity.Application;
+import com.soongsil.CoffeeChat.entity.Mentee;
+import com.soongsil.CoffeeChat.entity.Mentor;
+import com.soongsil.CoffeeChat.entity.PossibleDate;
+import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
+import com.soongsil.CoffeeChat.util.email.EmailUtil;
 
+import jakarta.mail.MessagingException;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +59,7 @@ public class ApplicationService {
 	private RedisTemplate<String, String> redisTemplate;
 
 	@Transactional
-	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws
+	public ApplicationCreateResponseDto createApplication(ApplicationCreateRequestDto request, String userName) throws
 		Exception {
 		// 		System.out.println("여긴들어옴");
 		// 		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+ request.getStartTime();
@@ -144,7 +144,7 @@ public class ApplicationService {
 				MEMBER_NOT_FOUND.getHttpStatusCode(),
 				MEMBER_NOT_FOUND.getErrorMessage())
 			);
-		return ApplicationCreateResponse.from(
+		return ApplicationCreateResponseDto.from(
 			applicationRepository.save(
 				request.toEntity(findMentor, findMentee, request.getMemo(), requestedPossibleDate))
 		);
@@ -198,14 +198,14 @@ public class ApplicationService {
 		}
 	}
 
-	public ApplicationGetResponse getApplication(Long applicationId) {
+	public ApplicationGetResponseDto getApplication(Long applicationId) {
 		Application findApplication = applicationRepository.findById(applicationId)
 			.orElseThrow(() -> new CustomException(
 				APPLICATION_NOT_FOUND.getHttpStatusCode(),
 				APPLICATION_NOT_FOUND.getErrorMessage()
 			));
 		//TODO: toDTO 빌더 만들어두고, join으로 묶자
-		return ApplicationGetResponse.builder()
+		return ApplicationGetResponseDto.builder()
 			.menteeId(findApplication.getMentee().getId())
 			.mentorId(findApplication.getMentor().getId())
 			.memo(findApplication.getMemo())
@@ -213,13 +213,13 @@ public class ApplicationService {
 			.build();
 	}
 
-	public List<ApplicationGetResponse> getApplications(String username) {
+	public List<ApplicationGetResponseDto> getApplications(String username) {
 		//TODO: JOIN문으로 변경
-		List<ApplicationGetResponse> dtos=new ArrayList<>();
+		List<ApplicationGetResponseDto> dtos=new ArrayList<>();
 		Mentor findMentor=userRepository.findByUsername(username).getMentor();
 		List<Application> findApplications=applicationRepository.findApplicationByMentor(findMentor);
 		for(Application app:findApplications){
-			dtos.add(ApplicationGetResponse.toDto(app));
+			dtos.add(ApplicationGetResponseDto.toDto(app));
 		}
 		return dtos;
 	}

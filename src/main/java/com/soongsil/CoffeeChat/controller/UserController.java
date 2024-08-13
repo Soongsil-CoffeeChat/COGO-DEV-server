@@ -2,8 +2,8 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
-import com.soongsil.CoffeeChat.dto.ChangeUserInfoDto;
-import com.soongsil.CoffeeChat.dto.JoinUserDto;
+import com.soongsil.CoffeeChat.dto.UserGetOrUpdateDto;
+import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soongsil.CoffeeChat.dto.MenteeDto;
-import com.soongsil.CoffeeChat.dto.MentorDto;
+import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -51,7 +51,7 @@ public class UserController {
     @Operation(summary="기본정보 기입")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> joinWithMentor(Authentication authentication,
-                                                 @RequestBody JoinUserDto dto) throws Exception {
+                                                 @RequestBody UserJoinRequestDto dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveUserInformation(getUserNameByAuthentication(authentication), dto)
         );
@@ -61,7 +61,7 @@ public class UserController {
     @Operation(summary="멘토로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
-                                                 @RequestBody MentorDto dto) throws Exception {
+                                                 @RequestBody MentorJoinRequestDto dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto)
         );
@@ -71,7 +71,7 @@ public class UserController {
     @Operation(summary="멘티로 가입하기!")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
-                                                 @RequestBody MenteeDto dto) throws Exception {
+                                                 @RequestBody MenteeJoinRequestDto dto) throws Exception {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto)
         );
@@ -118,14 +118,14 @@ public class UserController {
     @Operation(summary="사용자 정보 수정")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserEmail(Authentication authentication,
-                                              @RequestBody ChangeUserInfoDto dto) throws Exception {
+                                              @RequestBody UserGetOrUpdateDto dto) throws Exception {
         return new ResponseEntity<>(userService.changeUserInfo(dto, getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
     @GetMapping()
     @Operation(summary="기본정보 조회")
     @ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ChangeUserInfoDto> getUserInfo(Authentication authentication) throws Exception {
+    public ResponseEntity<UserGetOrUpdateDto> getUserInfo(Authentication authentication) throws Exception {
         return new ResponseEntity<>(userService.findUserInfo(getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 

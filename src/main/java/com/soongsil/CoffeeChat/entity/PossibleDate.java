@@ -4,10 +4,22 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Builder
@@ -41,7 +53,7 @@ public class PossibleDate {
     @Builder.Default
     private boolean isActive=true;
 
-    public static PossibleDate from(PossibleDateRequestDto dto) {
+    public static PossibleDate from(PossibleDateCreateGetDto dto) {
         return PossibleDate.builder()
                 .date(dto.getDate())
                 .startTime(dto.getStartTime())

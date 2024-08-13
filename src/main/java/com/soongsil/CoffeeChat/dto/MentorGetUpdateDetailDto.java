@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @Data
-public class ResponseMentorInfo {
+public class MentorGetUpdateDetailDto {
 	Long mentorId;
 	String mentorName;
 	PartEnum part;
@@ -24,8 +24,8 @@ public class ResponseMentorInfo {
 	String introductionAnswer2;
 	String imageUrl;
 
-	public static ResponseMentorInfo of(Mentor mentor, User user) {
-		return ResponseMentorInfo.builder()
+	public static MentorGetUpdateDetailDto of(Mentor mentor, User user) {
+		return MentorGetUpdateDetailDto.builder()
 			.mentorId(mentor.getId())
 			.mentorName(user.getName())
 			.imageUrl(user.getPicture())
@@ -38,7 +38,7 @@ public class ResponseMentorInfo {
 	}
 
 	@QueryProjection
-	public ResponseMentorInfo(Long mentorId, String mentorName, PartEnum part, String introductionTitle, String introductionDescription,
+	public MentorGetUpdateDetailDto(Long mentorId, String mentorName, PartEnum part, String introductionTitle, String introductionDescription,
 							  String introductionAnswer1, String introductionAnswer2, String imageUrl){
 		this.mentorId=mentorId;
 		this.mentorName=mentorName;

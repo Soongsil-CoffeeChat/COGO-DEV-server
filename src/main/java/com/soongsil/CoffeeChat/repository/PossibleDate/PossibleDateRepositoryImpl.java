@@ -1,27 +1,25 @@
 package com.soongsil.CoffeeChat.repository.PossibleDate;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
-import com.soongsil.CoffeeChat.dto.QPossibleDateRequestDto;
-import com.soongsil.CoffeeChat.entity.QMentor;
-import com.soongsil.CoffeeChat.entity.QPossibleDate;
-import com.soongsil.CoffeeChat.entity.QUser;
-import lombok.RequiredArgsConstructor;
+import static com.soongsil.CoffeeChat.entity.QMentor.*;
+import static com.soongsil.CoffeeChat.entity.QPossibleDate.*;
+import static com.soongsil.CoffeeChat.entity.QUser.*;
 
 import java.util.List;
 
-import static com.soongsil.CoffeeChat.entity.QMentor.mentor;
-import static com.soongsil.CoffeeChat.entity.QPossibleDate.possibleDate;
-import static com.soongsil.CoffeeChat.entity.QUser.user;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
+import com.soongsil.CoffeeChat.dto.QPossibleDateCreateGetDto;
+
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<PossibleDateRequestDto> getPossibleDatesByUsername(String username) {
+    public List<PossibleDateCreateGetDto> getPossibleDatesByUsername(String username) {
         return queryFactory.
-                select(new QPossibleDateRequestDto(
+                select(new QPossibleDateCreateGetDto(
                         possibleDate.date,
                         possibleDate.startTime,
                         possibleDate.endTime,

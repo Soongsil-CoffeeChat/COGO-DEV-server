@@ -9,13 +9,13 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ApplicationCreateResponse {
+public class ApplicationCreateResponseDto {
 	private LocalDate date;
 	private LocalTime startTime;
 	private LocalTime endTime;
 
-	public static ApplicationCreateResponse from(Application application) {
-		return ApplicationCreateResponse.builder()
+	public static ApplicationCreateResponseDto from(Application application) {
+		return ApplicationCreateResponseDto.builder()
 
 			.build();
 	}
