@@ -2,7 +2,7 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
-import com.soongsil.CoffeeChat.dto.UserGetOrUpdateDto;
+import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
 import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -118,14 +118,14 @@ public class UserController {
     @Operation(summary="사용자 정보 수정")
     @ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<User> saveUserEmail(Authentication authentication,
-                                              @RequestBody UserGetOrUpdateDto dto) throws Exception {
+                                              @RequestBody UserGetUpdateDto dto) throws Exception {
         return new ResponseEntity<>(userService.changeUserInfo(dto, getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
     @GetMapping()
     @Operation(summary="기본정보 조회")
     @ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<UserGetOrUpdateDto> getUserInfo(Authentication authentication) throws Exception {
+    public ResponseEntity<UserGetUpdateDto> getUserInfo(Authentication authentication) throws Exception {
         return new ResponseEntity<>(userService.findUserInfo(getUserNameByAuthentication(authentication)), HttpStatus.OK);
     }
 
