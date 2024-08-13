@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeUserInfoDto {
+public class UserGetOrUpdateDto {
     private String name;
     private String email;
     private String phoneNum;
 
-    public static ChangeUserInfoDto toDto(User user){
-        return ChangeUserInfoDto.builder()
+    public static UserGetOrUpdateDto toDto(User user){
+        return UserGetOrUpdateDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .phoneNum(user.getPhoneNum())

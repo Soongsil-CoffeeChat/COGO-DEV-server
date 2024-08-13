@@ -1,10 +1,5 @@
 package com.soongsil.CoffeeChat.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -17,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ApplicationCreateRequest {
+public class ApplicationCreateRequestDto {
 
 	private Long mentorId;
 	private Long menteeId;

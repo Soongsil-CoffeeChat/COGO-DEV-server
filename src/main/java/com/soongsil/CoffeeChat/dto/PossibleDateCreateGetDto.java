@@ -7,14 +7,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PossibleDateRequestDto {
+public class PossibleDateCreateGetDto {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 
@@ -25,14 +29,14 @@ public class PossibleDateRequestDto {
 	private LocalTime endTime;
 
 	@QueryProjection
-	public PossibleDateRequestDto(LocalDate date, LocalTime startTime, LocalTime endTime, Long possibleDateId) {
+	public PossibleDateCreateGetDto(LocalDate date, LocalTime startTime, LocalTime endTime, Long possibleDateId) {
 		this.date = date;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
 
-	public static PossibleDateRequestDto toDto(PossibleDate possibleDate) {
-		return PossibleDateRequestDto.builder()
+	public static PossibleDateCreateGetDto toDto(PossibleDate possibleDate) {
+		return PossibleDateCreateGetDto.builder()
 			.date(possibleDate.getDate())
 			.startTime(possibleDate.getStartTime())
 			.endTime(possibleDate.getEndTime())

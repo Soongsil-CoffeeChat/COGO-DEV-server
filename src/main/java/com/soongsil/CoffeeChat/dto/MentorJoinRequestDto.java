@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MentorDto {
+public class MentorJoinRequestDto {
 	private PartEnum part;
 	private ClubEnum club;
 }

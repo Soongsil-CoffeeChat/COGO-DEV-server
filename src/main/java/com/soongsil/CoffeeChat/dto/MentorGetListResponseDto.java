@@ -1,11 +1,6 @@
 package com.soongsil.CoffeeChat.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.querydsl.core.annotations.QueryProjection;
-import com.soongsil.CoffeeChat.entity.Mentor;
-import com.soongsil.CoffeeChat.entity.User;
 
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
@@ -18,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-public class ResponseMentorListInfo {
+public class MentorGetListResponseDto {
 	private String picture;
 	private String mentorName;
 	private PartEnum part;
@@ -30,7 +25,7 @@ public class ResponseMentorListInfo {
 
 
 	@QueryProjection
-	public ResponseMentorListInfo(String picture, String mentorName, PartEnum part, ClubEnum club, String username,Long mentorId, String title, String description) {
+	public MentorGetListResponseDto(String picture, String mentorName, PartEnum part, ClubEnum club, String username,Long mentorId, String title, String description) {
 		this.picture = picture;
 		this.mentorName = mentorName;
 		this.part=part;

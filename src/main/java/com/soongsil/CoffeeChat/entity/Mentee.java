@@ -3,7 +3,7 @@ package com.soongsil.CoffeeChat.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.MenteeDto;
+import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
 
 import com.soongsil.CoffeeChat.enums.PartEnum;
 import jakarta.persistence.*;
@@ -34,7 +34,7 @@ public class Mentee {
 	private Set<Application> applications = new HashSet<>();
 
 
-	public static Mentee from(MenteeDto dto) {
+	public static Mentee from(MenteeJoinRequestDto dto) {
 		return Mentee.builder()
 			.part(dto.getPart())
 			.build();

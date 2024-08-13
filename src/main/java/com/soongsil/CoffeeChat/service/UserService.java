@@ -1,14 +1,14 @@
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.dto.ChangeUserInfoDto;
-import com.soongsil.CoffeeChat.dto.JoinUserDto;
+import com.soongsil.CoffeeChat.dto.UserGetOrUpdateDto;
+import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.dto.MenteeDto;
-import com.soongsil.CoffeeChat.dto.MentorDto;
+import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -31,7 +31,7 @@ public class UserService {
 	private final SmsUtil smsUtil;
 
 	@Transactional
-	public User saveUserInformation(String username, JoinUserDto dto){
+	public User saveUserInformation(String username, UserJoinRequestDto dto){
 		User user=userRepository.findByUsername(username);
 		user.setName(dto.getName());
 		user.setPhoneNum(dto.getPhoneNum());
@@ -39,7 +39,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public Mentor saveMentorInformation(String username, MentorDto dto) {
+	public Mentor saveMentorInformation(String username, MentorJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
 		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTOR");
 		Mentor mentor = Mentor.from(dto);
@@ -48,7 +48,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public Mentee saveMenteeInformation(String username, MenteeDto dto) {
+	public Mentee saveMenteeInformation(String username, MenteeJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
 		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
@@ -88,15 +88,15 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public User changeUserInfo(ChangeUserInfoDto dto, String username){
+	public User changeUserInfo(UserGetOrUpdateDto dto, String username){
 		User user=userRepository.findByUsername(username);
 		user.setEmail(dto.getEmail());
 		user.setPhoneNum(dto.getPhoneNum());
 		return userRepository.save(user);
 	}
 
-	public ChangeUserInfoDto findUserInfo(String username){
+	public UserGetOrUpdateDto findUserInfo(String username){
 		User user=userRepository.findByUsername(username);
-		return ChangeUserInfoDto.toDto(user);
+		return UserGetOrUpdateDto.toDto(user);
 	}
 }

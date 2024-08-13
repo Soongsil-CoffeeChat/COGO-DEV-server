@@ -4,6 +4,6 @@ import com.soongsil.CoffeeChat.enums.PartEnum;
 import lombok.Getter;
 
 @Getter
-public class MenteeDto {
+public class MenteeJoinRequestDto {
 	private PartEnum part;
 }

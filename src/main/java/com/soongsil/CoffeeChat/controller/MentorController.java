@@ -4,18 +4,23 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
-import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
-
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
-import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
+import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
+import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
+import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import com.soongsil.CoffeeChat.service.MentorService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,28 +47,28 @@ public class MentorController {
 	@GetMapping("/{mentorId}")
 	@Operation(summary = "멘토 상세 정보 조회")
 	@ApiResponse(responseCode = "200", description = "멘토 상세 정보 DTO 반환")
-	public ResponseEntity<ResponseMentorInfo> getMentorInfo(@PathVariable("mentorId") Long mentorId) {
+	public ResponseEntity<MentorGetUpdateDetailDto> getMentorInfo(@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoByIdWithJoin(mentorId));
 	}
 
 	@GetMapping("/part")
 	@Operation(summary = "파트별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByPart(@RequestParam("part") PartEnum part) {
+	public ResponseEntity<List<MentorGetListResponseDto>> getMentorListByPart(@RequestParam("part") PartEnum part) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
 	}
 
 	@GetMapping("/club")
 	@Operation(summary = "동아리별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@RequestParam("club") ClubEnum club) {
+	public ResponseEntity<List<MentorGetListResponseDto>> getMentorListByClub(@RequestParam("club") ClubEnum club) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByClub(club));
 	}
 
 	@GetMapping("/part/club")
 	@Operation(summary = "파트+동아리별 멘토 리스트 가져오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<ResponseMentorListInfo>> getMentorListByClub(@RequestParam("part") PartEnum part,
+	public ResponseEntity<List<MentorGetListResponseDto>> getMentorListByClub(@RequestParam("part") PartEnum part,
 		@RequestParam("club") ClubEnum club) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoListByPartAndClub(part, club));
 	}
@@ -71,14 +76,14 @@ public class MentorController {
 	@GetMapping("/{mentorId}/possibleDates")
 	@Operation(summary = "멘토ID로 커피챗가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<PossibleDateRequestDto>> getPossibleDates(@PathVariable("mentorId") Long mentorId) {
+	public ResponseEntity<List<PossibleDateCreateGetDto>> getPossibleDates(@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));
 	}
 
 	@PatchMapping
 	@Operation(summary = "멘토의 세부 정보 수정")
 	@ApiResponse(responseCode = "200", description = "변경된 멘토 세부 정보를 반환")
-	public ResponseEntity<ResponseMentorInfo> updateMentorInfo(
+	public ResponseEntity<MentorGetUpdateDetailDto> updateMentorInfo(
 		Authentication authentication,
 		@RequestBody MentorUpdateRequestDto mentorUpdateRequestDto
 	) {

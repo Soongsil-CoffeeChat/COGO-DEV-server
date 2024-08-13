@@ -3,8 +3,7 @@ package com.soongsil.CoffeeChat.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.MentorDto;
-import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
+import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
 
@@ -70,7 +69,7 @@ public class Mentor {
 		this.part = PartEnum.valueOf(part);
 	}
 
-	public static Mentor from(MentorDto dto) {
+	public static Mentor from(MentorJoinRequestDto dto) {
 		return Mentor.builder()
 			.club(dto.getClub())
 			.part(dto.getPart())
