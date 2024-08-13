@@ -22,9 +22,11 @@ import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 	private final MentorRepository mentorRepository;
 	private final MenteeRepository menteeRepository;
@@ -42,8 +44,12 @@ public class UserService {
 	@Transactional
 	public Mentor saveMentorInformation(String username, MentorJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
-		if (!user.getRole().equals("ROLE_ADMIN"))
+		log.info("[*] User name: " + user.getUsername());
+		log.info("[*] User Role before: " + user.getRole());
+		if (!user.getRole().equals("ROLE_ADMIN")) {
 			user.setRole("ROLE_MENTOR");
+		}
+		log.info("[*] User Role after: " + user.getRole());
 		Mentor mentor = Mentor.from(dto);
 		user.setMentor(mentor);
 		Introduction introduction=new Introduction();
