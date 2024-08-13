@@ -18,6 +18,4 @@ public interface MentorRepository extends JpaRepository<Mentor, Long>, MentorRep
 	List<MentorGetListResponseDto> getMentorListByPart(PartEnum part);  //일반 join
 
 	List<User> getMentorListByPartWithFetch(PartEnum part); //fetch join
-
-	MentorGetUpdateDetailDto getMentorInfoByMentorId(Long mentorId);
 }
