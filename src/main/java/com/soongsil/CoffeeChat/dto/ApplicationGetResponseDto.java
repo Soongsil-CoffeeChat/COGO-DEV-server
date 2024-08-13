@@ -1,5 +1,9 @@
 package com.soongsil.CoffeeChat.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soongsil.CoffeeChat.entity.Application;
 
 import lombok.AllArgsConstructor;
@@ -10,17 +14,33 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ApplicationGetResponseDto {
-	private Long mentorId;
-	private Long menteeId;
-	private String memo;
-	private Long possibleDateId;
 
-	public static ApplicationGetResponseDto toDto(Application application) {
+	@JsonProperty("application_id")
+	private Long applicationId;
+
+	@JsonProperty("mentee_name")
+	private String menteeName;
+
+	@JsonProperty("application_memo")
+	private String memo;
+
+	@JsonProperty("application_date")
+	private LocalDate date;
+
+	@JsonProperty("application_start_time")
+	private LocalTime startTime;
+
+	@JsonProperty("application_end_time")
+	private LocalTime endTime;
+
+	public static ApplicationGetResponseDto toDto(Application application, String menteeName) {
 		return ApplicationGetResponseDto.builder()
-			.mentorId(application.getMentor().getId())
-			.menteeId(application.getMentee().getId())
+			.applicationId(application.getId())
+			.menteeName(menteeName)
 			.memo(application.getMemo())
-			.possibleDateId(application.getPossibleDate().getId())
+			.date(application.getPossibleDate().getDate())
+			.startTime(application.getPossibleDate().getStartTime())
+			.endTime(application.getPossibleDate().getEndTime())
 			.build();
 	}
 }
