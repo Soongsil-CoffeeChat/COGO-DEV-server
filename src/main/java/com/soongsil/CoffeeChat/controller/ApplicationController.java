@@ -39,7 +39,6 @@ public class ApplicationController {
 		Authentication authentication,
 		@RequestBody ApplicationCreateRequestDto request
 	) throws Exception {
-		//TODO: 멘티id dto에서 빼야됨 (authentication에서 mentee정보 긁어오는식으로 수정)
 		return ResponseEntity.ok()
 			.body(applicationService.createApplication(request,
 				((CustomOAuth2User)authentication.getPrincipal()).getUsername())

@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.controller.handler;
 
+import static com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.soongsil.CoffeeChat.controller.ApplicationController;
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
 
 @ControllerAdvice(assignableTypes = ApplicationController.class)
 public class ApplicationExceptionHandler {
@@ -19,6 +22,15 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleException(Exception ex) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+	}
+
+	@ExceptionHandler(CustomException.class)
+	public ResponseEntity<ApiResponseGenerator> handleCustomException(CustomException ex) {
+		return ResponseEntity.
+			status(HttpStatus.valueOf(ex.getErrorCode().value()))
+			.body(
+				onFailure(ex)
+			);
 	}
 
 }
