@@ -18,7 +18,7 @@ import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
 import com.soongsil.CoffeeChat.service.MentorService;
@@ -76,7 +76,8 @@ public class MentorController {
 	@GetMapping("/{mentorId}/possibleDates")
 	@Operation(summary = "멘토ID로 커피챗가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<PossibleDateCreateGetDto>> getPossibleDates(@PathVariable("mentorId") Long mentorId) {
+	public ResponseEntity<List<PossibleDateCreateGetResponseDto>> getPossibleDates(
+		@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));
 	}
 
