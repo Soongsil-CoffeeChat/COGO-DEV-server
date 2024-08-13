@@ -189,7 +189,7 @@ public class ApplicationService {
 					.mentor(mentor)
 					.mentee(mentee)
 
-					.accept(ApplicationStatus.UNMATCHED)
+					.accept(UNMATCHED)
 					.build();
 				em.persist(application);
 
@@ -226,16 +226,25 @@ public class ApplicationService {
 			.build();
 	}
 
-	public List<ApplicationGetResponseDto> getApplications(String username) {
+	public List<ApplicationGetResponseDto> getApplications(String username, String applicationStatus) {
+		if (!"matched".equalsIgnoreCase(applicationStatus) && !"unmatched".equalsIgnoreCase(applicationStatus)) {
+			log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
+			throw new CustomException(
+				INVALID_MATCH_STATUS.getHttpStatusCode(),
+				INVALID_MATCH_STATUS.getErrorMessage()
+			);
+		}
+		log.info("[*] Find applications with condition [" + applicationStatus + "]");
+
 		//TODO: JOIN문으로 변경
 		List<ApplicationGetResponseDto> dtos = new ArrayList<>();
 		Mentor findMentor = userRepository.findByUsername(username).getMentor();
 		List<Application> findApplications = applicationRepository.findApplicationByMentor(findMentor);
 
 		for (Application app : findApplications) {
-			if (app.getAccept() == ApplicationStatus.UNMATCHED) {
+			if (app.getAccept() == ApplicationStatus.valueOf(applicationStatus.toUpperCase())) {
 				User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
-				// UNMATCHED 상태인 경우만 추가
+				// MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
 				dtos.add(ApplicationGetResponseDto.toDto(
 					app,
 					findMenteeUser.getName()
