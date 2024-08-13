@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.entity.Introduction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,8 @@ public class UserService {
 			user.setRole("ROLE_MENTOR");
 		Mentor mentor = Mentor.from(dto);
 		user.setMentor(mentor);
+		Introduction introduction=new Introduction();
+		mentor.setIntroduction(introduction);
 		return mentorRepository.save(mentor);
 	}
 
