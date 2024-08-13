@@ -22,7 +22,8 @@ public class S3Config {
 
 	@Bean  // 이 어노테이션은 이 메소드가 Spring Bean을 생성하는 팩토리 메소드임을 나타냅니다.
 	public AmazonS3 s3client() {
-		BasicAWSCredentials awsCredentials = new BasicAWSCredentials(awsAccessKey, awsSecretKey);  // AWS 액세스 키와 비밀 키를 사용하여 AWS 자격 증명을 생성합니다.
+		BasicAWSCredentials awsCredentials = new BasicAWSCredentials(awsAccessKey,
+			awsSecretKey);  // AWS 액세스 키와 비밀 키를 사용하여 AWS 자격 증명을 생성합니다.
 
 		// AmazonS3 클라이언트를 생성합니다. 이 클라이언트는 AWS S3 서비스와 상호 작용하는 데 사용됩니다.
 		// 클라이언트는 설정된 리전과 자격 증명을 사용합니다.

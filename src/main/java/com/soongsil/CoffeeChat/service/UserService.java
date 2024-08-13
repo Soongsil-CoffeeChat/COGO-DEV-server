@@ -1,26 +1,26 @@
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.dto.ChangeUserInfoDto;
-import com.soongsil.CoffeeChat.dto.JoinUserDto;
-import com.soongsil.CoffeeChat.util.sms.SmsUtil;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.dto.MenteeDto;
-import com.soongsil.CoffeeChat.dto.MentorDto;
+import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
+import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
+import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,39 +31,41 @@ public class UserService {
 	private final SmsUtil smsUtil;
 
 	@Transactional
-	public User saveUserInformation(String username, JoinUserDto dto){
-		User user=userRepository.findByUsername(username);
+	public User saveUserInformation(String username, UserJoinRequestDto dto) {
+		User user = userRepository.findByUsername(username);
 		user.setName(dto.getName());
 		user.setPhoneNum(dto.getPhoneNum());
 		return userRepository.save(user);
 	}
 
 	@Transactional
-	public Mentor saveMentorInformation(String username, MentorDto dto) {
+	public Mentor saveMentorInformation(String username, MentorJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
-		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTOR");
+		if (!user.getRole().equals("ROLE_ADMIN"))
+			user.setRole("ROLE_MENTOR");
 		Mentor mentor = Mentor.from(dto);
 		user.setMentor(mentor);
 		return mentorRepository.save(mentor);
 	}
 
 	@Transactional
-	public Mentee saveMenteeInformation(String username, MenteeDto dto) {
+	public Mentee saveMenteeInformation(String username, MenteeJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
-		if(!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTEE");
+		if (!user.getRole().equals("ROLE_ADMIN"))
+			user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
 		user.setMentee(mentee);
 		return menteeRepository.save(mentee);
 	}
 
 	@Transactional
-	public User saveUserPicture(String username, String picture){
+	public User saveUserPicture(String username, String picture) {
 		User user = userRepository.findByUsername(username);
 		user.setPicture(picture);
 		return userRepository.save(user);
 	}
 
-	public ResponseEntity<Map<String, String>> getSmsCode(String to){
+	public ResponseEntity<Map<String, String>> getSmsCode(String to) {
 		Map<String, String> response = new HashMap<>();
 		String result = smsUtil.sendOne(to);
 		if (result != null) {
@@ -76,27 +78,27 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<User> saveUserPhone(String phone, String username){
-		User user=userRepository.findByUsername(username);
+	public ResponseEntity<User> saveUserPhone(String phone, String username) {
+		User user = userRepository.findByUsername(username);
 		user.setPhoneNum(phone);
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
 
-	public User saveUserEmail(String email, String username){
-		User user=userRepository.findByUsername(username);
+	public User saveUserEmail(String email, String username) {
+		User user = userRepository.findByUsername(username);
 		user.setEmail(email);
 		return userRepository.save(user);
 	}
 
-	public User changeUserInfo(ChangeUserInfoDto dto, String username){
-		User user=userRepository.findByUsername(username);
+	public User changeUserInfo(UserGetUpdateDto dto, String username) {
+		User user = userRepository.findByUsername(username);
 		user.setEmail(dto.getEmail());
 		user.setPhoneNum(dto.getPhoneNum());
 		return userRepository.save(user);
 	}
 
-	public ChangeUserInfoDto findUserInfo(String username){
-		User user=userRepository.findByUsername(username);
-		return ChangeUserInfoDto.toDto(user);
+	public UserGetUpdateDto findUserInfo(String username) {
+		User user = userRepository.findByUsername(username);
+		return UserGetUpdateDto.toDto(user);
 	}
 }

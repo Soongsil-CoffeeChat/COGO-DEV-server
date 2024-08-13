@@ -27,7 +27,6 @@ public class RefreshTokenService {
 		this.refreshRepository = refreshRepository;
 	}
 
-
 	private void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
 
 		Date date = new Date(System.currentTimeMillis() + expiredMs);
@@ -103,12 +102,12 @@ public class RefreshTokenService {
 
 		// SameSite 설정을 포함한 쿠키 추가
 		ResponseCookie responseCookie = ResponseCookie.from("refresh", newRefresh)
-				.httpOnly(true)
-				.secure(true)
-				.path("/")
-				.maxAge(24 * 60 * 60)
-				.sameSite("None")
-				.build();
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(24 * 60 * 60)
+			.sameSite("None")
+			.build();
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
 
