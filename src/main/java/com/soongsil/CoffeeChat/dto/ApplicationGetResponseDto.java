@@ -15,6 +15,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ApplicationGetResponseDto {
 
+	@JsonProperty("application_id")
+	private Long applicationId;
+
 	@JsonProperty("mentee_name")
 	private String menteeName;
 
@@ -30,9 +33,14 @@ public class ApplicationGetResponseDto {
 	@JsonProperty("application_end_time")
 	private LocalTime endTime;
 
-	public static ApplicationGetResponseDto toDto(Application application) {
+	public static ApplicationGetResponseDto toDto(Application application, String menteeName) {
 		return ApplicationGetResponseDto.builder()
-
+			.applicationId(application.getId())
+			.menteeName(menteeName)
+			.memo(application.getMemo())
+			.date(application.getPossibleDate().getDate())
+			.startTime(application.getPossibleDate().getStartTime())
+			.endTime(application.getPossibleDate().getEndTime())
 			.build();
 	}
 }

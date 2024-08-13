@@ -215,6 +215,7 @@ public class ApplicationService {
 		User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
 		//TODO: toDTO 빌더 만들어두고, join으로 묶자
 		return ApplicationGetResponseDto.builder()
+			.applicationId(applicationId)
 			.menteeName(findMenteeUser.getName())
 			.memo(findApplication.getMemo())
 			.date(findApplication.getPossibleDate().getDate())
@@ -228,8 +229,16 @@ public class ApplicationService {
 		List<ApplicationGetResponseDto> dtos = new ArrayList<>();
 		Mentor findMentor = userRepository.findByUsername(username).getMentor();
 		List<Application> findApplications = applicationRepository.findApplicationByMentor(findMentor);
+
 		for (Application app : findApplications) {
-			dtos.add(ApplicationGetResponseDto.toDto(app));
+			if (app.getAccept() == ApplicationStatus.UNMATCHED) {
+				User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
+				// UNMATCHED 상태인 경우만 추가
+				dtos.add(ApplicationGetResponseDto.toDto(
+					app,
+					findMenteeUser.getName()
+				));
+			}
 		}
 		return dtos;
 	}
