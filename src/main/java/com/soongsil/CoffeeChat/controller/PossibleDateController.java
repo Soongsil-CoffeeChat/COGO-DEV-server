@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,9 +37,9 @@ public class PossibleDateController {
 	@PostMapping()
 	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
 	@ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-	public ResponseEntity<PossibleDateCreateGetDto> addPossibleDate(
+	public ResponseEntity<PossibleDateCreateGetResponseDto> addPossibleDate(
 		Authentication authentication,
-		@RequestBody PossibleDateCreateGetDto dto) throws Exception {
+		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
 		return ResponseEntity.status(HttpStatus.CREATED).body(
 			possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
 		);

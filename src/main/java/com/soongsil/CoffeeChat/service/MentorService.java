@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
@@ -42,8 +43,16 @@ public class MentorService {
 		return mentorRepository.getMentorListByPartAndClub(part, club);
 	}
 
-	public List<PossibleDateCreateGetDto> findPossibleDateListByMentor(Long mentorId) {
-		return possibleDateRepository.getPossibleDatesById(mentorId);
+	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
+		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
+			.stream()
+			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
+				.date(possibleDate.getDate())
+				.startTime(possibleDate.getStartTime())
+				.endTime(possibleDate.getEndTime())
+				.possibledateId(possibleDate.getId())
+				.build())
+			.collect(Collectors.toList());
 	}
 
 	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
