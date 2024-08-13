@@ -78,6 +78,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/v2/users/**", "/auth/**").hasRole("USER")
 				.requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
 				.requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
+				.requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
 				.anyRequest().authenticated())
 			.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
