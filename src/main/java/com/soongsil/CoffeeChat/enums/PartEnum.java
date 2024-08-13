@@ -1,8 +1,8 @@
 package com.soongsil.CoffeeChat.enums;
 
 public enum PartEnum {
-    FE,
-    BE,
-    PM,
-    DESIGN
+	FE,
+	BE,
+	PM,
+	DESIGN
 }

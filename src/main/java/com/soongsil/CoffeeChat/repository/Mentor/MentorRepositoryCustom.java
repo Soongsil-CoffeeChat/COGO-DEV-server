@@ -9,11 +9,14 @@ import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
 
 public interface MentorRepositoryCustom {
-    List<MentorGetListResponseDto> getMentorListByPart(PartEnum part);  //일반 join
-    List<MentorGetListResponseDto> getMentorListByClub(ClubEnum club);
-    List<MentorGetListResponseDto> getMentorListByPartAndClub(PartEnum part, ClubEnum club);
-    List<User> getMentorListByPartWithFetch(PartEnum part); //fetch join
+	List<MentorGetListResponseDto> getMentorListByPart(PartEnum part);  //일반 join
 
-    MentorGetUpdateDetailDto getMentorInfoByMentorId(Long mentorId);
+	List<MentorGetListResponseDto> getMentorListByClub(ClubEnum club);
+
+	List<MentorGetListResponseDto> getMentorListByPartAndClub(PartEnum part, ClubEnum club);
+
+	List<User> getMentorListByPartWithFetch(PartEnum part); //fetch join
+
+	MentorGetUpdateDetailDto getMentorInfoByMentorId(Long mentorId);
 
 }

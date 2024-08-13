@@ -59,7 +59,7 @@ public class MentorService {
 		);
 	}
 
-	public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId){
+	public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId) {
 		return mentorRepository.getMentorInfoByMentorId(mentorId);
 	}
 

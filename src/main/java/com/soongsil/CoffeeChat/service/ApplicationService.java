@@ -215,10 +215,10 @@ public class ApplicationService {
 
 	public List<ApplicationGetResponseDto> getApplications(String username) {
 		//TODO: JOIN문으로 변경
-		List<ApplicationGetResponseDto> dtos=new ArrayList<>();
-		Mentor findMentor=userRepository.findByUsername(username).getMentor();
-		List<Application> findApplications=applicationRepository.findApplicationByMentor(findMentor);
-		for(Application app:findApplications){
+		List<ApplicationGetResponseDto> dtos = new ArrayList<>();
+		Mentor findMentor = userRepository.findByUsername(username).getMentor();
+		List<Application> findApplications = applicationRepository.findApplicationByMentor(findMentor);
+		for (Application app : findApplications) {
 			dtos.add(ApplicationGetResponseDto.toDto(app));
 		}
 		return dtos;

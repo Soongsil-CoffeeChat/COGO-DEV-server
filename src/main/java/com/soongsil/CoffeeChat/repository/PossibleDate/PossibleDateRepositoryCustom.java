@@ -5,5 +5,5 @@ import java.util.List;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
 
 public interface PossibleDateRepositoryCustom {
-    List<PossibleDateCreateGetDto> getPossibleDatesByUsername(String username);
+	List<PossibleDateCreateGetDto> getPossibleDatesByUsername(String username);
 }

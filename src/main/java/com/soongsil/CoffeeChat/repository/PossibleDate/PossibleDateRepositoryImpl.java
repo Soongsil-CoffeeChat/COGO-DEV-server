@@ -13,24 +13,24 @@ import com.soongsil.CoffeeChat.dto.QPossibleDateCreateGetDto;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom{
-    private final JPAQueryFactory queryFactory;
+public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom {
+	private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<PossibleDateCreateGetDto> getPossibleDatesByUsername(String username) {
-        return queryFactory.
-                select(new QPossibleDateCreateGetDto(
-                        possibleDate.date,
-                        possibleDate.startTime,
-                        possibleDate.endTime,
-                        possibleDate.id.as("possibleDateId")
-                ))
-                .from(user)
-                .join(user.mentor, mentor)
-                .join(mentor.possibleDates, possibleDate)
-                .where(user.username.eq(username).and(
-                        possibleDate.isActive.isTrue()
-                ))
-                .fetch();
-    }
+	@Override
+	public List<PossibleDateCreateGetDto> getPossibleDatesByUsername(String username) {
+		return queryFactory.
+			select(new QPossibleDateCreateGetDto(
+				possibleDate.date,
+				possibleDate.startTime,
+				possibleDate.endTime,
+				possibleDate.id.as("possibleDateId")
+			))
+			.from(user)
+			.join(user.mentor, mentor)
+			.join(mentor.possibleDates, possibleDate)
+			.where(user.username.eq(username).and(
+				possibleDate.isActive.isTrue()
+			))
+			.fetch();
+	}
 }

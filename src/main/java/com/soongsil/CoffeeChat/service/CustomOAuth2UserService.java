@@ -1,14 +1,17 @@
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.dto.*;
-import com.soongsil.CoffeeChat.dto.Oauth.*;
-import com.soongsil.CoffeeChat.dto.UserDTO;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.GoogleResponse;
+import com.soongsil.CoffeeChat.dto.Oauth.KakaoResponse;
+import com.soongsil.CoffeeChat.dto.Oauth.NaverResponse;
+import com.soongsil.CoffeeChat.dto.Oauth.OAuth2Response;
+import com.soongsil.CoffeeChat.dto.UserDTO;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
@@ -39,9 +42,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
 		} else if (registrationId.equals("kakao")) {
 			System.out.println("registrationId = " + registrationId);
-			oAuth2Response=new KakaoResponse(oAuth2User.getAttributes());
-		}
-		else {
+			oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
+		} else {
 
 			return null;
 		}

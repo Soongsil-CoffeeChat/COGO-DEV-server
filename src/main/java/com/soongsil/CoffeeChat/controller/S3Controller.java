@@ -30,6 +30,7 @@ public class S3Controller {
 			throw new Exception(); //TODO : Exception 만들기
 		return principal.getUsername();
 	}
+
 	@PostMapping("/{directory}")
 	@Operation(summary = "사진저장")
 	@ApiResponse(responseCode = "200", description = "사진 저장됨")

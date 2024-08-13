@@ -22,7 +22,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 //로그인이 성공했을 때 받은 데이터들을 바탕으로 JWT발급을 위한 핸들러
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -47,9 +46,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-										Authentication authentication) throws IOException, ServletException {
+		Authentication authentication) throws IOException, ServletException {
 
-		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+		CustomOAuth2User customUserDetails = (CustomOAuth2User)authentication.getPrincipal();
 
 		String username = customUserDetails.getUsername();
 
@@ -83,12 +82,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
 		ResponseCookie responseCookie = ResponseCookie.from(name, value)
-				.httpOnly(true)
-				.secure(true)
-				.path("/")
-				.maxAge(24 * 60 * 60)
-				.sameSite("None")
-				.build();
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(24 * 60 * 60)
+			.sameSite("None")
+			.build();
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
 	}

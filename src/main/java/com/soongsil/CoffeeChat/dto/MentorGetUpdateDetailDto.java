@@ -3,8 +3,8 @@ package com.soongsil.CoffeeChat.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
-
 import com.soongsil.CoffeeChat.enums.PartEnum;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -38,15 +38,16 @@ public class MentorGetUpdateDetailDto {
 	}
 
 	@QueryProjection
-	public MentorGetUpdateDetailDto(Long mentorId, String mentorName, PartEnum part, String introductionTitle, String introductionDescription,
-							  String introductionAnswer1, String introductionAnswer2, String imageUrl){
-		this.mentorId=mentorId;
-		this.mentorName=mentorName;
-		this.part=part;
-		this.introductionTitle=introductionTitle;
-		this.introductionDescription=introductionDescription;
-		this.introductionAnswer1=introductionAnswer1;
-		this.introductionAnswer2=introductionAnswer2;
-		this.imageUrl=imageUrl;
+	public MentorGetUpdateDetailDto(Long mentorId, String mentorName, PartEnum part, String introductionTitle,
+		String introductionDescription,
+		String introductionAnswer1, String introductionAnswer2, String imageUrl) {
+		this.mentorId = mentorId;
+		this.mentorName = mentorName;
+		this.part = part;
+		this.introductionTitle = introductionTitle;
+		this.introductionDescription = introductionDescription;
+		this.introductionAnswer1 = introductionAnswer1;
+		this.introductionAnswer2 = introductionAnswer2;
+		this.imageUrl = imageUrl;
 	}
 }
