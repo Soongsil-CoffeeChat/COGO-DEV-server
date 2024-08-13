@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soongsil.CoffeeChat.dto.ApplicationCreateRequest;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateResponse;
-import com.soongsil.CoffeeChat.dto.ApplicationGetResponse;
+import com.soongsil.CoffeeChat.dto.ApplicationCreateRequestDto;
+import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
+import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ApplicationService;
 
@@ -35,9 +35,9 @@ public class ApplicationController {
 	@PostMapping
 	@Operation(summary = "COGO 신청하기")
 	@ApiResponse(responseCode = "200", description = "COGO 기본 정보 반환")
-	public ResponseEntity<ApplicationCreateResponse> createApplication(
+	public ResponseEntity<ApplicationCreateResponseDto> createApplication(
 		Authentication authentication,
-		@RequestBody ApplicationCreateRequest request
+		@RequestBody ApplicationCreateRequestDto request
 	) throws Exception {
 		//TODO: 멘티id dto에서 빼야됨 (authentication에서 mentee정보 긁어오는식으로 수정)
 		return ResponseEntity.ok()
@@ -49,7 +49,7 @@ public class ApplicationController {
 	@GetMapping("/{applicationId}")
 	@Operation(summary = "특정 COGO 조회")
 	@ApiResponse(responseCode = "200", description = "COGO 세부 정보 반환")
-	public ResponseEntity<ApplicationGetResponse> getApplication(
+	public ResponseEntity<ApplicationGetResponseDto> getApplication(
 		@PathVariable Long applicationId
 	) {
 		//TODO: 여기서도 반환할때 possibleDateId 말고, 날짜+시간 다 넣어서 보내주기(DTO변경필요)
@@ -62,7 +62,7 @@ public class ApplicationController {
 	@GetMapping
 	@Operation(summary = "신청 받은 COGO 전체 조회")
 	@ApiResponse(responseCode = "200", description = "COGO LIST 반환")
-	public ResponseEntity<List<ApplicationGetResponse>> getApplications(
+	public ResponseEntity<List<ApplicationGetResponseDto>> getApplications(
 		Authentication authentication
 	) {
 		//TODO: Unmatched된 COGO만 불러와야 하고, 반환할때 possibleDateId 말고, 날짜+시간 다 넣어서 보내주기(DTO변경필요)

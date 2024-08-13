@@ -4,18 +4,18 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
+import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
-import com.soongsil.CoffeeChat.dto.ResponseMentorInfo;
-import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -30,41 +30,41 @@ public class MentorService {
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
 
-	public List<ResponseMentorListInfo> getMentorDtoListByPart(PartEnum part) {
+	public List<MentorGetListResponseDto> getMentorDtoListByPart(PartEnum part) {
 		return mentorRepository.getMentorListByPart(part); //일반join
 	}
 
-	public List<ResponseMentorListInfo> getMentorDtoListByClub(ClubEnum club) {
+	public List<MentorGetListResponseDto> getMentorDtoListByClub(ClubEnum club) {
 		return mentorRepository.getMentorListByClub(club); //일반join
 	}
 
-	public List<ResponseMentorListInfo> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
+	public List<MentorGetListResponseDto> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
 		return mentorRepository.getMentorListByPartAndClub(part, club);
 	}
 
-	public List<PossibleDateRequestDto> findPossibleDateListByMentor(Long mentorId) {
+	public List<PossibleDateCreateGetDto> findPossibleDateListByMentor(Long mentorId) {
 		return possibleDateRepository.getPossibleDatesById(mentorId);
 	}
 
-	public ResponseMentorInfo getMentorDtoById(Long mentorId) {
+	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
 		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)
 			.orElseThrow(() -> new CustomException(
 				MEMBER_NOT_FOUND.getHttpStatusCode(),
 				MEMBER_NOT_FOUND.getErrorMessage())
 			);
-		return ResponseMentorInfo.of(
+		return MentorGetUpdateDetailDto.of(
 			findMentor,
 			userRepository.findByMentor(findMentor)
 		);
 	}
 
-	public ResponseMentorInfo getMentorDtoByIdWithJoin(Long mentorId){
+	public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId) {
 		return mentorRepository.getMentorInfoByMentorId(mentorId);
 	}
 
 	@Transactional
-	public ResponseMentorInfo updateMentorInfo(String username, MentorUpdateRequestDto mentorUpdateRequestDto) {
+	public MentorGetUpdateDetailDto updateMentorInfo(String username, MentorUpdateRequestDto mentorUpdateRequestDto) {
 		User findMentorUser = userRepository.findByUsername(username);
 		User updatedMentorUser = User.builder()
 			.id(findMentorUser.getId())

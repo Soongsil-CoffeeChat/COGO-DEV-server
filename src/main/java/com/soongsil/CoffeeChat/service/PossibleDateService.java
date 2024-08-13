@@ -3,10 +3,9 @@ package com.soongsil.CoffeeChat.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
-import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
@@ -20,7 +19,7 @@ public class PossibleDateService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public PossibleDateRequestDto createPossibleDate(PossibleDateRequestDto dto,
+	public PossibleDateCreateGetDto createPossibleDate(PossibleDateCreateGetDto dto,
 		String username) {
 		Mentor mentor = userRepository.findByUsername(username).getMentor();
 		PossibleDate possibleDate = PossibleDate.from(dto);
