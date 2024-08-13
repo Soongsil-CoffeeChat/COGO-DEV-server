@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.controller;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,8 +12,6 @@ import com.soongsil.CoffeeChat.util.email.EmailUtil;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
-import java.util.concurrent.CompletableFuture;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/email")
@@ -19,7 +19,9 @@ public class EmailController {
 	private final EmailUtil emailUtil;
 
 	@GetMapping()
-	public CompletableFuture<String> sendAuthenticationMail(@RequestParam("email") String receiver) throws MessagingException, InterruptedException {
+	public CompletableFuture<String> sendAuthenticationMail(@RequestParam("email") String receiver) throws
+		MessagingException,
+		InterruptedException {
 		return emailUtil.sendAuthenticationEmail(receiver);
 	}
 }

@@ -1,10 +1,7 @@
 package com.soongsil.CoffeeChat.controller;
 
-import java.net.http.HttpResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +15,7 @@ public class StatusCheckController {
 	}
 
 	@GetMapping("security-check")
-	public ResponseEntity<?> checkSecurity(){
+	public ResponseEntity<?> checkSecurity() {
 		return ResponseEntity.ok("passed spring security");
 	}
 }

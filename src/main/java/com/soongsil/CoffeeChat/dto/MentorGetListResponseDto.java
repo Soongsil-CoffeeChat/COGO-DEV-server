@@ -1,9 +1,9 @@
 package com.soongsil.CoffeeChat.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -23,17 +23,17 @@ public class MentorGetListResponseDto {
 	private String title;
 	private String description;
 
-
 	@QueryProjection
-	public MentorGetListResponseDto(String picture, String mentorName, PartEnum part, ClubEnum club, String username,Long mentorId, String title, String description) {
+	public MentorGetListResponseDto(String picture, String mentorName, PartEnum part, ClubEnum club, String username,
+		Long mentorId, String title, String description) {
 		this.picture = picture;
 		this.mentorName = mentorName;
-		this.part=part;
-		this.club=club;
+		this.part = part;
+		this.club = club;
 		this.username = username;
-		this.mentorId=mentorId;
-		this.title=title;
-		this.description=description;
+		this.mentorId = mentorId;
+		this.title = title;
+		this.description = description;
 	}
 
 }

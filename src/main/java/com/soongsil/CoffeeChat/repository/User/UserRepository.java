@@ -11,5 +11,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	User findByMentor(Mentor mentor);
 
 	User findByMentorIdWithFetch(Long mentorId);
+
 	User findByUsernameWithFetch(String username);
 }
