@@ -27,7 +27,6 @@ import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
-import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
@@ -40,9 +39,11 @@ import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ApplicationService {
 	private final EntityManager em;
 	private final ApplicationRepository applicationRepository;
@@ -122,23 +123,28 @@ public class ApplicationService {
 				POSSIBLE_DATE_NOT_FOUND.getHttpStatusCode(),
 				POSSIBLE_DATE_NOT_FOUND.getErrorMessage())
 			);
+		log.info("[*] Find possibleDate id: " + requestedPossibleDate.getId());
 
 		// 선점된 가능시간
 		if (!requestedPossibleDate.isActive()) {
+			log.warn("[*] Found possibleDate(id:" + requestedPossibleDate.getId() + ") is already preempted");
 			throw new CustomException(
 				PREEMPTED_POSSIBLE_DATE.getHttpStatusCode(),
 				PREEMPTED_POSSIBLE_DATE.getErrorMessage()
 			);
 		}
+		log.info("[*] Found possibleDate is not preempted");
 
 		// 가능시간 비활성화
 		System.out.println("possibleDate.getId() = " + requestedPossibleDate.getId());
 		requestedPossibleDate.setActive(false);
 		possibleDateRepository.save(requestedPossibleDate);
+		log.info(
+			"[*] PossibleDate(id:" + requestedPossibleDate.getId() + ") is just preempted: " + requestedPossibleDate.isActive()
+		);
 
 		// COGO 저장
-		User findMenteeUser = userRepository.findByUsername(userName);
-		Mentee findMentee = findMenteeUser.getMentee();
+		Mentee findMentee = userRepository.findByUsername(userName).getMentee();
 		Mentor findMentor = mentorRepository.findById(request.getMentorId())
 			.orElseThrow(() -> new CustomException(
 				MEMBER_NOT_FOUND.getHttpStatusCode(),

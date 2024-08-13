@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class ApplicationCreateRequestDto {
 
 	private Long mentorId;
-	private Long menteeId;
 	private Long possibleDateId;
 	private String memo;
 
