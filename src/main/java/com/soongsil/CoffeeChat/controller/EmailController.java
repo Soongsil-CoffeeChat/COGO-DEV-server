@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.controller;
 
+import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/email")
+@RequestMapping(EMAIL_URI)
 public class EmailController {
 	private final EmailUtil emailUtil;
 
