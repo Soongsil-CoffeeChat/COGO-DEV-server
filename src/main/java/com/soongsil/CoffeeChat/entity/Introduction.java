@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.entity;
 
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,4 +31,10 @@ public class Introduction {
 	@Column
 	private String answer2;
 
+	public void updateIntroduction(MentorIntroductionUpdateRequestDto dto) {
+		dto.getTitle().ifPresent(this::setTitle);
+		dto.getDescription().ifPresent(this::setDescription);
+		dto.getAnswer1().ifPresent(this::setAnswer1);
+		dto.getAnswer2().ifPresent(this::setAnswer2);
+	}
 }
