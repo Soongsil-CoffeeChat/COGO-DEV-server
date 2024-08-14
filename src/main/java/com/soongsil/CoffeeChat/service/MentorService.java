@@ -100,10 +100,9 @@ public class MentorService {
 				MENTOR_NOT_FOUND.getHttpStatusCode(),
 				MENTOR_NOT_FOUND.getErrorMessage()
 			)).getIntroduction();
-		findMentorIntroduction.setTitle(dto.getTitle());
-		findMentorIntroduction.setDescription(dto.getDescription());
-		findMentorIntroduction.setAnswer1(dto.getAnswer1());
-		findMentorIntroduction.setAnswer2(dto.getAnswer2());
+
+		findMentorIntroduction.updateIntroduction(dto);
+
 		return MentorIntroductionUpdateResponseDto.builder()
 			.title(findMentorIntroduction.getTitle())
 			.description(findMentorIntroduction.getDescription())
