@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
@@ -44,11 +46,36 @@ public class MentorController {
 		return principal.getUsername();
 	}
 
+	@PatchMapping
+	@Operation(summary = "멘토의 세부 정보 수정")
+	@ApiResponse(responseCode = "200", description = "변경된 멘토 세부 정보를 반환")
+	public ResponseEntity<MentorGetUpdateDetailDto> updateMentorInfo(
+		Authentication authentication,
+		@RequestBody MentorUpdateRequestDto mentorUpdateRequestDto
+	) {
+		return ResponseEntity.ok()
+			.body(
+				mentorService.updateMentorInfo(
+					((CustomOAuth2User)authentication.getPrincipal()).getUsername(),
+					mentorUpdateRequestDto)
+			);
+	}
+
 	@GetMapping("/{mentorId}")
 	@Operation(summary = "멘토 상세 정보 조회")
 	@ApiResponse(responseCode = "200", description = "멘토 상세 정보 DTO 반환")
 	public ResponseEntity<MentorGetUpdateDetailDto> getMentorInfo(@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.getMentorDtoByIdWithJoin(mentorId));
+	}
+
+	@PatchMapping("/{mentorId}/introductions")
+	@Operation(summary = "멘토 자기소개 입력")
+	@ApiResponse(responseCode = "200", description = "자기소개의 수정된 버전을 반환")
+	public ResponseEntity<MentorIntroductionUpdateResponseDto> updateMentoIntroduction(
+		@PathVariable("mentorId") Long mentorId,
+		@RequestBody MentorIntroductionUpdateRequestDto dto
+	) {
+		return ResponseEntity.ok().body(mentorService.updateMentorIntroduction(mentorId, dto));
 	}
 
 	@GetMapping("/part")
@@ -79,20 +106,5 @@ public class MentorController {
 	public ResponseEntity<List<PossibleDateCreateGetResponseDto>> getPossibleDates(
 		@PathVariable("mentorId") Long mentorId) {
 		return ResponseEntity.ok().body(mentorService.findPossibleDateListByMentor(mentorId));
-	}
-
-	@PatchMapping
-	@Operation(summary = "멘토의 세부 정보 수정")
-	@ApiResponse(responseCode = "200", description = "변경된 멘토 세부 정보를 반환")
-	public ResponseEntity<MentorGetUpdateDetailDto> updateMentorInfo(
-		Authentication authentication,
-		@RequestBody MentorUpdateRequestDto mentorUpdateRequestDto
-	) {
-		return ResponseEntity.ok()
-			.body(
-				mentorService.updateMentorInfo(
-					((CustomOAuth2User)authentication.getPrincipal()).getUsername(),
-					mentorUpdateRequestDto)
-			);
 	}
 }

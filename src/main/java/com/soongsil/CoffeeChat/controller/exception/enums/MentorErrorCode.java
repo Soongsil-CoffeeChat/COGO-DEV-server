@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MentorErrorCode {
 	// 400
-	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MENTOR_404", "멘토를 찾을 수 없습니다.");
+	MENTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MENTOR_404", "멘토를 찾을 수 없습니다.");
 
 	private final HttpStatusCode httpStatusCode;
 	private final String errorCode;
