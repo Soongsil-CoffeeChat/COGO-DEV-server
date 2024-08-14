@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -11,8 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
+import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
@@ -59,8 +63,8 @@ public class MentorService {
 		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)
 			.orElseThrow(() -> new CustomException(
-				MEMBER_NOT_FOUND.getHttpStatusCode(),
-				MEMBER_NOT_FOUND.getErrorMessage())
+				MENTOR_NOT_FOUND.getHttpStatusCode(),
+				MENTOR_NOT_FOUND.getErrorMessage())
 			);
 		return MentorGetUpdateDetailDto.of(
 			findMentor,
@@ -85,5 +89,26 @@ public class MentorService {
 			.build();
 		userRepository.save(updatedMentorUser);
 		return null;
+	}
+
+	@Transactional
+	public MentorIntroductionUpdateResponseDto updateMentorIntroduction(
+		Long mentorId,
+		MentorIntroductionUpdateRequestDto dto) {
+		Introduction findMentorIntroduction = mentorRepository.findById(mentorId)
+			.orElseThrow(() -> new CustomException(
+				MENTOR_NOT_FOUND.getHttpStatusCode(),
+				MENTOR_NOT_FOUND.getErrorMessage()
+			)).getIntroduction();
+		findMentorIntroduction.setTitle(dto.getTitle());
+		findMentorIntroduction.setDescription(dto.getDescription());
+		findMentorIntroduction.setAnswer1(dto.getAnswer1());
+		findMentorIntroduction.setAnswer2(dto.getAnswer2());
+		return MentorIntroductionUpdateResponseDto.builder()
+			.title(findMentorIntroduction.getTitle())
+			.description(findMentorIntroduction.getDescription())
+			.answer1(findMentorIntroduction.getAnswer1())
+			.answer2(findMentorIntroduction.getAnswer2())
+			.build();
 	}
 }
