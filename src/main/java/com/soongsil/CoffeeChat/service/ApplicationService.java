@@ -151,8 +151,8 @@ public class ApplicationService {
 		Mentee findMentee = userRepository.findByUsername(userName).getMentee();
 		Mentor findMentor = mentorRepository.findById(request.getMentorId())
 			.orElseThrow(() -> new CustomException(
-				MEMBER_NOT_FOUND.getHttpStatusCode(),
-				MEMBER_NOT_FOUND.getErrorMessage())
+				MENTOR_NOT_FOUND.getHttpStatusCode(),
+				MENTOR_NOT_FOUND.getErrorMessage())
 			);
 		return ApplicationCreateResponseDto.from(
 			applicationRepository.save(
