@@ -1,4 +1,5 @@
 package com.soongsil.CoffeeChat.util.email;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 public class EmailUtil {
 
 	private final JavaMailSender javaMailSender;
+	private final ApplicationContext applicationContext;
 
 	@Async("mailExecutor")
 	public void sendMail(String receiver, String subject, String content) throws MessagingException {
@@ -27,14 +29,49 @@ public class EmailUtil {
 		javaMailSender.send(message);
 	}
 
+	public long sendAuthenticationEmailWithTiming(String receiver) throws MessagingException {
+		long startTime = System.currentTimeMillis();
+
+		// 프록시를 통해 비동기 메서드 호출
+		EmailUtil proxy = applicationContext.getBean(EmailUtil.class);
+		proxy.sendAuthenticationEmailAsync(receiver);
+
+		long endTime = System.currentTimeMillis();
+
+		// 실행 시간을 측정하여 반환 (메일 발송 대기 없이 즉시 반환)
+		return endTime - startTime;
+	}
+
 	@Async("mailExecutor")
-	public CompletableFuture<String> sendAuthenticationEmail(String receiver) throws MessagingException, InterruptedException {
+	public void sendAuthenticationEmailAsync(String receiver) {
+		String code = String.valueOf((int) ((Math.random() * 900000) + 100000));
+
+		try {
+			sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
+					createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void sendMailNoAsync(String receiver, String subject, String content) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		message.setSubject(subject);
+		message.addRecipients(Message.RecipientType.TO, receiver);
+		message.setText(content, "utf-8", "html");
+		javaMailSender.send(message);
+	}
+
+	public Long sendAuthenticationEmailNoAsnyc(String receiver) throws MessagingException {
+		Long startTime = System.currentTimeMillis();
 		String code = String.valueOf((int)((Math.random() * 900000) + 100000));
 
-		sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
+		sendMailNoAsync(receiver, "[COGO] 이메일 인증번호입니다.",
 				createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
+		Long endTime = System.currentTimeMillis();
 
-		return CompletableFuture.completedFuture(code);
+		return endTime-startTime;
 	}
 
 

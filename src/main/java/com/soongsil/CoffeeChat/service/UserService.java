@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.service;
 
+import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,11 @@ import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -73,4 +78,51 @@ public class UserService {
 		user.setPhone(phone);
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
+
+	@Transactional
+	public void createUsersAndMentors() {
+		List<User> users = new ArrayList<>();
+		List<Mentor> mentors = new ArrayList<>();
+
+		for (int i = 1; i <= 500; i++) {
+			Mentor mentor = Mentor.builder()
+					.phoneNum("010-0000-" + String.format("%04d", i))
+					.birth("1990-01-01")
+					.part("BE")
+					.build();
+
+			// PossibleDate 생성 및 Mentor에 추가
+			PossibleDate possibleDate1 = PossibleDate.builder()
+					.mentor(mentor)
+					.date(LocalDate.of(2024, 8, 18))  // 예시 날짜
+					.startTime(LocalTime.of(10, 0))   // 예시 시작 시간
+					.endTime(LocalTime.of(12, 0))     // 예시 종료 시간
+					.build();
+
+			PossibleDate possibleDate2 = PossibleDate.builder()
+					.mentor(mentor)
+					.date(LocalDate.of(2024, 8, 19))  // 예시 날짜
+					.startTime(LocalTime.of(14, 0))   // 예시 시작 시간
+					.endTime(LocalTime.of(16, 0))     // 예시 종료 시간
+					.build();
+
+			mentor.addPossibleDate(possibleDate1);
+			mentor.addPossibleDate(possibleDate2);
+
+			User user = new User();
+			user.setPhone("010-1111-" + String.format("%04d", i));
+			user.setUsername("user" + i);
+			user.setName("User Name " + i);
+			user.setEmail("user" + i + "@example.com");
+			user.setRole("USER");
+			user.setMentor(mentor); // User와 Mentor 연결
+
+			mentors.add(mentor);
+			users.add(user);
+		}
+
+		mentorRepository.saveAll(mentors);
+		userRepository.saveAll(users);
+	}
+
 }

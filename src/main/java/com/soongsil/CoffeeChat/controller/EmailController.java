@@ -10,16 +10,19 @@ import com.soongsil.CoffeeChat.util.email.EmailUtil;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
-import java.util.concurrent.CompletableFuture;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/email")
 public class EmailController {
 	private final EmailUtil emailUtil;
 
-	@GetMapping()
-	public CompletableFuture<String> sendAuthenticationMail(@RequestParam("email") String receiver) throws MessagingException, InterruptedException {
-		return emailUtil.sendAuthenticationEmail(receiver);
+	@GetMapping("/async")
+	public long sendAuthenticationMailAsync(@RequestParam("email") String receiver) throws MessagingException, InterruptedException {
+		return emailUtil.sendAuthenticationEmailWithTiming(receiver);
+	}
+
+	@GetMapping("/noAsync")
+	public Long sendAuthenticationMailNoAsync(@RequestParam("email") String receiver) throws MessagingException, InterruptedException {
+		return emailUtil.sendAuthenticationEmailNoAsnyc(receiver);
 	}
 }

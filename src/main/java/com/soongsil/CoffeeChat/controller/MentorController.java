@@ -4,14 +4,12 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
-import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
 import com.soongsil.CoffeeChat.service.MentorService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,12 +31,47 @@ public class MentorController {
         return principal.getUsername();
     }
 
-    @GetMapping("/{part}")
+    @GetMapping("/join/{part}")
     @Operation(summary="파트별 멘토 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
     public ResponseEntity<List<ResponseMentorListInfo>>
-    getMentorListByPart(@PathVariable("part") String part){
+    getMentorListByPartWithJoin(@PathVariable("part") String part){
         return ResponseEntity.ok().body(mentorService.getMentorDtoListByPart(part));
+    }
+
+    @GetMapping("/fetch/{part}")
+    @Operation(summary="파트별 멘토 리스트 가져오기")
+    @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
+    public ResponseEntity<List<ResponseMentorListInfo>>
+    getMentorListByPartWithFetch(@PathVariable("part") String part){
+        return ResponseEntity.ok().body(mentorService.getMentorDtoListByPartWithFetch(part));
+    }
+
+    @GetMapping("/performace/{apiNum}")
+    @Operation(summary="파트별 멘토 리스트 가져오기(속도측정)")
+    @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
+    public ResponseEntity<PerformanceResult> getMentorListByPartWithTest(
+            @PathVariable("apiNum") int apiNum,
+            @RequestParam("userCount") int userCount,
+            @RequestParam("durationInSeconds") int durationInSeconds,
+            @RequestParam("totalRequests") int totalRequests) {
+        PerformanceRequest dto = new PerformanceRequest();
+        dto.setUserCount(userCount);
+        dto.setDurationInSeconds(durationInSeconds);
+        dto.setTotalRequests(totalRequests);
+
+        System.out.println("성능측정시작");
+        return ResponseEntity.ok().body(mentorService.executePerformanceTest(apiNum, dto));
+    }
+
+
+
+    @GetMapping("/jpa/{part}")
+    @Operation(summary="파트별 멘토 리스트 가져오기")
+    @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
+    public ResponseEntity<List<ResponseMentorListInfo>>
+    getMentorListByPartWithJpa(@PathVariable("part") String part){
+        return ResponseEntity.ok().body(mentorService.getMentorDtoListByPartWithJpa(part));
     }
 
     @GetMapping("/possibleDates/{username}")
