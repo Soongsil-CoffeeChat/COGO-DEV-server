@@ -40,3 +40,4 @@ out/
 
 ### HTTP TEST ###
 *.http
+application.log
