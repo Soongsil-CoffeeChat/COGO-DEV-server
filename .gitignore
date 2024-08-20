@@ -41,3 +41,6 @@ out/
 
 ### HTTP TEST ###
 *.http
+
+application.log
+/src/main/resources/logback.xml
