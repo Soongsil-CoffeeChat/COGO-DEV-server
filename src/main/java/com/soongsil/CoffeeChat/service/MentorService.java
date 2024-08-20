@@ -36,7 +36,7 @@ public class MentorService {
 	private final MentorRepository mentorRepository;
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
-	private final ThreadPoolTaskExecutor executor;
+
 
 	public List<MentorGetListResponseDto> getMentorDtoListByPart(PartEnum part) {
 		return mentorRepository.getMentorListByPart(part); //일반join

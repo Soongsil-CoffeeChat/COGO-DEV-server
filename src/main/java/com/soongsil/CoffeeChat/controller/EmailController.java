@@ -22,7 +22,7 @@ public class EmailController {
 
 
 	@GetMapping()
-	public CompletableFuture<String> sendAuthenticationMail(@RequestParam("email") String receiver) throws
+	public String sendAuthenticationMail(@RequestParam("email") String receiver) throws
 		MessagingException,
 		InterruptedException {
 		return emailUtil.sendAuthenticationEmail(receiver);

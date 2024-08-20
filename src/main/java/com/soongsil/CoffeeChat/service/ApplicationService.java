@@ -61,25 +61,7 @@ public class ApplicationService {
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
 	private final EmailUtil emailUtil;
-	private final ThreadPoolTaskExecutor executor;
 
-	public ApplicationService(EntityManager em,
-							  ApplicationRepository applicationRepository,
-							  MentorRepository mentorRepository,
-							  MenteeRepository menteeRepository,
-							  UserRepository userRepository,
-							  PossibleDateRepository possibleDateRepository,
-							  EmailUtil emailUtil,
-							  @Qualifier("performanceExecutor") ThreadPoolTaskExecutor executor) {
-		this.em = em;
-		this.applicationRepository = applicationRepository;
-		this.mentorRepository = mentorRepository;
-		this.menteeRepository = menteeRepository;
-		this.userRepository = userRepository;
-		this.possibleDateRepository = possibleDateRepository;
-		this.emailUtil = emailUtil;
-		this.executor = executor;
-	}
 
 	@Autowired
 	private ApplicationContext applicationContext; // 프록시를 통해 자신을 호출하기 위해 ApplicationContext 주입
@@ -186,61 +168,6 @@ public class ApplicationService {
 		);
 	}
 
-	@Transactional
-	public ApplicationCreateResponse createApplicationWithJPA(ApplicationCreateRequest request, String userName) throws Exception {
-		System.out.println("여긴들어옴");
-		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+ request.getStartTime();
-		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-
-		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10, TimeUnit.SECONDS);
-		if (!isLockAcquired) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Lock을 획득하지 못하였습니다.");  //409반환
-		}
-
-		try {
-			System.out.println("mentorid: " + request.getMentorId() + ", " + request.getDate() + ", " + request.getStartTime() + ", " + request.getEndTime());
-			Mentor findMentor = mentorRepository.findById(request.getMentorId()).get();
-			User findMentorUser = userRepository.findByMentor(findMentor);
-			User findMenteeUser = userRepository.findByUsername(userName);
-			Mentee findMentee = findMenteeUser.getMentee();
-
-			LocalTime startTime = request.getStartTime();
-			LocalDate date = request.getDate();
-
-			// possibleDate 불러오는 JPQL
-			TypedQuery<PossibleDate> query = em.createQuery(
-					"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
-					PossibleDate.class);
-			query.setParameter("mentorId", request.getMentorId());
-			query.setParameter("startTime", startTime);
-			query.setParameter("date", date);
-
-			Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
-
-			if (possibleDateOpt.isPresent()) {
-				PossibleDate possibleDate = possibleDateOpt.get();
-				if (!possibleDate.isActive()) {
-					throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
-				}
-				System.out.println("possibleDate.getId() = " + possibleDate.getId());
-				possibleDate.setActive(false);
-				possibleDateRepository.save(possibleDate);
-			} else {
-				throw new Exception("NOT FOUND");
-			}
-
-			Application savedApplication = applicationRepository.save(request.toEntity(findMentor, findMentee));
-
-			ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
-			proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(), findMentorUser.getName(),
-					findMenteeUser.getName(), savedApplication.getDate(), savedApplication.getStartTime(),
-					savedApplication.getEndTime());
-
-			return ApplicationCreateResponse.from(savedApplication);
-		} finally {
-			redisTemplate.delete(lockKey);
-		}
-	}
 
 	@Async("mailExecutor")
 	public void sendApplicationMatchedEmailAsync(String email, String mentorName, String menteeName, LocalDate date,
