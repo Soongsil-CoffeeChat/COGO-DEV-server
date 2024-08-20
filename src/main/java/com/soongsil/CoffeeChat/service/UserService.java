@@ -1,9 +1,11 @@
 package com.soongsil.CoffeeChat.service;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
 import com.soongsil.CoffeeChat.entity.Introduction;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,9 @@ import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
+
 
 @Service
 @RequiredArgsConstructor
@@ -110,4 +114,5 @@ public class UserService {
 		User user = userRepository.findByUsername(username);
 		return UserGetUpdateDto.toDto(user);
 	}
+
 }

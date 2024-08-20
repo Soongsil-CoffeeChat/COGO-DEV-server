@@ -20,10 +20,12 @@ import lombok.RequiredArgsConstructor;
 public class EmailController {
 	private final EmailUtil emailUtil;
 
+
 	@GetMapping()
 	public CompletableFuture<String> sendAuthenticationMail(@RequestParam("email") String receiver) throws
 		MessagingException,
 		InterruptedException {
 		return emailUtil.sendAuthenticationEmail(receiver);
+
 	}
 }

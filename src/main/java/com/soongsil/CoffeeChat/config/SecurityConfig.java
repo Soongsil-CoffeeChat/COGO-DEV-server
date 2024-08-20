@@ -27,6 +27,7 @@ import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final CustomSuccessHandler customSuccessHandler;
 	private final JWTUtil jwtUtil;

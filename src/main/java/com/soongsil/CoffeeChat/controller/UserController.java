@@ -135,4 +135,10 @@ public class UserController {
 			HttpStatus.OK);
 	}
 
+    @PostMapping("/create")
+    public ResponseEntity<String> createUsersAndMentors() {
+        userService.createUsersAndMentors();
+        return ResponseEntity.ok("500 Users and Mentors have been created successfully.");
+    }
+
 }

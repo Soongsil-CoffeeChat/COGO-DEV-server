@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
 import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
 import com.soongsil.CoffeeChat.dto.ApplicationMatchResponseDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+
 import com.soongsil.CoffeeChat.service.ApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "APPLICATION", description = "Application 관련 api")
 public class ApplicationController {
+
 
 	private final ApplicationService applicationService;
 

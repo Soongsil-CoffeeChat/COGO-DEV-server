@@ -8,6 +8,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 public class AsyncConfig {
+
 	@Bean(name = "mailExecutor")
 	public Executor mailExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -19,3 +20,4 @@ public class AsyncConfig {
 		return executor;
 	}
 }
+
