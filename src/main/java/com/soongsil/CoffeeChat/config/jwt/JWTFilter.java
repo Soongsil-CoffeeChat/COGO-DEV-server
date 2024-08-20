@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.config.jwt;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,21 +9,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.UserDTO;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
-
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실행되면 됨
 	private final JWTUtil jwtUtil;  //JWT검증 위하여 주입
 
@@ -52,7 +46,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 		// 헤더에서 authorization키에 담긴 토큰을 꺼냄
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		//토큰꺼내기
-		String accessToken=authorization.split(" ")[1];
+		String accessToken = authorization.split(" ")[1];
 		System.out.println("accessToken = " + accessToken);
 
 		// 토큰이 없다면 다음 필터로 넘김
@@ -68,7 +62,8 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 			System.out.println("token expired");
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
 			response.setContentType("application/json");
-			response.getWriter().write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
+			response.getWriter()
+				.write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
 			filterChain.doFilter(request, response);
 
 			//조건이 해당되면 메소드 종료 (필수)
@@ -78,6 +73,9 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 		//토큰에서 username과 role 획득
 		String username = jwtUtil.getUsername(accessToken);
 		String role = jwtUtil.getRole(accessToken);
+
+		log.info("[*] Current User: " + username);
+		log.info("[*] Current User Role: " + role);
 
 		//userDTO를 생성하여 값 set
 		UserDTO userDTO = new UserDTO();

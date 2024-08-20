@@ -1,14 +1,17 @@
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.dto.PerformanceRequest;
-import com.soongsil.CoffeeChat.dto.PerformanceResult;
-import com.soongsil.CoffeeChat.entity.*;
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
-import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
-import jakarta.annotation.PreDestroy;
-import jakarta.mail.MessagingException;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
+
+import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.*;
+import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
+import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.*;
+import static com.soongsil.CoffeeChat.enums.ApplicationStatus.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -16,35 +19,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.util.email.EmailUtil;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateRequest;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateResponse;
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.ApplicationCreateRequestDto;
+import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
+import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
+import com.soongsil.CoffeeChat.dto.ApplicationMatchResponseDto;
+import com.soongsil.CoffeeChat.entity.Application;
+import com.soongsil.CoffeeChat.entity.Mentee;
+import com.soongsil.CoffeeChat.entity.Mentor;
+import com.soongsil.CoffeeChat.entity.PossibleDate;
+import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
+import com.soongsil.CoffeeChat.util.email.EmailUtil;
 
+import jakarta.mail.MessagingException;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
+
 public class ApplicationService {
 
 	private final EntityManager em;
@@ -80,195 +87,103 @@ public class ApplicationService {
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 
-	public PerformanceResult executePerformanceTest(int apiNum, PerformanceRequest request, ApplicationCreateRequest dto, String username) {
-		int userCount = request.getUserCount();
-		int totalRequests = request.getTotalRequests();
-		System.out.println("totalRequests = " + totalRequests);
-
-		List<Future<List<Long>>> futures = new ArrayList<>();
-
-		for (int i = 0; i < userCount; i++) {
-			futures.add(executor.submit(() -> {
-				List<Long> executionTimes = new ArrayList<>();
-
-				for (int j = 0; j < totalRequests; j++) {
-					long startTime = System.currentTimeMillis();
-					switch(apiNum){
-						case 1: createApplicationWithJpaPerformance(dto, username); break;
-						case 2: createApplicationPerformance(dto, username); break;
-					}
-					System.out.println("apiNum = " + apiNum);
-
-					long endTime = System.currentTimeMillis();
-					executionTimes.add(endTime - startTime);  // 각 요청의 실행 시간 기록
-				}
-
-				return executionTimes;
-			}));
-		}
-
-		List<Double> averageTimesPerThread = new ArrayList<>();
-		List<Long> allExecutionTimes = new ArrayList<>();
-
-		// 대기 중인 모든 스레드가 완료될 때까지 기다림
-		for (Future<List<Long>> future : futures) {
-			try {
-				List<Long> executionTimes = future.get();
-				allExecutionTimes.addAll(executionTimes);
-
-				// 스레드별 평균 실행 시간 계산
-				double averageTimePerThread = executionTimes.stream().mapToLong(Long::longValue).average().orElse(0.0);
-				averageTimesPerThread.add(averageTimePerThread);
-
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// 전체 스레드의 평균 실행 시간 계산
-		double overallAverageTime = allExecutionTimes.stream().mapToLong(Long::longValue).average().orElse(0.0);
-
-		return new PerformanceResult(averageTimesPerThread, overallAverageTime);
-	}
-
-	@PreDestroy
-	public void shutdownExecutor() {
-		executor.shutdown();
-		try {
-			if (!executor.getThreadPoolExecutor().awaitTermination(60, TimeUnit.SECONDS)) {
-				executor.getThreadPoolExecutor().shutdownNow();
-			}
-		} catch (InterruptedException e) {
-			executor.getThreadPoolExecutor().shutdownNow();
-			Thread.currentThread().interrupt();
-		}
-	}
-	@Transactional
-	public ApplicationCreateResponse createApplicationPerformance(ApplicationCreateRequest request, String userName) throws Exception{
-		User findMentorUser = userRepository.findByMentorIdWithFetch(request.getMentorId());
-		Mentor findMentor = findMentorUser.getMentor();
-		User findMenteeUser = userRepository.findByUsername(userName);
-		Mentee findMentee = findMenteeUser.getMentee();
-
-		LocalTime startTime = request.getStartTime();
-		LocalDate date = request.getDate();
-
-		// possibleDate 불러오는 JPQL
-		TypedQuery<PossibleDate> query = em.createQuery(
-				"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
-				PossibleDate.class);
-		query.setParameter("mentorId", request.getMentorId());
-		query.setParameter("startTime", startTime);
-		query.setParameter("date", date);
-
-		Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
-
-		if (possibleDateOpt.isPresent()) {
-			PossibleDate possibleDate = possibleDateOpt.get();
-			if (!possibleDate.isActive()) {
-				throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
-			}
-			System.out.println("possibleDate.getId() = " + possibleDate.getId());
-			//possibleDate.setActive(false);
-			//possibleDateRepository.save(possibleDate);
-		} else {
-			throw new Exception("NOT FOUND");
-		}
-
-		Application savedApplication = request.toEntity(findMentor, findMentee);
-		return ApplicationCreateResponse.from(savedApplication);
-	}
-
-	private ApplicationCreateResponse createApplicationWithJpaPerformance(ApplicationCreateRequest request, String userName) throws Exception{
-		Mentor findMentor = mentorRepository.findById(request.getMentorId()).get();
-		User findMentorUser = userRepository.findByMentor(findMentor);
-		User findMenteeUser = userRepository.findByUsername(userName);
-		Mentee findMentee = findMenteeUser.getMentee();
-
-		LocalTime startTime = request.getStartTime();
-		LocalDate date = request.getDate();
-
-		// possibleDate 불러오는 JPQL
-		TypedQuery<PossibleDate> query = em.createQuery(
-				"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
-				PossibleDate.class);
-		query.setParameter("mentorId", request.getMentorId());
-		query.setParameter("startTime", startTime);
-		query.setParameter("date", date);
-
-		Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
-
-		if (possibleDateOpt.isPresent()) {
-			PossibleDate possibleDate = possibleDateOpt.get();
-			if (!possibleDate.isActive()) {
-				throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
-			}
-			System.out.println("possibleDate.getId() = " + possibleDate.getId());
-			//possibleDate.setActive(false);
-			//possibleDateRepository.save(possibleDate);
-		} else {
-			throw new Exception("NOT FOUND");
-		}
-
-		Application savedApplication = request.toEntity(findMentor, findMentee);
-
-		return ApplicationCreateResponse.from(savedApplication);
-	}
 
 	@Transactional
-	public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) throws Exception {
-		System.out.println("여긴들어옴");
-		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+ request.getStartTime();
-		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+	public ApplicationCreateResponseDto createApplication(ApplicationCreateRequestDto request, String userName) throws
+		Exception {
+		// 		System.out.println("여긴들어옴");
+		// 		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+ request.getStartTime();
+		// 		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+		//
+		// 		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10, TimeUnit.SECONDS);
+		// 		if (!isLockAcquired) {
+		// 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Lock을 획득하지 못하였습니다.");  //409반환
+		// 		}
+		//
+		// 		try {
+		// 			System.out.println("mentorid: " + request.getMentorId() + ", " + request.getDate() + ", " + request.getStartTime() + ", " + request.getEndTime());
+		// 			User findMentorUser = userRepository.findByMentorIdWithFetch(request.getMentorId());
+		// 			Mentor findMentor = findMentorUser.getMentor();
+		// 			User findMenteeUser = userRepository.findByUsername(userName);
+		// 			Mentee findMentee = findMenteeUser.getMentee();
+		//
+		// 			LocalTime startTime = request.getStartTime();
+		// 			LocalDate date = request.getDate();
+		//
+		// 			// possibleDate 불러오는 JPQL
+		// 			TypedQuery<PossibleDate> query = em.createQuery(
+		// 					"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
+		// 					PossibleDate.class);
+		// 			query.setParameter("mentorId", request.getMentorId());
+		// 			query.setParameter("startTime", startTime);
+		// 			query.setParameter("date", date);
+		//
+		// 			Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
+		//
+		// 			if (possibleDateOpt.isPresent()) {
+		// 				PossibleDate possibleDate = possibleDateOpt.get();
+		// 				if (!possibleDate.isActive()) {
+		// 					throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
+		// 				}
+		// 				System.out.println("possibleDate.getId() = " + possibleDate.getId());
+		// 				possibleDate.setActive(false);
+		// 				possibleDateRepository.save(possibleDate);
+		// 			} else {
+		// 				throw new Exception("NOT FOUND");
+		// 			}
+		//
+		// 			Application savedApplication = applicationRepository.save(request.toEntity(findMentor, findMentee));
+		// /*
+		// 			ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
+		// 			proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(), findMentorUser.getName(),
+		// 					findMenteeUser.getName(), savedApplication.getDate(), savedApplication.getStartTime(),
+		// 					savedApplication.getEndTime());
+		//
+		//
+		//  */
+		// 			return ApplicationCreateResponse.from(savedApplication);
+		// 		} finally {
+		// 			redisTemplate.delete(lockKey);
+		// 		}
+		//TODO: Fetch Join
+		// 가능시간 체크
+		PossibleDate requestedPossibleDate = possibleDateRepository.findById(request.getPossibleDateId())
+			.orElseThrow(() -> new CustomException(
+				POSSIBLE_DATE_NOT_FOUND.getHttpStatusCode(),
+				POSSIBLE_DATE_NOT_FOUND.getErrorMessage())
+			);
+		log.info("[*] Find possibleDate id: " + requestedPossibleDate.getId());
 
-		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10, TimeUnit.SECONDS);
-		if (!isLockAcquired) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Lock을 획득하지 못하였습니다.");  //409반환
+		// 선점된 가능시간
+		if (!requestedPossibleDate.isActive()) {
+			log.warn("[*] Found possibleDate(id:" + requestedPossibleDate.getId() + ") is already preempted");
+			throw new CustomException(
+				PREEMPTED_POSSIBLE_DATE.getHttpStatusCode(),
+				PREEMPTED_POSSIBLE_DATE.getErrorMessage()
+			);
 		}
+		log.info("[*] Found possibleDate is not preempted");
 
-		try {
-			System.out.println("mentorid: " + request.getMentorId() + ", " + request.getDate() + ", " + request.getStartTime() + ", " + request.getEndTime());
-			User findMentorUser = userRepository.findByMentorIdWithFetch(request.getMentorId());
-			Mentor findMentor = findMentorUser.getMentor();
-			User findMenteeUser = userRepository.findByUsername(userName);
-			Mentee findMentee = findMenteeUser.getMentee();
+		// 가능시간 비활성화
+		System.out.println("possibleDate.getId() = " + requestedPossibleDate.getId());
+		requestedPossibleDate.setActive(false);
+		possibleDateRepository.save(requestedPossibleDate);
+		log.info(
+			"[*] PossibleDate(id:" + requestedPossibleDate.getId() + ") is just preempted: "
+				+ requestedPossibleDate.isActive()
+		);
 
-			LocalTime startTime = request.getStartTime();
-			LocalDate date = request.getDate();
-
-			// possibleDate 불러오는 JPQL
-			TypedQuery<PossibleDate> query = em.createQuery(
-					"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime = :startTime AND p.date = :date",
-					PossibleDate.class);
-			query.setParameter("mentorId", request.getMentorId());
-			query.setParameter("startTime", startTime);
-			query.setParameter("date", date);
-
-			Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
-
-			if (possibleDateOpt.isPresent()) {
-				PossibleDate possibleDate = possibleDateOpt.get();
-				if (!possibleDate.isActive()) {
-					throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
-				}
-				System.out.println("possibleDate.getId() = " + possibleDate.getId());
-				possibleDate.setActive(false);
-				possibleDateRepository.save(possibleDate);
-			} else {
-				throw new Exception("NOT FOUND");
-			}
-
-			Application savedApplication = applicationRepository.save(request.toEntity(findMentor, findMentee));
-
-			ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
-			proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(), findMentorUser.getName(),
-					findMenteeUser.getName(), savedApplication.getDate(), savedApplication.getStartTime(),
-					savedApplication.getEndTime());
-
-			return ApplicationCreateResponse.from(savedApplication);
-		} finally {
-			redisTemplate.delete(lockKey);
-		}
+		// COGO 저장
+		Mentee findMentee = userRepository.findByUsername(userName).getMentee();
+		Mentor findMentor = mentorRepository.findById(request.getMentorId())
+			.orElseThrow(() -> new CustomException(
+				MENTOR_NOT_FOUND.getHttpStatusCode(),
+				MENTOR_NOT_FOUND.getErrorMessage())
+			);
+		return ApplicationCreateResponseDto.from(
+			applicationRepository.save(
+				request.toEntity(findMentor, findMentee, request.getMemo(), requestedPossibleDate))
+		);
 	}
 
 	@Transactional
@@ -328,13 +243,15 @@ public class ApplicationService {
 	}
 
 	@Async("mailExecutor")
-	public void sendApplicationMatchedEmailAsync(String email, String mentorName, String menteeName, LocalDate date, LocalTime startTime, LocalTime endTime) throws MessagingException {
+	public void sendApplicationMatchedEmailAsync(String email, String mentorName, String menteeName, LocalDate date,
+		LocalTime startTime, LocalTime endTime) throws MessagingException {
 		emailUtil.sendApplicationMatchedEmail(email, mentorName, menteeName, date, startTime, endTime);
 	}
 
 	//동시성 테스트용
 	private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class);
 	private static final AtomicInteger transactionCounter = new AtomicInteger(0);  //트랜잭션마다 ID부여
+
 	@Transactional
 	public Application createApplicationIfPossible(Long possibleDateId, Mentor mentor, Mentee mentee) throws Exception {
 		int transactionId = transactionCounter.incrementAndGet();  //트랜잭션 ID 1씩 증가하며 부여
@@ -351,13 +268,11 @@ public class ApplicationService {
 				em.merge(possibleDate);
 
 				Application application = Application.builder()
-						.mentor(mentor)
-						.mentee(mentee)
-						.date(possibleDate.getDate())
-						.startTime(possibleDate.getStartTime())
-						.endTime(possibleDate.getEndTime())
-						.accept(ApplicationStatus.UNMATCHED)
-						.build();
+					.mentor(mentor)
+					.mentee(mentee)
+
+					.accept(UNMATCHED)
+					.build();
 				em.persist(application);
 
 				logger.info("aaaApplication 생성: {}", application);
@@ -373,6 +288,83 @@ public class ApplicationService {
 			logger.info("aaa트랜잭션 종료");
 			MDC.clear();
 		}
+	}
+
+	public ApplicationGetResponseDto getApplication(Long applicationId) {
+		Application findApplication = applicationRepository.findById(applicationId)
+			.orElseThrow(() -> new CustomException(
+				APPLICATION_NOT_FOUND.getHttpStatusCode(),
+				APPLICATION_NOT_FOUND.getErrorMessage()
+			));
+		User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
+		//TODO: toDTO 빌더 만들어두고, join으로 묶자
+		return ApplicationGetResponseDto.builder()
+			.applicationId(applicationId)
+			.menteeName(findMenteeUser.getName())
+			.memo(findApplication.getMemo())
+			.date(findApplication.getPossibleDate().getDate())
+			.startTime(findApplication.getPossibleDate().getStartTime())
+			.endTime(findApplication.getPossibleDate().getEndTime())
+			.build();
+	}
+
+	public List<ApplicationGetResponseDto> getApplications(String username, String applicationStatus) {
+		if (!"matched".equalsIgnoreCase(applicationStatus) && !"unmatched".equalsIgnoreCase(applicationStatus)) {
+			log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
+			throw new CustomException(
+				INVALID_MATCH_STATUS.getHttpStatusCode(),
+				INVALID_MATCH_STATUS.getErrorMessage()
+			);
+		}
+		log.info("[*] Find applications with condition [" + applicationStatus + "]");
+
+		//TODO: JOIN문으로 변경
+		List<ApplicationGetResponseDto> dtos = new ArrayList<>();
+		Mentor findMentor = userRepository.findByUsername(username).getMentor();
+		List<Application> findApplications = applicationRepository.findApplicationByMentor(findMentor);
+
+		for (Application app : findApplications) {
+			if (app.getAccept() == ApplicationStatus.valueOf(applicationStatus.toUpperCase())) {
+				User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
+				// MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
+				dtos.add(ApplicationGetResponseDto.toDto(
+					app,
+					findMenteeUser.getName()
+				));
+			}
+		}
+		return dtos;
+	}
+
+	@Transactional
+	public ApplicationMatchResponseDto updateApplicationStatus(Long applicationId, String decision) {
+		Application findApplication = applicationRepository.findById(applicationId)
+			.orElseThrow(() -> new CustomException(
+				APPLICATION_NOT_FOUND.getHttpStatusCode(),
+				APPLICATION_NOT_FOUND.getErrorMessage())
+			);
+
+		ApplicationMatchResponseDto responseDto = ApplicationMatchResponseDto.builder()
+			.applicationId(applicationId)
+			.build();
+
+		switch (decision) {
+			case "reject" -> {
+				log.warn("[*] Application({}) is deleted", applicationId);
+				applicationRepository.deleteById(applicationId);
+				responseDto.setStatus("REJECTED");
+			}
+			case "accept" -> {
+				findApplication.setAccept(MATCHED);
+				responseDto.setStatus(MATCHED.name());
+			}
+			default -> throw new CustomException(
+				INVALID_MATCH_STATUS.getHttpStatusCode(),
+				INVALID_MATCH_STATUS.getErrorMessage()
+			);
+		}
+
+		return responseDto;
 	}
 
 }

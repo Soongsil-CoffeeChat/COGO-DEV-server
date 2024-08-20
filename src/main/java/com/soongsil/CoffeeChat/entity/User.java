@@ -1,7 +1,17 @@
 package com.soongsil.CoffeeChat.entity;
 
-import com.querydsl.core.annotations.QueryProjection;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +21,8 @@ import lombok.Setter;
 @Setter
 @Table
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 //@Inheritance(strategy = InheritanceType.JOINED)  //자식 : Mentor, Mentee
 //@DiscriminatorColumn // 하위 테이블의 구분 컬럼 생성(default = DTYPE)
 public class User {
@@ -18,9 +30,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long id;
-
-	@Column
-	private String phone;  //전화번호
 
 	@Column
 	private String username;
@@ -33,6 +42,9 @@ public class User {
 
 	@Column
 	private String role;
+
+	@Column
+	private String phoneNum;  //전화번호
 
 	@Column
 	private String picture;

@@ -14,26 +14,13 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.entity.Refresh;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-
 
 //로그인이 성공했을 때 받은 데이터들을 바탕으로 JWT발급을 위한 핸들러
 @Component
@@ -59,9 +46,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-										Authentication authentication) throws IOException, ServletException {
+		Authentication authentication) throws IOException, ServletException {
 
-		CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+		CustomOAuth2User customUserDetails = (CustomOAuth2User)authentication.getPrincipal();
 
 		String username = customUserDetails.getUsername();
 
@@ -88,19 +75,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		}
 
 		response.setStatus(HttpStatus.OK.value());
-		//response.sendRedirect("http://localhost:8080/swagger-ui/index.html"); //서버 로컬 테스트용
-		response.sendRedirect("https://localhost:3000/callback");
+		response.sendRedirect("http://localhost:8080/swagger-ui/index.html"); //서버 로컬 테스트용
+		//response.sendRedirect("https://localhost:3000/callback");
 		//response.sendRedirect("https://coffeego-ssu.web.app/callback");
 	}
 
 	private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
 		ResponseCookie responseCookie = ResponseCookie.from(name, value)
-				.httpOnly(true)
-				.secure(true)
-				.path("/")
-				.maxAge(24 * 60 * 60)
-				.sameSite("None")
-				.build();
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(24 * 60 * 60)
+			.sameSite("None")
+			.build();
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
 	}
@@ -124,7 +111,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
 
 import jakarta.servlet.ServletException;

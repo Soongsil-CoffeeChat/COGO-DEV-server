@@ -2,7 +2,6 @@ package com.soongsil.CoffeeChat.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.soongsil.CoffeeChat.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.S3Service;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +30,7 @@ public class S3Controller {
 			throw new Exception(); //TODO : Exception 만들기
 		return principal.getUsername();
 	}
+
 	@PostMapping("/{directory}")
 	@Operation(summary = "사진저장")
 	@ApiResponse(responseCode = "200", description = "사진 저장됨")

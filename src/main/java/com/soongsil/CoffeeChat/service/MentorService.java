@@ -1,144 +1,117 @@
 package com.soongsil.CoffeeChat.service;
 
-import java.util.ArrayList;
+import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
+
+
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
-import com.soongsil.CoffeeChat.dto.PerformanceRequest;
-import com.soongsil.CoffeeChat.dto.PerformanceResult;
-import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
-import jakarta.annotation.PreDestroy;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateRequestDto;
-import com.soongsil.CoffeeChat.dto.ResponseMentorListInfo;
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
+import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateResponseDto;
+import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
+import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MentorService {
 	private final MentorRepository mentorRepository;
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
 	private final ThreadPoolTaskExecutor executor;
 
-	public MentorService(MentorRepository mentorRepository,
-						 UserRepository userRepository, PossibleDateRepository possibleDateRepository, @Qualifier("performanceExecutor")ThreadPoolTaskExecutor executor) {
-		this.mentorRepository = mentorRepository;
-		this.userRepository = userRepository;
-		this.possibleDateRepository=possibleDateRepository;
-		this.executor=executor;
-	}
-
-	public PerformanceResult executePerformanceTest(int apiNum, PerformanceRequest request) {
-		int userCount = request.getUserCount();
-		int totalRequests = request.getTotalRequests();
-		System.out.println("totalRequests = " + totalRequests);
-
-		List<Future<List<Long>>> futures = new ArrayList<>();
-
-		for (int i = 0; i < userCount; i++) {
-			futures.add(executor.submit(() -> {
-				List<Long> executionTimes = new ArrayList<>();
-
-				for (int j = 0; j < totalRequests; j++) {
-					long startTime = System.currentTimeMillis();
-					switch(apiNum){
-						case 1: getMentorDtoListByPartWithJpa("BE"); break;
-						case 2: getMentorDtoListByPart("BE"); break;
-						case 3: getMentorDtoListByPartWithFetch("BE"); break;
-					}
-					System.out.println("apiNum = " + apiNum);
-
-					long endTime = System.currentTimeMillis();
-					executionTimes.add(endTime - startTime);  // 각 요청의 실행 시간 기록
-				}
-
-				return executionTimes;
-			}));
-		}
-
-		List<Double> averageTimesPerThread = new ArrayList<>();
-		List<Long> allExecutionTimes = new ArrayList<>();
-
-		// 대기 중인 모든 스레드가 완료될 때까지 기다림
-		for (Future<List<Long>> future : futures) {
-			try {
-				List<Long> executionTimes = future.get();
-				allExecutionTimes.addAll(executionTimes);
-
-				// 스레드별 평균 실행 시간 계산
-				double averageTimePerThread = executionTimes.stream().mapToLong(Long::longValue).average().orElse(0.0);
-				averageTimesPerThread.add(averageTimePerThread);
-
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
-
-		// 전체 스레드의 평균 실행 시간 계산
-		double overallAverageTime = allExecutionTimes.stream().mapToLong(Long::longValue).average().orElse(0.0);
-
-		return new PerformanceResult(averageTimesPerThread, overallAverageTime);
-	}
-
-	@PreDestroy
-	public void shutdownExecutor() {
-		executor.shutdown();
-		try {
-			if (!executor.getThreadPoolExecutor().awaitTermination(60, TimeUnit.SECONDS)) {
-				executor.getThreadPoolExecutor().shutdownNow();
-			}
-		} catch (InterruptedException e) {
-			executor.getThreadPoolExecutor().shutdownNow();
-			Thread.currentThread().interrupt();
-		}
-	}
-
-
-
-
-	@Transactional
-	public List<ResponseMentorListInfo> getMentorDtoListByPart(String part) {
+	public List<MentorGetListResponseDto> getMentorDtoListByPart(PartEnum part) {
 		return mentorRepository.getMentorListByPart(part); //일반join
 	}
 
-	@Transactional
-	public List<ResponseMentorListInfo> getMentorDtoListByPartWithFetch(String part) {
-		//fetch join
-		List<ResponseMentorListInfo> dtos=new ArrayList<>();
-		List<User> users=mentorRepository.getMentorListByPart2(part);
-		for(User user:users){
-			dtos.add(ResponseMentorListInfo.toDto(user.getMentor(), user));
-		}
-		return dtos;
+	public List<MentorGetListResponseDto> getMentorDtoListByClub(ClubEnum club) {
+		return mentorRepository.getMentorListByClub(club); //일반join
+	}
+
+	public List<MentorGetListResponseDto> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
+		return mentorRepository.getMentorListByPartAndClub(part, club);
+
+	}
+
+	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
+		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
+			.stream()
+			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
+				.date(possibleDate.getDate())
+				.startTime(possibleDate.getStartTime())
+				.endTime(possibleDate.getEndTime())
+				.possibledateId(possibleDate.getId())
+				.build())
+			.collect(Collectors.toList());
+	}
+
+	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
+		//TODO: join으로 바꾸면될듯
+		Mentor findMentor = mentorRepository.findById(mentorId)
+			.orElseThrow(() -> new CustomException(
+				MENTOR_NOT_FOUND.getHttpStatusCode(),
+				MENTOR_NOT_FOUND.getErrorMessage())
+			);
+		return MentorGetUpdateDetailDto.of(
+			findMentor,
+			userRepository.findByMentor(findMentor)
+		);
+	}
+
+	public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId) {
+		return mentorRepository.getMentorInfoByMentorId(mentorId);
 	}
 
 	@Transactional
-	public List<ResponseMentorListInfo> getMentorDtoListByPartWithJpa(String part){
-		List<ResponseMentorListInfo> dtos=new ArrayList<>();
-		List<Mentor> mentors=mentorRepository.findAllByPart(part);
-		for(Mentor mentor:mentors){
-			dtos.add(ResponseMentorListInfo.toDto(mentor, userRepository.findByMentor(mentor)));
-		}
-		return dtos;
-	}
-
-	public List<PossibleDateRequestDto> findPossibleDateListByMentor(String username) {
-		return possibleDateRepository.getPossibleDatesByUsername(username);
+	public MentorGetUpdateDetailDto updateMentorInfo(String username, MentorUpdateRequestDto mentorUpdateRequestDto) {
+		User findMentorUser = userRepository.findByUsername(username);
+		User updatedMentorUser = User.builder()
+			.id(findMentorUser.getId())
+			.name(mentorUpdateRequestDto.getMentorName())
+			.email(mentorUpdateRequestDto.getMentorEmail())
+			.role(findMentorUser.getRole())
+			.phoneNum(mentorUpdateRequestDto.getMentorPhoneNumber())
+			.picture(findMentorUser.getPicture())
+			.build();
+		userRepository.save(updatedMentorUser);
+		return null;
 	}
 
 	@Transactional
-	public Mentor saveUserPicture(String username, String picture){
-		User user = userRepository.findByUsername(username);
-		Mentor mentor = user.getMentor();
-		mentor.setPicture(picture);
-		return mentorRepository.save(mentor);
+	public MentorIntroductionUpdateResponseDto updateMentorIntroduction(
+		Long mentorId,
+		MentorIntroductionUpdateRequestDto dto) {
+		Introduction findMentorIntroduction = mentorRepository.findById(mentorId)
+			.orElseThrow(() -> new CustomException(
+				MENTOR_NOT_FOUND.getHttpStatusCode(),
+				MENTOR_NOT_FOUND.getErrorMessage()
+			)).getIntroduction();
+
+		findMentorIntroduction.updateIntroduction(dto);
+
+		return MentorIntroductionUpdateResponseDto.builder()
+			.title(findMentorIntroduction.getTitle())
+			.description(findMentorIntroduction.getDescription())
+			.answer1(findMentorIntroduction.getAnswer1())
+			.answer2(findMentorIntroduction.getAnswer2())
+			.build();
 	}
 }

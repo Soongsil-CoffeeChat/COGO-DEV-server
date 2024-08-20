@@ -1,3 +1,4 @@
+*.DS_Store
 /Users/kimkyohwee/Documents/BE프로젝트/CoffeeChat/CoffeeChat-Server/src/main/generated/**
 /src/main/generated/**
 HELP.md
@@ -40,5 +41,8 @@ out/
 
 ### HTTP TEST ###
 *.http
+
+
 application.log
-application.log
+/src/main/resources/logback.xml
+

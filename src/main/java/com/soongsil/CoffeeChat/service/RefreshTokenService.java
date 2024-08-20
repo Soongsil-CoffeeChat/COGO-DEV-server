@@ -27,7 +27,6 @@ public class RefreshTokenService {
 		this.refreshRepository = refreshRepository;
 	}
 
-
 	private void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
 
 		Date date = new Date(System.currentTimeMillis() + expiredMs);
@@ -90,8 +89,10 @@ public class RefreshTokenService {
 		String role = jwtUtil.getRole(refresh);
 
 		// Make new JWT
-		String newAccess = jwtUtil.createJwt("access", username, role, Long.MAX_VALUE);
-		String newRefresh = jwtUtil.createJwt("refresh", username, role, Long.MAX_VALUE);
+
+		String newAccess = jwtUtil.createJwt("access", username, role, 1800000000L);
+		String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+
 
 		// Refresh 토큰 저장: DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
 		refreshRepository.deleteByRefresh(refresh);
@@ -103,12 +104,12 @@ public class RefreshTokenService {
 
 		// SameSite 설정을 포함한 쿠키 추가
 		ResponseCookie responseCookie = ResponseCookie.from("refresh", newRefresh)
-				.httpOnly(true)
-				.secure(true)
-				.path("/")
-				.maxAge(24 * 60 * 60)
-				.sameSite("None")
-				.build();
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(24 * 60 * 60)
+			.sameSite("None")
+			.build();
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
 
