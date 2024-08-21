@@ -58,11 +58,15 @@ public class PossibleDateController {
 	@GetMapping
 	@Operation(summary = "멘토ID로 커피챗 가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-	public ResponseEntity<List<PossibleDateCreateGetResponseDto>> getPossibleDates(
+	public ResponseEntity<ApiResponseGenerator<List<PossibleDateCreateGetResponseDto>>> getPossibleDates(
 		Authentication authentication
 	) throws Exception {
 		return ResponseEntity.ok().body(
-			possibleDateService.findPossibleDateListByMentor(getUserNameByAuthentication(authentication))
+			ApiResponseGenerator.onSuccess(
+				OK,
+				OK.getReasonPhrase(),
+				possibleDateService.findPossibleDateListByMentor(getUserNameByAuthentication(authentication))
+			)
 		);
 	}
 }
