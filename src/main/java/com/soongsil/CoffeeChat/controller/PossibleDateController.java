@@ -46,9 +46,7 @@ public class PossibleDateController {
 		Authentication authentication,
 		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
 		return ResponseEntity.created(URI.create(POSSIBLEDATE_URI)).body(
-			ApiResponseGenerator.onSuccess(
-				CREATED,
-				CREATED.getReasonPhrase(),
+			ApiResponseGenerator.onSuccessCREATED(
 				possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
 			)
 		);

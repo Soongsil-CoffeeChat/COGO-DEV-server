@@ -49,9 +49,7 @@ public class ApplicationController {
 			((CustomOAuth2User)authentication.getPrincipal()).getUsername());
 		return ResponseEntity.created(URI.create(APPLICATION_URI + "/" + applicationDto.getApplicationId()))
 			.body(
-				ApiResponseGenerator.onSuccess(
-					CREATED,
-					CREATED.getReasonPhrase(),
+				ApiResponseGenerator.onSuccessCREATED(
 					applicationDto
 				)
 			);
