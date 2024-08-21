@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
-import static org.springframework.http.HttpStatus.*;
 
 import java.net.URI;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,9 +45,7 @@ public class PossibleDateController {
 		Authentication authentication,
 		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
 		return ResponseEntity.created(URI.create(POSSIBLEDATE_URI)).body(
-			ApiResponseGenerator.onSuccess(
-				CREATED,
-				CREATED.getReasonPhrase(),
+			ApiResponseGenerator.onSuccessOK(
 				possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
 			)
 		);
@@ -62,9 +58,7 @@ public class PossibleDateController {
 		Authentication authentication
 	) throws Exception {
 		return ResponseEntity.ok().body(
-			ApiResponseGenerator.onSuccess(
-				OK,
-				OK.getReasonPhrase(),
+			ApiResponseGenerator.onSuccessOK(
 				possibleDateService.findPossibleDateListByMentor(getUserNameByAuthentication(authentication))
 			)
 		);

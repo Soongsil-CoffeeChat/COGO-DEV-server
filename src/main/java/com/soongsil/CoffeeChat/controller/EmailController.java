@@ -1,11 +1,9 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
-import static org.springframework.http.HttpStatus.*;
 
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +28,7 @@ public class EmailController {
 		MessagingException,
 		InterruptedException {
 		return ResponseEntity.ok(
-			ApiResponseGenerator.onSuccess(
-				OK,
-				OK.getReasonPhrase(),
+			ApiResponseGenerator.onSuccessOK(
 				Map.of(
 					"code", emailUtil.sendAuthenticationEmail(receiver)
 				)
