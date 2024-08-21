@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,15 +25,17 @@ public class EmailController {
 	private final EmailUtil emailUtil;
 
 	@GetMapping()
-	public ApiResponseGenerator<Map<String, String>> sendAuthenticationMail(
+	public ResponseEntity<ApiResponseGenerator<Map<String, String>>> sendAuthenticationMail(
 		@RequestParam("email") String receiver) throws
 		MessagingException,
 		InterruptedException {
-		return ApiResponseGenerator.onSuccess(
-			OK,
-			OK.getReasonPhrase(),
-			Map.of(
-				"code", emailUtil.sendAuthenticationEmail(receiver)
+		return ResponseEntity.ok(
+			ApiResponseGenerator.onSuccess(
+				OK,
+				OK.getReasonPhrase(),
+				Map.of(
+					"code", emailUtil.sendAuthenticationEmail(receiver)
+				)
 			)
 		);
 	}
