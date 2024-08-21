@@ -1,15 +1,15 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+import static org.springframework.http.HttpStatus.*;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
@@ -37,10 +37,12 @@ public class PossibleDateController {
 	@PostMapping()
 	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
 	@ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-	public ResponseEntity<PossibleDateCreateGetResponseDto> addPossibleDate(
+	public ApiResponseGenerator<PossibleDateCreateGetResponseDto> addPossibleDate(
 		Authentication authentication,
 		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
-		return ResponseEntity.status(HttpStatus.CREATED).body(
+		return ApiResponseGenerator.onSuccess(
+			CREATED,
+			CREATED.getReasonPhrase(),
 			possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
 		);
 	}
