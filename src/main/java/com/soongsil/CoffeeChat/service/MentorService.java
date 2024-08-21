@@ -47,18 +47,6 @@ public class MentorService {
 
 	}
 
-	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
-		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
-			.stream()
-			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
-				.date(possibleDate.getDate())
-				.startTime(possibleDate.getStartTime())
-				.endTime(possibleDate.getEndTime())
-				.possibledateId(possibleDate.getId())
-				.build())
-			.collect(Collectors.toList());
-	}
-
 	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
 		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)

@@ -3,7 +3,13 @@ package com.soongsil.CoffeeChat.controller;
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 import static org.springframework.http.HttpStatus.*;
 
+import java.net.URI;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,13 +43,26 @@ public class PossibleDateController {
 	@PostMapping()
 	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
 	@ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-	public ApiResponseGenerator<PossibleDateCreateGetResponseDto> addPossibleDate(
+	public ResponseEntity<ApiResponseGenerator<PossibleDateCreateGetResponseDto>> addPossibleDate(
 		Authentication authentication,
 		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
-		return ApiResponseGenerator.onSuccess(
-			CREATED,
-			CREATED.getReasonPhrase(),
-			possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
+		return ResponseEntity.created(URI.create(POSSIBLEDATE_URI)).body(
+			ApiResponseGenerator.onSuccess(
+				CREATED,
+				CREATED.getReasonPhrase(),
+				possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
+			)
+		);
+	}
+
+	@GetMapping
+	@Operation(summary = "멘토ID로 커피챗 가능시간 불러오기")
+	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
+	public ResponseEntity<List<PossibleDateCreateGetResponseDto>> getPossibleDates(
+		Authentication authentication
+	) throws Exception {
+		return ResponseEntity.ok().body(
+			possibleDateService.findPossibleDateListByMentor(getUserNameByAuthentication(authentication))
 		);
 	}
 }
