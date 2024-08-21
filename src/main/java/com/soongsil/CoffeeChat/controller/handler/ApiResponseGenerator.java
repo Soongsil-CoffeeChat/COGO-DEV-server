@@ -40,6 +40,16 @@ public class ApiResponseGenerator<T> {
 		);
 	}
 
+	public static <T> ApiResponseGenerator<T> onSuccessOK(
+		T content
+	) {
+		return new ApiResponseGenerator<>(
+			HttpStatus.OK.toString(),
+			HttpStatus.OK.getReasonPhrase(),
+			content
+		);
+	}
+
 	public static <T> ApiResponseGenerator<T> onFailure(
 		CustomException customException) {
 		return new ApiResponseGenerator<>(
