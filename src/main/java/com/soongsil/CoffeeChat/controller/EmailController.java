@@ -27,7 +27,7 @@ public class EmailController {
 		@RequestParam("email") String receiver) throws
 		MessagingException,
 		InterruptedException {
-		return ResponseEntity.ok(
+		return ResponseEntity.ok().body(
 			ApiResponseGenerator.onSuccessOK(
 				Map.of(
 					"code", emailUtil.sendAuthenticationEmail(receiver)
