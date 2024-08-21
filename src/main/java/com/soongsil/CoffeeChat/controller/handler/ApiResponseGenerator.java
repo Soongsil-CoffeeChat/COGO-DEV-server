@@ -44,8 +44,8 @@ public class ApiResponseGenerator<T> {
 		T content
 	) {
 		return new ApiResponseGenerator<>(
-			HttpStatus.OK.toString(),
-			HttpStatus.OK.getReasonPhrase(),
+			String.valueOf(HttpStatus.OK.value()),
+			HttpStatus.OK.name(),
 			content
 		);
 	}
@@ -54,8 +54,8 @@ public class ApiResponseGenerator<T> {
 		T content
 	) {
 		return new ApiResponseGenerator<>(
-			HttpStatus.CREATED.toString(),
-			HttpStatus.CREATED.getReasonPhrase(),
+			String.valueOf(HttpStatus.CREATED.value()),
+			HttpStatus.CREATED.name(),
 			content
 		);
 	}
