@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -37,14 +38,16 @@ public class ApplicationController {
 
 	@PostMapping
 	@Operation(summary = "COGO 신청하기")
-	@ApiResponse(responseCode = "200", description = "COGO 기본 정보 반환")
+	@ApiResponse(responseCode = "201", description = "COGO 기본 정보 반환")
 	public ResponseEntity<ApplicationCreateResponseDto> createApplication(
 		Authentication authentication,
 		@RequestBody ApplicationCreateRequestDto request
 	) throws Exception {
-		return ResponseEntity.ok()
-			.body(applicationService.createApplication(request,
-				((CustomOAuth2User)authentication.getPrincipal()).getUsername())
+		ApplicationCreateResponseDto applicationDto = applicationService.createApplication(request,
+			((CustomOAuth2User)authentication.getPrincipal()).getUsername());
+		return ResponseEntity.created(URI.create(APPLICATION_URI + "/" + applicationDto.getApplicationId()))
+			.body(
+				applicationDto
 			);
 	}
 
