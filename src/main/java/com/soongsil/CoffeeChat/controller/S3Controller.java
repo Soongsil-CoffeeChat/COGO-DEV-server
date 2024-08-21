@@ -1,5 +1,8 @@
 package com.soongsil.CoffeeChat.controller;
 
+import java.net.URI;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/s3")
+@RequestMapping("api/v2/s3")
 @Tag(name = "S3", description = "S3 관련 api")
 public class S3Controller {
 	private final S3Service s3Service;
@@ -34,13 +37,16 @@ public class S3Controller {
 
 	@PostMapping("/{directory}")
 	@Operation(summary = "사진저장")
-	@ApiResponse(responseCode = "200", description = "사진 저장됨")
-	public ResponseEntity<ApiResponseGenerator<String>> saveImageInS3(Authentication authentication,
+	@ApiResponse(responseCode = "201", description = "사진 저장됨")
+	public ResponseEntity<ApiResponseGenerator<Map<String, String>>> saveImageInS3(Authentication authentication,
 		@RequestPart MultipartFile image, @PathVariable("directory") String directory) throws Exception {
-		return ResponseEntity.ok().body(
-			ApiResponseGenerator.onSuccessOK(
-				s3Service.saveFile(directory, getUserNameByAuthentication(authentication),
-					image)
+		String savedUrl = s3Service.saveFile(directory, getUserNameByAuthentication(authentication),
+			image);
+		return ResponseEntity.created(URI.create(savedUrl)).body(
+			ApiResponseGenerator.onSuccessCREATED(
+				Map.of(
+					"savedUrl", savedUrl
+				)
 			)
 		);
 	}

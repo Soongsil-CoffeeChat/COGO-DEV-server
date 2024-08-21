@@ -50,6 +50,16 @@ public class ApiResponseGenerator<T> {
 		);
 	}
 
+	public static <T> ApiResponseGenerator<T> onSuccessCREATED(
+		T content
+	) {
+		return new ApiResponseGenerator<>(
+			HttpStatus.CREATED.toString(),
+			HttpStatus.CREATED.getReasonPhrase(),
+			content
+		);
+	}
+
 	public static <T> ApiResponseGenerator<T> onFailure(
 		CustomException customException) {
 		return new ApiResponseGenerator<>(
