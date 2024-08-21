@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+import static org.springframework.http.HttpStatus.*;
 
 import java.net.URI;
 import java.util.List;
@@ -40,12 +41,14 @@ public class PossibleDateController {
 
 	@PostMapping()
 	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
-	@ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
+	@ApiResponse(responseCode = "201", description = "DTO형식으로 정보 반환")
 	public ResponseEntity<ApiResponseGenerator<PossibleDateCreateGetResponseDto>> addPossibleDate(
 		Authentication authentication,
 		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
 		return ResponseEntity.created(URI.create(POSSIBLEDATE_URI)).body(
-			ApiResponseGenerator.onSuccessOK(
+			ApiResponseGenerator.onSuccess(
+				CREATED,
+				CREATED.getReasonPhrase(),
 				possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
 			)
 		);
