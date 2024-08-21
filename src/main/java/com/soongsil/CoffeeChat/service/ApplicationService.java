@@ -1,6 +1,5 @@
 package com.soongsil.CoffeeChat.service;
 
-
 import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.*;
@@ -16,11 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
@@ -45,7 +42,6 @@ import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -62,13 +58,11 @@ public class ApplicationService {
 	private final PossibleDateRepository possibleDateRepository;
 	private final EmailUtil emailUtil;
 
-
 	@Autowired
 	private ApplicationContext applicationContext; // 프록시를 통해 자신을 호출하기 위해 ApplicationContext 주입
 
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
-
 
 	@Transactional
 	public ApplicationCreateResponseDto createApplication(ApplicationCreateRequestDto request, String userName) throws
@@ -167,7 +161,6 @@ public class ApplicationService {
 				request.toEntity(findMentor, findMentee, request.getMemo(), requestedPossibleDate))
 		);
 	}
-
 
 	@Async("mailExecutor")
 	public void sendApplicationMatchedEmailAsync(String email, String mentorName, String menteeName, LocalDate date,

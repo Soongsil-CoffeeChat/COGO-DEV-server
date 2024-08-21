@@ -1,6 +1,5 @@
 package com.soongsil.CoffeeChat.util.email;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -28,7 +27,6 @@ public class EmailUtil {
 		javaMailSender.send(message);
 	}
 
-
 	@Async("mailExecutor")
 	public String sendAuthenticationEmail(String receiver) throws
 		MessagingException,
@@ -37,7 +35,6 @@ public class EmailUtil {
 
 		sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
 			createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
-
 
 		return code.toString();
 	}

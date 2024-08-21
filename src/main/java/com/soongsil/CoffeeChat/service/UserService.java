@@ -1,10 +1,7 @@
 package com.soongsil.CoffeeChat.service;
 
-
 import java.util.HashMap;
 import java.util.Map;
-
-import com.soongsil.CoffeeChat.entity.Introduction;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +11,7 @@ import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
 import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
+import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -24,9 +22,7 @@ import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
-
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +52,7 @@ public class UserService {
 		log.info("[*] User Role after: " + user.getRole());
 		Mentor mentor = Mentor.from(dto);
 		user.setMentor(mentor);
-		Introduction introduction=new Introduction();
+		Introduction introduction = new Introduction();
 		mentor.setIntroduction(introduction);
 		return mentorRepository.save(mentor);
 	}

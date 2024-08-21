@@ -4,7 +4,6 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
 import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
@@ -25,7 +23,6 @@ import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
-
 import com.soongsil.CoffeeChat.service.MentorService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,7 +35,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class MentorController {
 
 	private final MentorService mentorService;
-
 
 	public MentorController(MentorService mentorService) {
 		this.mentorService = mentorService;

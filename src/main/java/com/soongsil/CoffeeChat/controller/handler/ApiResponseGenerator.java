@@ -1,8 +1,5 @@
 package com.soongsil.CoffeeChat.controller.handler;
 
-import org.springframework.http.HttpStatusCode;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.soongsil.CoffeeChat.controller.exception.CustomException;

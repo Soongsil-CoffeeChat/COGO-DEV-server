@@ -2,8 +2,6 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
-import java.util.concurrent.CompletableFuture;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(EMAIL_URI)
 public class EmailController {
 	private final EmailUtil emailUtil;
-
 
 	@GetMapping()
 	public String sendAuthenticationMail(@RequestParam("email") String receiver) throws
