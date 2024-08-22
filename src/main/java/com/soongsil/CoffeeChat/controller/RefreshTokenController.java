@@ -28,6 +28,8 @@ public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급
 	@Operation(summary = "리프레쉬 토큰으로 액세스 토큰 reissue")
 	@ApiResponse(responseCode = "200", description = "헤더 : access, refresh, loginStatus")
 	public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+		// TODO: 이 부분 반환 양식 통일필요
+		// TODO: 예외 처리도 기존 return new ~ 가 아니라 서비스 로직에서 throw new CustomException(TOKEN_ERROR_400) ... 으로 해주세요
 		return refreshTokenService.reissueByRefreshToken(request, response);
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
-import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.PartEnum;

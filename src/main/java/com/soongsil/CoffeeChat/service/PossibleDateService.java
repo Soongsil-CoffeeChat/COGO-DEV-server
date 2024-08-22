@@ -1,5 +1,8 @@
 package com.soongsil.CoffeeChat.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,5 +31,18 @@ public class PossibleDateService {
 		mentor.addPossibleDate(possibleDate);
 		possibleDateRepository.save(possibleDate);
 		return PossibleDateCreateGetResponseDto.from(possibleDate);
+	}
+
+	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(String username) {
+		Long mentorId = userRepository.findByUsername(username).getMentor().getId();
+		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
+			.stream()
+			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
+				.date(possibleDate.getDate())
+				.startTime(possibleDate.getStartTime())
+				.endTime(possibleDate.getEndTime())
+				.possibledateId(possibleDate.getId())
+				.build())
+			.collect(Collectors.toList());
 	}
 }

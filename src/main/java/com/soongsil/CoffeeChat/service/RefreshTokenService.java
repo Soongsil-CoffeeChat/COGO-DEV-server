@@ -93,7 +93,6 @@ public class RefreshTokenService {
 		String newAccess = jwtUtil.createJwt("access", username, role, 1800000000L);
 		String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
 
-
 		// Refresh 토큰 저장: DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
 		refreshRepository.deleteByRefresh(refresh);
 		addRefreshEntity(username, newRefresh, 86400000L);

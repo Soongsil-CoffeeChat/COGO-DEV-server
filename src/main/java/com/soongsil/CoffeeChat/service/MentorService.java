@@ -2,11 +2,8 @@ package com.soongsil.CoffeeChat.service;
 
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +34,6 @@ public class MentorService {
 	private final UserRepository userRepository;
 	private final PossibleDateRepository possibleDateRepository;
 
-
 	public List<MentorGetListResponseDto> getMentorDtoListByPart(PartEnum part) {
 		return mentorRepository.getMentorListByPart(part); //일반join
 	}
@@ -49,18 +45,6 @@ public class MentorService {
 	public List<MentorGetListResponseDto> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
 		return mentorRepository.getMentorListByPartAndClub(part, club);
 
-	}
-
-	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
-		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
-			.stream()
-			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
-				.date(possibleDate.getDate())
-				.startTime(possibleDate.getStartTime())
-				.endTime(possibleDate.getEndTime())
-				.possibledateId(possibleDate.getId())
-				.build())
-			.collect(Collectors.toList());
 	}
 
 	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {

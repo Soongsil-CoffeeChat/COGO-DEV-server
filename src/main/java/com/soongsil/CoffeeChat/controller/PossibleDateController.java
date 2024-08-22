@@ -1,15 +1,20 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+import static org.springframework.http.HttpStatus.*;
 
-import org.springframework.http.HttpStatus;
+import java.net.URI;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
@@ -36,12 +41,27 @@ public class PossibleDateController {
 
 	@PostMapping()
 	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
-	@ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-	public ResponseEntity<PossibleDateCreateGetResponseDto> addPossibleDate(
+	@ApiResponse(responseCode = "201", description = "DTO형식으로 정보 반환")
+	public ResponseEntity<ApiResponseGenerator<PossibleDateCreateGetResponseDto>> addPossibleDate(
 		Authentication authentication,
 		@RequestBody PossibleDateCreateRequestDto dto) throws Exception {
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
+		return ResponseEntity.created(URI.create(POSSIBLEDATE_URI)).body(
+			ApiResponseGenerator.onSuccessCREATED(
+				possibleDateService.createPossibleDate(dto, getUserNameByAuthentication(authentication))
+			)
+		);
+	}
+
+	@GetMapping
+	@Operation(summary = "멘토ID로 커피챗 가능시간 불러오기")
+	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
+	public ResponseEntity<ApiResponseGenerator<List<PossibleDateCreateGetResponseDto>>> getPossibleDates(
+		Authentication authentication
+	) throws Exception {
+		return ResponseEntity.ok().body(
+			ApiResponseGenerator.onSuccessOK(
+				possibleDateService.findPossibleDateListByMentor(getUserNameByAuthentication(authentication))
+			)
 		);
 	}
 }
