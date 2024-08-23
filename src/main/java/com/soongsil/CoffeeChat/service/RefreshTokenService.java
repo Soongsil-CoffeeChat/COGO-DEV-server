@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 
 import java.util.Date;
 
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import static com.soongsil.CoffeeChat.controller.exception.enums.RefreshErrorCode.*;
 
 @Service
 public class RefreshTokenService {
@@ -39,7 +42,7 @@ public class RefreshTokenService {
 		refreshRepository.save(refreshEntity);
 	}
 
-	public ResponseEntity<?> reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+	public String reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
 		// Get refresh token
 		String refresh = null;
 		String loginStatus = null;
@@ -59,7 +62,10 @@ public class RefreshTokenService {
 		System.out.println("refresh = " + refresh);
 		if (refresh == null) {
 			// Response status code 400 (refresh 토큰이 들어오지 않음)
-			return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
+			throw new CustomException(
+					REFRESH_NOT_FOUND.getHttpStatusCode(),
+					REFRESH_NOT_FOUND.getErrorMessage()
+			);
 		}
 
 		// Expired check
@@ -67,7 +73,10 @@ public class RefreshTokenService {
 			jwtUtil.isExpired(refresh);
 		} catch (ExpiredJwtException e) {
 			// Response status code 400 (refresh 토큰이 만료됨)
-			return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
+			throw new CustomException(
+					REFRESH_EXPIRED.getHttpStatusCode(),
+					REFRESH_EXPIRED.getErrorMessage()
+			);
 		}
 
 		// 토큰이 refresh인지 확인 (발급 시 페이로드에 명시)
@@ -75,14 +84,20 @@ public class RefreshTokenService {
 
 		if (!category.equals("refresh")) {
 			// Response status code 400 (들어온 토큰이 refresh 토큰이 아님)
-			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+			throw new CustomException(
+					REFRESH_BAD_REQUEST.getHttpStatusCode(),
+					REFRESH_BAD_REQUEST.getErrorMessage()
+			);
 		}
 
 		// DB에 저장되어 있는지 확인
 		Boolean isExist = refreshRepository.existsByRefresh(refresh);
 		if (!isExist) {
 			// Response status code 400 (들어온 refresh 토큰이 내 DB에 저장된 목록에 없음)
-			return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+			throw new CustomException(
+					REFRESH_NOT_MATCHED.getHttpStatusCode(),
+					REFRESH_NOT_MATCHED.getErrorMessage()
+			);
 		}
 
 		String username = jwtUtil.getUsername(refresh);
@@ -112,7 +127,7 @@ public class RefreshTokenService {
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
 
-		return new ResponseEntity<>(HttpStatus.OK);
+		return "새로운 access, refresh 토큰이 발급되었습니다.";
 	}
 }
 
