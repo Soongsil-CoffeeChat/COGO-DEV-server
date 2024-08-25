@@ -2,8 +2,11 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import java.net.URI;
 import java.util.Map;
 
+
+import com.soongsil.CoffeeChat.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,11 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
-import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -55,13 +54,17 @@ public class UserController {
 	@PostMapping()
 	@Operation(summary = "기본정보 기입")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> joinWithMentor(Authentication authentication,
-		@RequestBody UserJoinRequestDto dto) throws Exception {
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> joinWithMentor(Authentication authentication,
+													  @RequestBody UserJoinRequestDto dto) throws Exception {
 		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
 		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			userService.saveUserInformation(getUserNameByAuthentication(authentication), dto)
-		);
+		UserInfoDto userInfoDto=userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
+		return ResponseEntity.created(URI.create(USER_URI))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								userInfoDto
+						)
+				);
 	}
 
 	@PostMapping("/mentor")

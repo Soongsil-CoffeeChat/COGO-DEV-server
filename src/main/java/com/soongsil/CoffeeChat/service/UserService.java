@@ -3,14 +3,11 @@ package com.soongsil.CoffeeChat.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
-import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -34,11 +31,11 @@ public class UserService {
 	private final SmsUtil smsUtil;
 
 	@Transactional
-	public User saveUserInformation(String username, UserJoinRequestDto dto) {
+	public UserInfoDto saveUserInformation(String username, UserJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
 		user.setName(dto.getName());
 		user.setPhoneNum(dto.getPhoneNum());
-		return userRepository.save(user);
+		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	@Transactional
