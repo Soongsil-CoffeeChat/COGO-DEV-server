@@ -99,11 +99,15 @@ public class UserController {
 	@PutMapping("/picture")
 	@Operation(summary = "이미지 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserPicture(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPicture(Authentication authentication,
 		@RequestBody String picture) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.ok(userService.saveUserPicture(getUserNameByAuthentication(authentication), picture));
+		UserInfoDto userInfoDto=userService.saveUserPicture(getUserNameByAuthentication(authentication), picture);
+		return ResponseEntity.created(URI.create(USER_URI+"/"+"picture"))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								userInfoDto
+						)
+				);
 	}
 
 	@GetMapping("/sms")

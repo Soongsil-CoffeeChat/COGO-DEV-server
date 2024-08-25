@@ -68,10 +68,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public User saveUserPicture(String username, String picture) {
+	public UserInfoDto saveUserPicture(String username, String picture) {
 		User user = userRepository.findByUsername(username);
 		user.setPicture(picture);
-		return userRepository.save(user);
+		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	public ResponseEntity<Map<String, String>> getSmsCode(String to) {
