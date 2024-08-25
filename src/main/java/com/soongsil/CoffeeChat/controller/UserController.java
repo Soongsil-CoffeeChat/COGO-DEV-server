@@ -7,6 +7,8 @@ import java.util.Map;
 
 
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
+import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -55,9 +57,7 @@ public class UserController {
 	@Operation(summary = "기본정보 기입")
 	@ApiResponse(responseCode = "200", description = "성공!")
 	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> joinWithMentor(Authentication authentication,
-													  @RequestBody UserJoinRequestDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
+																			@RequestBody UserJoinRequestDto dto) throws Exception {
 		UserInfoDto userInfoDto=userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
 		return ResponseEntity.created(URI.create(USER_URI))
 				.body(
@@ -70,13 +70,15 @@ public class UserController {
 	@PostMapping("/mentor")
 	@Operation(summary = "멘토로 가입하기!")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<MentorInfoDto>> joinWithMentor(Authentication authentication,
 		@RequestBody MentorJoinRequestDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto)
-		);
+		MentorInfoDto mentorInfoDto=userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto);
+		return ResponseEntity.created(URI.create(USER_URI+"/"+"mentor"))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								mentorInfoDto
+						)
+				);
 	}
 
 	@PostMapping("/mentee")

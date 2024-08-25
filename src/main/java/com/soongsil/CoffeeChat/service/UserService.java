@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
+import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,7 +41,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public Mentor saveMentorInformation(String username, MentorJoinRequestDto dto) {
+	public MentorInfoDto saveMentorInformation(String username, MentorJoinRequestDto dto) throws Exception{
 		User user = userRepository.findByUsername(username);
 		log.info("[*] User name: " + user.getUsername());
 		log.info("[*] User Role before: " + user.getRole());
@@ -51,7 +53,7 @@ public class UserService {
 		user.setMentor(mentor);
 		Introduction introduction = new Introduction();
 		mentor.setIntroduction(introduction);
-		return mentorRepository.save(mentor);
+		return MentorInfoDto.toDto(mentorRepository.save(mentor));
 	}
 
 	@Transactional

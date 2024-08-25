@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.dto;
+package com.soongsil.CoffeeChat.dto.UserController;
 
 
 import com.soongsil.CoffeeChat.entity.User;
