@@ -92,10 +92,10 @@ public class UserService {
 		}
 	}
 
-	public ResponseEntity<User> saveUserPhone(String phone, String username) {
+	public UserInfoDto saveUserPhone(String phone, String username) {
 		User user = userRepository.findByUsername(username);
 		user.setPhoneNum(phone);
-		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	public User saveUserEmail(String email, String username) {

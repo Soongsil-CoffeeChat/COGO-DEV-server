@@ -130,11 +130,13 @@ public class UserController {
 	@PatchMapping("/phone")
 	@Operation(summary = "번호 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserPhone(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPhone(Authentication authentication,
 		@RequestParam("phoneNum") String phoneNum) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return userService.saveUserPhone(phoneNum, getUserNameByAuthentication(authentication));
+		return ResponseEntity.created(URI.create(USER_URI+"/phone")).body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.saveUserPhone(phoneNum, getUserNameByAuthentication(authentication))
+				)
+		);
 	}
 
 	@PatchMapping("/email")
