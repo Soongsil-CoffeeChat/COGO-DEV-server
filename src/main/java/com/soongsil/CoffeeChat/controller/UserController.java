@@ -142,12 +142,13 @@ public class UserController {
 	@PatchMapping("/email")
 	@Operation(summary = "메일 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserEmail(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserEmail(Authentication authentication,
 		@RequestParam("email") String email) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return new ResponseEntity<>(userService.saveUserEmail(email, getUserNameByAuthentication(authentication)),
-			HttpStatus.OK);
+		return ResponseEntity.created(URI.create(USER_URI+"/email")).body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.saveUserEmail(email, getUserNameByAuthentication(authentication))
+				)
+		);
 	}
 
 	@PatchMapping()
