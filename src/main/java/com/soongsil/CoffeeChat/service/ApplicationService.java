@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
 import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.*;
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
 import static com.soongsil.CoffeeChat.enums.ApplicationStatus.*;
 
 import java.time.LocalDate;
@@ -63,6 +64,14 @@ public class ApplicationService {
 
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
+
+	private User findUserByUsername(String username){
+		return userRepository.findByUsername(username)
+				.orElseThrow(() -> new CustomException(
+						USER_NOT_FOUND.getHttpStatusCode(),
+						USER_NOT_FOUND.getErrorMessage())
+				);
+	}
 
 	@Transactional
 	public ApplicationCreateResponseDto createApplication(ApplicationCreateRequestDto request, String userName) throws
@@ -150,7 +159,8 @@ public class ApplicationService {
 		);
 
 		// COGO 저장
-		Mentee findMentee = userRepository.findByUsername(userName).getMentee();
+		User user = findUserByUsername(userName);
+		Mentee findMentee = user.getMentee();
 		Mentor findMentor = mentorRepository.findById(request.getMentorId())
 			.orElseThrow(() -> new CustomException(
 				MENTOR_NOT_FOUND.getHttpStatusCode(),
@@ -240,7 +250,8 @@ public class ApplicationService {
 
 		//TODO: JOIN문으로 변경
 		List<ApplicationGetResponseDto> dtos = new ArrayList<>();
-		Mentor findMentor = userRepository.findByUsername(username).getMentor();
+		User user = findUserByUsername(username);
+		Mentor findMentor = user.getMentor();
 		List<Application> findApplications = applicationRepository.findApplicationByMentor(findMentor);
 
 		for (Application app : findApplications) {

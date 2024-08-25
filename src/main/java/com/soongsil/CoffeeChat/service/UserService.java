@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
@@ -25,6 +26,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.POSSIBLE_DATE_NOT_FOUND;
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
 import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_SMS_ERROR;
 
 @Service
@@ -36,9 +39,17 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final SmsUtil smsUtil;
 
+	private User findUserByUsername(String username){
+        return userRepository.findByUsername(username)
+				.orElseThrow(() -> new CustomException(
+						USER_NOT_FOUND.getHttpStatusCode(),
+						USER_NOT_FOUND.getErrorMessage())
+				);
+	}
+
 	@Transactional
 	public UserInfoDto saveUserInformation(String username, UserJoinRequestDto dto) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		user.setName(dto.getName());
 		user.setPhoneNum(dto.getPhoneNum());
 		return UserInfoDto.toDto(userRepository.save(user));
@@ -46,7 +57,7 @@ public class UserService {
 
 	@Transactional
 	public MentorInfoDto saveMentorInformation(String username, MentorJoinRequestDto dto) throws Exception{
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		log.info("[*] User name: " + user.getUsername());
 		log.info("[*] User Role before: " + user.getRole());
 		if (!user.getRole().equals("ROLE_ADMIN")) {
@@ -62,7 +73,7 @@ public class UserService {
 
 	@Transactional
 	public MenteeInfoDto saveMenteeInformation(String username, MenteeJoinRequestDto dto) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		if (!user.getRole().equals("ROLE_ADMIN"))
 			user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
@@ -72,7 +83,7 @@ public class UserService {
 
 	@Transactional
 	public UserInfoDto saveUserPicture(String username, String picture) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		user.setPicture(picture);
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
@@ -93,26 +104,26 @@ public class UserService {
 	}
 
 	public UserInfoDto saveUserPhone(String phone, String username) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		user.setPhoneNum(phone);
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	public UserInfoDto saveUserEmail(String email, String username) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		user.setEmail(email);
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	public UserInfoDto changeUserInfo(UserGetUpdateDto dto, String username) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		user.setEmail(dto.getEmail());
 		user.setPhoneNum(dto.getPhoneNum());
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	public UserGetUpdateDto findUserInfo(String username) {
-		User user = userRepository.findByUsername(username);
+		User user = findUserByUsername(username);
 		return UserGetUpdateDto.toDto(user);
 	}
 
