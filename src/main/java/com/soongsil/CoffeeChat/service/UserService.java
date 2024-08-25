@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import org.springframework.http.HttpStatus;
@@ -57,13 +58,13 @@ public class UserService {
 	}
 
 	@Transactional
-	public Mentee saveMenteeInformation(String username, MenteeJoinRequestDto dto) {
+	public MenteeInfoDto saveMenteeInformation(String username, MenteeJoinRequestDto dto) {
 		User user = userRepository.findByUsername(username);
 		if (!user.getRole().equals("ROLE_ADMIN"))
 			user.setRole("ROLE_MENTEE");
 		Mentee mentee = Mentee.from(dto);
 		user.setMentee(mentee);
-		return menteeRepository.save(mentee);
+		return MenteeInfoDto.toDto(menteeRepository.save(mentee));
 	}
 
 	@Transactional

@@ -7,6 +7,7 @@ import java.util.Map;
 
 
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import org.springframework.http.HttpStatus;
@@ -84,13 +85,15 @@ public class UserController {
 	@PostMapping("/mentee")
 	@Operation(summary = "멘티로 가입하기!")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
-		@RequestBody MenteeJoinRequestDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto)
-		);
+	public ResponseEntity<ApiResponseGenerator<MenteeInfoDto>> joinWithMentee(Authentication authentication,
+																			  @RequestBody MenteeJoinRequestDto dto) throws Exception {
+		MenteeInfoDto menteeInfoDto=userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto);
+		return ResponseEntity.created(URI.create(USER_URI+"/"+"mentee"))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								menteeInfoDto
+						)
+				);
 	}
 
 	@PutMapping("/picture")
