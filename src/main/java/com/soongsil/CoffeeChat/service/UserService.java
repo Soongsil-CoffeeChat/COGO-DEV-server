@@ -104,11 +104,11 @@ public class UserService {
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
-	public User changeUserInfo(UserGetUpdateDto dto, String username) {
+	public UserInfoDto changeUserInfo(UserGetUpdateDto dto, String username) {
 		User user = userRepository.findByUsername(username);
 		user.setEmail(dto.getEmail());
 		user.setPhoneNum(dto.getPhoneNum());
-		return userRepository.save(user);
+		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
 	public UserGetUpdateDto findUserInfo(String username) {
