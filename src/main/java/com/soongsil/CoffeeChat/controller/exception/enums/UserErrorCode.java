@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatusCode;
 @RequiredArgsConstructor
 public enum UserErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "해당 USER의 엔티티가 존재하지 않습니다."),
-    REFRESH_EXPIRED(HttpStatus.FORBIDDEN, "REFRESH_403", "refresh 토큰이 만료되었습니다."),
-    REFRESH_NOT_MATCHED(HttpStatus.UNAUTHORIZED, "REFRESH_401", "저장되지 않은 refresh 토큰입니다."),
-    REFRESH_BAD_REQUEST(HttpStatus.BAD_REQUEST, "REFRESH_400", "refresh 토큰이 아닌 다른 종류의 토큰이 들어왔습니다.");
+    USER_SMS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "USER_500", "SMS 전송에 실패했습니다.");
 
     private final HttpStatusCode httpStatusCode;
     private final String errorCode;

@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
@@ -23,6 +24,8 @@ import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_SMS_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -74,16 +77,18 @@ public class UserService {
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
-	public ResponseEntity<Map<String, String>> getSmsCode(String to) {
+	public Map<String, String> getSmsCode(String to) {
 		Map<String, String> response = new HashMap<>();
 		String result = smsUtil.sendOne(to);
 		if (result != null) {
 			response.put("verificationCode", result);
 			response.put("message", "Verification code sent successfully");
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return response;
 		} else {
-			response.put("message", "Failed to send verification code");
-			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new CustomException(
+					USER_SMS_ERROR.getHttpStatusCode(),
+					USER_SMS_ERROR.getErrorMessage()
+			);
 		}
 	}
 

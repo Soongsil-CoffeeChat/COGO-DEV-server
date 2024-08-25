@@ -118,11 +118,13 @@ public class UserController {
 		@ApiResponse(responseCode = "400", description = "인증번호 전송 실패",
 			content = @Content(mediaType = "application/json", schema = @Schema(example = "{\n\"message\": \"Failed to send verification code\"\n}")))
 	})
-	public ResponseEntity<Map<String, String>> getSmsCode(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<Map<String, String>>> getSmsCode(Authentication authentication,
 		@RequestParam("phoneNum") String phoneNum) {
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		// TODO: Map.of() 함수 사용해서 코드 간결화하면 더 좋을 듯 (EmailController 참조)
-		return userService.getSmsCode(phoneNum);
+		return ResponseEntity.ok().body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.getSmsCode(phoneNum)
+				)
+		);
 	}
 
 	@PatchMapping("/phone")
