@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.util.email;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -28,7 +29,7 @@ public class EmailUtil {
 	}
 
 	@Async("mailExecutor")
-	public String sendAuthenticationEmail(String receiver) throws
+	public CompletableFuture<String> sendAuthenticationEmail(String receiver) throws
 		MessagingException,
 		InterruptedException {
 		String code = String.valueOf((int)((Math.random() * 900000) + 100000));
@@ -36,7 +37,7 @@ public class EmailUtil {
 		sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
 			createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
 
-		return code.toString();
+		return CompletableFuture.completedFuture(code);
 	}
 
 	public void sendApplicationMatchedEmail(String receiver, String mentorName, String menteeName, LocalDate date,
