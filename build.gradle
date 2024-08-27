@@ -86,6 +86,11 @@ dependencies {
 	//Cool SMS
 	implementation 'net.nurigo:sdk:4.2.7'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+	//SQS
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+
 }
 
 // Querydsl 빌드 옵션 설정
