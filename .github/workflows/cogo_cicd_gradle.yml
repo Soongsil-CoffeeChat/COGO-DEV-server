@@ -97,6 +97,7 @@ jobs:
           -e SMS_KEY=${{ secrets.SMS_KEY }} \
           -e SMS_SECRET=${{ secrets.SMS_SECRET }} \
           -e SMS_FROM=${{ secrets.SMS_FROM }} \
+          -e SQS_NAME=${{ secrets.SQS_NAME }} \
           ${{ secrets.DOCKERHUB_USERNAME }}/cogoserver
           sleep 5  # 컨테이너 실행 시간을 확보
           sudo docker ps -a  # 모든 컨테이너 목록 출력
