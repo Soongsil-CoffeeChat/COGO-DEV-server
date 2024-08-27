@@ -90,7 +90,7 @@ cloud:
     stack:
       auto: false
     sqs:
-      queue-name: COGO_Email_SQS
+      queue-name: ${SQS_NAME}
 
 logging.level:
   org.hibernate.SQL: debug
