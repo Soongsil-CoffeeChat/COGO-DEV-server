@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.service;
 
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +48,14 @@ public class MentorService {
 
 	}
 
+	private User findUserByUsername(String username){
+		return userRepository.findByUsername(username)
+				.orElseThrow(() -> new CustomException(
+						USER_NOT_FOUND.getHttpStatusCode(),
+						USER_NOT_FOUND.getErrorMessage())
+				);
+	}
+
 	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
 		//TODO: join으로 바꾸면될듯
 		Mentor findMentor = mentorRepository.findById(mentorId)
@@ -66,7 +75,7 @@ public class MentorService {
 
 	@Transactional
 	public MentorGetUpdateDetailDto updateMentorInfo(String username, MentorUpdateRequestDto mentorUpdateRequestDto) {
-		User findMentorUser = userRepository.findByUsername(username);
+		User findMentorUser = findUserByUsername(username);
 		User updatedMentorUser = User.builder()
 			.id(findMentorUser.getId())
 			.name(mentorUpdateRequestDto.getMentorName())

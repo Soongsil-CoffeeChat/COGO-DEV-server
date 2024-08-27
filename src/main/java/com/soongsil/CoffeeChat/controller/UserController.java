@@ -2,8 +2,14 @@ package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
+import java.net.URI;
 import java.util.Map;
 
+
+import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
+import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
+import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,11 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
-import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -55,47 +57,57 @@ public class UserController {
 	@PostMapping()
 	@Operation(summary = "기본정보 기입")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> joinWithMentor(Authentication authentication,
-		@RequestBody UserJoinRequestDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			userService.saveUserInformation(getUserNameByAuthentication(authentication), dto)
-		);
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> joinWithMentor(Authentication authentication,
+																			@RequestBody UserJoinRequestDto dto) throws Exception {
+		UserInfoDto userInfoDto=userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
+		return ResponseEntity.created(URI.create(USER_URI))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								userInfoDto
+						)
+				);
 	}
 
 	@PostMapping("/mentor")
 	@Operation(summary = "멘토로 가입하기!")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<Mentor> joinWithMentor(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<MentorInfoDto>> joinWithMentor(Authentication authentication,
 		@RequestBody MentorJoinRequestDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto)
-		);
+		MentorInfoDto mentorInfoDto=userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto);
+		return ResponseEntity.created(URI.create(USER_URI+"/"+"mentor"))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								mentorInfoDto
+						)
+				);
 	}
 
 	@PostMapping("/mentee")
 	@Operation(summary = "멘티로 가입하기!")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<Mentee> joinWithMentee(Authentication authentication,
-		@RequestBody MenteeJoinRequestDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.status(HttpStatus.CREATED).body(
-			userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto)
-		);
+	public ResponseEntity<ApiResponseGenerator<MenteeInfoDto>> joinWithMentee(Authentication authentication,
+																			  @RequestBody MenteeJoinRequestDto dto) throws Exception {
+		MenteeInfoDto menteeInfoDto=userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto);
+		return ResponseEntity.created(URI.create(USER_URI+"/"+"mentee"))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								menteeInfoDto
+						)
+				);
 	}
 
 	@PutMapping("/picture")
 	@Operation(summary = "이미지 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserPicture(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPicture(Authentication authentication,
 		@RequestBody String picture) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return ResponseEntity.ok(userService.saveUserPicture(getUserNameByAuthentication(authentication), picture));
+		UserInfoDto userInfoDto=userService.saveUserPicture(getUserNameByAuthentication(authentication), picture);
+		return ResponseEntity.created(URI.create(USER_URI+"/"+"picture"))
+				.body(
+						ApiResponseGenerator.onSuccessCREATED(
+								userInfoDto
+						)
+				);
 	}
 
 	@GetMapping("/sms")
@@ -106,43 +118,49 @@ public class UserController {
 		@ApiResponse(responseCode = "400", description = "인증번호 전송 실패",
 			content = @Content(mediaType = "application/json", schema = @Schema(example = "{\n\"message\": \"Failed to send verification code\"\n}")))
 	})
-	public ResponseEntity<Map<String, String>> getSmsCode(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<Map<String, String>>> getSmsCode(Authentication authentication,
 		@RequestParam("phoneNum") String phoneNum) {
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		// TODO: Map.of() 함수 사용해서 코드 간결화하면 더 좋을 듯 (EmailController 참조)
-		return userService.getSmsCode(phoneNum);
+		return ResponseEntity.ok().body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.getSmsCode(phoneNum)
+				)
+		);
 	}
 
 	@PatchMapping("/phone")
 	@Operation(summary = "번호 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserPhone(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPhone(Authentication authentication,
 		@RequestParam("phoneNum") String phoneNum) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return userService.saveUserPhone(phoneNum, getUserNameByAuthentication(authentication));
+		return ResponseEntity.created(URI.create(USER_URI+"/phone")).body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.saveUserPhone(phoneNum, getUserNameByAuthentication(authentication))
+				)
+		);
 	}
 
 	@PatchMapping("/email")
 	@Operation(summary = "메일 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserEmail(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserEmail(Authentication authentication,
 		@RequestParam("email") String email) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return new ResponseEntity<>(userService.saveUserEmail(email, getUserNameByAuthentication(authentication)),
-			HttpStatus.OK);
+		return ResponseEntity.created(URI.create(USER_URI+"/email")).body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.saveUserEmail(email, getUserNameByAuthentication(authentication))
+				)
+		);
 	}
 
 	@PatchMapping()
 	@Operation(summary = "사용자 정보 수정")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<User> saveUserEmail(Authentication authentication,
+	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserEmail(Authentication authentication,
 		@RequestBody UserGetUpdateDto dto) throws Exception {
-		// TODO: 엔티티 반환 X, DTO 만들어서 반환하기
-		// TODO: ApiResponseGenerator 잘 사용하기 (statusCode 200, 201은 많이 써서 함수로 아예 만들어놨음)
-		return new ResponseEntity<>(userService.changeUserInfo(dto, getUserNameByAuthentication(authentication)),
-			HttpStatus.OK);
+		return ResponseEntity.created(URI.create(USER_URI+"/email")).body(
+				ApiResponseGenerator.onSuccessOK(
+						userService.changeUserInfo(dto, getUserNameByAuthentication(authentication))
+				)
+		);
 	}
 
 	@GetMapping()

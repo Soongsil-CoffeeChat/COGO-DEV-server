@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.service;
 
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -17,12 +18,22 @@ import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import jakarta.transaction.Transactional;
 
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private final UserRepository userRepository;
 
 	public CustomOAuth2UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
+	}
+
+	private User findUserByUsername(String username){
+		return userRepository.findByUsername(username)
+				.orElseThrow(() -> new CustomException(
+						USER_NOT_FOUND.getHttpStatusCode(),
+						USER_NOT_FOUND.getErrorMessage())
+				);
 	}
 
 	//리소스 서버에서 제공되는 유저정보 가져오기
@@ -52,7 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
 		//유저가 DB에 있는지 확인 후 없으면 새로 저장
-		User existData = userRepository.findByUsername(username);
+		User existData = findUserByUsername(username);
 		if (existData == null) {
 			User user = new User();
 			user.setUsername(username);
