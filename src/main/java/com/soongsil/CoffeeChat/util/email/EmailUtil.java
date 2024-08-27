@@ -2,7 +2,10 @@ package com.soongsil.CoffeeChat.util.email;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.CompletableFuture;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -17,7 +20,9 @@ import lombok.RequiredArgsConstructor;
 public class EmailUtil {
 
 	private final JavaMailSender javaMailSender;
+	private final ApplicationContext applicationContext;
 
+	// 비동기 메일 발송 메서드
 	@Async("mailExecutor")
 	public void sendMail(String receiver, String subject, String content) throws MessagingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
@@ -27,16 +32,21 @@ public class EmailUtil {
 		javaMailSender.send(message);
 	}
 
-	@Async("mailExecutor")
-	public String sendAuthenticationEmail(String receiver) throws
-		MessagingException,
-		InterruptedException {
-		String code = String.valueOf((int)((Math.random() * 900000) + 100000));
+	// 인증 이메일 발송 메서드
+	public String sendAuthenticationEmail(String receiver) throws MessagingException, InterruptedException {
+		String code = String.valueOf((int) ((Math.random() * 900000) + 100000));
 
-		sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
-			createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
+		// 비동기 메일 발송 메서드를 프록시를 통해 호출
+		EmailUtil proxy = applicationContext.getBean(EmailUtil.class);
+		try {
+			proxy.sendMail(receiver, "[COGO] 이메일 인증번호입니다.",
+					createMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
+		} catch (RuntimeException e) {
+			// 예외가 발생했을 때 로그를 남기고, 기본 코드 반환 등을 처리
+			System.out.println("메일 전송 실패: " + e.getMessage());
+		}
 
-		return code.toString();
+		return code;
 	}
 
 	public void sendApplicationMatchedEmail(String receiver, String mentorName, String menteeName, LocalDate date,

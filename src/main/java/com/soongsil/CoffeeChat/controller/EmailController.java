@@ -31,6 +31,7 @@ public class EmailController {
 		@RequestParam("email") String receiver) throws
 		MessagingException,
 		InterruptedException {
+		System.out.println("receiver = " + receiver);
 		return ResponseEntity.ok().body(
 			ApiResponseGenerator.onSuccessOK(
 				Map.of(

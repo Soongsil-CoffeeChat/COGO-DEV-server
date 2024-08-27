@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.Concurrency;
 
-import com.soongsil.CoffeeChat.dto.ApplicationCreateRequest;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;

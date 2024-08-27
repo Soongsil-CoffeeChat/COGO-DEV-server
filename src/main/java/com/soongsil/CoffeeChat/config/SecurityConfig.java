@@ -46,10 +46,15 @@ public class SecurityConfig {
 	@Bean
 	public RoleHierarchy roleHierarchy() {
 		RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-		hierarchy.setHierarchy("ROLE_ADMIN > ROLE_MENTEE" + "ROLE_ADMIN > ROLE_MENTOR\n" +
-			"ROLE_MENTEE > ROLE_USER" + "ROLE_MENTOR > ROLE_USER");
+		hierarchy.setHierarchy("""
+        ROLE_ADMIN > ROLE_MENTEE
+        ROLE_ADMIN > ROLE_MENTOR
+        ROLE_MENTEE > ROLE_USER
+        ROLE_MENTOR > ROLE_USER
+    """);
 		return hierarchy;
 	}
+
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
