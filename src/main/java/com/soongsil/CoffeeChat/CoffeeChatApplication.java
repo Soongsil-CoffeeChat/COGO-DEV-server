@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 )
 @SpringBootApplication
 @EnableAsync
+//deploy err
 public class CoffeeChatApplication {
 
 	public static void main(String[] args) {
