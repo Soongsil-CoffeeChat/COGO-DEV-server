@@ -1,18 +1,13 @@
 package com.soongsil.CoffeeChat.service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.Oauth.*;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.Oauth.GoogleResponse;
-import com.soongsil.CoffeeChat.dto.Oauth.KakaoResponse;
-import com.soongsil.CoffeeChat.dto.Oauth.NaverResponse;
-import com.soongsil.CoffeeChat.dto.Oauth.OAuth2Response;
-import com.soongsil.CoffeeChat.dto.UserDTO;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
@@ -30,10 +25,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	private User findUserByUsername(String username){
 		return userRepository.findByUsername(username)
-				.orElseThrow(() -> new CustomException(
-						USER_NOT_FOUND.getHttpStatusCode(),
-						USER_NOT_FOUND.getErrorMessage())
-				);
+				.orElse(null);
 	}
 
 	//리소스 서버에서 제공되는 유저정보 가져오기

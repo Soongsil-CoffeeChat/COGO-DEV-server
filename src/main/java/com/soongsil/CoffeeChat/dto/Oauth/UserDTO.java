@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.dto;
+package com.soongsil.CoffeeChat.dto.Oauth;
 
 import lombok.Getter;
 import lombok.Setter;
