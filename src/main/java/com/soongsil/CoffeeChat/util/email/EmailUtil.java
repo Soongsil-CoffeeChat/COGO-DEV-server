@@ -47,6 +47,7 @@ public class EmailUtil {
 		} catch (Exception e) {
 			// 예외가 발생했을 때 로그를 남기고, 기본 코드 반환 등을 처리
 			System.out.println("SQS 메시지 전송 실패: " + e.getMessage());
+			throw new RuntimeException("메일전송실패");
 		}
 
 		return code;

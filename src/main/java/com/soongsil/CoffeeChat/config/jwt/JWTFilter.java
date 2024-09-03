@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.config.jwt;
 
 import java.io.IOException;
 
+import com.soongsil.CoffeeChat.dto.Oauth.UserDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
-import com.soongsil.CoffeeChat.dto.UserDTO;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
