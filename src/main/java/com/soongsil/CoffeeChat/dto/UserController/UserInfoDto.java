@@ -4,11 +4,13 @@ package com.soongsil.CoffeeChat.dto.UserController;
 import com.soongsil.CoffeeChat.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class UserInfoDto {
     private String username;
     private String name;
