@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.repository.User;
 
+import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -17,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	User findByUsernameWithFetch(String username);
 
 	User findByMenteeId(Long menteeId);
+
+	UserGetUpdateDto findUserInfoByUsername(String username);
 }
