@@ -115,6 +115,7 @@ public class RefreshTokenService {
 		// Response
 		response.setHeader("access", newAccess);
 		response.setHeader("loginStatus", loginStatus);
+		response.setHeader("ROLE", role);
 
 		// SameSite 설정을 포함한 쿠키 추가
 		ResponseCookie responseCookie = ResponseCookie.from("refresh", newRefresh)
