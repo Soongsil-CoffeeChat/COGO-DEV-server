@@ -1,31 +1,42 @@
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.dto.Oauth.*;
+import static com.soongsil.CoffeeChat.controller.exception.enums.RefreshErrorCode.*;
+
+import java.util.Map;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+import com.soongsil.CoffeeChat.dto.Oauth.GoogleResponse;
+import com.soongsil.CoffeeChat.dto.Oauth.KakaoResponse;
+import com.soongsil.CoffeeChat.dto.Oauth.NaverResponse;
+import com.soongsil.CoffeeChat.dto.Oauth.OAuth2Response;
+import com.soongsil.CoffeeChat.dto.Oauth.UserDTO;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import jakarta.transaction.Transactional;
-
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private final UserRepository userRepository;
 
-	public CustomOAuth2UserService(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	private final JWTUtil jwtUtil;
 
-	private User findUserByUsername(String username){
+	private static final String GOOGLE_TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
+
+	private User findUserByUsername(String username) {
 		return userRepository.findByUsername(username)
-				.orElse(null);
+			.orElse(null);
 	}
 
 	//리소스 서버에서 제공되는 유저정보 가져오기
@@ -84,5 +95,25 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			return new CustomOAuth2User(userDTO);
 		}
 
+	}
+
+	public String verifyGoogleToken(String accessToken) {
+		RestTemplate restTemplate = new RestTemplate();
+		String url = GOOGLE_TOKEN_INFO_URL + accessToken;
+		Map<String, Object> tokenInfo = restTemplate.getForObject(url, Map.class);
+		if (tokenInfo != null && tokenInfo.containsKey("sub")) {
+			String googleId = (String)tokenInfo.get("sub");
+			return jwtUtil.createJwt(
+				"access",
+				googleId,
+				"ROLE_USER",
+				180000L
+			);
+		} else {
+			throw new CustomException(
+				INVALID_TOKEN.getHttpStatusCode(),
+				INVALID_TOKEN.getErrorMessage()
+			);
+		}
 	}
 }
