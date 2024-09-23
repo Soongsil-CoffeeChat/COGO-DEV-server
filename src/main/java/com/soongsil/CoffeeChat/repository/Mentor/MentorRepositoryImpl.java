@@ -100,6 +100,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 				mentor.id.as("mentorId"),
 				user.name.as("mentorName"),
 				mentor.part,
+				mentor.club,
 				introduction.title.as("introductionTitle"),
 				introduction.description.as("introductionDescription"),
 				introduction.answer1.as("introductionAnswer1"),
