@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soongsil.CoffeeChat.entity.Application;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -26,12 +27,15 @@ public class ApplicationCreateResponseDto {
 	private String applicationMemo;
 
 	@JsonProperty("application_date")
+	@Schema(type = "string", pattern = "yyyy-MM-dd")
 	private LocalDate applicationDate;
 
 	@JsonProperty("application_start_time")
+	@Schema(type = "string", pattern = "HH-mm")
 	private LocalTime applicationStartTime;
 
 	@JsonProperty("application_end_time")
+	@Schema(type = "string", pattern = "HH-mm")
 	private LocalTime applicationEndTime;
 
 	public static ApplicationCreateResponseDto from(Application application) {

@@ -25,11 +25,11 @@ public class PossibleDateCreateRequestDto {
 	private LocalDate date;
 
 	@JsonProperty("start_time")
-	@Schema(type = "string", pattern = "HH-mm", example = "14:30")
+	@Schema(type = "string", pattern = "HH-mm")
 	private LocalTime startTime;
 
 	@JsonProperty("end_time")
-	@Schema(type = "string", pattern = "HH-mm", example = "15:30")
+	@Schema(type = "string", pattern = "HH-mm")
 	private LocalTime endTime;
 
 	@QueryProjection
