@@ -17,7 +17,7 @@ public class UserGetUpdateDto {
 	private String role;
 	private PartEnum part;
 	private ClubEnum club;
-	private String image;
+	private String picture;
 
 	public static UserGetUpdateDto toDto(User user) {
 		return UserGetUpdateDto.builder()
@@ -35,6 +35,6 @@ public class UserGetUpdateDto {
 		this.role=role;
 		this.part=part;
 		this.club=club;
-		this.image=image;
+		this.picture=image;
 	}
 }
