@@ -31,11 +31,11 @@ public class ApplicationGetResponseDto {
 	private LocalDate date;
 
 	@JsonProperty("application_start_time")
-	@Schema(type = "string", pattern = "HH-mm", example = "14:30")
+	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime startTime;
 
 	@JsonProperty("application_end_time")
-	@Schema(type = "string", pattern = "HH-mm", example = "15:30")
+	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime endTime;
 
 	public static ApplicationGetResponseDto toDto(Application application, String menteeName) {
