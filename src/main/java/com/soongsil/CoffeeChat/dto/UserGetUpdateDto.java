@@ -18,6 +18,7 @@ public class UserGetUpdateDto {
 	private PartEnum part;
 	private ClubEnum club;
 	private String picture;
+	private Long mentorId;
 
 	public static UserGetUpdateDto toDto(User user) {
 		return UserGetUpdateDto.builder()
@@ -28,7 +29,7 @@ public class UserGetUpdateDto {
 	}
 
 	@QueryProjection
-	public UserGetUpdateDto(String name, String email, String phoneNum, String role, PartEnum part, ClubEnum club, String image){
+	public UserGetUpdateDto(String name, String email, String phoneNum, String role, PartEnum part, ClubEnum club, String image, Long mentorId){
 		this.name=name;
 		this.email=email;
 		this.phoneNum=phoneNum;
@@ -36,5 +37,6 @@ public class UserGetUpdateDto {
 		this.part=part;
 		this.club=club;
 		this.picture=image;
+		this.mentorId=mentorId;
 	}
 }

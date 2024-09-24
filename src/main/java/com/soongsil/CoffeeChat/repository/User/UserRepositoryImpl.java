@@ -60,7 +60,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 						roleExpression,
 						mentor.part.coalesce(mentee.part), // 멘토의 part가 없으면 멘티의 part 사용
 						mentor.club, // 멘토의 club, 멘티인 경우 null
-						user.picture
+						user.picture,
+						mentor.id
 				))
 				.from(user)
 				.leftJoin(user.mentor, mentor)
