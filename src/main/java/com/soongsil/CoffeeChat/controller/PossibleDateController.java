@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,20 +39,16 @@ public class PossibleDateController {
 		return principal.getUsername();
 	}
 
-	@PutMapping()
-	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
+	@PostMapping()
+	@Operation(summary = "멘토가 직접 커피챗 가능시간 갱신하기")
 	@ApiResponse(responseCode = "201", description = "DTO형식으로 정보 반환")
 	public ResponseEntity<ApiResponseGenerator<List<PossibleDateCreateGetResponseDto>>> addPossibleDate(
 		Authentication authentication,
 		@RequestBody List<PossibleDateCreateRequestDto> dtos) throws Exception {
-		String username = getUserNameByAuthentication(authentication);
-
-		List<PossibleDateCreateGetResponseDto> responseDtos = dtos.stream()
-			.map(dto -> possibleDateService.createPossibleDate(dto, username))
-			.collect(Collectors.toList());
-
 		return ResponseEntity.created(URI.create(POSSIBLEDATE_URI)).body(
-			ApiResponseGenerator.onSuccessCREATED(responseDtos)
+			ApiResponseGenerator.onSuccessCREATED(
+				possibleDateService.updatePossibleDate(dtos, getUserNameByAuthentication(authentication))
+			)
 		);
 	}
 
