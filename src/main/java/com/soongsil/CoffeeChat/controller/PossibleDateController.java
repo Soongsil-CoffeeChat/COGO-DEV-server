@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +40,7 @@ public class PossibleDateController {
 		return principal.getUsername();
 	}
 
-	@PostMapping()
+	@PutMapping()
 	@Operation(summary = "멘토가 직접 커피챗 가능시간 추가하기")
 	@ApiResponse(responseCode = "201", description = "DTO형식으로 정보 반환")
 	public ResponseEntity<ApiResponseGenerator<List<PossibleDateCreateGetResponseDto>>> addPossibleDate(
