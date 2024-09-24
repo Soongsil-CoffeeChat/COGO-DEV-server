@@ -27,15 +27,15 @@ public class ApplicationCreateResponseDto {
 	private String applicationMemo;
 
 	@JsonProperty("application_date")
-	@Schema(type = "string", pattern = "yyyy-MM-dd")
+	@Schema(type = "string", pattern = "yyyy-mm-dd")
 	private LocalDate applicationDate;
 
 	@JsonProperty("application_start_time")
-	@Schema(type = "string", pattern = "HH-mm")
+	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime applicationStartTime;
 
 	@JsonProperty("application_end_time")
-	@Schema(type = "string", pattern = "HH-mm")
+	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime applicationEndTime;
 
 	public static ApplicationCreateResponseDto from(Application application) {

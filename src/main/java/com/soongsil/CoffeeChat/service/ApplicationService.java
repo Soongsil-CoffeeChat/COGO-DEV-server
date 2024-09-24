@@ -227,10 +227,12 @@ public class ApplicationService {
 				APPLICATION_NOT_FOUND.getErrorMessage()
 			));
 		User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
+		User findMentorUser = userRepository.findByMentor(findApplication.getMentor());
 		//TODO: toDTO 빌더 만들어두고, join으로 묶자
 		return ApplicationGetResponseDto.builder()
 			.applicationId(applicationId)
 			.menteeName(findMenteeUser.getName())
+			.mentorName(findMentorUser.getName())
 			.memo(findApplication.getMemo())
 			.date(findApplication.getPossibleDate().getDate())
 			.startTime(findApplication.getPossibleDate().getStartTime())
@@ -260,6 +262,7 @@ public class ApplicationService {
 				// MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
 				dtos.add(ApplicationGetResponseDto.toDto(
 					app,
+					user.getName(),
 					findMenteeUser.getName()
 				));
 			}

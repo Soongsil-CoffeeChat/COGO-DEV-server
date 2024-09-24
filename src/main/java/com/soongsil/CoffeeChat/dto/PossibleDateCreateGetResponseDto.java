@@ -30,11 +30,11 @@ public class PossibleDateCreateGetResponseDto {
 	private LocalDate date;
 
 	@JsonProperty("start_time")
-	@Schema(type = "string", pattern = "HH-mm")
+	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime startTime;
 
 	@JsonProperty("end_time")
-	@Schema(type = "string", pattern = "HH-mm")
+	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime endTime;
 
 	@JsonIgnore
