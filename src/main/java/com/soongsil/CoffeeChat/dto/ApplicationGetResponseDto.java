@@ -23,6 +23,9 @@ public class ApplicationGetResponseDto {
 	@JsonProperty("mentee_name")
 	private String menteeName;
 
+	@JsonProperty("mentor_name")
+	private String mentorName;
+
 	@JsonProperty("application_memo")
 	private String memo;
 
@@ -38,9 +41,10 @@ public class ApplicationGetResponseDto {
 	@Schema(type = "string", pattern = "hh:mm:ss")
 	private LocalTime endTime;
 
-	public static ApplicationGetResponseDto toDto(Application application, String menteeName) {
+	public static ApplicationGetResponseDto toDto(Application application, String mentorName, String menteeName) {
 		return ApplicationGetResponseDto.builder()
 			.applicationId(application.getId())
+			.mentorName(mentorName)
 			.menteeName(menteeName)
 			.memo(application.getMemo())
 			.date(application.getPossibleDate().getDate())
