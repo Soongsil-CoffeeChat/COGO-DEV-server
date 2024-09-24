@@ -4,11 +4,11 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,16 +52,16 @@ public class PossibleDateController {
 		);
 	}
 
-	@GetMapping
+	@GetMapping("{mentorId}")
 	@Operation(summary = "멘토ID로 커피챗 가능시간 불러오기")
 	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
 	public ResponseEntity<ApiResponseGenerator<List<PossibleDateCreateGetResponseDto>>> getPossibleDates(
-		Authentication authentication
-	) throws Exception {
+		Authentication authentication,
+		@PathVariable("mentorId") Long mentorId
+	) {
 		return ResponseEntity.ok().body(
 			ApiResponseGenerator.onSuccessOK(
-				possibleDateService.findPossibleDateListByMentor(getUserNameByAuthentication(authentication))
-			)
+				possibleDateService.findPossibleDateListByMentor(mentorId))
 		);
 	}
 }

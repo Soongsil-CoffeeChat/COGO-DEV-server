@@ -1,24 +1,24 @@
 package com.soongsil.CoffeeChat.service;
 
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.entity.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
+import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class PossibleDateService {
 	private final PossibleDateRepository possibleDateRepository;
 	private final UserRepository userRepository;
 
-	private User findUserByUsername(String username){
+	private User findUserByUsername(String username) {
 		return userRepository.findByUsername(username)
 			.orElseThrow(() -> new CustomException(
 				USER_NOT_FOUND.getHttpStatusCode(),
@@ -63,10 +63,7 @@ public class PossibleDateService {
 			.collect(Collectors.toList());
 	}
 
-
-	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(String username) {
-		User user = findUserByUsername(username);
-		Long mentorId = user.getMentor().getId();
+	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
 		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
 			.stream()
 			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
