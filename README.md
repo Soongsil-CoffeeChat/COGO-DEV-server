@@ -4,9 +4,6 @@
 IT 관련 고민을 가지고 있는 멘티들이 자대에 재학중인 멘토들에게 커피챗을 신청할 수 있는 플랫폼입니다.
 # 서버 아키텍처
 <img src="https://github.com/user-attachments/assets/a4d2c5ac-e02c-43d0-9d8b-a8e28d91dc40" />
-# 유저 플로우
-<img src="https://github.com/user-attachments/assets/9579d30c-7546-41b7-bfcc-629aded67c14" />
-
 # 팀원 소개 👥
 
 ## 팀장 
@@ -47,3 +44,5 @@ IT 관련 고민을 가지고 있는 멘티들이 자대에 재학중인 멘토�
 | [<img src="https://avatars.githubusercontent.com/u/99941493?v=4" width="200" height="200">](https://github.com/0zlrlo) | [<img src="https://avatars.githubusercontent.com/u/104755384?v=4" width="200" height="200">](https://github.com/candosh) | [<img src="https://avatars.githubusercontent.com/u/21211957?v=4" width="200" height="200">](https://github.com/ChoiSangwon) |
 </div>
 </details>
+# 유저 플로우
+<img src="https://github.com/user-attachments/assets/9579d30c-7546-41b7-bfcc-629aded67c14" />
