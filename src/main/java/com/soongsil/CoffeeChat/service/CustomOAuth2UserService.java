@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
@@ -24,8 +25,10 @@ import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private final UserRepository userRepository;
@@ -100,20 +103,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	public String verifyGoogleToken(String accessToken) {
 		RestTemplate restTemplate = new RestTemplate();
 		String url = GOOGLE_TOKEN_INFO_URL + accessToken;
-		Map<String, Object> tokenInfo = restTemplate.getForObject(url, Map.class);
-		if (tokenInfo != null && tokenInfo.containsKey("sub")) {
-			String googleId = (String)tokenInfo.get("sub");
-			return jwtUtil.createJwt(
-				"access",
-				googleId,
-				"ROLE_USER",
-				180000L
-			);
-		} else {
-			throw new CustomException(
-				INVALID_TOKEN.getHttpStatusCode(),
-				INVALID_TOKEN.getErrorMessage()
-			);
+		try {
+			Map<String, Object> tokenInfo = restTemplate.getForObject(url, Map.class);
+			log.info("===== Token info received ===== " + tokenInfo);
+			if (tokenInfo != null && tokenInfo.containsKey("sub")) {
+				String googleId = (String) tokenInfo.get("sub");
+				return jwtUtil.createJwt("access", googleId, "ROLE_USER", 180000L);
+			} else {
+				log.error("===== Invalid token info ===== " + tokenInfo);
+				throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), INVALID_TOKEN.getErrorMessage());
+			}
+		} catch (HttpClientErrorException e) {
+			log.error("===== Error verifying Google token ===== " + e.getResponseBodyAsString());
+			throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), e.getResponseBodyAsString());
 		}
 	}
+
 }
