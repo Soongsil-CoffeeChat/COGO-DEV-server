@@ -82,7 +82,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
 				.requestMatchers("/health-check", "/", "/auth/reissue/**", "/security-check").permitAll()
 				.requestMatchers("/api/v2/users/**", "/auth/**").hasRole("USER")
-				.requestMatchers(("/auth/reissue/mobile")).permitAll()
+				.requestMatchers(("/auth/reissue/mobile/**")).permitAll()
 				.requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
 				.requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
 				.requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
