@@ -108,7 +108,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			log.info("===== Token info received ===== " + tokenInfo);
 			if (tokenInfo != null && tokenInfo.containsKey("sub")) {
 				String googleId = (String) tokenInfo.get("sub");
-				return jwtUtil.createJwt("access", googleId, "ROLE_USER", 180000L);
+				return jwtUtil.createJwt("access", googleId, "ROLE_USER", 1800000000L);
 			} else {
 				log.error("===== Invalid token info ===== " + tokenInfo);
 				throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), INVALID_TOKEN.getErrorMessage());
