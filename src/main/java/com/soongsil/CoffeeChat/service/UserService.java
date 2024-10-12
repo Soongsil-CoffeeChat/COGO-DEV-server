@@ -1,18 +1,21 @@
 package com.soongsil.CoffeeChat.service;
 
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
+import com.soongsil.CoffeeChat.dto.UserGetDto;
+import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.UserUpdateDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -26,10 +29,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.POSSIBLE_DATE_NOT_FOUND;
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_SMS_ERROR;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -39,12 +38,12 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final SmsUtil smsUtil;
 
-	private User findUserByUsername(String username){
-        return userRepository.findByUsername(username)
-				.orElseThrow(() -> new CustomException(
-						USER_NOT_FOUND.getHttpStatusCode(),
-						USER_NOT_FOUND.getErrorMessage())
-				);
+	private User findUserByUsername(String username) {
+		return userRepository.findByUsername(username)
+			.orElseThrow(() -> new CustomException(
+				USER_NOT_FOUND.getHttpStatusCode(),
+				USER_NOT_FOUND.getErrorMessage())
+			);
 	}
 
 	@Transactional
@@ -56,7 +55,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public MentorInfoDto saveMentorInformation(String username, MentorJoinRequestDto dto) throws Exception{
+	public MentorInfoDto saveMentorInformation(String username, MentorJoinRequestDto dto) throws Exception {
 		User user = findUserByUsername(username);
 		log.info("[*] User name: " + user.getUsername());
 		log.info("[*] User Role before: " + user.getRole());
@@ -97,8 +96,8 @@ public class UserService {
 			return response;
 		} else {
 			throw new CustomException(
-					USER_SMS_ERROR.getHttpStatusCode(),
-					USER_SMS_ERROR.getErrorMessage()
+				USER_SMS_ERROR.getHttpStatusCode(),
+				USER_SMS_ERROR.getErrorMessage()
 			);
 		}
 	}
@@ -115,14 +114,14 @@ public class UserService {
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
-	public UserInfoDto changeUserInfo(UserGetUpdateDto dto, String username) {
+	public UserInfoDto changeUserInfo(UserUpdateDto dto, String username) {
 		User user = findUserByUsername(username);
 		user.setEmail(dto.getEmail());
 		user.setPhoneNum(dto.getPhoneNum());
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
-	public UserGetUpdateDto findUserInfo(String username) {
+	public UserGetDto findUserInfo(String username) {
 		User user = findUserByUsername(username);
 		//TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨
 		return userRepository.findUserInfoByUsername(username);
