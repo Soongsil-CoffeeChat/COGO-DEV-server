@@ -8,8 +8,8 @@ import static com.soongsil.CoffeeChat.entity.QUser.*;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.dto.QUserUpdateDto;
-import com.soongsil.CoffeeChat.dto.UserUpdateDto;
+import com.soongsil.CoffeeChat.dto.QUserGetDto;
+import com.soongsil.CoffeeChat.dto.UserGetDto;
 import com.soongsil.CoffeeChat.entity.QMentee;
 import com.soongsil.CoffeeChat.entity.QMentor;
 import com.soongsil.CoffeeChat.entity.QUser;
@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	}
 
 	@Override
-	public UserUpdateDto findUserInfoByUsername(String username) {
+	public UserGetDto findUserInfoByUsername(String username) {
 		QUser user = QUser.user;
 		QMentor mentor = QMentor.mentor;
 		QMentee mentee = QMentee.mentee;
@@ -53,15 +53,14 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 			.otherwise("UNKNOWN");
 
 		return queryFactory
-			.select(new QUserUpdateDto(
+			.select(new QUserGetDto(
 				user.name,
 				user.email,
 				user.phoneNum,
 				roleExpression,
 				mentor.part.coalesce(mentee.part), // 멘토의 part가 없으면 멘티의 part 사용
 				mentor.club, // 멘토의 club, 멘티인 경우 null
-				user.picture,
-				mentor.id
+				user.picture
 			))
 			.from(user)
 			.leftJoin(user.mentor, mentor)

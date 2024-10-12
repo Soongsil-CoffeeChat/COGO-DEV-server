@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.soongsil.CoffeeChat.dto.UserUpdateDto;
+import com.soongsil.CoffeeChat.dto.UserGetDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 
@@ -19,5 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
 	User findByMenteeId(Long menteeId);
 
-	UserUpdateDto findUserInfoByUsername(String username);
+	UserGetDto findUserInfoByUsername(String username);
 }

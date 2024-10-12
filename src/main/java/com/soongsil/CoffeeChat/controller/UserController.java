@@ -23,6 +23,7 @@ import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
+import com.soongsil.CoffeeChat.dto.UserGetDto;
 import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.UserUpdateDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -166,7 +167,7 @@ public class UserController {
 	@GetMapping()
 	@Operation(summary = "기본정보 조회")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<ApiResponseGenerator<UserUpdateDto>> getUserInfo(Authentication authentication) throws
+	public ResponseEntity<ApiResponseGenerator<UserGetDto>> getUserInfo(Authentication authentication) throws
 		Exception {
 		return ResponseEntity.ok().body(
 			ApiResponseGenerator.onSuccessOK(
