@@ -1,12 +1,12 @@
 package com.soongsil.CoffeeChat.repository.User;
 
-import com.soongsil.CoffeeChat.dto.UserGetUpdateDto;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.soongsil.CoffeeChat.dto.UserUpdateDto;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
-
-import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
 	Optional<User> findByUsername(String username);
@@ -19,5 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
 	User findByMenteeId(Long menteeId);
 
-	UserGetUpdateDto findUserInfoByUsername(String username);
+	UserUpdateDto findUserInfoByUsername(String username);
 }

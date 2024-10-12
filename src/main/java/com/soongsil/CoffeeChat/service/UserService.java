@@ -115,14 +115,14 @@ public class UserService {
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
-	public UserInfoDto changeUserInfo(UserGetUpdateDto dto, String username) {
+	public UserInfoDto changeUserInfo(UserUpdateDto dto, String username) {
 		User user = findUserByUsername(username);
 		user.setEmail(dto.getEmail());
 		user.setPhoneNum(dto.getPhoneNum());
 		return UserInfoDto.toDto(userRepository.save(user));
 	}
 
-	public UserGetUpdateDto findUserInfo(String username) {
+	public UserUpdateDto findUserInfo(String username) {
 		User user = findUserByUsername(username);
 		//TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨
 		return userRepository.findUserInfoByUsername(username);
