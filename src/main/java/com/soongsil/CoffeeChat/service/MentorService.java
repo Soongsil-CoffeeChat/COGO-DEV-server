@@ -1,10 +1,9 @@
 package com.soongsil.CoffeeChat.service;
 
 import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
+import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
 import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateResponseDto;
 import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -48,12 +46,12 @@ public class MentorService {
 
 	}
 
-	private User findUserByUsername(String username){
+	private User findUserByUsername(String username) {
 		return userRepository.findByUsername(username)
-				.orElseThrow(() -> new CustomException(
-						USER_NOT_FOUND.getHttpStatusCode(),
-						USER_NOT_FOUND.getErrorMessage())
-				);
+			.orElseThrow(() -> new CustomException(
+				USER_NOT_FOUND.getHttpStatusCode(),
+				USER_NOT_FOUND.getErrorMessage())
+			);
 	}
 
 	public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
@@ -90,9 +88,17 @@ public class MentorService {
 
 	@Transactional
 	public MentorIntroductionUpdateResponseDto updateMentorIntroduction(
-		Long mentorId,
+		String userName,
 		MentorIntroductionUpdateRequestDto dto) {
-		Introduction findMentorIntroduction = mentorRepository.findById(mentorId)
+		User findUser = userRepository.findByUsername(userName).orElseThrow(
+			() -> new CustomException(
+				USER_NOT_FOUND.getHttpStatusCode(),
+				USER_NOT_FOUND.getErrorMessage()
+			)
+		);
+		Introduction findMentorIntroduction = mentorRepository.findById(
+				findUser.getMentor().getId()
+			)
 			.orElseThrow(() -> new CustomException(
 				MENTOR_NOT_FOUND.getHttpStatusCode(),
 				MENTOR_NOT_FOUND.getErrorMessage()

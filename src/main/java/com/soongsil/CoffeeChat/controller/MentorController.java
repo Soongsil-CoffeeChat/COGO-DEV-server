@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
-import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
@@ -77,16 +76,16 @@ public class MentorController {
 		);
 	}
 
-	@PatchMapping("/{mentorId}/introductions")
+	@PatchMapping("/introductions")
 	@Operation(summary = "멘토 자기소개 입력")
 	@ApiResponse(responseCode = "200", description = "자기소개의 수정된 버전을 반환")
 	public ResponseEntity<ApiResponseGenerator<MentorIntroductionUpdateResponseDto>> updateMentoIntroduction(
-		@PathVariable("mentorId") Long mentorId,
+		Authentication authentication,
 		@RequestBody MentorIntroductionUpdateRequestDto dto
-	) {
+	) throws Exception {
 		return ResponseEntity.ok().body(
 			ApiResponseGenerator.onSuccessOK(
-				mentorService.updateMentorIntroduction(mentorId, dto)
+				mentorService.updateMentorIntroduction(getUserNameByAuthentication(authentication), dto)
 			)
 		);
 	}
