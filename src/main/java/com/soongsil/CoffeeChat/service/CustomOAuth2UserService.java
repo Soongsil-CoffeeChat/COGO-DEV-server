@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import static com.soongsil.CoffeeChat.controller.exception.enums.RefreshErrorCode.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -38,6 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	private static final String GOOGLE_TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
 
 	private User findUserByUsername(String username) {
+		System.out.println("여기까지 들어옴");
 		return userRepository.findByUsername(username)
 			.orElse(null);
 	}
@@ -69,8 +71,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
 		//유저가 DB에 있는지 확인 후 없으면 새로 저장
-		User existData = findUserByUsername(username);
-		if (existData == null) {
+		Optional<User> existData = userRepository.findByUsername(username);
+		//User existData = findUserByUsername(username);
+		if (existData.isEmpty()) {
 			User user = new User();
 			user.setUsername(username);
 			user.setEmail(oAuth2Response.getEmail());
@@ -87,14 +90,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			return new CustomOAuth2User(userDTO);
 		} else {  //데이터가 이미 존재하면 업데이트 후 OAuth2User객체로 반환
 			//소셜에서 로그인마다 업데이트를 선호하므로 로그인마다 DB 업데이트 진행
-			existData.setEmail(oAuth2Response.getEmail());
-			existData.setName(oAuth2Response.getName());
-			userRepository.save(existData);
+			existData.get().setEmail(oAuth2Response.getEmail());
+			existData.get().setName(oAuth2Response.getName());
+			userRepository.save(existData.get());
 
 			UserDTO userDTO = new UserDTO();
-			userDTO.setUsername(existData.getUsername());
+			userDTO.setUsername(existData.get().getUsername());
 			userDTO.setName(oAuth2Response.getName());
-			userDTO.setRole(existData.getRole());
+			userDTO.setRole(existData.get().getRole());
 			return new CustomOAuth2User(userDTO);
 		}
 

@@ -21,3 +21,4 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
 	UserGetDto findUserInfoByUsername(String username);
 }
+
