@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+
 import com.soongsil.CoffeeChat.entity.Refresh;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
 
