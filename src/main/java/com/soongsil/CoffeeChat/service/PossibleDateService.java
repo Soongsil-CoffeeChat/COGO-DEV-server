@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.service;
 
 import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,8 +65,13 @@ public class PossibleDateService {
 	}
 
 	public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
+		// 2주로 설정
+		LocalDate today = LocalDate.now();
+		LocalDate twoWeeksLater = today.plusWeeks(2);
+
 		return possibleDateRepository.getPossibleDatesByMentorId(mentorId)
 			.stream()
+			.filter(possibleDate -> !possibleDate.getDate().isBefore(today) && !possibleDate.getDate().isAfter(twoWeeksLater))
 			.map(possibleDate -> PossibleDateCreateGetResponseDto.builder()
 				.date(possibleDate.getDate())
 				.startTime(possibleDate.getStartTime())
