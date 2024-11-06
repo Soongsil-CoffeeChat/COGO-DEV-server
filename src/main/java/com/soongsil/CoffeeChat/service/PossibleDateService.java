@@ -45,8 +45,8 @@ public class PossibleDateService {
 		Mentor mentor = user.getMentor();
 
 		// 가능 시간을 갱신하기 위해 모든 가능 시간을 삭제 후 새로운 값 삽입
-		possibleDateRepository.deleteAllByMentor(mentor);
-		log.info("[*] 멘토(" + username + ")의 가능시간 모두 삭제(가능시간 갱신 API 일부)");
+		// possibleDateRepository.deleteAllByMentor(mentor);
+		// log.info("[*] 멘토(" + username + ")의 가능시간 모두 삭제(가능시간 갱신 API 일부)");
 
 		List<PossibleDate> possibleDates = dtos.stream()
 			.map(dto -> {
