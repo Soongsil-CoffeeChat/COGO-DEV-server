@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.entity;
 
+import com.soongsil.CoffeeChat.dto.ReportDto;
 import com.soongsil.CoffeeChat.enums.ReportReason;
 import com.soongsil.CoffeeChat.enums.ReportStatus;
 import jakarta.persistence.*;
@@ -34,4 +35,15 @@ public class Report {
 
     // Status of the report (e.g., PENDING, REVIEWED, ACTION_TAKEN)
     private ReportStatus status;
+
+    public static Report from(ReportDto dto, Long reporterId){
+        return Report.builder()
+                .reporterId(reporterId)
+                .reportedUserId(dto.getReportedUserId())
+                .reason(dto.getReason())
+                .additionalDetails(dto.getAdditionalDetails())
+                .reportedAt(LocalDateTime.now())
+                .status(ReportStatus.PENDING)
+                .build();
+    }
 }
