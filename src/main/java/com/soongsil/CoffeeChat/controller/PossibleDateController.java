@@ -64,4 +64,19 @@ public class PossibleDateController {
 				possibleDateService.findPossibleDateListByMentor(mentorId))
 		);
 	}
+
+	@GetMapping("")
+	@Operation(summary = "토큰으로 멘토 본인의 커피챗 가능시간 불러오기")
+	@ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
+	public ResponseEntity<ApiResponseGenerator<List<PossibleDateCreateGetResponseDto>>> getPossibleDatesByToken(
+			Authentication authentication
+	) throws Exception {
+		return ResponseEntity.ok().body(
+				ApiResponseGenerator.onSuccessOK(
+						possibleDateService.findMentorPossibleDateListByUsername(
+								getUserNameByAuthentication(authentication)
+						)
+				)
+		);
+	}
 }

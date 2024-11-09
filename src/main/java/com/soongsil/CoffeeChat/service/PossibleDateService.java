@@ -80,4 +80,10 @@ public class PossibleDateService {
 				.build())
 			.collect(Collectors.toList());
 	}
+
+	public List<PossibleDateCreateGetResponseDto> findMentorPossibleDateListByUsername(String username) {
+
+		User user = findUserByUsername(username);
+		return findPossibleDateListByMentor(user.getMentor().getId());
+	}
 }
