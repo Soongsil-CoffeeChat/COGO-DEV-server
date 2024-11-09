@@ -128,4 +128,8 @@ public class UserService {
 		//return UserGetUpdateDto.toDto(user);
 	}
 
+	public void deleteUser(String username) {
+		User user = findUserByUsername(username);
+		userRepository.delete(user);
+	}
 }
