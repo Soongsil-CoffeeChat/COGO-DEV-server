@@ -134,10 +134,10 @@ public class UserService {
 		userRepository.delete(user);
 	}
 
+	@Transactional
 	public void saveMobileUser(MobileUserDTO dto) {
-		if(userRepository.findByUsername(dto.getUsername()).isPresent()){
-			throw new CustomException(USER_EXIST.getHttpStatusCode(), USER_EXIST.getErrorMessage());
+		if(!userRepository.findByUsername(dto.getUsername()).isPresent()){
+			userRepository.save(dto.toEntity());
 		}
-		userRepository.save(dto.toEntity());
 	}
 }
