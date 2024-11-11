@@ -5,6 +5,7 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*
 import java.util.HashMap;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.dto.Oauth.MobileUserDTO;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
@@ -131,5 +132,12 @@ public class UserService {
 	public void deleteUser(String username) {
 		User user = findUserByUsername(username);
 		userRepository.delete(user);
+	}
+
+	public void saveMobileUser(MobileUserDTO dto) {
+		if(userRepository.findByUsername(dto.getUsername()).isPresent()){
+			throw new CustomException(USER_EXIST.getHttpStatusCode(), USER_EXIST.getErrorMessage());
+		}
+		userRepository.save(dto.toEntity());
 	}
 }

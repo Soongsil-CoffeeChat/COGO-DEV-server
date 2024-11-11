@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatusCode;
 @RequiredArgsConstructor
 public enum UserErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "해당 USER의 엔티티가 존재하지 않습니다."),
-    USER_SMS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "USER_500", "SMS 전송에 실패했습니다.");
+    USER_SMS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "USER_500", "SMS 전송에 실패했습니다."),
+    USER_EXIST(HttpStatus.CONFLICT, "USER_409", "중복 유저가 존재합니다."),
+
+    ;
 
     private final HttpStatusCode httpStatusCode;
     private final String errorCode;
