@@ -30,6 +30,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final JWTUtil jwtUtil;
 
     private static final String GOOGLE_TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
+    private final UserService userService;
 
     private User findUserByUsername(String username) {
         System.out.println("여기까지 들어옴");
@@ -93,7 +94,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setRole(existData.get().getRole());
             return new CustomOAuth2User(userDTO);
         }
-
     }
 
     public String verifyGoogleToken(String accessToken, String name) {
@@ -104,20 +104,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             Map<String, Object> tokenInfo = restTemplate.getForObject(url, Map.class);
             log.info("===== Token info received ===== " + tokenInfo);
             if (tokenInfo != null && tokenInfo.containsKey("sub")) {
-                String googleId = (String) tokenInfo.get("sub");
 
-                // Create new user
-                User user = new User();
-                user.setUsername(googleId);
-                user.setEmail((String) tokenInfo.get("email"));
-                user.setName(name);
-                user.setRole("ROLE_USER");
+                MobileUserDTO mobileUserDTO = MobileUserDTO.builder()
+                        .email((String) tokenInfo.get("email"))
+                        .username((String) tokenInfo.get("sub"))
+                        .name(name)
+                        .role("ROLE_USER")
+                        .build();
 
-                log.info("[*] USER>>>>> EMAIL[" + user.getEmail(), "] NAME[" + user.getUsername() + "] ROLE[" + user.getRole() + "]");
+                userService.saveMobileUser(mobileUserDTO);
 
-                userRepository.save(user);
+                log.info("[*] USER>>>>> EMAIL[" + mobileUserDTO.getEmail(), "] NAME[" + mobileUserDTO.getUsername() + "] ROLE[" + mobileUserDTO.getRole() + "]");
 
-                return jwtUtil.createJwt("access", googleId, "ROLE_USER", 1800000000L);
+                return jwtUtil.createJwt("access", mobileUserDTO.getUsername(), "ROLE_USER", 1800000000L);
             } else {
                 log.error("===== Invalid token info ===== " + tokenInfo);
                 throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), INVALID_TOKEN.getErrorMessage());
