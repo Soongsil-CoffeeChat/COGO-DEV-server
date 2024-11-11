@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.controller;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.ReportDto;
 import com.soongsil.CoffeeChat.service.ReportService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class ReportController {
     }
 
     @PostMapping("/mentor")
+    @ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<?> createReportMentor(Authentication authentication,
                                           @RequestBody ReportDto request) throws Exception {
         ReportDto response = reportService.createReportMentor(request, getUserNameByAuthentication(authentication));
@@ -38,6 +40,7 @@ public class ReportController {
     }
 
     @PostMapping("/mentee")
+    @ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<?> createReportMentee(Authentication authentication,
                                           @RequestBody ReportDto request) throws Exception {
         ReportDto response = reportService.createReportMentee(request, getUserNameByAuthentication(authentication));

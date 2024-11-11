@@ -48,7 +48,7 @@ public class UserController {
 
 	@PostMapping()
 	@Operation(summary = "기본정보 기입")
-	@ApiResponse(responseCode = "200", description = "성공!")
+	@ApiResponse(responseCode = "201", description = "성공!")
 	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> joinWithMentor(Authentication authentication,
 		@RequestBody UserJoinRequestDto dto) throws Exception {
 		UserInfoDto userInfoDto = userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
@@ -62,7 +62,7 @@ public class UserController {
 
 	@PostMapping("/mentor")
 	@Operation(summary = "멘토로 가입하기!")
-	@ApiResponse(responseCode = "200", description = "성공!")
+	@ApiResponse(responseCode = "201", description = "성공!")
 	public ResponseEntity<ApiResponseGenerator<MentorInfoDto>> joinWithMentor(Authentication authentication,
 		@RequestBody MentorJoinRequestDto dto) throws Exception {
 		MentorInfoDto mentorInfoDto = userService.saveMentorInformation(getUserNameByAuthentication(authentication),
@@ -77,7 +77,7 @@ public class UserController {
 
 	@PostMapping("/mentee")
 	@Operation(summary = "멘티로 가입하기!")
-	@ApiResponse(responseCode = "200", description = "성공!")
+	@ApiResponse(responseCode = "201", description = "성공!")
 	public ResponseEntity<ApiResponseGenerator<MenteeInfoDto>> joinWithMentee(Authentication authentication,
 		@RequestBody MenteeJoinRequestDto dto) throws Exception {
 		MenteeInfoDto menteeInfoDto = userService.saveMenteeInformation(getUserNameByAuthentication(authentication),
@@ -92,7 +92,7 @@ public class UserController {
 
 	@PutMapping("/picture")
 	@Operation(summary = "이미지 저장하기")
-	@ApiResponse(responseCode = "200", description = "성공!")
+	@ApiResponse(responseCode = "201", description = "성공!")
 	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPicture(Authentication authentication,
 		@RequestBody String picture) throws Exception {
 		UserInfoDto userInfoDto = userService.saveUserPicture(getUserNameByAuthentication(authentication), picture);
