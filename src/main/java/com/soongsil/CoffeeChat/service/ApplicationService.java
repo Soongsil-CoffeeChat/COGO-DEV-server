@@ -147,15 +147,6 @@ public class ApplicationService {
         }
         log.info("[*] Found possibleDate is not preempted");
 
-        // 가능시간 비활성화
-        System.out.println("possibleDate.getId() = " + requestedPossibleDate.getId());
-        requestedPossibleDate.setActive(false);
-        possibleDateRepository.save(requestedPossibleDate);
-        log.info(
-                "[*] PossibleDate(id:" + requestedPossibleDate.getId() + ") is just preempted: "
-                        + requestedPossibleDate.isActive()
-        );
-
         // COGO 저장
         User user = findUserByUsername(userName);
         Mentee findMentee = user.getMentee();
@@ -284,6 +275,16 @@ public class ApplicationService {
         ApplicationMatchResponseDto responseDto = ApplicationMatchResponseDto.builder()
                 .applicationId(applicationId)
                 .build();
+        PossibleDate matchedPossibleDate = findApplication.getPossibleDate();
+
+        // 가능시간 비활성화
+        System.out.println("possibleDate.getId() = " + matchedPossibleDate.getId());
+        matchedPossibleDate.setActive(false);
+        possibleDateRepository.save(matchedPossibleDate);
+        log.info(
+                "[*] PossibleDate(id:" + matchedPossibleDate.getId() + ") is just matched with: "
+                        + findApplication.getId()
+        );
 
         switch (decision) {
             case "reject" -> {
@@ -294,6 +295,17 @@ public class ApplicationService {
             case "accept" -> {
                 findApplication.setAccept(MATCHED);
                 responseDto.setStatus(MATCHED.name());
+
+                // 매치된 가능시간(PossibleDate)을 가진 다른 'UNMATCHED' 상태의 Application 엔티티 삭제
+                List<Application> unmatchedApplications = applicationRepository
+                        .findByPossibleDateAndAccept(matchedPossibleDate, ApplicationStatus.UNMATCHED);
+
+                unmatchedApplications.forEach(application -> {
+//                    application.setAccept(UNMATCHED);
+                    applicationRepository.delete(application);
+                    log.info("[*] Unmatched Application(id:" + application.getId() + ") with PossibleDate(id:"
+                            + matchedPossibleDate.getId() + ") has been UNMATCHED");
+                });
             }
             default -> throw new CustomException(
                     INVALID_MATCH_STATUS.getHttpStatusCode(),

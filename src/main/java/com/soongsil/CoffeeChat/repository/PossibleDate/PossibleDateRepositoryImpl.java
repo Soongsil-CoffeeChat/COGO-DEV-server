@@ -14,23 +14,24 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom {
-	private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
-	@Override
-	public List<PossibleDateCreateGetResponseDto> getPossibleDatesByUsername(String username) {
-		return queryFactory.
-			select(new QPossibleDateCreateGetResponseDto(
-				possibleDate.date,
-				possibleDate.startTime,
-				possibleDate.endTime,
-				possibleDate.id.as("possibleDateId")
-			))
-			.from(user)
-			.join(user.mentor, mentor)
-			.join(mentor.possibleDates, possibleDate)
-			.where(user.username.eq(username).and(
-				possibleDate.isActive.isTrue()
-			))
-			.fetch();
-	}
+    @Override
+    public List<PossibleDateCreateGetResponseDto> getPossibleDatesByUsername(String username) {
+        return queryFactory.
+                select(new QPossibleDateCreateGetResponseDto(
+                        possibleDate.date,
+                        possibleDate.startTime,
+                        possibleDate.endTime,
+                        possibleDate.id.as("possibleDateId"),
+                        possibleDate.isActive
+                ))
+                .from(user)
+                .join(user.mentor, mentor)
+                .join(mentor.possibleDates, possibleDate)
+                .where(user.username.eq(username).and(
+                        possibleDate.isActive.isTrue()
+                ))
+                .fetch();
+    }
 }
