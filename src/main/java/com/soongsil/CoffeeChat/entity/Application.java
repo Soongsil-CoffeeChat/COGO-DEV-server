@@ -52,7 +52,7 @@ public class Application {
 	@Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")
 	private ApplicationStatus accept;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "possible_date_id")
 	private PossibleDate possibleDate;
 }
