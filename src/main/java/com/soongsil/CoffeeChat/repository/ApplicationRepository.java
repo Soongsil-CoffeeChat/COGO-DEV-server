@@ -1,17 +1,27 @@
 package com.soongsil.CoffeeChat.repository;
 
-import java.util.List;
-
+import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
+import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.enums.ApplicationStatus;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
-import com.soongsil.CoffeeChat.entity.Application;
-import com.soongsil.CoffeeChat.entity.Mentor;
+import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
-	List<Application> findApplicationByMentor(Mentor mentor);
-	List<Application> findApplicationByMentee(Mentee mentee);
-	List<Application> findByPossibleDateAndAccept(PossibleDate possibleDate, ApplicationStatus accept);
+    List<Application> findApplicationByMentor(Mentor mentor);
+
+    List<Application> findApplicationByMentee(Mentee mentee);
+
+    List<Application> findByPossibleDateAndAccept(PossibleDate possibleDate, ApplicationStatus accept);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Application a WHERE a.possibleDate.date < CURRENT_DATE " +
+            "OR (a.possibleDate.date = CURRENT_DATE AND a.possibleDate.startTime < CURRENT_TIME)")
+    void deleteExpiredApplications();
 }
