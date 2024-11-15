@@ -23,6 +23,11 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     @Transactional
     @Query("DELETE FROM Application a " +
             "WHERE a.accept = 'UNMATCHED' " +
-            "AND (a.possibleDate.date < CURRENT_DATE) ")
+            "AND a.possibleDate.id IN (" +
+            "    SELECT pd.id " +
+            "    FROM PossibleDate pd " +
+            "    WHERE pd.date < CURRENT_DATE " +
+            "       OR (pd.date = CURRENT_DATE AND pd.startTime < CURRENT_TIME)" +
+            ")")
     void deleteExpiredApplications();
 }
