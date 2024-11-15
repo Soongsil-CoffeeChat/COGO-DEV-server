@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 //서버다시올리기
 @OpenAPIDefinition(
@@ -16,6 +17,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 )
 @SpringBootApplication
 @EnableAsync
+@EnableScheduling
 //deploy err
 public class CoffeeChatApplication {
 
