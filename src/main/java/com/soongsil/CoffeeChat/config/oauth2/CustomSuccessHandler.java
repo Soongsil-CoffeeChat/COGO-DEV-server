@@ -62,8 +62,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         addRefreshEntity(username, refreshToken, 86400000L);
 
+        System.out.println("=====쿠키쿠키=====");
         // Refresh 토큰 쿠키에 추가
         addSameSiteCookie(response, "refresh", refreshToken);
+        System.out.println("리프레쉬: " + refreshToken);
+        System.out.println("=====쿠키쿠키=====");
 
         // loginStatus 쿠키 추가
         if (role.equals("ROLE_USER")) {

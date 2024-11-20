@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.controller;
 import java.net.URI;
 import java.util.Map;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class S3Controller {
 		return principal.getUsername();
 	}
 
-	@PostMapping("/{directory}")
+	@PostMapping(value = "/{directory}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Operation(summary = "사진저장")
 	@ApiResponse(responseCode = "201", description = "사진 저장됨")
 	public ResponseEntity<ApiResponseGenerator<Map<String, String>>> saveImageInS3(Authentication authentication,
