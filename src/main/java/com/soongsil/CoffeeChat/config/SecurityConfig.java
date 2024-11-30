@@ -28,78 +28,79 @@ import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private final CustomOAuth2UserService customOAuth2UserService;
-	private final CustomSuccessHandler customSuccessHandler;
-	private final JWTUtil jwtUtil;
-	private final RefreshRepository refreshRepository;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
+    private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
 
-	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
-		CustomSuccessHandler customSuccessHandler,
-		JWTUtil jwtUtil,
-		RefreshRepository refreshRepository) {
-		this.customOAuth2UserService = customOAuth2UserService;
-		this.customSuccessHandler = customSuccessHandler;
-		this.jwtUtil = jwtUtil;
-		this.refreshRepository = refreshRepository;
-	}
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+                          CustomSuccessHandler customSuccessHandler,
+                          JWTUtil jwtUtil,
+                          RefreshRepository refreshRepository) {
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.customSuccessHandler = customSuccessHandler;
+        this.jwtUtil = jwtUtil;
+        this.refreshRepository = refreshRepository;
+    }
 
-	@Bean
-	public RoleHierarchy roleHierarchy() {
-		RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-		hierarchy.setHierarchy("""
-        ROLE_ADMIN > ROLE_MENTEE
-        ROLE_ADMIN > ROLE_MENTOR
-        ROLE_MENTEE > ROLE_USER
-        ROLE_MENTOR > ROLE_USER
-    """);
-		return hierarchy;
-	}
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy("""
+                    ROLE_ADMIN > ROLE_MENTEE
+                    ROLE_ADMIN > ROLE_MENTOR
+                    ROLE_MENTEE > ROLE_USER
+                    ROLE_MENTOR > ROLE_USER
+                """);
+        return hierarchy;
+    }
 
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-			.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
-				CorsConfiguration configuration = new CorsConfiguration();
-				configuration.setAllowedOrigins(
-					Arrays.asList("https://localhost:3000", "http://localhost:8080", "http://localhost:3000",
-						"https://cogo.life", "https://coffeego-ssu.web.app")); // 프론트 서버의 주소들 // 프론트 서버의 주소
-				configuration.setAllowedMethods(Collections.singletonList("*"));  // 모든 요청 메서드 허용
-				configuration.setAllowCredentials(true);
-				configuration.setAllowedHeaders(Collections.singletonList("*"));  // 모든 헤더 허용
-				configuration.setMaxAge(3600L);
-				configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access",
-					"loginStatus")); // Set-Cookie 및 Authorization 헤더 노출
-				return configuration;
-			}))
-			.csrf(csrf -> csrf.disable())  // CSRF 비활성화
-			.formLogin(formLogin -> formLogin.disable())  // 폼 로그인 비활성화
-			.httpBasic(httpBasic -> httpBasic.disable())  // HTTP Basic 인증 비활성화
-			.oauth2Login(oauth2 -> oauth2
-				.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService))
-				.successHandler(customSuccessHandler))
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
-				.requestMatchers("/health-check", "/", "/auth/reissue/**", "/security-check").permitAll()
-				.requestMatchers("/api/v2/users/**", "/auth/**").hasRole("USER")
-				.requestMatchers(("/auth/reissue/mobile/**")).permitAll()
-				.requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
-				.requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
-				.requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
-				.anyRequest().authenticated())
-			.sessionManagement(session -> session
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
-			.addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
-			.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(
+                            Arrays.asList("https://localhost:3000", "http://localhost:8080", "http://localhost:3000",
+                                    "https://cogo.life", "https://coffeego-ssu.web.app")); // 프론트 서버의 주소들 // 프론트 서버의 주소
+                    configuration.setAllowedMethods(Collections.singletonList("*"));  // 모든 요청 메서드 허용
+                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedHeaders(Collections.singletonList("*"));  // 모든 헤더 허용
+                    configuration.setMaxAge(3600L);
+                    configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access",
+                            "loginStatus")); // Set-Cookie 및 Authorization 헤더 노출
+                    return configuration;
+                }))
+                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .formLogin(formLogin -> formLogin.disable())  // 폼 로그인 비활성화
+                .httpBasic(httpBasic -> httpBasic.disable())  // HTTP Basic 인증 비활성화
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService))
+                        .successHandler(customSuccessHandler))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
+                        .requestMatchers("/health-check", "/", "/auth/reissue/**", "/security-check").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/{mentorId}/**").permitAll() // mentorId로 조회
+                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part").permitAll()      // 파트별 조회.requestMatchers("/api/v2/users/**", "/auth/**").hasRole("USER")
+                        .requestMatchers("/auth/reissue/mobile/**").permitAll()
+                        .requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
+                        .requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
+                        .requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
+                        .anyRequest().authenticated())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 정책을 STATELESS로 설정
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
+                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
-		return http.build();
-	}
+        return http.build();
+    }
 
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-		return web -> web.ignoring()
-			.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
-	}
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+    }
 }
 
 

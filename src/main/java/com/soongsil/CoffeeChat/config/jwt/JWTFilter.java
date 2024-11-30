@@ -28,7 +28,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-		FilterChain filterChain) throws ServletException, IOException {
+									FilterChain filterChain) throws ServletException, IOException {
 
 		// 특정 경로들에 대해 필터 로직을 건너뛰도록 설정
 		if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
@@ -37,7 +37,9 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 			return;
 		}
 		String path = request.getRequestURI();
-		if (path.startsWith("/health-check") || path.startsWith("/security-check") || path.startsWith("/auth/reissue")||path.startsWith("/login")) {
+		if (path.startsWith("/health-check") || path.startsWith("/security-check")
+				|| path.startsWith("/auth/reissue") || path.startsWith("/login")
+				|| path.matches("^/api/v2/mentors/\\d+$") || path.matches("^/api/v2/mentors/part$")) {
 			System.out.println("jwt필터 통과로직");
 			filterChain.doFilter(request, response);
 			return;
@@ -63,7 +65,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
 			response.setContentType("application/json");
 			response.getWriter()
-				.write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
+					.write("{\"error\": \"Access token expired\"}"); //응답 json에 error : access token expired메시지 작성
 			filterChain.doFilter(request, response);
 
 			//조건이 해당되면 메소드 종료 (필수)
@@ -87,7 +89,7 @@ public class JWTFilter extends OncePerRequestFilter { //요청당 한번만 실�
 
 		//스프링 시큐리티 인증 토큰 생성
 		Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null,
-			customOAuth2User.getAuthorities());
+				customOAuth2User.getAuthorities());
 		//세션에 사용자 등록
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
