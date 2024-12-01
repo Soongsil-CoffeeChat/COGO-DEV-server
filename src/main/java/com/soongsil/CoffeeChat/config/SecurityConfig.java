@@ -80,7 +80,7 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // 모든 OPTIONS 요청에 대해 인증을 요구하지 않음
-                        .requestMatchers("/health-check", "/", "/auth/reissue/**", "/security-check").permitAll()
+                        .requestMatchers("/health-check", "/", "/auth/reissue/**", "/security-check", "/reissue").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/{mentorId}/**").permitAll() // mentorId로 조회
                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part").permitAll()      // 파트별 조회.requestMatchers("/api/v2/users/**", "/auth/**").hasRole("USER")
                         .requestMatchers("/auth/reissue/mobile/**").permitAll()

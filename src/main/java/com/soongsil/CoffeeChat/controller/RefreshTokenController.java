@@ -33,6 +33,7 @@ public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급
 	@ApiResponse(responseCode = "200", description = "헤더 : access, refresh, loginStatus")
 	public ResponseEntity<ApiResponseGenerator<String>> reissue(HttpServletRequest request,
 		HttpServletResponse response) {
+		//System.out.println("ㅇㅇ");
 		return ResponseEntity.ok().body(
 			ApiResponseGenerator.onSuccessOK(
 				refreshTokenService.reissueByRefreshToken(request, response)

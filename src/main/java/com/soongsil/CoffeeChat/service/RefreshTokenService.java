@@ -43,6 +43,7 @@ public class RefreshTokenService {
 	}
 
 	public String reissueByRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("들어옴");
 		// Get refresh token
 		String refresh = null;
 		String loginStatus = null;
