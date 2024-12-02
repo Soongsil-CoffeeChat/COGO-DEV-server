@@ -139,5 +139,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), e.getResponseBodyAsString());
         }
     }
-
 }
