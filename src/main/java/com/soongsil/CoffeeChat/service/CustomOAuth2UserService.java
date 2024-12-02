@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private static final String GOOGLE_TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
     private final UserService userService;
+    private final RefreshTokenService refreshTokenService;
 
     private User findUserByUsername(String username) {
         System.out.println("여기까지 들어옴");
@@ -96,7 +98,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    public String verifyGoogleToken(String accessToken, String name) {
+    public Map<String,String> verifyGoogleToken(String accessToken, String name) {
         log.info("[*] TOKEN>>>>> " + accessToken);
         RestTemplate restTemplate = new RestTemplate();
         String url = GOOGLE_TOKEN_INFO_URL + accessToken;
@@ -116,7 +118,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
                 log.info("[*] USER>>>>> EMAIL[" + mobileUserDTO.getEmail(), "] NAME[" + mobileUserDTO.getUsername() + "] ROLE[" + mobileUserDTO.getRole() + "]");
 
-                return jwtUtil.createJwt("access", mobileUserDTO.getUsername(), "ROLE_USER", 1800000000L);
+                String newAccessToken = jwtUtil.createJwt("access", mobileUserDTO.getUsername(), "ROLE_USER", 1800000000L); // Access token (30분)
+                String newRefreshToken = jwtUtil.createJwt("refresh", mobileUserDTO.getUsername(), "ROLE_USER", 86400000L); // Refresh token (24시간)
+
+                // Refresh 토큰을 Redis 또는 DB에 저장 (선택적)
+                refreshTokenService.addRefreshEntity(mobileUserDTO.getUsername(), newRefreshToken, 86400000L); // 24 hrs
+
+                // Access 및 Refresh 토큰 반환
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("accessToken", newAccessToken);
+                tokens.put("refreshToken", newRefreshToken);
+
+                return tokens;
             } else {
                 log.error("===== Invalid token info ===== " + tokenInfo);
                 throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), INVALID_TOKEN.getErrorMessage());
@@ -126,5 +139,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), e.getResponseBodyAsString());
         }
     }
-
 }
