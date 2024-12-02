@@ -30,7 +30,7 @@ public class RefreshTokenService {
 		this.refreshRepository = refreshRepository;
 	}
 
-	private void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
+	public void addRefreshEntity(String username, String refresh, Long expiredMs) {  //Refresh객체를 DB에 저장(블랙리스트관리)
 
 		Date date = new Date(System.currentTimeMillis() + expiredMs);
 
