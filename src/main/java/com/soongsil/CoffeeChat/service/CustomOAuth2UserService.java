@@ -117,7 +117,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .build();
 
                 if(!userRepository.findByUsername(mobileUserDTO.getUsername()).isPresent()){
-                    userService.saveMobileUser(mobileUserDTO);
                     mobileUserDTO.setNewAccount(true);
                 }
 

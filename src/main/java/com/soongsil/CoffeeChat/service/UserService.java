@@ -136,6 +136,8 @@ public class UserService {
 
 	@Transactional
 	public void saveMobileUser(MobileUserDTO dto) {
-		userRepository.save(dto.toEntity());
+		if(!userRepository.findByUsername(dto.getUsername()).isPresent()){
+			userRepository.save(dto.toEntity());
+		}
 	}
 }
