@@ -84,6 +84,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/{mentorId}/**").permitAll() // mentorId로 조회
                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part").permitAll()      // 파트별 조회.requestMatchers("/api/v2/users/**", "/auth/**").hasRole("USER")
                         .requestMatchers("/auth/reissue/mobile/**").permitAll()
+                        .requestMatchers("/auth/issue/mobile/**").permitAll()
                         .requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
                         .requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
                         .requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
