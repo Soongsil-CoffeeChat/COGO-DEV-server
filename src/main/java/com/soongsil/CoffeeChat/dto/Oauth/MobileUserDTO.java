@@ -13,6 +13,7 @@ public class MobileUserDTO {
     private String name;
     private String username; //스프링 서버 내의 유저 아이디
     private String email;
+    private boolean isNewAccount;
 
     public User toEntity(){
         return User.builder()
