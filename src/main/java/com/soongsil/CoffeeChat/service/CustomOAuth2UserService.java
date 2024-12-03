@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.service;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.dto.Oauth.*;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -98,7 +99,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
     }
 
-    public Map<String,String> verifyGoogleToken(String accessToken, String name) {
+    public MobileTokenResponseDTO verifyGoogleToken(String accessToken, String name) {
         log.info("[*] TOKEN>>>>> " + accessToken);
         RestTemplate restTemplate = new RestTemplate();
         String url = GOOGLE_TOKEN_INFO_URL + accessToken;
@@ -112,7 +113,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .username((String) tokenInfo.get("sub"))
                         .name(name)
                         .role("ROLE_USER")
+                        .isNewAccount(false)
                         .build();
+
+                if(!userRepository.findByUsername(mobileUserDTO.getUsername()).isPresent()){
+                    mobileUserDTO.setNewAccount(true);
+                }
 
                 userService.saveMobileUser(mobileUserDTO);
 
@@ -124,12 +130,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 // Refresh 토큰을 Redis 또는 DB에 저장 (선택적)
                 refreshTokenService.addRefreshEntity(mobileUserDTO.getUsername(), newRefreshToken, 86400000L); // 24 hrs
 
-                // Access 및 Refresh 토큰 반환
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("accessToken", newAccessToken);
-                tokens.put("refreshToken", newRefreshToken);
-
-                return tokens;
+                // access, refresh 토큰 반환
+                return MobileTokenResponseDTO.builder()
+                        .refreshToken(newRefreshToken)
+                        .accessToken(newAccessToken)
+                        .isNewAccount(mobileUserDTO.isNewAccount())
+                        .build();
             } else {
                 log.error("===== Invalid token info ===== " + tokenInfo);
                 throw new CustomException(INVALID_TOKEN.getHttpStatusCode(), INVALID_TOKEN.getErrorMessage());
