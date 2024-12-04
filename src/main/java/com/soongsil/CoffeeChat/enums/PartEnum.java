@@ -4,5 +4,6 @@ public enum PartEnum {
 	FE,
 	BE,
 	PM,
-	DESIGN
+	DESIGN,
+	MOBILE
 }
