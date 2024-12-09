@@ -7,12 +7,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
@@ -77,6 +72,19 @@ public class PossibleDateController {
 								getUserNameByAuthentication(authentication)
 						)
 				)
+		);
+	}
+
+	@DeleteMapping("{possibleDateId}")
+	@Operation(summary = "시간대ID로 등록한 시간대 삭제")
+	@ApiResponse(responseCode = "200", description = "삭제 성공")
+	public ResponseEntity<ApiResponseGenerator<String>> deletePossibleDates(
+			Authentication authentication,
+			@PathVariable("possibleDateId") Long possibleDateId
+	) throws Exception {
+		return ResponseEntity.ok().body(
+				ApiResponseGenerator.onSuccessOK(
+						possibleDateService.deletePossibleDate(possibleDateId, getUserNameByAuthentication(authentication)))
 		);
 	}
 }

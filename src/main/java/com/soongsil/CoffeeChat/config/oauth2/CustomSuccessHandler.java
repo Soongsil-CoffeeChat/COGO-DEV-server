@@ -157,8 +157,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         ResponseCookie responseCookie = ResponseCookie.from(name, value)
                 .httpOnly(true)
                 .secure(true)
-                .path("/")
                 .maxAge(24 * 60 * 60)
+                //.domain("coffeego-ssu.web.app") // 정확한 도메인 설정
+                .path("/")
                 .sameSite("None")
                 .build();
 
