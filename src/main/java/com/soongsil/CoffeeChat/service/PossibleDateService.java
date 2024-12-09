@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
@@ -85,4 +86,18 @@ public class PossibleDateService {
         User user = findUserByUsername(username);
         return findPossibleDateListByMentor(user.getMentor().getId());
     }
+
+    public String deletePossibleDate(Long possibleDateId, String username) {
+        // ID가 존재하는지 확인하고 예외 처리
+        if (!possibleDateRepository.existsById(possibleDateId)) {
+            throw new IllegalArgumentException("The specified possibleDateId does not exist: " + possibleDateId);
+        }
+
+        // 삭제 수행
+        possibleDateRepository.deleteById(possibleDateId);
+
+        // 삭제 후 성공 여부 반환 (일반적으로 예외가 없으면 삭제 성공)
+        return "삭제완료";
+    }
+
 }
