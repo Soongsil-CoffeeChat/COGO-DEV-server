@@ -107,34 +107,54 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             Map<String, Object> tokenInfo = restTemplate.getForObject(url, Map.class);
             log.info("===== Token info received ===== " + tokenInfo);
             if (tokenInfo != null && tokenInfo.containsKey("sub")) {
+                String email = (String) tokenInfo.get("email");
+                String username = (String) tokenInfo.get("sub");
 
-                MobileUserDTO mobileUserDTO = MobileUserDTO.builder()
-                        .email((String) tokenInfo.get("email"))
-                        .username((String) tokenInfo.get("sub"))
-                        .name(name)
-                        .role("ROLE_USER")
-                        .isNewAccount(false)
-                        .build();
+                // 사용자 정보 검색
+                Optional<User> existingUser = userRepository.findByUsernameContaining(username);
+                String role;
+                boolean isNewAccount;
 
-                if(!userRepository.findByUsernameContaining(mobileUserDTO.getUsername()).isPresent()){
-                    mobileUserDTO.setNewAccount(true);
+                if (existingUser.isPresent()) {
+                    // 기존 사용자: Role 정보 가져오기
+                    role = existingUser.get().getRole();
+                    isNewAccount = false;
+                    log.info("Existing user found: " + username);
+                } else {
+                    // 새로운 사용자: Role 기본값 설정
+                    role = "ROLE_USER";
+                    isNewAccount = true;
+                    log.info("New user created: " + username);
+
+                    // 신규 사용자 정보 저장
+                    MobileUserDTO newUser = MobileUserDTO.builder()
+                            .email(email)
+                            .username(username)
+                            .name(name)
+                            .role(role)
+                            .isNewAccount(true)
+                            .build();
+                    userService.saveMobileUser(newUser);
                 }
 
-                userService.saveMobileUser(mobileUserDTO);
+                // JWT 토큰 생성
+                String newAccessToken = jwtUtil.createJwt("access", username, role, 1800000L); // Access token (30분)
+                String newRefreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); // Refresh token (24시간)
 
-                log.info("[*] USER>>>>> EMAIL[" + mobileUserDTO.getEmail(), "] NAME[" + mobileUserDTO.getUsername() + "] ROLE[" + mobileUserDTO.getRole() + "]");
 
-                String newAccessToken = jwtUtil.createJwt("access", mobileUserDTO.getUsername(), "ROLE_USER", 1800000000L); // Access token (30분)
-                String newRefreshToken = jwtUtil.createJwt("refresh", mobileUserDTO.getUsername(), "ROLE_USER", 86400000L); // Refresh token (24시간)
+//                log.info("[*] USER>>>>> EMAIL[" + mobileUserDTO.getEmail(), "] NAME[" + mobileUserDTO.getUsername() + "] ROLE[" + mobileUserDTO.getRole() + "]");
+//
+//                String newAccessToken = jwtUtil.createJwt("access", mobileUserDTO.getUsername(), "ROLE_USER", 1800000000L); // Access token (30분)
+//                String newRefreshToken = jwtUtil.createJwt("refresh", mobileUserDTO.getUsername(), "ROLE_USER", 86400000L); // Refresh token (24시간)
 
                 // Refresh 토큰을 Redis 또는 DB에 저장 (선택적)
-                refreshTokenService.addRefreshEntity(mobileUserDTO.getUsername(), newRefreshToken, 86400000L); // 24 hrs
+                refreshTokenService.addRefreshEntity(username, newRefreshToken, 86400000L);
 
-                // access, refresh 토큰 반환
+                // Access, Refresh 토큰 반환
                 return MobileTokenResponseDTO.builder()
                         .refreshToken(newRefreshToken)
                         .accessToken(newAccessToken)
-                        .isNewAccount(mobileUserDTO.isNewAccount())
+                        .isNewAccount(isNewAccount)
                         .build();
             } else {
                 log.error("===== Invalid token info ===== " + tokenInfo);
