@@ -8,7 +8,7 @@ import lombok.NonNull;
 
 @Builder
 @Getter
-public class MentorIntroductionUpdateResponseDto {
+public class MentorIntroductionGetUpdateResponseDto {
 
 	@JsonProperty("introduction_title")
 	@NonNull

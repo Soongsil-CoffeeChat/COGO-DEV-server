@@ -5,15 +5,11 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*
 
 import java.util.List;
 
+import com.soongsil.CoffeeChat.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
-import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
-import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateResponseDto;
-import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -87,7 +83,7 @@ public class MentorService {
 	}
 
 	@Transactional
-	public MentorIntroductionUpdateResponseDto updateMentorIntroduction(
+	public MentorIntroductionGetUpdateResponseDto updateMentorIntroduction(
 		String userName,
 		MentorIntroductionUpdateRequestDto dto) {
 		User findUser = userRepository.findByUsername(userName).orElseThrow(
@@ -106,11 +102,22 @@ public class MentorService {
 
 		findMentorIntroduction.updateIntroduction(dto);
 
-		return MentorIntroductionUpdateResponseDto.builder()
+		return MentorIntroductionGetUpdateResponseDto.builder()
 			.title(findMentorIntroduction.getTitle())
 			.description(findMentorIntroduction.getDescription())
 			.answer1(findMentorIntroduction.getAnswer1())
 			.answer2(findMentorIntroduction.getAnswer2())
 			.build();
+	}
+
+	public MentorIntroductionGetUpdateResponseDto getMentorIntroduction(String username){
+		User findUser = userRepository.findByUsername(username).orElseThrow();
+		Introduction introduction = findUser.getMentor().getIntroduction();
+		return MentorIntroductionGetUpdateResponseDto.builder()
+				.answer1(introduction.getAnswer1())
+				.answer2(introduction.getAnswer2())
+				.title(introduction.getTitle())
+				.description(introduction.getDescription())
+				.build();
 	}
 }

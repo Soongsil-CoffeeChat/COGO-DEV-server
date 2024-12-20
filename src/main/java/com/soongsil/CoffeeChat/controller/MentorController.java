@@ -4,6 +4,7 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 
 import java.util.List;
 
+import com.soongsil.CoffeeChat.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
-import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
-import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateResponseDto;
-import com.soongsil.CoffeeChat.dto.MentorUpdateRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
@@ -79,7 +75,7 @@ public class MentorController {
 	@PatchMapping("/introductions")
 	@Operation(summary = "멘토 자기소개 입력")
 	@ApiResponse(responseCode = "200", description = "자기소개의 수정된 버전을 반환")
-	public ResponseEntity<ApiResponseGenerator<MentorIntroductionUpdateResponseDto>> updateMentoIntroduction(
+	public ResponseEntity<ApiResponseGenerator<MentorIntroductionGetUpdateResponseDto>> updateMentoIntroduction(
 		Authentication authentication,
 		@RequestBody MentorIntroductionUpdateRequestDto dto
 	) throws Exception {
@@ -87,6 +83,21 @@ public class MentorController {
 			ApiResponseGenerator.onSuccessOK(
 				mentorService.updateMentorIntroduction(getUserNameByAuthentication(authentication), dto)
 			)
+		);
+	}
+
+	@GetMapping("/introductions")
+	@Operation(summary = "토큰으로 멘토 자기소개 항목 4개 조회")
+	@ApiResponse(responseCode = "200", description = "토큰으로 멘토 본인의 자기소개 조회")
+	public ResponseEntity<ApiResponseGenerator<MentorIntroductionGetUpdateResponseDto>> getMentorIntroduction(
+			Authentication authentication
+	) throws Exception{
+		return ResponseEntity.ok().body(
+				ApiResponseGenerator.onSuccessOK(
+						mentorService.getMentorIntroduction(
+								getUserNameByAuthentication(authentication)
+						)
+				)
 		);
 	}
 
