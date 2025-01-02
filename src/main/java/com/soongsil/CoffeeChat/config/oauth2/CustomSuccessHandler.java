@@ -69,17 +69,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
         ResponseCookie responseCookie = ResponseCookie.from(name, value)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .domain(".coffeego-ssu.web.app")
-                .path("/")
-                .maxAge(24 * 60 * 60)
+                .secure(true) // HTTPS에서만 전송
+                .sameSite("None") // 크로스 사이트 쿠키 허용
+                .domain(".coffeego-ssu.web.app") // 도메인 설정
+                .path("/") // 모든 경로에서 유효
+                .maxAge(24 * 60 * 60) // 1일 유효
                 .build();
 
         response.addHeader("Set-Cookie", responseCookie.toString());
         System.out.println("쿠키 : " + responseCookie.toString());
-
     }
+
 }
 
 

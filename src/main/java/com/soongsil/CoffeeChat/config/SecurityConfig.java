@@ -60,6 +60,7 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
+                    /*
                     configuration.setAllowedOrigins(Arrays.asList(
                             "https://localhost:3000",
                             "http://localhost:8080",
@@ -67,6 +68,10 @@ public class SecurityConfig {
                             "https://coffeego-ssu.web.app",
                             "https://accounts.google.co.kr"
                     ));
+
+                     */
+                    configuration.setAllowedOrigins(Arrays.asList("https://coffeego-ssu.web.app"));
+
                     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
                     configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access", "loginStatus"));
