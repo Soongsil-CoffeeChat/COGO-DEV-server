@@ -58,8 +58,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         addSameSiteCookie(response, "refresh", refreshToken);
         addSameSiteCookie(response, "loginStatus", role.equals("ROLE_USER") ? "signup" : "main");
 
+        response.getHeaderNames().forEach(header ->
+                System.out.println(header + ": " + response.getHeader(header))
+        );
         response.setStatus(HttpStatus.OK.value());
         response.sendRedirect("https://coffeego-ssu.web.app/callback");
+        //response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
     }
 
     private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
@@ -73,6 +77,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .build();
 
         response.addHeader("Set-Cookie", responseCookie.toString());
+        System.out.println("쿠키 : " + responseCookie.toString());
+
     }
 }
 
