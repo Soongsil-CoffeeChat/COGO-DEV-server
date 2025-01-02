@@ -55,6 +55,34 @@ public class SmsUtil {
 		return verificationCode;
 	}
 
+	public String sendCogo(String menteePhoneNum, String mentorPhoneNum) {
+		Message message1 = new Message();
+		//전송메시지 생성
+		message1.setFrom(from);
+		message1.setTo(menteePhoneNum);
+		message1.setText("[COGO] 멘토링이 성사되었습니다.\n" + mentorPhoneNum+"으로 멘토님께 연락해 보세요!");
+		Message message2 = new Message();
+		//전송메시지 생성
+		message2.setFrom(from);
+		message2.setTo(mentorPhoneNum);
+		message2.setText("[COGO] 멘토링이 성사되었습니다.\n" + menteePhoneNum+"으로 멘티님께 연락해 보세요!");
+
+		try {
+			// 메시지 전송
+			messageService.send(message1);
+			messageService.send(message2);
+		} catch (NurigoMessageNotReceivedException exception) {
+			// 발송에 실패한 메시지 목록을 확인할 수 있습니다.
+			System.out.println("Failed message list: " + exception.getFailedMessageList());
+			System.out.println("Error message: " + exception.getMessage());
+			return null;
+		} catch (Exception exception) {
+			System.out.println("Error message: " + exception.getMessage());
+			return null;
+		}
+		return "문자 전송 완료";
+	}
+
 	private String generateVerificationCode() {
 		Random random = new Random();
 		int code = random.nextInt(9000) + 1000; // 4자리 랜덤 숫자 생성

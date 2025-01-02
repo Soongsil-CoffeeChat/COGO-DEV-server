@@ -158,7 +158,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(24 * 60 * 60)
-                //.domain("coffeego-ssu.web.app") // 정확한 도메인 설정
+                .domain("coffeego-ssu.web.app") // 정확한 도메인 설정
                 .path("/")
                 .sameSite("None")
                 .build();
