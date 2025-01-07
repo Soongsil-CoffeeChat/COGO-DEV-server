@@ -5,20 +5,16 @@ import static com.soongsil.CoffeeChat.enums.RequestUri.*;
 import java.net.URI;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
-import com.soongsil.CoffeeChat.dto.UserGetDto;
-import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.UserUpdateDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.service.UserService;
 
@@ -124,8 +120,8 @@ public class UserController {
 	@PatchMapping("/phone")
 	@Operation(summary = "번호 저장하기")
 	@ApiResponse(responseCode = "200", description = "성공!")
-	public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPhone(Authentication authentication,
-		@RequestParam("phoneNum") String phoneNum) throws Exception {
+	public ResponseEntity<ApiResponseGenerator<PhoneNumUpdateDto>> saveUserPhone(Authentication authentication,
+																				 @RequestParam("phoneNum") String phoneNum) throws Exception {
 		return ResponseEntity.created(URI.create(USER_URI + "/phone")).body(
 			ApiResponseGenerator.onSuccessOK(
 				userService.saveUserPhone(phoneNum, getUserNameByAuthentication(authentication))

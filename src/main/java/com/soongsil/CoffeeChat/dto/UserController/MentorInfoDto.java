@@ -18,12 +18,14 @@ public class MentorInfoDto {
     private PartEnum part;
     private ClubEnum club;
     private Long introductionId;
+    private boolean isNewAccount;
 
     public static MentorInfoDto toDto(Mentor mentor){
         return MentorInfoDto.builder()
                 .part(mentor.getPart())
                 .club(mentor.getClub())
                 .introductionId(mentor.getIntroduction().getId())
+                .isNewAccount(false)
                 .build();
     }
 }

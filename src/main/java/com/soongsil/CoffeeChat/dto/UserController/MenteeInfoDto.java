@@ -13,10 +13,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MenteeInfoDto {
     private PartEnum part;
+    private boolean isNewAccount;
 
     public static MenteeInfoDto toDto(Mentee mentee){
         return MenteeInfoDto.builder()
                 .part(mentee.getPart())
+                .isNewAccount(false)
                 .build();
     }
 }
