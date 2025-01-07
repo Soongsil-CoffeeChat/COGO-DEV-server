@@ -5,18 +5,14 @@ import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*
 import java.util.HashMap;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.Oauth.MobileUserDTO;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
-import com.soongsil.CoffeeChat.dto.UserGetDto;
-import com.soongsil.CoffeeChat.dto.UserJoinRequestDto;
-import com.soongsil.CoffeeChat.dto.UserUpdateDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -103,10 +99,15 @@ public class UserService {
 		}
 	}
 
-	public UserInfoDto saveUserPhone(String phone, String username) {
+	public PhoneNumUpdateDto saveUserPhone(String phone, String username) {
 		User user = findUserByUsername(username);
 		user.setPhoneNum(phone);
-		return UserInfoDto.toDto(userRepository.save(user));
+		userRepository.save(user);
+		return PhoneNumUpdateDto.builder()
+				.name(user.getName())
+				.phoneNum(user.getPhoneNum())
+				.isNewAccount(true)
+				.build();
 	}
 
 	public UserInfoDto saveUserEmail(String email, String username) {
