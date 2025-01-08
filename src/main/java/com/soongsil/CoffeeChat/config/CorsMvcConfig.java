@@ -16,7 +16,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
 						"https://cogo.life",
 						"https://coffeego-ssu.web.app",
 						"https://accounts.google.co.kr")
-				.allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
+				.allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH")
 				.allowedHeaders("*")
 				.exposedHeaders("Set-Cookie", "Authorization", "loginStatus")
 				.allowCredentials(true)
