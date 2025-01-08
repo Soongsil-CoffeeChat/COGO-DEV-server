@@ -118,7 +118,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 if (existingUser.isPresent()) {
                     // 기존 사용자: Role 정보 가져오기
                     role = existingUser.get().getRole();
-                    isNewAccount = true;
+                    isNewAccount = false;
                     log.info("Existing user found: " + username);
                 } else {
                     // 새로운 사용자: Role 기본값 설정
