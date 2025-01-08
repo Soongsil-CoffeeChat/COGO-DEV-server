@@ -62,7 +62,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 System.out.println(header + ": " + response.getHeader(header))
         );
         response.setStatus(HttpStatus.OK.value());
-        response.sendRedirect("https://coffeego-ssu.web.app/callback");
+        String redirectUrl = String.format(
+                "https://coffeego-ssu.web.app/callback?refreshToken=%s&loginStatus=%s",
+                refreshToken, role.equals("ROLE_USER") ? "signup" : "main"
+        );
+        response.sendRedirect(redirectUrl);
+
+        //response.sendRedirect("https://coffeego-ssu.web.app/callback");
         //response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
     }
 

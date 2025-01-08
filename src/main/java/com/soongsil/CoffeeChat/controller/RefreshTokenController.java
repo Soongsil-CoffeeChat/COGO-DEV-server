@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.controller;
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
+import com.soongsil.CoffeeChat.dto.ReissueDto;
 import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,12 +30,17 @@ public class RefreshTokenController {  //Refresh토큰으로 Access토큰 발급
     @PostMapping("/reissue")
     @Operation(summary = "리프레쉬 토큰으로 액세스 토큰 reissue")
     @ApiResponse(responseCode = "200", description = "헤더 : access, refresh, loginStatus")
+    /*
     public ResponseEntity<ApiResponseGenerator<String>> reissue(HttpServletRequest request,
                                                                 HttpServletResponse response) {
+
+     */
+    public ResponseEntity<ApiResponseGenerator<ReissueDto>> reissue(@RequestBody String refresh){
         //System.out.println("ㅇㅇ");
         return ResponseEntity.ok().body(
                 ApiResponseGenerator.onSuccessOK(
-                        refreshTokenService.reissueByRefreshToken(request, response)
+                        //refreshTokenService.reissueByRefreshToken(request, response)
+                        refreshTokenService.reissueByRefreshToken2(refresh)
                 )
         );
     }

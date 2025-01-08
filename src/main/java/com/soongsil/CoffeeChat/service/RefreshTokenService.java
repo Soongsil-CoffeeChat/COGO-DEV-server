@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 
 import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
+import com.soongsil.CoffeeChat.dto.ReissueDto;
 import com.soongsil.CoffeeChat.entity.Refresh;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -128,6 +129,52 @@ public class RefreshTokenService {
 
         return "새로운 access, refresh 토큰이 발급되었습니다.";
     }
+
+    public ReissueDto reissueByRefreshToken2(String refresh) {
+        System.out.println("들어옴");
+
+
+
+        // 토큰이 refresh인지 확인 (발급 시 페이로드에 명시)
+
+
+        // DB에 저장되어 있는지 확인
+        Boolean isExist = refreshRepository.existsByRefresh(refresh);
+        if (!isExist) {
+            // Response status code 400 (들어온 refresh 토큰이 내 DB에 저장된 목록에 없음)
+            throw new CustomException(
+                    REFRESH_NOT_MATCHED.getHttpStatusCode(),
+                    REFRESH_NOT_MATCHED.getErrorMessage()
+            );
+        }
+
+        String username = jwtUtil.getUsername(refresh);
+        System.out.println("username = " + username);
+        String role = jwtUtil.getRole(refresh);
+
+        // Make new JWT
+
+        String newAccess = jwtUtil.createJwt("access", username, role, 1800000000L);
+        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+
+        // Refresh 토큰 저장: DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+        refreshRepository.deleteByRefresh(refresh);
+        addRefreshEntity(username, newRefresh, 86400000L);
+
+
+        // SameSite 설정을 포함한 쿠키 추가
+        ResponseCookie responseCookie = ResponseCookie.from("refresh", newRefresh)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("None")
+                .build();
+
+        ReissueDto reissueDto=new ReissueDto(newRefresh, newAccess);
+        return reissueDto;
+    }
+
 
     public Map<String, String> reissueByRefreshTokenWithResponseBody(String refreshToken) {
 		// 1. Refresh 토큰 존재 여부 확인
