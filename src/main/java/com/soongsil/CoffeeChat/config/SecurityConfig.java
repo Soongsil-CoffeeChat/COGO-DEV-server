@@ -72,7 +72,7 @@ public class SecurityConfig {
                      */
                     configuration.setAllowedOrigins(Arrays.asList("https://coffeego-ssu.web.app"));
 
-                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
                     configuration.setAllowedHeaders(Collections.singletonList("*"));
                     configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access", "loginStatus"));
                     configuration.setAllowCredentials(true);
