@@ -18,7 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-//deploy err
 public class CoffeeChatApplication {
 
 	public static void main(String[] args) {
