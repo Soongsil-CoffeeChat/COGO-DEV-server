@@ -94,6 +94,10 @@ dependencies {
 
 }
 
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
 // Querydsl 빌드 옵션 설정
 def generated = 'src/main/generated'
 
@@ -112,10 +116,6 @@ clean {
 	delete file(generated)
 }
 
-
-tasks.named('test') {
-	useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(17)
 }
