@@ -14,23 +14,19 @@ import com.soongsil.CoffeeChat.controller.exception.CustomException;
 @ControllerAdvice(assignableTypes = ApplicationController.class)
 public class ApplicationExceptionHandler {
 
-	@ExceptionHandler(ResponseStatusException.class)
-	public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
-		return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
-	}
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+    }
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String> handleException(Exception ex) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-	}
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
 
-	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<ApiResponseGenerator> handleCustomException(CustomException ex) {
-		return ResponseEntity.
-			status(HttpStatus.valueOf(ex.getErrorCode().value()))
-			.body(
-				onFailure(ex)
-			);
-	}
-
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponseGenerator> handleCustomException(CustomException ex) {
+        return ResponseEntity.status(HttpStatus.valueOf(ex.getErrorCode().value()))
+                .body(onFailure(ex));
+    }
 }

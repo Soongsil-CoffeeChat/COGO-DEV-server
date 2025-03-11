@@ -6,5 +6,5 @@ import lombok.Getter;
 
 @Getter
 public class MenteeJoinRequestDto {
-	private PartEnum part;
+    private PartEnum part;
 }

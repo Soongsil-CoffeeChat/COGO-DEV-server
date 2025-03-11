@@ -17,12 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.security.jwt.CustomLogoutFilter;
 import com.soongsil.CoffeeChat.security.jwt.JWTFilter;
 import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.security.oauth2.CustomSuccessHandler;
-import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -33,10 +33,11 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
-                          CustomSuccessHandler customSuccessHandler,
-                          JWTUtil jwtUtil,
-                          RefreshRepository refreshRepository) {
+    public SecurityConfig(
+            CustomOAuth2UserService customOAuth2UserService,
+            CustomSuccessHandler customSuccessHandler,
+            JWTUtil jwtUtil,
+            RefreshRepository refreshRepository) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customSuccessHandler = customSuccessHandler;
         this.jwtUtil = jwtUtil;
@@ -46,7 +47,8 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
-        hierarchy.setHierarchy("""
+        hierarchy.setHierarchy(
+                """
                     ROLE_ADMIN > ROLE_MENTEE
                     ROLE_ADMIN > ROLE_MENTOR
                     ROLE_MENTEE > ROLE_USER
@@ -57,48 +59,83 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    /*
-                    configuration.setAllowedOrigins(Arrays.asList(
-                            "https://localhost:3000",
-                            "http://localhost:8080",
-                            "https://cogo.life",
-                            "https://coffeego-ssu.web.app",
-                            "https://accounts.google.co.kr"
-                    ));
+        http.cors(
+                        cors ->
+                                cors.configurationSource(
+                                        request -> {
+                                            CorsConfiguration configuration =
+                                                    new CorsConfiguration();
+                                            /*
+                                            configuration.setAllowedOrigins(Arrays.asList(
+                                                    "https://localhost:3000",
+                                                    "http://localhost:8080",
+                                                    "https://cogo.life",
+                                                    "https://coffeego-ssu.web.app",
+                                                    "https://accounts.google.co.kr"
+                                            ));
 
-                     */
-                    configuration.setAllowedOrigins(Arrays.asList("https://coffeego-ssu.web.app"));
+                                             */
+                                            configuration.setAllowedOrigins(
+                                                    Arrays.asList("https://coffeego-ssu.web.app"));
 
-                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-                    configuration.setAllowedHeaders(Collections.singletonList("*"));
-                    configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization", "Access", "loginStatus"));
-                    configuration.setAllowCredentials(true);
-                    configuration.setMaxAge(3600L);
-                    return configuration;
-                }))
-                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
-                .formLogin(formLogin -> formLogin.disable())  // 폼 로그인 비활성화
-                .httpBasic(httpBasic -> httpBasic.disable())  // HTTP Basic 인증 비활성화
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(customOAuth2UserService))
-                        .successHandler(customSuccessHandler))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/health-check", "/", "/auth/reissue/**", "/security-check", "/reissue").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/{mentorId}/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part").permitAll()
-                        .requestMatchers("/auth/reissue/mobile/**").permitAll()
-                        .requestMatchers("/auth/issue/mobile/**").permitAll()
-                        .requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
-                        .requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
-                        .requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
+                                            configuration.setAllowedMethods(
+                                                    Arrays.asList(
+                                                            "GET", "POST", "PUT", "DELETE", "PATCH",
+                                                            "OPTIONS"));
+                                            configuration.setAllowedHeaders(
+                                                    Collections.singletonList("*"));
+                                            configuration.setExposedHeaders(
+                                                    Arrays.asList(
+                                                            "Set-Cookie",
+                                                            "Authorization",
+                                                            "Access",
+                                                            "loginStatus"));
+                                            configuration.setAllowCredentials(true);
+                                            configuration.setMaxAge(3600L);
+                                            return configuration;
+                                        }))
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+                .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 비활성화
+                .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 인증 비활성화
+                .oauth2Login(
+                        oauth2 ->
+                                oauth2.userInfoEndpoint(
+                                                userInfoEndpoint ->
+                                                        userInfoEndpoint.userService(
+                                                                customOAuth2UserService))
+                                        .successHandler(customSuccessHandler))
+                .authorizeHttpRequests(
+                        auth ->
+                                auth.requestMatchers(HttpMethod.OPTIONS, "/**")
+                                        .permitAll()
+                                        .requestMatchers(
+                                                "/health-check",
+                                                "/",
+                                                "/auth/reissue/**",
+                                                "/security-check",
+                                                "/reissue")
+                                        .permitAll()
+                                        .requestMatchers(
+                                                HttpMethod.GET, "/api/v2/mentors/{mentorId}/**")
+                                        .permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part")
+                                        .permitAll()
+                                        .requestMatchers("/auth/reissue/mobile/**")
+                                        .permitAll()
+                                        .requestMatchers("/auth/issue/mobile/**")
+                                        .permitAll()
+                                        .requestMatchers("/api/v2/possibleDates/**")
+                                        .hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/mentors/**")
+                                        .hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/applications/**")
+                                        .hasAnyRole("MENTOR", "MENTEE")
+                                        .anyRequest()
+                                        .authenticated())
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(
+                        new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
                 .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
         return http.build();
@@ -106,8 +143,9 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+        return web ->
+                web.ignoring()
+                        .requestMatchers(
+                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
     }
 }
-

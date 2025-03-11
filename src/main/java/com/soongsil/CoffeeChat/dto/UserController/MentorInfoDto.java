@@ -1,10 +1,11 @@
 package com.soongsil.CoffeeChat.dto.UserController;
 
-import com.soongsil.CoffeeChat.entity.Introduction;
+import jakarta.persistence.*;
+
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class MentorInfoDto {
     private Long introductionId;
     private boolean isNewAccount;
 
-    public static MentorInfoDto toDto(Mentor mentor){
+    public static MentorInfoDto toDto(Mentor mentor) {
         return MentorInfoDto.builder()
                 .part(mentor.getPart())
                 .club(mentor.getClub())

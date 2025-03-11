@@ -1,26 +1,8 @@
 package com.soongsil.CoffeeChat.util.email;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.concurrent.CompletableFuture;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.awspring.cloud.sqs.operations.SqsTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import lombok.RequiredArgsConstructor;
-
-//@Component
-//@RequiredArgsConstructor
-//public class EmailUtil {
+// @Component
+// @RequiredArgsConstructor
+// public class EmailUtil {
 //
 //	private final JavaMailSender javaMailSender;
 //	private final ApplicationContext applicationContext;
@@ -35,7 +17,8 @@ import lombok.RequiredArgsConstructor;
 //
 //		// 이메일 메시지를 JSON 형식으로 생성
 //		EmailMessage emailMessage = new EmailMessage(receiver, "[COGO] 이메일 인증번호입니다.",
-//				createAuthMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:", code));
+//				createAuthMessageTemplate("[COGO] 이메일 인증 안내", "이메일 인증을 완료하려면 아래의 인증 번호를 사용하여 계속 진행하세요:",
+// code));
 //
 //		try {
 //			// 메시지를 JSON으로 변환
@@ -71,7 +54,8 @@ import lombok.RequiredArgsConstructor;
 //	}
 //	/*
 //	// 인증 이메일 발송 메서드
-//	public String sendAuthenticationEmail(String receiver) throws MessagingException, InterruptedException {
+//	public String sendAuthenticationEmail(String receiver) throws MessagingException,
+// InterruptedException {
 //		String code = String.valueOf((int) ((Math.random() * 900000) + 100000));
 //
 //		// 비동기 메일 발송 메서드를 프록시를 통해 호출
@@ -89,7 +73,8 @@ import lombok.RequiredArgsConstructor;
 //
 //	 */
 //
-//	public void sendApplicationMatchedEmail(String receiver, String mentorName, String menteeName, LocalDate date,
+//	public void sendApplicationMatchedEmail(String receiver, String mentorName, String menteeName,
+// LocalDate date,
 //		LocalTime startTime, LocalTime endTime) throws MessagingException {
 //		sendMail(receiver, "[COGO] 매칭이 성사되었습니다.",
 //			createMessageTemplate("[COGO] 매칭 성사",
@@ -163,4 +148,4 @@ import lombok.RequiredArgsConstructor;
 //			"</body>\n" +
 //			"</html>";
 //	}
-//}
+// }

@@ -15,35 +15,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class ApplicationCreateRequest {
-	@JsonProperty("date")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate date;
+    @JsonProperty("date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
-	@JsonProperty("start_time")
-	@JsonFormat(pattern = "HH:mm")
-	private LocalTime startTime;
+    @JsonProperty("start_time")
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime startTime;
 
-	@JsonProperty("end_time")
-	@JsonFormat(pattern = "HH:mm")
-	private LocalTime endTime;
+    @JsonProperty("end_time")
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime endTime;
 
-	@JsonProperty("mentor_id")
-	private Long mentorId;
+    @JsonProperty("mentor_id")
+    private Long mentorId;
 
-	public ApplicationCreateRequest(LocalDate date, LocalTime startTime, LocalTime endTime, Long mentorId) {
-		this.date=date;
-		this.startTime=startTime;
-		this.endTime=endTime;
-		this.mentorId=mentorId;
-	}
+    public ApplicationCreateRequest(
+            LocalDate date, LocalTime startTime, LocalTime endTime, Long mentorId) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.mentorId = mentorId;
+    }
 
-	public Application toEntity(Mentor mentor, Mentee mentee) {
-		return Application.builder()
-
-
-
-			.mentor(mentor)
-			.mentee(mentee)
-			.build();
-	}
+    public Application toEntity(Mentor mentor, Mentee mentee) {
+        return Application.builder().mentor(mentor).mentee(mentee).build();
+    }
 }

@@ -18,22 +18,18 @@ public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom 
 
     @Override
     public List<PossibleDateCreateGetResponseDto> getPossibleDatesByUsername(String username) {
-        return queryFactory.
-                select(new QPossibleDateCreateGetResponseDto(
-                        possibleDate.date,
-                        possibleDate.startTime,
-                        possibleDate.endTime,
-                        possibleDate.id.as("possibleDateId"),
-                        possibleDate.isActive
-                ))
+        return queryFactory
+                .select(
+                        new QPossibleDateCreateGetResponseDto(
+                                possibleDate.date,
+                                possibleDate.startTime,
+                                possibleDate.endTime,
+                                possibleDate.id.as("possibleDateId"),
+                                possibleDate.isActive))
                 .from(user)
                 .join(user.mentor, mentor)
                 .join(mentor.possibleDates, possibleDate)
-                .where(user.username.eq(username).and(
-                        possibleDate.isActive.isTrue()
-                ))
+                .where(user.username.eq(username).and(possibleDate.isActive.isTrue()))
                 .fetch();
     }
-
-
 }

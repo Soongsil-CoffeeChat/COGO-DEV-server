@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PhoneNumUpdateDto {
     private String name;
-    private String phoneNum;  //전화번호
+    private String phoneNum; // 전화번호
     private boolean isNewAccount;
 }

@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.security.dto;
 
 import com.soongsil.CoffeeChat.entity.User;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +12,11 @@ import lombok.Setter;
 public class MobileUserDTO {
     private String role;
     private String name;
-    private String username; //스프링 서버 내의 유저 아이디
+    private String username; // 스프링 서버 내의 유저 아이디
     private String email;
     private boolean isNewAccount;
 
-    public User toEntity(){
+    public User toEntity() {
         return User.builder()
                 .role(this.getRole())
                 .name(this.getName())

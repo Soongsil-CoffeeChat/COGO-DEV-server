@@ -14,16 +14,17 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ApplicationCreateRequestDto {
 
-	private Long mentorId;
-	private Long possibleDateId;
-	private String memo;
+    private Long mentorId;
+    private Long possibleDateId;
+    private String memo;
 
-	public Application toEntity(Mentor mentor, Mentee mentee, String memo, PossibleDate possibleDate) {
-		return Application.builder()
-			.mentor(mentor)
-			.mentee(mentee)
-			.memo(memo)
-			.possibleDate(possibleDate)
-			.build();
-	}
+    public Application toEntity(
+            Mentor mentor, Mentee mentee, String memo, PossibleDate possibleDate) {
+        return Application.builder()
+                .mentor(mentor)
+                .mentee(mentee)
+                .memo(memo)
+                .possibleDate(possibleDate)
+                .build();
+    }
 }

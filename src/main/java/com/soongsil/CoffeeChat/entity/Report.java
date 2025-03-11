@@ -1,12 +1,14 @@
 package com.soongsil.CoffeeChat.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+
 import com.soongsil.CoffeeChat.dto.ReportDto;
 import com.soongsil.CoffeeChat.enums.ReportReason;
 import com.soongsil.CoffeeChat.enums.ReportStatus;
-import jakarta.persistence.*;
-import lombok.*;
 
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Getter
@@ -16,7 +18,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class Report {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long reporterId;
@@ -36,7 +39,7 @@ public class Report {
     // Status of the report (e.g., PENDING, REVIEWED, ACTION_TAKEN)
     private ReportStatus status;
 
-    public static Report from(ReportDto dto, Long reporterId){
+    public static Report from(ReportDto dto, Long reporterId) {
         return Report.builder()
                 .reporterId(reporterId)
                 .reportedUserId(dto.getReportedUserId())

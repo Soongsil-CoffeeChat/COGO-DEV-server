@@ -11,9 +11,9 @@ import lombok.Setter;
 @Builder
 public class ApplicationMatchResponseDto {
 
-	@JsonProperty("application_id")
-	private Long applicationId;
+    @JsonProperty("application_id")
+    private Long applicationId;
 
-	@JsonProperty("application_status")
-	private String status;
+    @JsonProperty("application_status")
+    private String status;
 }

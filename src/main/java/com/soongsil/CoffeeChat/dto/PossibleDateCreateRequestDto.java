@@ -20,30 +20,30 @@ import lombok.NoArgsConstructor;
 @Data
 public class PossibleDateCreateRequestDto {
 
-	@JsonProperty("date")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate date;
+    @JsonProperty("date")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
-	@JsonProperty("start_time")
-	@Schema(type = "string", pattern = "hh:mm:ss")
-	private LocalTime startTime;
+    @JsonProperty("start_time")
+    @Schema(type = "string", pattern = "hh:mm:ss")
+    private LocalTime startTime;
 
-	@JsonProperty("end_time")
-	@Schema(type = "string", pattern = "hh:mm:ss")
-	private LocalTime endTime;
+    @JsonProperty("end_time")
+    @Schema(type = "string", pattern = "hh:mm:ss")
+    private LocalTime endTime;
 
-	@QueryProjection
-	public PossibleDateCreateRequestDto(LocalDate date, LocalTime startTime, LocalTime endTime) {
-		this.date = date;
-		this.startTime = startTime;
-		this.endTime = endTime;
-	}
+    @QueryProjection
+    public PossibleDateCreateRequestDto(LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
-	public static PossibleDateCreateRequestDto toDto(PossibleDate possibleDate) {
-		return PossibleDateCreateRequestDto.builder()
-			.date(possibleDate.getDate())
-			.startTime(possibleDate.getStartTime())
-			.endTime(possibleDate.getEndTime())
-			.build();
-	}
+    public static PossibleDateCreateRequestDto toDto(PossibleDate possibleDate) {
+        return PossibleDateCreateRequestDto.builder()
+                .date(possibleDate.getDate())
+                .startTime(possibleDate.getStartTime())
+                .endTime(possibleDate.getEndTime())
+                .build();
+    }
 }

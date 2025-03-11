@@ -1,21 +1,22 @@
-
 package com.soongsil.CoffeeChat.security.oauth2;
 
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
-import com.soongsil.CoffeeChat.entity.Refresh;
-import com.soongsil.CoffeeChat.repository.RefreshRepository;
+import java.io.IOException;
+import java.util.Date;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Date;
+import com.soongsil.CoffeeChat.entity.Refresh;
+import com.soongsil.CoffeeChat.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -39,8 +40,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(
+            HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws IOException, ServletException {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
         String username = customUserDetails.getUsername();
@@ -55,36 +57,34 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         addSameSiteCookie(response, "refresh", refreshToken);
         addSameSiteCookie(response, "loginStatus", role.equals("ROLE_USER") ? "signup" : "main");
 
-        response.getHeaderNames().forEach(header ->
-                System.out.println(header + ": " + response.getHeader(header))
-        );
+        response.getHeaderNames()
+                .forEach(header -> System.out.println(header + ": " + response.getHeader(header)));
         response.setStatus(HttpStatus.OK.value());
-        String redirectUrl = String.format(
-                "https://coffeego-ssu.web.app/callback?refreshToken=%s&loginStatus=%s",
-                refreshToken, role.equals("ROLE_USER") ? "signup" : "main"
-        );
+        String redirectUrl =
+                String.format(
+                        "https://coffeego-ssu.web.app/callback?refreshToken=%s&loginStatus=%s",
+                        refreshToken, role.equals("ROLE_USER") ? "signup" : "main");
         response.sendRedirect(redirectUrl);
 
-        //response.sendRedirect("https://coffeego-ssu.web.app/callback");
-        //response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
+        // response.sendRedirect("https://coffeego-ssu.web.app/callback");
+        // response.sendRedirect("http://localhost:8080/swagger-ui/index.html");
     }
 
     private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
-        ResponseCookie responseCookie = ResponseCookie.from(name, value)
-                .httpOnly(true)
-                .secure(true) // HTTPS에서만 전송
-                .sameSite("None") // 크로스 사이트 쿠키 허용
-                .domain(".coffeego-ssu.web.app") // 도메인 설정
-                .path("/") // 모든 경로에서 유효
-                .maxAge(24 * 60 * 60) // 1일 유효
-                .build();
+        ResponseCookie responseCookie =
+                ResponseCookie.from(name, value)
+                        .httpOnly(true)
+                        .secure(true) // HTTPS에서만 전송
+                        .sameSite("None") // 크로스 사이트 쿠키 허용
+                        .domain(".coffeego-ssu.web.app") // 도메인 설정
+                        .path("/") // 모든 경로에서 유효
+                        .maxAge(24 * 60 * 60) // 1일 유효
+                        .build();
 
         response.addHeader("Set-Cookie", responseCookie.toString());
         System.out.println("쿠키 : " + responseCookie.toString());
     }
-
 }
-
 
 /*
 package com.soongsil.CoffeeChat.config.oauth2;
@@ -175,6 +175,3 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 }
 
  */
-
-
-
