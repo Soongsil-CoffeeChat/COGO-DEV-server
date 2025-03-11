@@ -56,7 +56,6 @@ jobs:
       - name: Docker run new container
         run: |
           sudo docker run --name cogo --rm -d -p 8080:8080 \
-          -v ~/cogo_log:/var/log \
           -e DB_URL=${{ secrets.DB_URL }} \
           -e DB_NAME=${{ secrets.DB_NAME }} \
           -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
@@ -70,6 +69,9 @@ jobs:
           -e S3_SECRET=${{ secrets.S3_SECRET }} \
           -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
           -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
+          -e SMS_KEY=${{ secrets.SMS_KEY }} \
+          -e SMS_SECRET=${{ secrets.SMS_SECRET }} \
+          -e SMS_FROM=${{ secrets.SMS_FROM }} \
           ${{ secrets.DOCKERHUB_USERNAME }}/cogoserver
           sleep 5
           sudo docker ps -a
@@ -81,9 +83,6 @@ jobs:
       #          -e KAKAO_ID=${{ secrets.KAKAO_ID }} \
       #          -e KAKAO_SECRET=${{ secrets.KAKAO_SECRET }} \
       #          -e KAKAO_REDIRECT=${{ secrets.KAKAO_REDIRECT }} \
-      #          -e SMS_KEY=${{ secrets.SMS_KEY }} \
-      #          -e SMS_SECRET=${{ secrets.SMS_SECRET }} \
-      #          -e SMS_FROM=${{ secrets.SMS_FROM }} \
       #          -e SQS_NAME=${{ secrets.SQS_NAME }} \
 
       - name: Check Docker logs
