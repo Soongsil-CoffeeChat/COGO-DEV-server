@@ -17,12 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.soongsil.CoffeeChat.config.jwt.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.config.jwt.JWTFilter;
-import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.config.oauth2.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.security.jwt.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.security.jwt.JWTFilter;
+import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.oauth2.CustomSuccessHandler;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
+import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
 
 @Configuration
 @EnableWebSecurity

@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.config.async;
+package com.soongsil.CoffeeChat.config;
 
 import java.util.concurrent.Executor;
 

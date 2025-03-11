@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.dto.Oauth;
+package com.soongsil.CoffeeChat.security.dto;
 
 import java.util.Map;
 

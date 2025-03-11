@@ -1,7 +1,7 @@
 
 package com.soongsil.CoffeeChat.service;
 
-import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
 import com.soongsil.CoffeeChat.entity.Refresh;
@@ -247,7 +247,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;

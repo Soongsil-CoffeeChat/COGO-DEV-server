@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;

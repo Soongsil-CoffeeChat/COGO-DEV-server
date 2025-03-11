@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.dto.Oauth;
+package com.soongsil.CoffeeChat.security.dto;
 
 import com.soongsil.CoffeeChat.entity.User;
 import lombok.Builder;

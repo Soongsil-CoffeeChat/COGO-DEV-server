@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.config.queryDSL;
+package com.soongsil.CoffeeChat.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
 import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
 import com.soongsil.CoffeeChat.service.PossibleDateService;

@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.config.redis;
+package com.soongsil.CoffeeChat.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

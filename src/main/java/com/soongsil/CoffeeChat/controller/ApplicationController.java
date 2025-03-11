@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
 import static com.soongsil.CoffeeChat.enums.RequestUri.*;
-import static org.springframework.http.HttpStatus.*;
 
 import java.net.URI;
 import java.util.List;
@@ -22,7 +21,7 @@ import com.soongsil.CoffeeChat.dto.ApplicationCreateRequestDto;
 import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
 import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
 import com.soongsil.CoffeeChat.dto.ApplicationMatchResponseDto;
-import com.soongsil.CoffeeChat.dto.Oauth.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.soongsil.CoffeeChat.dto.*;
-import com.soongsil.CoffeeChat.dto.Oauth.MobileUserDTO;
+import com.soongsil.CoffeeChat.security.dto.MobileUserDTO;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;

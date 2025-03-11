@@ -12,8 +12,8 @@ import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.util.email.EmailUtil;
-import jakarta.mail.MessagingException;
+//import com.soongsil.CoffeeChat.util.email.EmailUtil;
+//import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +55,7 @@ public class ApplicationService {
     private final MenteeRepository menteeRepository;
     private final UserRepository userRepository;
     private final PossibleDateRepository possibleDateRepository;
-    private final EmailUtil emailUtil;
+//    private final EmailUtil emailUtil;
 
     @Autowired
     private ApplicationContext applicationContext; // 프록시를 통해 자신을 호출하기 위해 ApplicationContext 주입
@@ -161,11 +161,11 @@ public class ApplicationService {
         );
     }
 
-    @Async("mailExecutor")
-    public void sendApplicationMatchedEmailAsync(String email, String mentorName, String menteeName, LocalDate date,
-                                                 LocalTime startTime, LocalTime endTime) throws MessagingException {
-        emailUtil.sendApplicationMatchedEmail(email, mentorName, menteeName, date, startTime, endTime);
-    }
+//    @Async("mailExecutor")
+//    public void sendApplicationMatchedEmailAsync(String email, String mentorName, String menteeName, LocalDate date,
+//                                                 LocalTime startTime, LocalTime endTime) throws MessagingException {
+//        emailUtil.sendApplicationMatchedEmail(email, mentorName, menteeName, date, startTime, endTime);
+//    }
 
     //동시성 테스트용
     private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class);

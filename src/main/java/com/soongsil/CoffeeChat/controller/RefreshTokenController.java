@@ -1,16 +1,14 @@
 package com.soongsil.CoffeeChat.controller;
 
-import com.soongsil.CoffeeChat.config.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
-import com.soongsil.CoffeeChat.service.CustomOAuth2UserService;
+import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

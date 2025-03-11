@@ -14,13 +14,13 @@ import jakarta.annotation.PostConstruct;
 
 @Component
 public class SmsUtil {
-	@Value("${SMS_KEY}")
+	@Value("${coolsms.api-key}")
 	private String smsKey;
 
-	@Value("${SMS_SECRET}")
+	@Value("${coolsms.api-secret}")
 	private String smsSecret;
 
-	@Value("${SMS_FROM}")
+	@Value("${coolsms.from}")
 	private String from;
 
 	private DefaultMessageService messageService;
