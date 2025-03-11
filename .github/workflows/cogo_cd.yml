@@ -53,11 +53,6 @@ jobs:
       - name: Docker remove container
         run: sudo docker rm cogo 2>/dev/null || true
 
-      - name: Docker make volume for log
-        run: |
-          sudo rm -rf ~/cogo_log
-          sudo mkdir -p ~/cogo_log
-
       - name: Docker run new container
         run: |
           sudo docker run --name cogo --rm -d -p 8080:8080 \
