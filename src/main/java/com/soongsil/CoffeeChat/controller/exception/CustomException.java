@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class CustomException extends RuntimeException {
-	private final HttpStatusCode errorCode;
-	private final String errorMessage;
+    private final HttpStatusCode errorCode;
+    private final String errorMessage;
 }

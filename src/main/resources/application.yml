@@ -13,7 +13,7 @@ spring:
     password: ${DB_PW}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
@@ -23,17 +23,17 @@ spring:
         show_sql: true
 
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    sender: ${MAIL_SENDER}
-    password: ${MAIL_PW}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    sender: ${MAIL_SENDER}
+#    password: ${MAIL_PW}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
 
   jwt:
     secret: ${JWT_SECRET}
@@ -89,8 +89,8 @@ cloud:
       auto: false
     stack:
       auto: false
-    sqs:
-      queue-name: ${SQS_NAME}
+#    sqs:
+#      queue-name: ${SQS_NAME}
 
 logging.level:
   org.hibernate.SQL: debug
@@ -101,3 +101,7 @@ server:
     session:
       tracking-modes: cookie # 세션 추적 방식을 쿠키로 제한
 
+coolsms:
+  from: ${SMS_FROM}
+  api-key: ${SMS_KEY}
+  api-secret: ${SMS_SECRET}

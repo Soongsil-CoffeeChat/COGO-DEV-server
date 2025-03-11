@@ -3,10 +3,6 @@ package com.soongsil.CoffeeChat.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +15,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+
+import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
+import com.soongsil.CoffeeChat.enums.ClubEnum;
+import com.soongsil.CoffeeChat.enums.PartEnum;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,48 +35,45 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(of = {"id", "part", "club"})
-//@DiscriminatorValue("mentor")
-//@PrimaryKeyJoinColumn(name = "mentor_id")
+// @DiscriminatorValue("mentor")
+// @PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "mentor_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mentor_id")
+    private Long id;
 
-	@Column
-	@Enumerated(EnumType.STRING)
-	private PartEnum part;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private PartEnum part;
 
-	@Column
-	@Enumerated(EnumType.STRING)
-	private ClubEnum club;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ClubEnum club;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
-	private Introduction introduction;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
+    private Introduction introduction;
 
-	@Builder.Default
-	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Application> applications = new HashSet<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Application> applications = new HashSet<>();
 
-	@Builder.Default
-	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<PossibleDate> possibleDates = new HashSet<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PossibleDate> possibleDates = new HashSet<>();
 
-	@Builder
-	public Mentor(String club, String part) {
-		this.club = ClubEnum.valueOf(club);
-		this.part = PartEnum.valueOf(part);
-	}
+    @Builder
+    public Mentor(String club, String part) {
+        this.club = ClubEnum.valueOf(club);
+        this.part = PartEnum.valueOf(part);
+    }
 
-	public static Mentor from(MentorJoinRequestDto dto) {
-		return Mentor.builder()
-			.club(dto.getClub())
-			.part(dto.getPart())
-			.build();
-	}
+    public static Mentor from(MentorJoinRequestDto dto) {
+        return Mentor.builder().club(dto.getClub()).part(dto.getPart()).build();
+    }
 
-	public void addPossibleDate(PossibleDate possibleDate) {
-		this.possibleDates.add(possibleDate);
-	}
+    public void addPossibleDate(PossibleDate possibleDate) {
+        this.possibleDates.add(possibleDate);
+    }
 }

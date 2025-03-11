@@ -10,19 +10,19 @@ import lombok.NonNull;
 @Getter
 public class MentorIntroductionGetUpdateResponseDto {
 
-	@JsonProperty("introduction_title")
-	@NonNull
-	private String title;
+    @JsonProperty("introduction_title")
+    @NonNull
+    private String title;
 
-	@JsonProperty("introduction_description")
-	@NonNull
-	private String description;
+    @JsonProperty("introduction_description")
+    @NonNull
+    private String description;
 
-	@JsonProperty("introduction_answer1")
-	@NonNull
-	private String answer1;
+    @JsonProperty("introduction_answer1")
+    @NonNull
+    private String answer1;
 
-	@JsonProperty("introduction_answer2")
-	@NonNull
-	private String answer2;
+    @JsonProperty("introduction_answer2")
+    @NonNull
+    private String answer2;
 }

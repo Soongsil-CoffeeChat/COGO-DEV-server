@@ -1,11 +1,13 @@
 package com.soongsil.CoffeeChat.aspect;
 
-import com.soongsil.CoffeeChat.repository.ApplicationRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.soongsil.CoffeeChat.repository.ApplicationRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Aspect

@@ -12,4 +12,3 @@ public class UserMentorDTO {
 
     // getters and setters
 }
-

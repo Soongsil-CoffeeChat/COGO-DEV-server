@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StatusCheckController {
 
-	@GetMapping("/health-check")
-	public ResponseEntity<Void> checkHealthStatus() {
+    @GetMapping("/health-check")
+    public ResponseEntity<Void> checkHealthStatus() {
 
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-	@GetMapping("security-check")
-	public ResponseEntity<?> checkSecurity() {
-		return ResponseEntity.ok("passed spring security");
-	}
+    @GetMapping("security-check")
+    public ResponseEntity<?> checkSecurity() {
+        return ResponseEntity.ok("passed spring security");
+    }
 }

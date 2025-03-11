@@ -13,33 +13,40 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class UserUpdateDto {
-	private String name;
-	private String email;
-	private String phoneNum;
-	private String role;
-	private PartEnum part;
-	private ClubEnum club;
-	private String picture;
-	private Long mentorId;
+    private String name;
+    private String email;
+    private String phoneNum;
+    private String role;
+    private PartEnum part;
+    private ClubEnum club;
+    private String picture;
+    private Long mentorId;
 
-	public static UserUpdateDto toDto(User user) {
-		return UserUpdateDto.builder()
-			.name(user.getName())
-			.email(user.getEmail())
-			.phoneNum(user.getPhoneNum())
-			.build();
-	}
+    public static UserUpdateDto toDto(User user) {
+        return UserUpdateDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .phoneNum(user.getPhoneNum())
+                .build();
+    }
 
-	@QueryProjection
-	public UserUpdateDto(String name, String email, String phoneNum, String role, PartEnum part, ClubEnum club,
-		String image, Long mentorId) {
-		this.name = name;
-		this.email = email;
-		this.phoneNum = phoneNum;
-		this.role = role;
-		this.part = part;
-		this.club = club;
-		this.picture = image;
-		this.mentorId = mentorId;
-	}
+    @QueryProjection
+    public UserUpdateDto(
+            String name,
+            String email,
+            String phoneNum,
+            String role,
+            PartEnum part,
+            ClubEnum club,
+            String image,
+            Long mentorId) {
+        this.name = name;
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.role = role;
+        this.part = part;
+        this.club = club;
+        this.picture = image;
+        this.mentorId = mentorId;
+    }
 }

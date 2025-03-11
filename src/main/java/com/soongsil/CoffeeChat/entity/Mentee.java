@@ -3,9 +3,6 @@ package com.soongsil.CoffeeChat.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
-import com.soongsil.CoffeeChat.enums.PartEnum;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +12,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
+import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
+import com.soongsil.CoffeeChat.enums.PartEnum;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,22 +28,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 public class Mentee {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "mentee_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mentee_id")
+    private Long id;
 
-	@Column
-	@Enumerated(EnumType.STRING)
-	private PartEnum part;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private PartEnum part;
 
-	@OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
-	@Builder.Default
-	private Set<Application> applications = new HashSet<>();
+    @OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private Set<Application> applications = new HashSet<>();
 
-	public static Mentee from(MenteeJoinRequestDto dto) {
-		return Mentee.builder()
-			.part(dto.getPart())
-			.build();
-	}
+    public static Mentee from(MenteeJoinRequestDto dto) {
+        return Mentee.builder().part(dto.getPart()).build();
+    }
 }

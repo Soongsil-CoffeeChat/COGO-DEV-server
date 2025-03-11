@@ -1,10 +1,5 @@
 package com.soongsil.CoffeeChat.entity;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +10,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.soongsil.CoffeeChat.enums.ApplicationStatus;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,27 +32,26 @@ import lombok.Setter;
 @DynamicInsert
 @DynamicUpdate
 public class Application {
-	@Column(name = "application_id")
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Column(name = "application_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mentor_id")
-	private Mentor mentor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mentor_id")
+    private Mentor mentor;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "mentee_id")
-	private Mentee mentee;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mentee_id")
+    private Mentee mentee;
 
-	@Column
-	private String memo;
+    @Column private String memo;
 
-	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")
-	private ApplicationStatus accept;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")
+    private ApplicationStatus accept;
 
-	@ManyToOne
-	@JoinColumn(name = "possible_date_id")
-	private PossibleDate possibleDate;
+    @ManyToOne
+    @JoinColumn(name = "possible_date_id")
+    private PossibleDate possibleDate;
 }

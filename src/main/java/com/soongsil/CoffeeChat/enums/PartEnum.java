@@ -1,9 +1,9 @@
 package com.soongsil.CoffeeChat.enums;
 
 public enum PartEnum {
-	FE,
-	BE,
-	PM,
-	DESIGN,
-	MOBILE
+    FE,
+    BE,
+    PM,
+    DESIGN,
+    MOBILE
 }

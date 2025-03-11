@@ -1,14 +1,16 @@
 package com.soongsil.CoffeeChat.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
+
+import lombok.*;
 
 @Entity
 @Builder
@@ -31,7 +33,7 @@ public class PossibleDate {
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate date;
 
-    @JsonFormat(pattern = "HH:mm")  //datetimeformat은 ss까지 전부 다 받아야 오류안남
+    @JsonFormat(pattern = "HH:mm") // datetimeformat은 ss까지 전부 다 받아야 오류안남
     LocalTime startTime;
 
     @JsonFormat(pattern = "HH:mm")
@@ -40,9 +42,7 @@ public class PossibleDate {
     @OneToMany(mappedBy = "possibleDate")
     private List<Application> applications = new ArrayList<>();
 
-    @Column
-    @Setter
-    private boolean isActive = true;
+    @Column @Setter private boolean isActive = true;
 
     public static PossibleDate from(PossibleDateCreateRequestDto dto) {
         return PossibleDate.builder()

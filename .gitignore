@@ -3,6 +3,7 @@
 /src/main/generated/**
 HELP.md
 .gradle
+*.pem
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

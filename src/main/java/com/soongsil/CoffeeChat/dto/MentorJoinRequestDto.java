@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MentorJoinRequestDto {
-	private PartEnum part;
-	private ClubEnum club;
+    private PartEnum part;
+    private ClubEnum club;
 }
