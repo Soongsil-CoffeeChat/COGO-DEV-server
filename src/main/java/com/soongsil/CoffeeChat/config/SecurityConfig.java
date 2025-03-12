@@ -65,18 +65,14 @@ public class SecurityConfig {
                                         request -> {
                                             CorsConfiguration configuration =
                                                     new CorsConfiguration();
-                                            /*
-                                            configuration.setAllowedOrigins(Arrays.asList(
-                                                    "https://localhost:3000",
-                                                    "http://localhost:8080",
-                                                    "https://cogo.life",
-                                                    "https://coffeego-ssu.web.app",
-                                                    "https://accounts.google.co.kr"
-                                            ));
 
-                                             */
                                             configuration.setAllowedOrigins(
-                                                    Arrays.asList("https://coffeego-ssu.web.app"));
+                                                    Arrays.asList(
+                                                            "https://localhost:3000",
+                                                            "http://localhost:8080",
+                                                            "https://back-coffeego.com",
+                                                            "https://coffeego-ssu.web.app",
+                                                            "https://accounts.google.co.kr"));
 
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
