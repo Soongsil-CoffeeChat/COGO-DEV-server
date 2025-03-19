@@ -26,10 +26,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateRequestDto;
-import com.soongsil.CoffeeChat.dto.ApplicationCreateResponseDto;
-import com.soongsil.CoffeeChat.dto.ApplicationGetResponseDto;
-import com.soongsil.CoffeeChat.dto.ApplicationMatchResponseDto;
+import com.soongsil.CoffeeChat.dto.ApplicationConverter;
+import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
+import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse;
+import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
+import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.entity.*;
 import com.soongsil.CoffeeChat.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
@@ -71,71 +72,8 @@ public class ApplicationService {
     }
 
     @Transactional
-    public ApplicationCreateResponseDto createApplication(
-            ApplicationCreateRequestDto request, String userName) throws Exception {
-        // 		System.out.println("여긴들어옴");
-        // 		String lockKey = "lock:" + request.getMentorId() + ":" +request.getDate()+":"+
-        // request.getStartTime();
-        // 		ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        //
-        // 		boolean isLockAcquired = valueOperations.setIfAbsent(lockKey, "locked", 10,
-        // TimeUnit.SECONDS);
-        // 		if (!isLockAcquired) {
-        // 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Lock을 획득하지 못하였습니다.");  //409반환
-        // 		}
-        //
-        // 		try {
-        // 			System.out.println("mentorid: " + request.getMentorId() + ", " + request.getDate() +
-        // ", " + request.getStartTime() + ", " + request.getEndTime());
-        // 			User findMentorUser = userRepository.findByMentorIdWithFetch(request.getMentorId());
-        // 			Mentor findMentor = findMentorUser.getMentor();
-        // 			User findMenteeUser = userRepository.findByUsername(userName);
-        // 			Mentee findMentee = findMenteeUser.getMentee();
-        //
-        // 			LocalTime startTime = request.getStartTime();
-        // 			LocalDate date = request.getDate();
-        //
-        // 			// possibleDate 불러오는 JPQL
-        // 			TypedQuery<PossibleDate> query = em.createQuery(
-        // 					"SELECT p FROM PossibleDate p JOIN p.mentor m WHERE m.id = :mentorId AND p.startTime
-        // = :startTime AND p.date = :date",
-        // 					PossibleDate.class);
-        // 			query.setParameter("mentorId", request.getMentorId());
-        // 			query.setParameter("startTime", startTime);
-        // 			query.setParameter("date", date);
-        //
-        // 			Optional<PossibleDate> possibleDateOpt = query.getResultList().stream().findFirst();
-        //
-        // 			if (possibleDateOpt.isPresent()) {
-        // 				PossibleDate possibleDate = possibleDateOpt.get();
-        // 				if (!possibleDate.isActive()) {
-        // 					throw new ResponseStatusException(HttpStatus.GONE, "이미 신청된 시간입니다.");  //410 반환
-        // 				}
-        // 				System.out.println("possibleDate.getId() = " + possibleDate.getId());
-        // 				possibleDate.setActive(false);
-        // 				possibleDateRepository.save(possibleDate);
-        // 			} else {
-        // 				throw new Exception("NOT FOUND");
-        // 			}
-        //
-        // 			Application savedApplication = applicationRepository.save(request.toEntity(findMentor,
-        // findMentee));
-        // /*
-        // 			ApplicationService proxy = applicationContext.getBean(ApplicationService.class);
-        // 			proxy.sendApplicationMatchedEmailAsync(findMenteeUser.getEmail(),
-        // findMentorUser.getName(),
-        // 					findMenteeUser.getName(), savedApplication.getDate(),
-        // savedApplication.getStartTime(),
-        // 					savedApplication.getEndTime());
-        //
-        //
-        //  */
-        // 			return ApplicationCreateResponse.from(savedApplication);
-        // 		} finally {
-        // 			redisTemplate.delete(lockKey);
-        // 		}
-        // TODO: Fetch Join
-        // 가능시간 체크
+    public ApplicationCreateResponse createApplication(
+            ApplicationCreateRequest request, String userName) {
         PossibleDate requestedPossibleDate =
                 possibleDateRepository
                         .findById(request.getPossibleDateId())
@@ -169,20 +107,13 @@ public class ApplicationService {
                                         new CustomException(
                                                 MENTOR_NOT_FOUND.getHttpStatusCode(),
                                                 MENTOR_NOT_FOUND.getErrorMessage()));
-        return ApplicationCreateResponseDto.from(
-                applicationRepository.save(
-                        request.toEntity(
-                                findMentor, findMentee, request.getMemo(), requestedPossibleDate)));
-    }
 
-    //    @Async("mailExecutor")
-    //    public void sendApplicationMatchedEmailAsync(String email, String mentorName, String
-    // menteeName, LocalDate date,
-    //                                                 LocalTime startTime, LocalTime endTime)
-    // throws MessagingException {
-    //        emailUtil.sendApplicationMatchedEmail(email, mentorName, menteeName, date, startTime,
-    // endTime);
-    //    }
+        Application application =
+                ApplicationConverter.toEntity(
+                        findMentor, findMentee, request.getMemo(), requestedPossibleDate);
+        applicationRepository.save(application);
+        return ApplicationConverter.toResponse(application);
+    }
 
     // 동시성 테스트용
     private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class);
@@ -227,7 +158,7 @@ public class ApplicationService {
         }
     }
 
-    public ApplicationGetResponseDto getApplication(Long applicationId) {
+    public ApplicationGetResponse getApplication(Long applicationId) {
         Application findApplication =
                 applicationRepository
                         .findById(applicationId)
@@ -239,19 +170,11 @@ public class ApplicationService {
         User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
         User findMentorUser = userRepository.findByMentor(findApplication.getMentor());
         // TODO: toDTO 빌더 만들어두고, join으로 묶자
-        return ApplicationGetResponseDto.builder()
-                .applicationId(applicationId)
-                .menteeName(findMenteeUser.getName())
-                .mentorName(findMentorUser.getName())
-                .memo(findApplication.getMemo())
-                .date(findApplication.getPossibleDate().getDate())
-                .startTime(findApplication.getPossibleDate().getStartTime())
-                .endTime(findApplication.getPossibleDate().getEndTime())
-                .build();
+        return ApplicationConverter.toGetResponse(
+                findApplication, findMentorUser.getName(), findMenteeUser.getName());
     }
 
-    public List<ApplicationGetResponseDto> getApplications(
-            String username, String applicationStatus) {
+    public List<ApplicationGetResponse> getApplications(String username, String applicationStatus) {
         if (!"matched".equalsIgnoreCase(applicationStatus)
                 && !"unmatched".equalsIgnoreCase(applicationStatus)) {
             log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
@@ -262,7 +185,7 @@ public class ApplicationService {
         log.info("[*] Find applications with condition [" + applicationStatus + "]");
 
         // TODO: JOIN문으로 변경
-        List<ApplicationGetResponseDto> dtos = new ArrayList<>();
+        List<ApplicationGetResponse> dtos = new ArrayList<>();
         User user = findUserByUsername(username);
         List<Application> findApplications;
 
@@ -278,7 +201,7 @@ public class ApplicationService {
                 User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
                 // MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
                 dtos.add(
-                        ApplicationGetResponseDto.toDto(
+                        ApplicationConverter.toGetResponse(
                                 app, user.getName(), findMenteeUser.getName()));
             }
         }
@@ -286,8 +209,7 @@ public class ApplicationService {
     }
 
     @Transactional
-    public ApplicationMatchResponseDto updateApplicationStatus(
-            Long applicationId, String decision) {
+    public ApplicationMatchResponse updateApplicationStatus(Long applicationId, String decision) {
         Application findApplication =
                 applicationRepository
                         .findById(applicationId)
@@ -297,8 +219,8 @@ public class ApplicationService {
                                                 APPLICATION_NOT_FOUND.getHttpStatusCode(),
                                                 APPLICATION_NOT_FOUND.getErrorMessage()));
 
-        ApplicationMatchResponseDto responseDto =
-                ApplicationMatchResponseDto.builder().applicationId(applicationId).build();
+        ApplicationMatchResponse responseDto =
+                ApplicationMatchResponse.builder().applicationId(applicationId).build();
         PossibleDate matchedPossibleDate = findApplication.getPossibleDate();
 
         // 가능시간 비활성화
@@ -315,11 +237,11 @@ public class ApplicationService {
             case "reject" -> {
                 log.warn("[*] Application({}) is deleted", applicationId);
                 applicationRepository.deleteById(applicationId);
-                responseDto.setStatus("REJECTED");
+                responseDto.setApplicationStatus("REJECTED");
             }
             case "accept" -> {
                 findApplication.setAccept(MATCHED);
-                responseDto.setStatus(MATCHED.name());
+                responseDto.setApplicationStatus(MATCHED.name());
 
                 // 매치된 가능시간(PossibleDate)을 가진 다른 'UNMATCHED' 상태의 Application 엔티티 삭제
                 List<Application> unmatchedApplications =
