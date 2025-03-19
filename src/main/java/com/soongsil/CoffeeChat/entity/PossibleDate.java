@@ -8,7 +8,6 @@ import java.util.List;
 import jakarta.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
 
 import lombok.*;
 
@@ -43,13 +42,4 @@ public class PossibleDate {
     private List<Application> applications = new ArrayList<>();
 
     @Column @Setter private boolean isActive = true;
-
-    public static PossibleDate from(PossibleDateCreateRequestDto dto) {
-        return PossibleDate.builder()
-                .date(dto.getDate())
-                .startTime(dto.getStartTime())
-                .endTime(dto.getEndTime())
-                .isActive(true)
-                .build();
-    }
 }

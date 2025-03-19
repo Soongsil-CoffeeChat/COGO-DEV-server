@@ -6,9 +6,9 @@ import static com.soongsil.CoffeeChat.entity.QUser.*;
 
 import java.util.List;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
-import com.soongsil.CoffeeChat.dto.QPossibleDateCreateGetResponseDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateResponse.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,10 +17,11 @@ public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<PossibleDateCreateGetResponseDto> getPossibleDatesByUsername(String username) {
+    public List<PossibleDateCreateResponse> getPossibleDatesByUsername(String username) {
         return queryFactory
                 .select(
-                        new QPossibleDateCreateGetResponseDto(
+                        Projections.constructor(
+                                PossibleDateCreateResponse.class,
                                 possibleDate.date,
                                 possibleDate.startTime,
                                 possibleDate.endTime,

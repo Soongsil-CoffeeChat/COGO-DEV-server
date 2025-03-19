@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateRequestDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateConverter;
+import com.soongsil.CoffeeChat.dto.PossibleDateRequest.*;
+import com.soongsil.CoffeeChat.dto.PossibleDateResponse;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.entity.User;
@@ -40,8 +41,8 @@ public class PossibleDateService {
     }
 
     @Transactional
-    public List<PossibleDateCreateGetResponseDto> updatePossibleDate(
-            List<PossibleDateCreateRequestDto> dtos, String username) {
+    public List<PossibleDateResponse.PossibleDateCreateResponse> updatePossibleDate(
+            List<PossibleDateCreateRequest> dtos, String username) {
 
         User user = findUserByUsername(username);
         Mentor mentor = user.getMentor();
@@ -54,7 +55,7 @@ public class PossibleDateService {
                 dtos.stream()
                         .map(
                                 dto -> {
-                                    PossibleDate possibleDate = PossibleDate.from(dto);
+                                    PossibleDate possibleDate = PossibleDateConverter.toEntity(dto);
                                     possibleDate.setMentor(mentor);
                                     mentor.addPossibleDate(possibleDate);
                                     return possibleDate;
@@ -64,11 +65,12 @@ public class PossibleDateService {
         possibleDateRepository.saveAll(possibleDates);
 
         return possibleDates.stream()
-                .map(PossibleDateCreateGetResponseDto::from)
+                .map(PossibleDateConverter::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public List<PossibleDateCreateGetResponseDto> findPossibleDateListByMentor(Long mentorId) {
+    public List<PossibleDateResponse.PossibleDateCreateResponse> findPossibleDateListByMentor(
+            Long mentorId) {
         // 2주로 설정
         LocalDate today = LocalDate.now();
         LocalDate twoWeeksLater = today.plusWeeks(2);
@@ -80,18 +82,18 @@ public class PossibleDateService {
                                         && !possibleDate.getDate().isAfter(twoWeeksLater))
                 .map(
                         possibleDate ->
-                                PossibleDateCreateGetResponseDto.builder()
+                                PossibleDateResponse.PossibleDateCreateResponse.builder()
                                         .date(possibleDate.getDate())
                                         .startTime(possibleDate.getStartTime())
                                         .endTime(possibleDate.getEndTime())
-                                        .possibledateId(possibleDate.getId())
+                                        .possibleDateId(possibleDate.getId())
                                         .isActive(possibleDate.isActive())
                                         .build())
                 .collect(Collectors.toList());
     }
 
-    public List<PossibleDateCreateGetResponseDto> findMentorPossibleDateListByUsername(
-            String username) {
+    public List<PossibleDateResponse.PossibleDateCreateResponse>
+            findMentorPossibleDateListByUsername(String username) {
 
         User user = findUserByUsername(username);
         return findPossibleDateListByMentor(user.getMentor().getId());

@@ -2,8 +2,8 @@ package com.soongsil.CoffeeChat.repository.PossibleDate;
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateCreateGetResponseDto;
+import com.soongsil.CoffeeChat.dto.PossibleDateResponse.*;
 
 public interface PossibleDateRepositoryCustom {
-    List<PossibleDateCreateGetResponseDto> getPossibleDatesByUsername(String username);
+    List<PossibleDateCreateResponse> getPossibleDatesByUsername(String username);
 }
