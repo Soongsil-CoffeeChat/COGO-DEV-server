@@ -15,7 +15,8 @@ import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
 import com.soongsil.CoffeeChat.dto.MenteeResponse.*;
 import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
-import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
+import com.soongsil.CoffeeChat.dto.UserRequest.*;
+import com.soongsil.CoffeeChat.dto.UserResponse.*;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -49,11 +50,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoDto saveUserInformation(String username, UserJoinRequestDto dto) {
+    public UserInfoResponse saveUserInformation(String username, UserJoinRequest dto) {
         User user = findUserByUsername(username);
         user.setName(dto.getName());
         user.setPhoneNum(dto.getPhoneNum());
-        return UserInfoDto.toDto(userRepository.save(user));
+        return UserConverter.toResponse(userRepository.save(user));
     }
 
     @Transactional
@@ -83,10 +84,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoDto saveUserPicture(String username, String picture) {
+    public UserInfoResponse saveUserPicture(String username, String picture) {
         User user = findUserByUsername(username);
         user.setPicture(picture);
-        return UserInfoDto.toDto(userRepository.save(user));
+        return UserConverter.toResponse(userRepository.save(user));
     }
 
     public Map<String, String> getSmsCode(String to) {
@@ -113,20 +114,20 @@ public class UserService {
                 .build();
     }
 
-    public UserInfoDto saveUserEmail(String email, String username) {
+    public UserInfoResponse saveUserEmail(String email, String username) {
         User user = findUserByUsername(username);
         user.setEmail(email);
-        return UserInfoDto.toDto(userRepository.save(user));
+        return UserConverter.toResponse(userRepository.save(user));
     }
 
-    public UserInfoDto changeUserInfo(UserUpdateDto dto, String username) {
+    public UserInfoResponse changeUserInfo(UserUpdateRequest dto, String username) {
         User user = findUserByUsername(username);
         user.setEmail(dto.getEmail());
         user.setPhoneNum(dto.getPhoneNum());
-        return UserInfoDto.toDto(userRepository.save(user));
+        return UserConverter.toResponse(userRepository.save(user));
     }
 
-    public UserGetDto findUserInfo(String username) {
+    public UserRequest.UserGetRequest findUserInfo(String username) {
         User user = findUserByUsername(username);
         // TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨
         return userRepository.findUserInfoByUsername(username);

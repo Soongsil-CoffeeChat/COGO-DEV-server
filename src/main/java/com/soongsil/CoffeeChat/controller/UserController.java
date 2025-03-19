@@ -10,12 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MenteeRequest.MenteeJoinRequest;
-import com.soongsil.CoffeeChat.dto.MenteeResponse.*;
-import com.soongsil.CoffeeChat.dto.MentorRequest.*;
-import com.soongsil.CoffeeChat.dto.MentorResponse.*;
-import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
+import com.soongsil.CoffeeChat.dto.MenteeResponse.MenteeInfoResponse;
+import com.soongsil.CoffeeChat.dto.MentorRequest.MentorJoinRequest;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorInfoResponse;
+import com.soongsil.CoffeeChat.dto.PhoneNumUpdateDto;
+import com.soongsil.CoffeeChat.dto.UserRequest;
+import com.soongsil.CoffeeChat.dto.UserRequest.UserJoinRequest;
+import com.soongsil.CoffeeChat.dto.UserRequest.UserUpdateRequest;
+import com.soongsil.CoffeeChat.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.UserService;
@@ -46,12 +49,12 @@ public class UserController {
     @PostMapping()
     @Operation(summary = "기본정보 기입")
     @ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<UserInfoDto>> joinWithMentor(
-            Authentication authentication, @RequestBody UserJoinRequestDto dto) throws Exception {
-        UserInfoDto userInfoDto =
+    public ResponseEntity<ApiResponseGenerator<UserInfoResponse>> joinWithMentor(
+            Authentication authentication, @RequestBody UserJoinRequest dto) throws Exception {
+        UserInfoResponse response =
                 userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
         return ResponseEntity.created(URI.create(USER_URI))
-                .body(ApiResponseGenerator.onSuccessCREATED(userInfoDto));
+                .body(ApiResponseGenerator.onSuccessCREATED(response));
     }
 
     @PostMapping("/mentor")
@@ -79,12 +82,12 @@ public class UserController {
     @PutMapping("/picture")
     @Operation(summary = "이미지 저장하기")
     @ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserPicture(
+    public ResponseEntity<ApiResponseGenerator<UserInfoResponse>> saveUserPicture(
             Authentication authentication, @RequestBody String picture) throws Exception {
-        UserInfoDto userInfoDto =
+        UserInfoResponse userInfoResponse =
                 userService.saveUserPicture(getUserNameByAuthentication(authentication), picture);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "picture"))
-                .body(ApiResponseGenerator.onSuccessCREATED(userInfoDto));
+                .body(ApiResponseGenerator.onSuccessCREATED(userInfoResponse));
     }
 
     @GetMapping("/sms")
@@ -133,7 +136,7 @@ public class UserController {
     @PatchMapping("/email")
     @Operation(summary = "메일 저장하기")
     @ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserEmail(
+    public ResponseEntity<ApiResponseGenerator<UserInfoResponse>> saveUserEmail(
             Authentication authentication, @RequestParam("email") String email) throws Exception {
         return ResponseEntity.created(URI.create(USER_URI + "/email"))
                 .body(
@@ -145,8 +148,8 @@ public class UserController {
     @PatchMapping()
     @Operation(summary = "사용자 정보 수정")
     @ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<UserInfoDto>> saveUserEmail(
-            Authentication authentication, @RequestBody UserUpdateDto dto) throws Exception {
+    public ResponseEntity<ApiResponseGenerator<UserInfoResponse>> saveUserEmail(
+            Authentication authentication, @RequestBody UserUpdateRequest dto) throws Exception {
         return ResponseEntity.created(URI.create(USER_URI + "/email"))
                 .body(
                         ApiResponseGenerator.onSuccessOK(
@@ -157,7 +160,7 @@ public class UserController {
     @GetMapping()
     @Operation(summary = "기본정보 조회")
     @ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<UserGetDto>> getUserInfo(
+    public ResponseEntity<ApiResponseGenerator<UserRequest.UserGetRequest>> getUserInfo(
             Authentication authentication) throws Exception {
         return ResponseEntity.ok()
                 .body(
