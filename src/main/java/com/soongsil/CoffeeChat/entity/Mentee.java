@@ -13,7 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-import com.soongsil.CoffeeChat.dto.MenteeJoinRequestDto;
+import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
 import com.soongsil.CoffeeChat.enums.PartEnum;
 
 import lombok.AccessLevel;
@@ -40,8 +40,4 @@ public class Mentee {
     @OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<Application> applications = new HashSet<>();
-
-    public static Mentee from(MenteeJoinRequestDto dto) {
-        return Mentee.builder().part(dto.getPart()).build();
-    }
 }

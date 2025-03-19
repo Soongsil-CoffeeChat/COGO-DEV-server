@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
-import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
+import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
+import com.soongsil.CoffeeChat.dto.MenteeResponse.*;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
@@ -72,12 +73,12 @@ public class UserService {
     }
 
     @Transactional
-    public MenteeInfoDto saveMenteeInformation(String username, MenteeJoinRequestDto dto) {
+    public MenteeInfoResponse saveMenteeInformation(String username, MenteeJoinRequest dto) {
         User user = findUserByUsername(username);
         if (!user.getRole().equals("ROLE_ADMIN")) user.setRole("ROLE_MENTEE");
-        Mentee mentee = Mentee.from(dto);
+        Mentee mentee = MenteeConverter.toEntity(dto);
         user.setMentee(mentee);
-        return MenteeInfoDto.toDto(menteeRepository.save(mentee));
+        return MenteeConverter.toResponse(menteeRepository.save(mentee));
     }
 
     @Transactional

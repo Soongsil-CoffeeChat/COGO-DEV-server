@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+import static com.soongsil.CoffeeChat.enums.RequestUri.USER_URI;
 
 import java.net.URI;
 import java.util.Map;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.*;
-import com.soongsil.CoffeeChat.dto.UserController.MenteeInfoDto;
+import com.soongsil.CoffeeChat.dto.MenteeRequest.MenteeJoinRequest;
+import com.soongsil.CoffeeChat.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -66,12 +67,12 @@ public class UserController {
     @PostMapping("/mentee")
     @Operation(summary = "멘티로 가입하기!")
     @ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<MenteeInfoDto>> joinWithMentee(
-            Authentication authentication, @RequestBody MenteeJoinRequestDto dto) throws Exception {
-        MenteeInfoDto menteeInfoDto =
+    public ResponseEntity<ApiResponseGenerator<MenteeInfoResponse>> joinWithMentee(
+            Authentication authentication, @RequestBody MenteeJoinRequest dto) throws Exception {
+        MenteeInfoResponse response =
                 userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentee"))
-                .body(ApiResponseGenerator.onSuccessCREATED(menteeInfoDto));
+                .body(ApiResponseGenerator.onSuccessCREATED(response));
     }
 
     @PutMapping("/picture")
