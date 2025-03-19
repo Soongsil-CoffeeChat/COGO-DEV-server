@@ -1,21 +1,14 @@
 package com.soongsil.CoffeeChat.controller;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.*;
+import static com.soongsil.CoffeeChat.enums.RequestUri.MENTOR_URI;
 
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
@@ -47,22 +40,21 @@ public class MentorController {
     @PatchMapping
     @Operation(summary = "멘토의 세부 정보 수정")
     @ApiResponse(responseCode = "200", description = "변경된 멘토 세부 정보를 반환")
-    public ResponseEntity<ApiResponseGenerator<MentorGetUpdateDetailDto>> updateMentorInfo(
-            Authentication authentication,
-            @RequestBody MentorUpdateRequestDto mentorUpdateRequestDto) {
+    public ResponseEntity<ApiResponseGenerator<MentorGetUpdateDetailResponse>> updateMentorInfo(
+            Authentication authentication, @RequestBody MentorUpdateRequest request) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponseGenerator.onSuccessOK(
                                 mentorService.updateMentorInfo(
                                         ((CustomOAuth2User) authentication.getPrincipal())
                                                 .getUsername(),
-                                        mentorUpdateRequestDto)));
+                                        request)));
     }
 
     @GetMapping("/{mentorId}")
     @Operation(summary = "멘토 상세 정보 조회")
     @ApiResponse(responseCode = "200", description = "멘토 상세 정보 DTO 반환")
-    public ResponseEntity<ApiResponseGenerator<MentorGetUpdateDetailDto>> getMentorInfo(
+    public ResponseEntity<ApiResponseGenerator<MentorGetUpdateDetailResponse>> getMentorInfo(
             @PathVariable("mentorId") Long mentorId) {
         return ResponseEntity.ok()
                 .body(
@@ -99,7 +91,7 @@ public class MentorController {
     @GetMapping("/part")
     @Operation(summary = "파트별 멘토 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponseGenerator<List<MentorGetListResponseDto>>> getMentorListByPart(
+    public ResponseEntity<ApiResponseGenerator<List<MentorListResponse>>> getMentorListByPart(
             @RequestParam("part") PartEnum part) {
         return ResponseEntity.ok()
                 .body(ApiResponseGenerator.onSuccessOK(mentorService.getMentorDtoListByPart(part)));
@@ -108,7 +100,7 @@ public class MentorController {
     @GetMapping("/club")
     @Operation(summary = "동아리별 멘토 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponseGenerator<List<MentorGetListResponseDto>>> getMentorListByClub(
+    public ResponseEntity<ApiResponseGenerator<List<MentorListResponse>>> getMentorListByClub(
             @RequestParam("club") ClubEnum club) {
         return ResponseEntity.ok()
                 .body(ApiResponseGenerator.onSuccessOK(mentorService.getMentorDtoListByClub(club)));
@@ -117,7 +109,7 @@ public class MentorController {
     @GetMapping("/part/club")
     @Operation(summary = "파트+동아리별 멘토 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponseGenerator<List<MentorGetListResponseDto>>> getMentorListByClub(
+    public ResponseEntity<ApiResponseGenerator<List<MentorListResponse>>> getMentorListByClub(
             @RequestParam("part") PartEnum part, @RequestParam("club") ClubEnum club) {
         return ResponseEntity.ok()
                 .body(

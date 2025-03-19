@@ -31,16 +31,15 @@ public class MentorService {
     private final UserRepository userRepository;
     private final PossibleDateRepository possibleDateRepository;
 
-    public List<MentorGetListResponseDto> getMentorDtoListByPart(PartEnum part) {
+    public List<MentorListResponse> getMentorDtoListByPart(PartEnum part) {
         return mentorRepository.getMentorListByPart(part); // 일반join
     }
 
-    public List<MentorGetListResponseDto> getMentorDtoListByClub(ClubEnum club) {
+    public List<MentorListResponse> getMentorDtoListByClub(ClubEnum club) {
         return mentorRepository.getMentorListByClub(club); // 일반join
     }
 
-    public List<MentorGetListResponseDto> getMentorDtoListByPartAndClub(
-            PartEnum part, ClubEnum club) {
+    public List<MentorListResponse> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
         return mentorRepository.getMentorListByPartAndClub(part, club);
     }
 
@@ -54,7 +53,7 @@ public class MentorService {
                                         USER_NOT_FOUND.getErrorMessage()));
     }
 
-    public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
+    public MentorGetUpdateDetailResponse getMentorDtoById(Long mentorId) {
         // TODO: join으로 바꾸면될듯
         Mentor findMentor =
                 mentorRepository
@@ -68,21 +67,21 @@ public class MentorService {
                 findMentor, userRepository.findByMentor(findMentor));
     }
 
-    public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId) {
+    public MentorGetUpdateDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
 
     @Transactional
-    public MentorGetUpdateDetailDto updateMentorInfo(
-            String username, MentorUpdateRequestDto mentorUpdateRequestDto) {
+    public MentorGetUpdateDetailResponse updateMentorInfo(
+            String username, MentorUpdateRequest mentorUpdateRequest) {
         User findMentorUser = findUserByUsername(username);
         User updatedMentorUser =
                 User.builder()
                         .id(findMentorUser.getId())
-                        .name(mentorUpdateRequestDto.getMentorName())
-                        .email(mentorUpdateRequestDto.getMentorEmail())
+                        .name(mentorUpdateRequest.getMentorName())
+                        .email(mentorUpdateRequest.getMentorEmail())
                         .role(findMentorUser.getRole())
-                        .phoneNum(mentorUpdateRequestDto.getMentorPhoneNumber())
+                        .phoneNum(mentorUpdateRequest.getMentorPhoneNumber())
                         .picture(findMentorUser.getPicture())
                         .build();
         userRepository.save(updatedMentorUser);

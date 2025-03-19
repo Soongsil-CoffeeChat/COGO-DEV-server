@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MenteeRequest.MenteeJoinRequest;
-import com.soongsil.CoffeeChat.dto.MenteeResponse.MenteeInfoResponse;
+import com.soongsil.CoffeeChat.dto.MenteeResponse.*;
 import com.soongsil.CoffeeChat.dto.MentorRequest.*;
-import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
+import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
@@ -57,12 +57,12 @@ public class UserController {
     @PostMapping("/mentor")
     @Operation(summary = "멘토로 가입하기!")
     @ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponseGenerator<MentorInfoDto>> joinWithMentor(
+    public ResponseEntity<ApiResponseGenerator<MentorInfoResponse>> joinWithMentor(
             Authentication authentication, @RequestBody MentorJoinRequest dto) throws Exception {
-        MentorInfoDto mentorInfoDto =
+        MentorInfoResponse mentorInfoResponse =
                 userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentor"))
-                .body(ApiResponseGenerator.onSuccessCREATED(mentorInfoDto));
+                .body(ApiResponseGenerator.onSuccessCREATED(mentorInfoResponse));
     }
 
     @PostMapping("/mentee")

@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.dto;
 
-import com.soongsil.CoffeeChat.dto.MentorRequest.MentorJoinRequest;
-import com.soongsil.CoffeeChat.dto.MentorResponse.MentorIntroductionGetUpdateResponse;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
+import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -21,8 +21,9 @@ public class MentorConverter {
                 .build();
     }
 
-    public static MentorGetUpdateDetailDto toMentorGetUpdateDetailDto(Mentor mentor, User user) {
-        return MentorGetUpdateDetailDto.builder()
+    public static MentorGetUpdateDetailResponse toMentorGetUpdateDetailDto(
+            Mentor mentor, User user) {
+        return MentorGetUpdateDetailResponse.builder()
                 .mentorId(mentor.getId())
                 .mentorName(user.getName())
                 .imageUrl(user.getPicture())
@@ -32,6 +33,15 @@ public class MentorConverter {
                 .introductionDescription(mentor.getIntroduction().getDescription())
                 .introductionAnswer1(mentor.getIntroduction().getAnswer1())
                 .introductionAnswer2(mentor.getIntroduction().getAnswer2())
+                .build();
+    }
+
+    public static MentorInfoResponse toResponse(Mentor mentor) {
+        return MentorInfoResponse.builder()
+                .part(mentor.getPart())
+                .club(mentor.getClub())
+                .introductionId(mentor.getIntroduction().getId())
+                .isNewAccount(false)
                 .build();
     }
 }

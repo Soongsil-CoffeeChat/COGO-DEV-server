@@ -36,4 +36,13 @@ public class MentorRequest {
         @JsonProperty("introduction_answer2")
         private Optional<String> answer2 = Optional.empty();
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MentorUpdateRequest {
+        private String mentorName;
+        private String mentorPhoneNumber;
+        private String mentorEmail;
+    }
 }
