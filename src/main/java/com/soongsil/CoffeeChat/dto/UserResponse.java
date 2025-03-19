@@ -5,7 +5,7 @@ import lombok.*;
 public class UserResponse {
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class UserInfoResponse {
         private String username;

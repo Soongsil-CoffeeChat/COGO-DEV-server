@@ -9,7 +9,7 @@ import lombok.*;
 public class ApplicationResponse {
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ApplicationCreateResponse {
         private Long applicationId;
@@ -29,7 +29,7 @@ public class ApplicationResponse {
 
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ApplicationGetResponse {
         private Long applicationId;
@@ -50,7 +50,7 @@ public class ApplicationResponse {
     @Getter
     @Setter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ApplicationMatchResponse {
         private Long applicationId;

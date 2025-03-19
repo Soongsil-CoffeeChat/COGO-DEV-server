@@ -7,7 +7,7 @@ import lombok.*;
 public class MenteeResponse {
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MenteeInfoResponse {
         private PartEnum part;

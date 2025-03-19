@@ -9,7 +9,7 @@ import lombok.*;
 public class MentorResponse {
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentorIntroductionGetUpdateResponse {
 
@@ -32,7 +32,7 @@ public class MentorResponse {
 
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentorListResponse {
         private String picture;
@@ -47,7 +47,7 @@ public class MentorResponse {
 
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentorGetUpdateDetailResponse {
         Long mentorId;
@@ -63,7 +63,7 @@ public class MentorResponse {
 
     @Getter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentorInfoResponse {
         private PartEnum part;
