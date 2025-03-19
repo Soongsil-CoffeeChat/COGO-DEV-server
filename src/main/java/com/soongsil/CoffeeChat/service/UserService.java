@@ -13,6 +13,7 @@ import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
 import com.soongsil.CoffeeChat.dto.MenteeResponse.*;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import com.soongsil.CoffeeChat.entity.Introduction;
@@ -56,7 +57,7 @@ public class UserService {
     }
 
     @Transactional
-    public MentorInfoDto saveMentorInformation(String username, MentorJoinRequestDto dto)
+    public MentorInfoDto saveMentorInformation(String username, MentorJoinRequest dto)
             throws Exception {
         User user = findUserByUsername(username);
         log.info("[*] User name: " + user.getUsername());
@@ -65,7 +66,7 @@ public class UserService {
             user.setRole("ROLE_MENTOR");
         }
         log.info("[*] User Role after: " + user.getRole());
-        Mentor mentor = Mentor.from(dto);
+        Mentor mentor = MentorConverter.toEntity(dto);
         user.setMentor(mentor);
         Introduction introduction = new Introduction();
         mentor.setIntroduction(introduction);

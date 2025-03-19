@@ -13,6 +13,7 @@ import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.dto.MenteeResponse.MenteeInfoResponse;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.UserController.MentorInfoDto;
 import com.soongsil.CoffeeChat.dto.UserController.UserInfoDto;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -57,7 +58,7 @@ public class UserController {
     @Operation(summary = "멘토로 가입하기!")
     @ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<ApiResponseGenerator<MentorInfoDto>> joinWithMentor(
-            Authentication authentication, @RequestBody MentorJoinRequestDto dto) throws Exception {
+            Authentication authentication, @RequestBody MentorJoinRequest dto) throws Exception {
         MentorInfoDto mentorInfoDto =
                 userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentor"))

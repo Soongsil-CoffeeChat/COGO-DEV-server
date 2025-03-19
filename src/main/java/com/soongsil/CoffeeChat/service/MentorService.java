@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
+import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
@@ -62,7 +64,8 @@ public class MentorService {
                                         new CustomException(
                                                 MENTOR_NOT_FOUND.getHttpStatusCode(),
                                                 MENTOR_NOT_FOUND.getErrorMessage()));
-        return MentorGetUpdateDetailDto.of(findMentor, userRepository.findByMentor(findMentor));
+        return MentorConverter.toMentorGetUpdateDetailDto(
+                findMentor, userRepository.findByMentor(findMentor));
     }
 
     public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId) {
@@ -87,8 +90,8 @@ public class MentorService {
     }
 
     @Transactional
-    public MentorIntroductionGetUpdateResponseDto updateMentorIntroduction(
-            String userName, MentorIntroductionUpdateRequestDto dto) {
+    public MentorIntroductionGetUpdateResponse updateMentorIntroduction(
+            String userName, MentorIntroductionUpdateRequest dto) {
         User findUser =
                 userRepository
                         .findByUsername(userName)
@@ -109,22 +112,12 @@ public class MentorService {
 
         findMentorIntroduction.updateIntroduction(dto);
 
-        return MentorIntroductionGetUpdateResponseDto.builder()
-                .title(findMentorIntroduction.getTitle())
-                .description(findMentorIntroduction.getDescription())
-                .answer1(findMentorIntroduction.getAnswer1())
-                .answer2(findMentorIntroduction.getAnswer2())
-                .build();
+        return MentorConverter.toMentorIntroductionGetUpdateResponse(findMentorIntroduction);
     }
 
-    public MentorIntroductionGetUpdateResponseDto getMentorIntroduction(String username) {
+    public MentorIntroductionGetUpdateResponse getMentorIntroduction(String username) {
         User findUser = userRepository.findByUsername(username).orElseThrow();
         Introduction introduction = findUser.getMentor().getIntroduction();
-        return MentorIntroductionGetUpdateResponseDto.builder()
-                .answer1(introduction.getAnswer1())
-                .answer2(introduction.getAnswer2())
-                .title(introduction.getTitle())
-                .description(introduction.getDescription())
-                .build();
+        return MentorConverter.toMentorIntroductionGetUpdateResponse(introduction);
     }
 }

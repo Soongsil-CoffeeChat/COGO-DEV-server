@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
+import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
 import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
@@ -71,10 +73,9 @@ public class MentorController {
     @PatchMapping("/introductions")
     @Operation(summary = "멘토 자기소개 입력")
     @ApiResponse(responseCode = "200", description = "자기소개의 수정된 버전을 반환")
-    public ResponseEntity<ApiResponseGenerator<MentorIntroductionGetUpdateResponseDto>>
+    public ResponseEntity<ApiResponseGenerator<MentorIntroductionGetUpdateResponse>>
             updateMentoIntroduction(
-                    Authentication authentication,
-                    @RequestBody MentorIntroductionUpdateRequestDto dto)
+                    Authentication authentication, @RequestBody MentorIntroductionUpdateRequest dto)
                     throws Exception {
         return ResponseEntity.ok()
                 .body(
@@ -86,7 +87,7 @@ public class MentorController {
     @GetMapping("/introductions")
     @Operation(summary = "토큰으로 멘토 자기소개 항목 4개 조회")
     @ApiResponse(responseCode = "200", description = "토큰으로 멘토 본인의 자기소개 조회")
-    public ResponseEntity<ApiResponseGenerator<MentorIntroductionGetUpdateResponseDto>>
+    public ResponseEntity<ApiResponseGenerator<MentorIntroductionGetUpdateResponse>>
             getMentorIntroduction(Authentication authentication) throws Exception {
         return ResponseEntity.ok()
                 .body(
