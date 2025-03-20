@@ -18,6 +18,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 // username확인, role확인, 만료일 확인
 @Component
 public class JWTUtil {
+    @Value("${spring.jwt.secret}")
     private SecretKey secretKey;
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {

@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.security.dto;
+package com.soongsil.CoffeeChat.security.dto.oauth2Response;
 
 import java.util.Map;
 

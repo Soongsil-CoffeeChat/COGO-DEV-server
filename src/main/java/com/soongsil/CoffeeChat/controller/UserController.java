@@ -20,7 +20,7 @@ import com.soongsil.CoffeeChat.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;

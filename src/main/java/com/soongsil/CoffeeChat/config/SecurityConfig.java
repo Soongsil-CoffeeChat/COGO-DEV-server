@@ -18,13 +18,13 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
+import com.soongsil.CoffeeChat.security.CustomSuccessHandler;
 import com.soongsil.CoffeeChat.security.handler.JwtAccessDeniedHandler;
 import com.soongsil.CoffeeChat.security.handler.JwtAuthenticationEntryPoint;
 import com.soongsil.CoffeeChat.security.jwt.CustomLogoutFilter;
 import com.soongsil.CoffeeChat.security.jwt.JWTFilter;
 import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.security.oauth2.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 

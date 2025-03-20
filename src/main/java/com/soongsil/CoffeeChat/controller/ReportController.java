@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.dto.ReportDto;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ReportService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

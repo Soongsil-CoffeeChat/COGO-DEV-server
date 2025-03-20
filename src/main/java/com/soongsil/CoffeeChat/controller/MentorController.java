@@ -13,7 +13,7 @@ import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.MentorService;
 
 import io.swagger.v3.oas.annotations.Operation;

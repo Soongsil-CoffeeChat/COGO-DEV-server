@@ -14,8 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
-import com.soongsil.CoffeeChat.security.dto.UserDTO;
+import com.soongsil.CoffeeChat.security.dto.UserDto;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -96,7 +96,7 @@ public class JWTFilter extends OncePerRequestFilter { // 요청당 한번만 실
         log.info("[*] Current User Role: " + role);
 
         // userDTO를 생성하여 값 set
-        UserDTO userDTO = new UserDTO();
+        UserDto userDTO = new UserDto();
         userDTO.setUsername(username);
         userDTO.setRole(role);
 

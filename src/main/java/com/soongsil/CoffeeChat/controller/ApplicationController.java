@@ -14,7 +14,7 @@ import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;

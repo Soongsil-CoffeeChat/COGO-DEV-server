@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequest.*;
 import com.soongsil.CoffeeChat.dto.PossibleDateResponse;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
 
 import io.swagger.v3.oas.annotations.Operation;

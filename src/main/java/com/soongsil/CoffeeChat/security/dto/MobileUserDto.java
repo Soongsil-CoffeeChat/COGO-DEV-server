@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class MobileUserDTO {
+public class MobileUserDto {
     private String role;
     private String name;
     private String username; // 스프링 서버 내의 유저 아이디

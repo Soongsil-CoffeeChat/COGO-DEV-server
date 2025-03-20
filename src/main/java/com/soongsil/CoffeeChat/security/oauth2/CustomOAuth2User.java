@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.security.dto;
+package com.soongsil.CoffeeChat.security.oauth2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,10 +7,12 @@ import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-public class CustomOAuth2User implements OAuth2User {
-    private final UserDTO userDTO;
+import com.soongsil.CoffeeChat.security.dto.UserDto;
 
-    public CustomOAuth2User(UserDTO userDTO) {
+public class CustomOAuth2User implements OAuth2User {
+    private final UserDto userDTO;
+
+    public CustomOAuth2User(UserDto userDTO) {
         this.userDTO = userDTO;
     }
 

@@ -24,7 +24,7 @@ import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.security.dto.MobileUserDTO;
+import com.soongsil.CoffeeChat.security.dto.MobileUserDto;
 import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -140,7 +140,7 @@ public class UserService {
     }
 
     @Transactional
-    public void saveMobileUser(MobileUserDTO dto) {
+    public void saveMobileUser(MobileUserDto dto) {
         if (!userRepository.findByUsernameContaining(dto.getUsername()).isPresent()) {
             userRepository.save(dto.toEntity());
         }

@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.security;
+package com.soongsil.CoffeeChat.security.oauth2;
 
 import static com.soongsil.CoffeeChat.controller.exception.enums.RefreshErrorCode.INVALID_TOKEN;
 
@@ -20,6 +20,10 @@ import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.security.dto.*;
+import com.soongsil.CoffeeChat.security.dto.oauth2Response.GoogleResponse;
+import com.soongsil.CoffeeChat.security.dto.oauth2Response.KakaoResponse;
+import com.soongsil.CoffeeChat.security.dto.oauth2Response.NaverResponse;
+import com.soongsil.CoffeeChat.security.dto.oauth2Response.OAuth2Response;
 import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 import com.soongsil.CoffeeChat.service.UserService;
@@ -53,19 +57,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println("oAuth2User = " + oAuth2User);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        OAuth2Response oAuth2Response = null;
-        if (registrationId.equals("naver")) {
 
-            oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
-        } else if (registrationId.equals("google")) {
-
-            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
-        } else if (registrationId.equals("kakao")) {
-            System.out.println("registrationId = " + registrationId);
-            oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
-        } else {
-
-            return null;
+        OAuth2Response oAuth2Response;
+        switch (registrationId) {
+            case "naver" -> oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
+            case "google" -> oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
+            case "kakao" -> oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
+            default -> {
+                return null;
+            }
         }
 
         // 리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
@@ -73,7 +73,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 유저가 DB에 있는지 확인 후 없으면 새로 저장
         Optional<User> existData = userRepository.findByUsername(username);
-        // User existData = findUserByUsername(username);
         if (existData.isEmpty()) {
             User user = new User();
             user.setUsername(username);
@@ -83,7 +82,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             userRepository.save(user);
 
-            UserDTO userDTO = new UserDTO();
+            UserDto userDTO = new UserDto();
             userDTO.setUsername(username);
             userDTO.setName(oAuth2Response.getName());
             userDTO.setRole("ROLE_USER");
@@ -95,7 +94,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             existData.get().setName(oAuth2Response.getName());
             userRepository.save(existData.get());
 
-            UserDTO userDTO = new UserDTO();
+            UserDto userDTO = new UserDto();
             userDTO.setUsername(existData.get().getUsername());
             userDTO.setName(oAuth2Response.getName());
             userDTO.setRole(existData.get().getRole());
@@ -131,8 +130,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     log.info("New user created: " + username);
 
                     // 신규 사용자 정보 저장
-                    MobileUserDTO newUser =
-                            MobileUserDTO.builder()
+                    MobileUserDto newUser =
+                            MobileUserDto.builder()
                                     .email(email)
                                     .username(username)
                                     .name(name)
@@ -148,15 +147,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 String newRefreshToken =
                         jwtUtil.createJwt(
                                 "refresh", username, role, 86400000L); // Refresh token (24시간)
-
-                //                log.info("[*] USER>>>>> EMAIL[" + mobileUserDTO.getEmail(), "]
-                // NAME[" + mobileUserDTO.getUsername() + "] ROLE[" + mobileUserDTO.getRole() +
-                // "]");
-                //
-                //                String newAccessToken = jwtUtil.createJwt("access",
-                // mobileUserDTO.getUsername(), "ROLE_USER", 1800000000L); // Access token (30분)
-                //                String newRefreshToken = jwtUtil.createJwt("refresh",
-                // mobileUserDTO.getUsername(), "ROLE_USER", 86400000L); // Refresh token (24시간)
 
                 // Refresh 토큰을 Redis 또는 DB에 저장 (선택적)
                 refreshTokenService.addRefreshEntity(username, newRefreshToken, 86400000L);

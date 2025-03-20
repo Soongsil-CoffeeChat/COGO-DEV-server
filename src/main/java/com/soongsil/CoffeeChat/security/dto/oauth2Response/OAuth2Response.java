@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.security.dto;
+package com.soongsil.CoffeeChat.security.dto.oauth2Response;
 
 public interface OAuth2Response {
     // 제공자 (Ex. naver, google, ...)
