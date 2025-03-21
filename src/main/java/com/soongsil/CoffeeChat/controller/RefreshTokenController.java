@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "REFRESHTOKEN", description = "리프레쉬 토큰 관련 api")
 @RequiredArgsConstructor
 public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급 및 2차회원가입 컨트롤러
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
     private final CustomOAuth2UserService oAuth2UserService;

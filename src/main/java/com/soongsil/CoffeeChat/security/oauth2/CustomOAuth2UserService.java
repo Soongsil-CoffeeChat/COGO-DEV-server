@@ -24,7 +24,7 @@ import com.soongsil.CoffeeChat.security.dto.oauth2Response.GoogleResponse;
 import com.soongsil.CoffeeChat.security.dto.oauth2Response.KakaoResponse;
 import com.soongsil.CoffeeChat.security.dto.oauth2Response.NaverResponse;
 import com.soongsil.CoffeeChat.security.dto.oauth2Response.OAuth2Response;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 import com.soongsil.CoffeeChat.service.UserService;
 
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     private static final String GOOGLE_TOKEN_INFO_URL =
             "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";

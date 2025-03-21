@@ -20,10 +20,10 @@ import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JWTFilter extends OncePerRequestFilter { // 요청당 한번만 실행되면 됨
-    private final JWTUtil jwtUtil; // JWT검증 위하여 주입
+public class JwtFilter extends OncePerRequestFilter { // 요청당 한번만 실행되면 됨
+    private final JwtUtil jwtUtil; // JWT검증 위하여 주입
 
-    public JWTFilter(JWTUtil jwtUtil) {
+    public JwtFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 

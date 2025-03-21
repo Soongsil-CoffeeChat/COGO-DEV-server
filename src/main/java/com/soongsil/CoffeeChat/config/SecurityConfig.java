@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.config;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.soongsil.CoffeeChat.security.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,8 +23,7 @@ import com.soongsil.CoffeeChat.security.CustomSuccessHandler;
 import com.soongsil.CoffeeChat.security.handler.JwtAccessDeniedHandler;
 import com.soongsil.CoffeeChat.security.handler.JwtAuthenticationEntryPoint;
 import com.soongsil.CoffeeChat.security.jwt.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.security.jwt.JWTFilter;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -135,7 +135,7 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(
                         new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                .addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
         return http.build();
     }

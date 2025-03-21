@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,16 +18,15 @@ import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
 import com.soongsil.CoffeeChat.entity.Refresh;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
 @Service
 public class RefreshTokenService {
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
-    public RefreshTokenService(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
+    public RefreshTokenService(JwtUtil jwtUtil, RefreshRepository refreshRepository) {
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;
     }
@@ -229,7 +229,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -238,11 +238,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class RefreshTokenService {
-	private final JWTUtil jwtUtil;
+	private final JwtUtil jwtUtil;
 	private final RedisTemplate<String, String> redisTemplate;
 	private static final long REFRESH_TOKEN_TTL = 86400000L; // 24 hours in milliseconds
 
-	public RefreshTokenService(JWTUtil jwtUtil, RedisTemplate<String, String> redisTemplate) {
+	public RefreshTokenService(JwtUtil jwtUtil, RedisTemplate<String, String> redisTemplate) {
 		this.jwtUtil = jwtUtil;
 		this.redisTemplate = redisTemplate;
 	}

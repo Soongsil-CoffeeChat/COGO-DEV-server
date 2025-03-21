@@ -17,10 +17,10 @@ import com.soongsil.CoffeeChat.repository.RefreshRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 
 public class CustomLogoutFilter extends GenericFilterBean {
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
-    public CustomLogoutFilter(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
+    public CustomLogoutFilter(JwtUtil jwtUtil, RefreshRepository refreshRepository) {
 
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;

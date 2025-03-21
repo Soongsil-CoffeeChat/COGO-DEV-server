@@ -15,15 +15,15 @@ import org.springframework.stereotype.Component;
 
 import com.soongsil.CoffeeChat.entity.Refresh;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
-    public CustomSuccessHandler(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
+    public CustomSuccessHandler(JwtUtil jwtUtil, RefreshRepository refreshRepository) {
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;
     }

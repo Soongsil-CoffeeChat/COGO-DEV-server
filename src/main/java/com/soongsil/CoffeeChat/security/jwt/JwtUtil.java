@@ -17,11 +17,10 @@ import io.jsonwebtoken.UnsupportedJwtException;
 // JWT : username, role, 생성일, 만료일 포함, 0.12.3 버전 사용
 // username확인, role확인, 만료일 확인
 @Component
-public class JWTUtil {
-    @Value("${spring.jwt.secret}")
-    private SecretKey secretKey;
+public class JwtUtil {
+    private final SecretKey secretKey;
 
-    public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
+    public JwtUtil(@Value("${spring.jwt.secret}") String secret) {
         secretKey =
                 new SecretKeySpec(
                         secret.getBytes(StandardCharsets.UTF_8),
