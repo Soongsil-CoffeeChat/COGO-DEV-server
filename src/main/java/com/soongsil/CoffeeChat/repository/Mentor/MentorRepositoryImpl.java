@@ -10,8 +10,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 public class MentorRepositoryImpl implements MentorRepositoryCustom {
 

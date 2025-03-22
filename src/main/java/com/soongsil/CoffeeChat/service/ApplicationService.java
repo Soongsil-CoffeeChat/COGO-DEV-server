@@ -1,13 +1,7 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.enums.ApplicationStatus.MATCHED;
-import static com.soongsil.CoffeeChat.enums.ApplicationStatus.UNMATCHED;
-import static com.soongsil.CoffeeChat.global.exception.enums.ApplicationErrorCode.APPLICATION_NOT_FOUND;
-import static com.soongsil.CoffeeChat.global.exception.enums.ApplicationErrorCode.INVALID_MATCH_STATUS;
-import static com.soongsil.CoffeeChat.global.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
-import static com.soongsil.CoffeeChat.global.exception.enums.PossibleDateErrorCode.POSSIBLE_DATE_NOT_FOUND;
-import static com.soongsil.CoffeeChat.global.exception.enums.PossibleDateErrorCode.PREEMPTED_POSSIBLE_DATE;
-import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
+import static com.soongsil.CoffeeChat.entity.enums.ApplicationStatus.MATCHED;
+import static com.soongsil.CoffeeChat.entity.enums.ApplicationStatus.UNMATCHED;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,15 +9,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.dto.ApplicationConverter;
 import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
@@ -31,8 +22,9 @@ import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.entity.*;
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
-import com.soongsil.CoffeeChat.global.exception.CustomException;
+import com.soongsil.CoffeeChat.entity.enums.ApplicationStatus;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
@@ -56,19 +48,10 @@ public class ApplicationService {
 
     //    private final EmailUtil emailUtil;
 
-    @Autowired
-    private ApplicationContext applicationContext; // 프록시를 통해 자신을 호출하기 위해 ApplicationContext 주입
-
-    @Autowired private RedisTemplate<String, String> redisTemplate;
-
     private User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
-                .orElseThrow(
-                        () ->
-                                new CustomException(
-                                        USER_NOT_FOUND.getHttpStatusCode(),
-                                        USER_NOT_FOUND.getErrorMessage()));
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional
@@ -78,10 +61,7 @@ public class ApplicationService {
                 possibleDateRepository
                         .findById(request.getPossibleDateId())
                         .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                POSSIBLE_DATE_NOT_FOUND.getHttpStatusCode(),
-                                                POSSIBLE_DATE_NOT_FOUND.getErrorMessage()));
+                                () -> new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND));
         log.info("[*] Find possibleDate id: " + requestedPossibleDate.getId());
 
         // 선점된 가능시간
@@ -90,9 +70,7 @@ public class ApplicationService {
                     "[*] Found possibleDate(id:"
                             + requestedPossibleDate.getId()
                             + ") is already preempted");
-            throw new CustomException(
-                    PREEMPTED_POSSIBLE_DATE.getHttpStatusCode(),
-                    PREEMPTED_POSSIBLE_DATE.getErrorMessage());
+            throw new GlobalException(GlobalErrorCode.PREEMPTED_POSSIBLE_DATE);
         }
         log.info("[*] Found possibleDate is not preempted");
 
@@ -102,11 +80,7 @@ public class ApplicationService {
         Mentor findMentor =
                 mentorRepository
                         .findById(request.getMentorId())
-                        .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                MENTOR_NOT_FOUND.getHttpStatusCode(),
-                                                MENTOR_NOT_FOUND.getErrorMessage()));
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
 
         Application application =
                 ApplicationConverter.toEntity(
@@ -158,15 +132,13 @@ public class ApplicationService {
         }
     }
 
+    @Transactional(readOnly = true)
     public ApplicationGetResponse getApplication(Long applicationId) {
         Application findApplication =
                 applicationRepository
                         .findById(applicationId)
                         .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                APPLICATION_NOT_FOUND.getHttpStatusCode(),
-                                                APPLICATION_NOT_FOUND.getErrorMessage()));
+                                () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
         User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
         User findMentorUser = userRepository.findByMentor(findApplication.getMentor());
         // TODO: toDTO 빌더 만들어두고, join으로 묶자
@@ -174,13 +146,12 @@ public class ApplicationService {
                 findApplication, findMentorUser.getName(), findMenteeUser.getName());
     }
 
+    @Transactional(readOnly = true)
     public List<ApplicationGetResponse> getApplications(String username, String applicationStatus) {
         if (!"matched".equalsIgnoreCase(applicationStatus)
                 && !"unmatched".equalsIgnoreCase(applicationStatus)) {
             log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
-            throw new CustomException(
-                    INVALID_MATCH_STATUS.getHttpStatusCode(),
-                    INVALID_MATCH_STATUS.getErrorMessage());
+            throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
         }
         log.info("[*] Find applications with condition [" + applicationStatus + "]");
 
@@ -214,13 +185,9 @@ public class ApplicationService {
                 applicationRepository
                         .findById(applicationId)
                         .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                APPLICATION_NOT_FOUND.getHttpStatusCode(),
-                                                APPLICATION_NOT_FOUND.getErrorMessage()));
+                                () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
 
-        ApplicationMatchResponse responseDto =
-                ApplicationMatchResponse.builder().applicationId(applicationId).build();
+        ApplicationMatchResponse responseDto = ApplicationConverter.toResponse(applicationId);
         PossibleDate matchedPossibleDate = findApplication.getPossibleDate();
 
         // 가능시간 비활성화
@@ -260,9 +227,7 @@ public class ApplicationService {
                                             + ") has been UNMATCHED");
                         });
             }
-            default -> throw new CustomException(
-                    INVALID_MATCH_STATUS.getHttpStatusCode(),
-                    INVALID_MATCH_STATUS.getErrorMessage());
+            default -> throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
         }
 
         return responseDto;

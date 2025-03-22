@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 public interface MentorRepository extends JpaRepository<Mentor, Long>, MentorRepositoryCustom {
     // Mentor findByUsername(String username); 상속시 사용가능

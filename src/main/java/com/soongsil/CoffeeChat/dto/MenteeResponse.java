@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.dto;
 
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 import lombok.*;
 

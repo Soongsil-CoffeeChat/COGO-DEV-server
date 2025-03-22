@@ -12,7 +12,7 @@ import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
+import com.soongsil.CoffeeChat.entity.enums.ApplicationStatus;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     List<Application> findApplicationByMentor(Mentor mentor);

@@ -13,8 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
-import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

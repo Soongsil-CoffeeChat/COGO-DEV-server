@@ -16,8 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

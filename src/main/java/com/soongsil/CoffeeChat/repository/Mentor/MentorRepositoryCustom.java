@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 public interface MentorRepositoryCustom {
     List<MentorListResponse> getMentorListByPart(PartEnum part); // 일반 join
