@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.enums.ApplicationStatus.MATCHED;
-import static com.soongsil.CoffeeChat.enums.ApplicationStatus.UNMATCHED;
+import static com.soongsil.CoffeeChat.entity.enums.ApplicationStatus.MATCHED;
+import static com.soongsil.CoffeeChat.entity.enums.ApplicationStatus.UNMATCHED;
 import static com.soongsil.CoffeeChat.global.exception.enums.ApplicationErrorCode.APPLICATION_NOT_FOUND;
 import static com.soongsil.CoffeeChat.global.exception.enums.ApplicationErrorCode.INVALID_MATCH_STATUS;
 import static com.soongsil.CoffeeChat.global.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
@@ -31,7 +31,7 @@ import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.entity.*;
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
+import com.soongsil.CoffeeChat.entity.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.global.exception.CustomException;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;

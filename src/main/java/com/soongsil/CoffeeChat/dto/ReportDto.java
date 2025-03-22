@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.dto;
 
 import com.soongsil.CoffeeChat.entity.Report;
-import com.soongsil.CoffeeChat.enums.ReportReason;
+import com.soongsil.CoffeeChat.entity.enums.ReportReason;
 
 import lombok.Builder;
 import lombok.Getter;

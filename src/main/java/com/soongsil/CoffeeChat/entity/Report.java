@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 import com.soongsil.CoffeeChat.dto.ReportDto;
-import com.soongsil.CoffeeChat.enums.ReportReason;
-import com.soongsil.CoffeeChat.enums.ReportStatus;
+import com.soongsil.CoffeeChat.entity.enums.ReportReason;
+import com.soongsil.CoffeeChat.entity.enums.ReportStatus;
 
 import lombok.*;
 

@@ -1,8 +1,8 @@
 package com.soongsil.CoffeeChat.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 import lombok.*;
 

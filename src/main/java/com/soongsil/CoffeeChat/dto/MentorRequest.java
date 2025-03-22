@@ -3,8 +3,8 @@ package com.soongsil.CoffeeChat.dto;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.enums;
+package com.soongsil.CoffeeChat.entity.enums;
 
 public enum ReportStatus {
     PENDING,

@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.soongsil.CoffeeChat.enums.ApplicationStatus;
+import com.soongsil.CoffeeChat.entity.enums.ApplicationStatus;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

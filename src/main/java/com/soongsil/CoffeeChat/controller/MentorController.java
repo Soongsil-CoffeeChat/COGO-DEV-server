@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
-import com.soongsil.CoffeeChat.enums.ClubEnum;
-import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
+import com.soongsil.CoffeeChat.entity.enums.PartEnum;
 import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.MentorService;
