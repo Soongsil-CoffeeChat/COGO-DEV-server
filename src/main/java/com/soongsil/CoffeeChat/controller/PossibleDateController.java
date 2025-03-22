@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.*;
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
 
 import java.net.URI;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.dto.PossibleDateRequest.*;
-import com.soongsil.CoffeeChat.dto.PossibleDateResponse;
+import com.soongsil.CoffeeChat.dto.PossibleDateRequest.PossibleDateCreateRequest;
+import com.soongsil.CoffeeChat.dto.PossibleDateResponse.PossibleDateCreateResponse;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
@@ -37,11 +37,9 @@ public class PossibleDateController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "201",
             description = "DTO형식으로 정보 반환")
-    public ResponseEntity<ApiResponse<List<PossibleDateResponse.PossibleDateCreateResponse>>>
-            addPossibleDate(
-                    Authentication authentication,
-                    @RequestBody List<PossibleDateCreateRequest> dtos)
-                    throws Exception {
+    public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> addPossibleDate(
+            Authentication authentication, @RequestBody List<PossibleDateCreateRequest> dtos)
+            throws Exception {
         return ResponseEntity.created(URI.create(POSSIBLEDATE_URI))
                 .body(
                         ApiResponse.onSuccessCREATED(
@@ -54,9 +52,8 @@ public class PossibleDateController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponse<List<PossibleDateResponse.PossibleDateCreateResponse>>>
-            getPossibleDates(
-                    Authentication authentication, @PathVariable("mentorId") Long mentorId) {
+    public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> getPossibleDates(
+            @PathVariable("mentorId") Long mentorId) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
@@ -68,8 +65,8 @@ public class PossibleDateController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponse<List<PossibleDateResponse.PossibleDateCreateResponse>>>
-            getPossibleDatesByToken(Authentication authentication) throws Exception {
+    public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> getPossibleDatesByToken(
+            Authentication authentication) throws Exception {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
