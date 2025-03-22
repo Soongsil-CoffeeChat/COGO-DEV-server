@@ -33,13 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true)
 public class UserService {
     private final MentorRepository mentorRepository;
     private final MenteeRepository menteeRepository;
     private final UserRepository userRepository;
     private final SmsUtil smsUtil;
 
+    @Transactional(readOnly = true)
     public User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
@@ -86,6 +86,7 @@ public class UserService {
         return UserConverter.toResponse(userRepository.save(user));
     }
 
+    @Transactional(readOnly = true)
     public Map<String, String> getSmsCode(String to) {
         Map<String, String> response = new HashMap<>();
         String result = smsUtil.sendOne(to);
@@ -125,6 +126,7 @@ public class UserService {
         return UserConverter.toResponse(userRepository.save(user));
     }
 
+    @Transactional(readOnly = true)
     public UserGetRequest findUserInfo(String username) {
         User user = findUserByUsername(username);
         // TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨

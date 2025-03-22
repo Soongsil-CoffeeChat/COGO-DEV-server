@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.dto.ReissueDto;
 import com.soongsil.CoffeeChat.entity.Refresh;
@@ -22,6 +23,7 @@ public class RefreshTokenService {
     private final RefreshRepository refreshRepository;
     private final UserService userService;
 
+    @Transactional
     public void addRefreshEntity(String username, String refresh, Long expiredMs) {
         // Refresh객체를 DB에 저장(블랙리스트관리)
 
@@ -35,6 +37,7 @@ public class RefreshTokenService {
         refreshRepository.save(refreshEntity);
     }
 
+    @Transactional
     public ReissueDto reissueByRefreshToken2(String refresh) {
         System.out.println("들어옴");
 
@@ -60,6 +63,7 @@ public class RefreshTokenService {
         return reissueDto;
     }
 
+    @Transactional
     public Map<String, String> reissueByRefreshTokenWithResponseBody(String refreshToken) {
         // 1. Refresh 토큰 유효성 검증
         jwtUtil.validateToken(refreshToken);

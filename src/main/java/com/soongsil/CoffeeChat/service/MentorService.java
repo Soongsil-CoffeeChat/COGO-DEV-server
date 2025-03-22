@@ -26,20 +26,22 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MentorService {
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
     private final PossibleDateRepository possibleDateRepository;
 
+    @Transactional(readOnly = true)
     public List<MentorListResponse> getMentorDtoListByPart(PartEnum part) {
         return mentorRepository.getMentorListByPart(part); // 일반join
     }
 
+    @Transactional(readOnly = true)
     public List<MentorListResponse> getMentorDtoListByClub(ClubEnum club) {
         return mentorRepository.getMentorListByClub(club); // 일반join
     }
 
+    @Transactional(readOnly = true)
     public List<MentorListResponse> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
         return mentorRepository.getMentorListByPartAndClub(part, club);
     }
@@ -50,6 +52,7 @@ public class MentorService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
     public MentorGetUpdateDetailResponse getMentorDtoById(Long mentorId) {
         // TODO: join으로 바꾸면될듯
         Mentor findMentor =
@@ -99,6 +102,7 @@ public class MentorService {
         return MentorConverter.toMentorIntroductionGetUpdateResponse(findMentorIntroduction);
     }
 
+    @Transactional(readOnly = true)
     public MentorIntroductionGetUpdateResponse getMentorIntroduction(String username) {
         User findUser = userRepository.findByUsername(username).orElseThrow();
         Introduction introduction = findUser.getMentor().getIntroduction();

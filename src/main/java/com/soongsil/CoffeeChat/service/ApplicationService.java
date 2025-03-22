@@ -9,15 +9,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.dto.ApplicationConverter;
 import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
@@ -50,11 +47,6 @@ public class ApplicationService {
     private final PossibleDateRepository possibleDateRepository;
 
     //    private final EmailUtil emailUtil;
-
-    @Autowired
-    private ApplicationContext applicationContext; // 프록시를 통해 자신을 호출하기 위해 ApplicationContext 주입
-
-    @Autowired private RedisTemplate<String, String> redisTemplate;
 
     private User findUserByUsername(String username) {
         return userRepository
@@ -140,6 +132,7 @@ public class ApplicationService {
         }
     }
 
+    @Transactional(readOnly = true)
     public ApplicationGetResponse getApplication(Long applicationId) {
         Application findApplication =
                 applicationRepository
@@ -153,6 +146,7 @@ public class ApplicationService {
                 findApplication, findMentorUser.getName(), findMenteeUser.getName());
     }
 
+    @Transactional(readOnly = true)
     public List<ApplicationGetResponse> getApplications(String username, String applicationStatus) {
         if (!"matched".equalsIgnoreCase(applicationStatus)
                 && !"unmatched".equalsIgnoreCase(applicationStatus)) {

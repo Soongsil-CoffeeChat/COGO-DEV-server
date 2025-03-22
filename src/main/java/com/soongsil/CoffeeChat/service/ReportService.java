@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.dto.ReportDto;
 import com.soongsil.CoffeeChat.entity.Report;
@@ -18,6 +19,7 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public ReportDto createReportMentor(ReportDto request, String username) throws Exception {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
@@ -25,6 +27,7 @@ public class ReportService {
         } else throw new Exception();
     }
 
+    @Transactional
     public ReportDto createReportMentee(ReportDto request, String username) throws Exception {
         Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
