@@ -1,20 +1,22 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
+import static com.soongsil.CoffeeChat.global.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
+import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.global.exception.CustomException;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -29,16 +31,15 @@ public class MentorService {
     private final UserRepository userRepository;
     private final PossibleDateRepository possibleDateRepository;
 
-    public List<MentorGetListResponseDto> getMentorDtoListByPart(PartEnum part) {
+    public List<MentorListResponse> getMentorDtoListByPart(PartEnum part) {
         return mentorRepository.getMentorListByPart(part); // 일반join
     }
 
-    public List<MentorGetListResponseDto> getMentorDtoListByClub(ClubEnum club) {
+    public List<MentorListResponse> getMentorDtoListByClub(ClubEnum club) {
         return mentorRepository.getMentorListByClub(club); // 일반join
     }
 
-    public List<MentorGetListResponseDto> getMentorDtoListByPartAndClub(
-            PartEnum part, ClubEnum club) {
+    public List<MentorListResponse> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
         return mentorRepository.getMentorListByPartAndClub(part, club);
     }
 
@@ -52,7 +53,7 @@ public class MentorService {
                                         USER_NOT_FOUND.getErrorMessage()));
     }
 
-    public MentorGetUpdateDetailDto getMentorDtoById(Long mentorId) {
+    public MentorGetUpdateDetailResponse getMentorDtoById(Long mentorId) {
         // TODO: join으로 바꾸면될듯
         Mentor findMentor =
                 mentorRepository
@@ -62,24 +63,25 @@ public class MentorService {
                                         new CustomException(
                                                 MENTOR_NOT_FOUND.getHttpStatusCode(),
                                                 MENTOR_NOT_FOUND.getErrorMessage()));
-        return MentorGetUpdateDetailDto.of(findMentor, userRepository.findByMentor(findMentor));
+        return MentorConverter.toMentorGetUpdateDetailDto(
+                findMentor, userRepository.findByMentor(findMentor));
     }
 
-    public MentorGetUpdateDetailDto getMentorDtoByIdWithJoin(Long mentorId) {
+    public MentorGetUpdateDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
 
     @Transactional
-    public MentorGetUpdateDetailDto updateMentorInfo(
-            String username, MentorUpdateRequestDto mentorUpdateRequestDto) {
+    public MentorGetUpdateDetailResponse updateMentorInfo(
+            String username, MentorUpdateRequest mentorUpdateRequest) {
         User findMentorUser = findUserByUsername(username);
         User updatedMentorUser =
                 User.builder()
                         .id(findMentorUser.getId())
-                        .name(mentorUpdateRequestDto.getMentorName())
-                        .email(mentorUpdateRequestDto.getMentorEmail())
+                        .name(mentorUpdateRequest.getMentorName())
+                        .email(mentorUpdateRequest.getMentorEmail())
                         .role(findMentorUser.getRole())
-                        .phoneNum(mentorUpdateRequestDto.getMentorPhoneNumber())
+                        .phoneNum(mentorUpdateRequest.getMentorPhoneNumber())
                         .picture(findMentorUser.getPicture())
                         .build();
         userRepository.save(updatedMentorUser);
@@ -87,8 +89,8 @@ public class MentorService {
     }
 
     @Transactional
-    public MentorIntroductionGetUpdateResponseDto updateMentorIntroduction(
-            String userName, MentorIntroductionUpdateRequestDto dto) {
+    public MentorIntroductionGetUpdateResponse updateMentorIntroduction(
+            String userName, MentorIntroductionUpdateRequest dto) {
         User findUser =
                 userRepository
                         .findByUsername(userName)
@@ -109,22 +111,12 @@ public class MentorService {
 
         findMentorIntroduction.updateIntroduction(dto);
 
-        return MentorIntroductionGetUpdateResponseDto.builder()
-                .title(findMentorIntroduction.getTitle())
-                .description(findMentorIntroduction.getDescription())
-                .answer1(findMentorIntroduction.getAnswer1())
-                .answer2(findMentorIntroduction.getAnswer2())
-                .build();
+        return MentorConverter.toMentorIntroductionGetUpdateResponse(findMentorIntroduction);
     }
 
-    public MentorIntroductionGetUpdateResponseDto getMentorIntroduction(String username) {
+    public MentorIntroductionGetUpdateResponse getMentorIntroduction(String username) {
         User findUser = userRepository.findByUsername(username).orElseThrow();
         Introduction introduction = findUser.getMentor().getIntroduction();
-        return MentorIntroductionGetUpdateResponseDto.builder()
-                .answer1(introduction.getAnswer1())
-                .answer2(introduction.getAnswer2())
-                .title(introduction.getTitle())
-                .description(introduction.getDescription())
-                .build();
+        return MentorConverter.toMentorIntroductionGetUpdateResponse(introduction);
     }
 }

@@ -16,7 +16,7 @@ package com.soongsil.CoffeeChat.Mail;
 // import org.springframework.context.ApplicationContext;
 // import org.springframework.mail.javamail.JavaMailSender;
 //
-// import com.soongsil.CoffeeChat.util.email.EmailUtil;
+// import com.soongsil.CoffeeChat.infra.email.EmailUtil;
 //
 // @ExtendWith(MockitoExtension.class)
 // public class EmailServiceTest {

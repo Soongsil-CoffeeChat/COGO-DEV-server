@@ -5,11 +5,11 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
-import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
+import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,26 +22,17 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "REFRESHTOKEN", description = "리프레쉬 토큰 관련 api")
 @RequiredArgsConstructor
 public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급 및 2차회원가입 컨트롤러
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
     private final CustomOAuth2UserService oAuth2UserService;
 
     @PostMapping("/reissue")
-    @Operation(summary = "리프레쉬 토큰으로 액세스 토큰 reissue")
+    @Operation(summary = "리프레쉬 토큰으로 액세스 토큰 reissue", description = "멘토 혹은 멘티로 가입한 상태라면 ")
     @ApiResponse(responseCode = "200", description = "헤더 : access, refresh, loginStatus")
-    /*
-    public ResponseEntity<ApiResponseGenerator<String>> reissue(HttpServletRequest request,
-                                                                HttpServletResponse response) {
-
-     */
-    public ResponseEntity<ApiResponseGenerator<ReissueDto>> reissue(@RequestBody String refresh) {
-        // System.out.println("ㅇㅇ");
-        return ResponseEntity.ok()
-                .body(
-                        ApiResponseGenerator.onSuccessOK(
-                                // refreshTokenService.reissueByRefreshToken(request, response)
-                                refreshTokenService.reissueByRefreshToken2(refresh)));
+    public ResponseEntity<ApiResponseGenerator<ReissueDto>> reissue(@RequestParam String refresh) {
+        ReissueDto response = refreshTokenService.reissueByRefreshToken2(refresh);
+        return ResponseEntity.ok().body(ApiResponseGenerator.onSuccessOK(response));
     }
 
     @PostMapping("/issue/mobile")

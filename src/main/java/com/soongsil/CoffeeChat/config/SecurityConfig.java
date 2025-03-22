@@ -17,32 +17,28 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import com.soongsil.CoffeeChat.global.security.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.global.security.handler.JwtAccessDeniedHandler;
+import com.soongsil.CoffeeChat.global.security.handler.JwtAuthenticationEntryPoint;
+import com.soongsil.CoffeeChat.global.security.jwt.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtFilter;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.security.CustomOAuth2UserService;
-import com.soongsil.CoffeeChat.security.jwt.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.security.jwt.JWTFilter;
-import com.soongsil.CoffeeChat.security.jwt.JWTUtil;
-import com.soongsil.CoffeeChat.security.oauth2.CustomSuccessHandler;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
-
-    public SecurityConfig(
-            CustomOAuth2UserService customOAuth2UserService,
-            CustomSuccessHandler customSuccessHandler,
-            JWTUtil jwtUtil,
-            RefreshRepository refreshRepository) {
-        this.customOAuth2UserService = customOAuth2UserService;
-        this.customSuccessHandler = customSuccessHandler;
-        this.jwtUtil = jwtUtil;
-        this.refreshRepository = refreshRepository;
-    }
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public RoleHierarchy roleHierarchy() {
@@ -93,6 +89,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 비활성화
                 .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 인증 비활성화
+                .exceptionHandling(
+                        exception ->
+                                exception
+                                        .authenticationEntryPoint(
+                                                jwtAuthenticationEntryPoint) // 401 처리
+                                        .accessDeniedHandler(jwtAccessDeniedHandler) // 403 처리
+                        )
                 .oauth2Login(
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
@@ -132,7 +135,7 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(
                         new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                .addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
         return http.build();
     }

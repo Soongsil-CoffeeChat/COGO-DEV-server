@@ -6,11 +6,9 @@ import static com.soongsil.CoffeeChat.entity.QUser.*;
 
 import java.util.List;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.dto.MentorGetListResponseDto;
-import com.soongsil.CoffeeChat.dto.MentorGetUpdateDetailDto;
-import com.soongsil.CoffeeChat.dto.QMentorGetListResponseDto;
-import com.soongsil.CoffeeChat.dto.QMentorGetUpdateDetailDto;
+import com.soongsil.CoffeeChat.dto.MentorResponse.*;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
@@ -24,11 +22,12 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
     }
 
     @Override
-    public List<MentorGetListResponseDto> getMentorListByPart(PartEnum part) { // 일반 join
+    public List<MentorListResponse> getMentorListByPart(PartEnum part) { // 일반 join
 
         return queryFactory
                 .select(
-                        new QMentorGetListResponseDto(
+                        Projections.constructor(
+                                MentorListResponse.class,
                                 user.picture,
                                 user.name.as("mentorName"),
                                 mentor.part,
@@ -45,10 +44,11 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
     }
 
     @Override
-    public List<MentorGetListResponseDto> getMentorListByClub(ClubEnum club) { // 일반 join
+    public List<MentorListResponse> getMentorListByClub(ClubEnum club) { // 일반 join
         return queryFactory
                 .select(
-                        new QMentorGetListResponseDto(
+                        Projections.constructor(
+                                MentorListResponse.class,
                                 user.picture,
                                 user.name.as("mentorName"),
                                 mentor.part,
@@ -65,11 +65,12 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
     }
 
     @Override
-    public List<MentorGetListResponseDto> getMentorListByPartAndClub(
+    public List<MentorListResponse> getMentorListByPartAndClub(
             PartEnum part, ClubEnum club) { // 일반 join
         return queryFactory
                 .select(
-                        new QMentorGetListResponseDto(
+                        Projections.constructor(
+                                MentorListResponse.class,
                                 user.picture,
                                 user.name.as("mentorName"),
                                 mentor.part,
@@ -96,10 +97,11 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
     }
 
     @Override
-    public MentorGetUpdateDetailDto getMentorInfoByMentorId(Long mentorId) {
+    public MentorGetUpdateDetailResponse getMentorInfoByMentorId(Long mentorId) {
         return queryFactory
                 .select(
-                        new QMentorGetUpdateDetailDto(
+                        Projections.constructor(
+                                MentorGetUpdateDetailResponse.class,
                                 mentor.id.as("mentorId"),
                                 user.name.as("mentorName"),
                                 mentor.part,

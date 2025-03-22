@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import com.soongsil.CoffeeChat.dto.MentorIntroductionUpdateRequestDto;
+import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class Introduction {
 
     @Column private String answer2;
 
-    public void updateIntroduction(MentorIntroductionUpdateRequestDto dto) {
+    public void updateIntroduction(MentorIntroductionUpdateRequest dto) {
         dto.getTitle().ifPresent(this::setTitle);
         dto.getDescription().ifPresent(this::setDescription);
         dto.getAnswer1().ifPresent(this::setAnswer1);

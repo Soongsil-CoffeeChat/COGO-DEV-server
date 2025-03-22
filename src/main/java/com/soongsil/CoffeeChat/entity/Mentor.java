@@ -16,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
-import com.soongsil.CoffeeChat.dto.MentorJoinRequestDto;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
 
@@ -67,10 +66,6 @@ public class Mentor {
     public Mentor(String club, String part) {
         this.club = ClubEnum.valueOf(club);
         this.part = PartEnum.valueOf(part);
-    }
-
-    public static Mentor from(MentorJoinRequestDto dto) {
-        return Mentor.builder().club(dto.getClub()).part(dto.getPart()).build();
     }
 
     public void addPossibleDate(PossibleDate possibleDate) {

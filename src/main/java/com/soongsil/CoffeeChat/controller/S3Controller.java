@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.security.dto.CustomOAuth2User;
+import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.S3Service;
 
 import io.swagger.v3.oas.annotations.Operation;

@@ -5,11 +5,11 @@ import static com.soongsil.CoffeeChat.entity.QMentor.*;
 import static com.soongsil.CoffeeChat.entity.QPossibleDate.*;
 import static com.soongsil.CoffeeChat.entity.QUser.*;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.dto.QUserGetDto;
-import com.soongsil.CoffeeChat.dto.UserGetDto;
+import com.soongsil.CoffeeChat.dto.UserRequest.*;
 import com.soongsil.CoffeeChat.entity.QMentee;
 import com.soongsil.CoffeeChat.entity.QMentor;
 import com.soongsil.CoffeeChat.entity.QUser;
@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public UserGetDto findUserInfoByUsername(String username) {
+    public UserGetRequest findUserInfoByUsername(String username) {
         QUser user = QUser.user;
         QMentor mentor = QMentor.mentor;
         QMentee mentee = QMentee.mentee;
@@ -60,7 +60,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
         return queryFactory
                 .select(
-                        new QUserGetDto(
+                        Projections.constructor(
+                                UserGetRequest.class,
                                 user.name,
                                 user.email,
                                 user.phoneNum,
