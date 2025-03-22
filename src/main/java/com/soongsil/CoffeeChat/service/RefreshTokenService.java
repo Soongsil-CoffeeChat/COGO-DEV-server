@@ -1,12 +1,11 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.RefreshErrorCode.*;
+import static com.soongsil.CoffeeChat.global.exception.enums.RefreshErrorCode.*;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,9 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
 import com.soongsil.CoffeeChat.entity.Refresh;
+import com.soongsil.CoffeeChat.global.exception.CustomException;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.repository.RefreshRepository;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -221,7 +221,7 @@ public class RefreshTokenService {
 package com.soongsil.CoffeeChat.service;
 
 import java.time.Duration;
-import java.util.Date;
+import java.infra.Date;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -229,7 +229,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.jwt.security.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;

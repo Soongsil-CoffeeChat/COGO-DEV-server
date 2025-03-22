@@ -15,7 +15,7 @@
 // import org.springframework.boot.test.context.SpringBootTest;
 // import org.springframework.context.annotation.Import;
 //
-// import java.util.List;
+// import java.infra.List;
 //
 // import static com.soongsil.CoffeeChat.entity.QMentor.mentor;
 // import static com.soongsil.CoffeeChat.entity.QUser.user;

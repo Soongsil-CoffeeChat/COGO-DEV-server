@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.APPLICATION_URI;
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.APPLICATION_URI;
 
 import java.net.URI;
 import java.util.List;
@@ -9,12 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
-import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
+import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;

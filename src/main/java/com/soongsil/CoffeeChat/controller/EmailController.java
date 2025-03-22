@@ -1,8 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.*;
-
-// import com.soongsil.CoffeeChat.util.email.EmailUtil;
+// import com.soongsil.CoffeeChat.infra.email.EmailUtil;
 
 // @RestController
 // @RequiredArgsConstructor

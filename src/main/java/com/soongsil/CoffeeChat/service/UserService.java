@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
+import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_SMS_ERROR;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,6 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
 import com.soongsil.CoffeeChat.dto.MenteeResponse.*;
@@ -21,11 +21,12 @@ import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.global.exception.CustomException;
+import com.soongsil.CoffeeChat.global.security.dto.MobileUserDto;
+import com.soongsil.CoffeeChat.infra.sms.SmsUtil;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.security.dto.MobileUserDto;
-import com.soongsil.CoffeeChat.util.sms.SmsUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

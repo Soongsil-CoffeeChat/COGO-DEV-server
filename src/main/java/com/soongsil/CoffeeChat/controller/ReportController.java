@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.controller;
 
-import static com.soongsil.CoffeeChat.enums.RequestUri.REPORT_URI;
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.REPORT_URI;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soongsil.CoffeeChat.dto.ReportDto;
-import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2User;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ReportService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

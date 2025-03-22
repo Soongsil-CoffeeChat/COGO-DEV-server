@@ -1,14 +1,13 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.*;
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.*;
+import static com.soongsil.CoffeeChat.global.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MentorRequest.*;
 import com.soongsil.CoffeeChat.dto.MentorResponse.*;
@@ -17,6 +16,7 @@ import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.enums.ClubEnum;
 import com.soongsil.CoffeeChat.enums.PartEnum;
+import com.soongsil.CoffeeChat.global.exception.CustomException;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;

@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.PossibleDateConverter;
 import com.soongsil.CoffeeChat.dto.PossibleDateRequest.*;
 import com.soongsil.CoffeeChat.dto.PossibleDateResponse;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.global.exception.CustomException;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 

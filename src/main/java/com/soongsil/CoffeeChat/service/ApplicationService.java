@@ -1,13 +1,13 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.APPLICATION_NOT_FOUND;
-import static com.soongsil.CoffeeChat.controller.exception.enums.ApplicationErrorCode.INVALID_MATCH_STATUS;
-import static com.soongsil.CoffeeChat.controller.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
-import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.POSSIBLE_DATE_NOT_FOUND;
-import static com.soongsil.CoffeeChat.controller.exception.enums.PossibleDateErrorCode.PREEMPTED_POSSIBLE_DATE;
-import static com.soongsil.CoffeeChat.controller.exception.enums.UserErrorCode.USER_NOT_FOUND;
 import static com.soongsil.CoffeeChat.enums.ApplicationStatus.MATCHED;
 import static com.soongsil.CoffeeChat.enums.ApplicationStatus.UNMATCHED;
+import static com.soongsil.CoffeeChat.global.exception.enums.ApplicationErrorCode.APPLICATION_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.ApplicationErrorCode.INVALID_MATCH_STATUS;
+import static com.soongsil.CoffeeChat.global.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.PossibleDateErrorCode.POSSIBLE_DATE_NOT_FOUND;
+import static com.soongsil.CoffeeChat.global.exception.enums.PossibleDateErrorCode.PREEMPTED_POSSIBLE_DATE;
+import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.controller.exception.CustomException;
 import com.soongsil.CoffeeChat.dto.ApplicationConverter;
 import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse;
@@ -33,6 +32,7 @@ import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.entity.*;
 import com.soongsil.CoffeeChat.enums.ApplicationStatus;
+import com.soongsil.CoffeeChat.global.exception.CustomException;
 import com.soongsil.CoffeeChat.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;

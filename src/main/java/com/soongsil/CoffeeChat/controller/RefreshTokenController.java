@@ -5,11 +5,11 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.controller.handler.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
-import com.soongsil.CoffeeChat.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.security.oauth2.CustomOAuth2UserService;
+import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 
 import io.swagger.v3.oas.annotations.Operation;
