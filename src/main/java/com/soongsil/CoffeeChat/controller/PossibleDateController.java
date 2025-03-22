@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.dto.PossibleDateRequest.*;
 import com.soongsil.CoffeeChat.dto.PossibleDateResponse;
-import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.PossibleDateService;
 

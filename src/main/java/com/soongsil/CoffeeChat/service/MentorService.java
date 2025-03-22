@@ -1,22 +1,23 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.global.exception.enums.MentorErrorCode.MENTOR_NOT_FOUND;
-import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.dto.*;
-import com.soongsil.CoffeeChat.dto.MentorRequest.*;
-import com.soongsil.CoffeeChat.dto.MentorResponse.*;
+import com.soongsil.CoffeeChat.dto.MentorConverter;
+import com.soongsil.CoffeeChat.dto.MentorRequest.MentorIntroductionUpdateRequest;
+import com.soongsil.CoffeeChat.dto.MentorRequest.MentorUpdateRequest;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorGetUpdateDetailResponse;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorIntroductionGetUpdateResponse;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
 import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.entity.enums.PartEnum;
-import com.soongsil.CoffeeChat.global.exception.CustomException;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
@@ -46,11 +47,7 @@ public class MentorService {
     private User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
-                .orElseThrow(
-                        () ->
-                                new CustomException(
-                                        USER_NOT_FOUND.getHttpStatusCode(),
-                                        USER_NOT_FOUND.getErrorMessage()));
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
     public MentorGetUpdateDetailResponse getMentorDtoById(Long mentorId) {
@@ -58,11 +55,7 @@ public class MentorService {
         Mentor findMentor =
                 mentorRepository
                         .findById(mentorId)
-                        .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                MENTOR_NOT_FOUND.getHttpStatusCode(),
-                                                MENTOR_NOT_FOUND.getErrorMessage()));
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
         return MentorConverter.toMentorGetUpdateDetailDto(
                 findMentor, userRepository.findByMentor(findMentor));
     }
@@ -94,19 +87,11 @@ public class MentorService {
         User findUser =
                 userRepository
                         .findByUsername(userName)
-                        .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                USER_NOT_FOUND.getHttpStatusCode(),
-                                                USER_NOT_FOUND.getErrorMessage()));
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
         Introduction findMentorIntroduction =
                 mentorRepository
                         .findById(findUser.getMentor().getId())
-                        .orElseThrow(
-                                () ->
-                                        new CustomException(
-                                                MENTOR_NOT_FOUND.getHttpStatusCode(),
-                                                MENTOR_NOT_FOUND.getErrorMessage()))
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND))
                         .getIntroduction();
 
         findMentorIntroduction.updateIntroduction(dto);

@@ -12,7 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
 
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {

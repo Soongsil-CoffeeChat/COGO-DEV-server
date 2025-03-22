@@ -7,9 +7,13 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -47,7 +51,23 @@ public class JwtUtil {
                 .get("role", String.class);
     }
 
-    public boolean isExpired(String token) {
+    // fun validateToken(token: String): Boolean {
+    //        try {
+    //            return Jwts.parserBuilder().setSigningKey(this.key).build()
+    //                .parseClaimsJws(token).body.expiration.after(Date())
+    //        } catch (e: SignatureException) {
+    //            throw GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN)
+    //        } catch (e: MalformedJwtException) {
+    //            throw GlobalException(GlobalErrorCode.JWT_MALFORMED_TOKEN)
+    //        } catch (e: ExpiredJwtException) {
+    //            throw GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN)
+    //        } catch (e: UnsupportedJwtException) {
+    //            throw GlobalException(GlobalErrorCode.JWT_UNSUPPORTED_TOKEN)
+    //        } catch (e: IllegalArgumentException) {
+    //            throw GlobalException(GlobalErrorCode.INTERNAL_SERVER_ERROR)
+    //        }
+    //    }
+    public boolean validateToken(String token) {
         try {
             return Jwts.parser()
                     .verifyWith(secretKey)
@@ -57,20 +77,13 @@ public class JwtUtil {
                     .getExpiration()
                     .before(new Date());
         } catch (ExpiredJwtException e) {
-            System.out.println("Token is expired: " + e.getMessage());
-            return true;
+            throw new GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
-            System.out.println("Malformed token: " + e.getMessage());
-            return false;
+            throw new GlobalException(GlobalErrorCode.JWT_MALFORMED_TOKEN);
         } catch (UnsupportedJwtException e) {
-            System.out.println("Unsupported token: " + e.getMessage());
-            return false;
+            throw new GlobalException(GlobalErrorCode.JWT_UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            System.out.println("Illegal argument token: " + e.getMessage());
-            return false;
-        } catch (Exception e) {
-            System.out.println("Invalid token: " + e.getMessage());
-            return false;
+            throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
         }
     }
 

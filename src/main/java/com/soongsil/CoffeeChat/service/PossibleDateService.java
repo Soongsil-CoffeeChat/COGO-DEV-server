@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,12 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.dto.PossibleDateConverter;
-import com.soongsil.CoffeeChat.dto.PossibleDateRequest.*;
+import com.soongsil.CoffeeChat.dto.PossibleDateRequest.PossibleDateCreateRequest;
 import com.soongsil.CoffeeChat.dto.PossibleDateResponse;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.PossibleDate;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.global.exception.CustomException;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 
@@ -33,11 +32,7 @@ public class PossibleDateService {
     private User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
-                .orElseThrow(
-                        () ->
-                                new CustomException(
-                                        USER_NOT_FOUND.getHttpStatusCode(),
-                                        USER_NOT_FOUND.getErrorMessage()));
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional

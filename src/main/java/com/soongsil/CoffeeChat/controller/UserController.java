@@ -18,7 +18,7 @@ import com.soongsil.CoffeeChat.dto.UserRequest;
 import com.soongsil.CoffeeChat.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.dto.UserResponse.UserInfoResponse;
-import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.service.UserService;

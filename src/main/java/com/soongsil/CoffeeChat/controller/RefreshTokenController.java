@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.dto.ReissueDto;
-import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
 import com.soongsil.CoffeeChat.service.RefreshTokenService;
 
@@ -22,9 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "REFRESHTOKEN", description = "리프레쉬 토큰 관련 api")
 @RequiredArgsConstructor
 public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급 및 2차회원가입 컨트롤러
-    private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
-
     private final CustomOAuth2UserService oAuth2UserService;
 
     @PostMapping("/reissue")
@@ -54,7 +51,8 @@ public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급
             responseCode = "200",
             description = "유효한 refreshToken 요청시 body로 accessToken, refreshToken 반환")
     public ResponseEntity<ApiResponseGenerator<Map<String, String>>>
-            reissueAccessTokenWithRefreshToken(@RequestHeader String refreshToken) {
+            reissueAccessTokenWithRefreshToken(
+                    @RequestHeader(required = true) String refreshToken) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponseGenerator.onSuccessOK(

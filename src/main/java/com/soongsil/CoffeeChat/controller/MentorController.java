@@ -8,28 +8,29 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.dto.MentorRequest.*;
-import com.soongsil.CoffeeChat.dto.MentorResponse.*;
+import com.soongsil.CoffeeChat.dto.MentorRequest.MentorIntroductionUpdateRequest;
+import com.soongsil.CoffeeChat.dto.MentorRequest.MentorUpdateRequest;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorGetUpdateDetailResponse;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorIntroductionGetUpdateResponse;
+import com.soongsil.CoffeeChat.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.entity.enums.PartEnum;
-import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.MentorService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RequestMapping(MENTOR_URI)
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "MENTOR", description = "멘토 관련 api")
 public class MentorController {
 
     private final MentorService mentorService;
-
-    public MentorController(MentorService mentorService) {
-        this.mentorService = mentorService;
-    }
 
     private String getUserNameByAuthentication(Authentication authentication) throws Exception {
         CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();

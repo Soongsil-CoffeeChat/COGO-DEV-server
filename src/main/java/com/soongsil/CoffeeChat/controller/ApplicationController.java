@@ -13,7 +13,7 @@ import com.soongsil.CoffeeChat.dto.ApplicationRequest.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
-import com.soongsil.CoffeeChat.global.exception.handler.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.ApplicationService;
 

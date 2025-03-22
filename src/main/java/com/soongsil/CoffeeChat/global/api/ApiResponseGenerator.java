@@ -1,11 +1,10 @@
-package com.soongsil.CoffeeChat.global.exception.handler;
+package com.soongsil.CoffeeChat.global.api;
 
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.soongsil.CoffeeChat.global.exception.CustomException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,18 +40,5 @@ public class ApiResponseGenerator<T> {
     public static <T> ApiResponseGenerator<T> onSuccessCREATED(T content) {
         return new ApiResponseGenerator<>(
                 String.valueOf(HttpStatus.CREATED.value()), HttpStatus.CREATED.name(), content);
-    }
-
-    public static <T> ApiResponseGenerator<T> onFailure(CustomException customException) {
-        return new ApiResponseGenerator<>(
-                customException.getErrorCode().toString(), customException.getErrorMessage(), null);
-    }
-
-    public static <T> ApiResponseGenerator<T> onFailure(
-            CustomException customException, T content) {
-        return new ApiResponseGenerator<>(
-                customException.getErrorCode().toString(),
-                customException.getErrorMessage(),
-                content);
     }
 }

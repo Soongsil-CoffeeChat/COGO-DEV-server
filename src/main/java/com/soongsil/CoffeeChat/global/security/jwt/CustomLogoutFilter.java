@@ -70,7 +70,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         // expired check
         try {
-            jwtUtil.isExpired(refresh);
+            jwtUtil.validateToken(refresh);
         } catch (ExpiredJwtException e) {
 
             // response status code 400 (만료된 토큰)

@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.global.security.oauth2;
 
-import static com.soongsil.CoffeeChat.global.exception.enums.RefreshErrorCode.INVALID_TOKEN;
-
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,8 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.global.exception.CustomException;
-import com.soongsil.CoffeeChat.global.security.dto.*;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.dto.MobileUserDto;
 import com.soongsil.CoffeeChat.global.security.dto.UserDto;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.GoogleResponse;
@@ -161,13 +159,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                         .build();
             } else {
                 log.error("===== Invalid token info ===== " + tokenInfo);
-                throw new CustomException(
-                        INVALID_TOKEN.getHttpStatusCode(), INVALID_TOKEN.getErrorMessage());
+                throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
             }
         } catch (HttpClientErrorException e) {
             log.error("===== Error verifying Google token ===== " + e.getResponseBodyAsString());
-            throw new CustomException(
-                    INVALID_TOKEN.getHttpStatusCode(), e.getResponseBodyAsString());
+            throw new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR);
         }
     }
 }

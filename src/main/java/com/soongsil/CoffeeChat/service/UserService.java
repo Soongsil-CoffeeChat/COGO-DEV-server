@@ -1,14 +1,12 @@
 package com.soongsil.CoffeeChat.service;
 
-import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_NOT_FOUND;
-import static com.soongsil.CoffeeChat.global.exception.enums.UserErrorCode.USER_SMS_ERROR;
+import static com.soongsil.CoffeeChat.global.exception.GlobalErrorCode.USER_SMS_ERROR;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.dto.*;
 import com.soongsil.CoffeeChat.dto.MenteeRequest.*;
@@ -21,7 +19,8 @@ import com.soongsil.CoffeeChat.entity.Introduction;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
 import com.soongsil.CoffeeChat.entity.User;
-import com.soongsil.CoffeeChat.global.exception.CustomException;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.dto.MobileUserDto;
 import com.soongsil.CoffeeChat.infra.sms.SmsUtil;
 import com.soongsil.CoffeeChat.repository.MenteeRepository;
@@ -34,20 +33,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class UserService {
     private final MentorRepository mentorRepository;
     private final MenteeRepository menteeRepository;
     private final UserRepository userRepository;
     private final SmsUtil smsUtil;
 
-    private User findUserByUsername(String username) {
+    public User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
-                .orElseThrow(
-                        () ->
-                                new CustomException(
-                                        USER_NOT_FOUND.getHttpStatusCode(),
-                                        USER_NOT_FOUND.getErrorMessage()));
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
     @Transactional
@@ -59,8 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public MentorInfoResponse saveMentorInformation(String username, MentorJoinRequest dto)
-            throws Exception {
+    public MentorInfoResponse saveMentorInformation(String username, MentorJoinRequest dto) {
         User user = findUserByUsername(username);
         log.info("[*] User name: " + user.getUsername());
         log.info("[*] User Role before: " + user.getRole());
@@ -99,11 +94,11 @@ public class UserService {
             response.put("message", "Verification code sent successfully");
             return response;
         } else {
-            throw new CustomException(
-                    USER_SMS_ERROR.getHttpStatusCode(), USER_SMS_ERROR.getErrorMessage());
+            throw new GlobalException(USER_SMS_ERROR);
         }
     }
 
+    @Transactional
     public PhoneNumUpdateDto saveUserPhone(String phone, String username) {
         User user = findUserByUsername(username);
         user.setPhoneNum(phone);
@@ -115,12 +110,14 @@ public class UserService {
                 .build();
     }
 
+    @Transactional
     public UserInfoResponse saveUserEmail(String email, String username) {
         User user = findUserByUsername(username);
         user.setEmail(email);
         return UserConverter.toResponse(userRepository.save(user));
     }
 
+    @Transactional
     public UserInfoResponse changeUserInfo(UserUpdateRequest dto, String username) {
         User user = findUserByUsername(username);
         user.setEmail(dto.getEmail());
@@ -128,13 +125,14 @@ public class UserService {
         return UserConverter.toResponse(userRepository.save(user));
     }
 
-    public UserRequest.UserGetRequest findUserInfo(String username) {
+    public UserGetRequest findUserInfo(String username) {
         User user = findUserByUsername(username);
         // TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨
         return userRepository.findUserInfoByUsername(username);
         // return UserGetUpdateDto.toDto(user);
     }
 
+    @Transactional
     public void deleteUser(String username) {
         User user = findUserByUsername(username);
         userRepository.delete(user);

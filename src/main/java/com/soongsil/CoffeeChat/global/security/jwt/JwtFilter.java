@@ -7,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -64,7 +63,7 @@ public class JwtFilter extends OncePerRequestFilter { // 요청당 한번만 실
         }
 
         // 토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(accessToken)) {
+        if (jwtUtil.validateToken(accessToken)) {
             System.out.println("token expired");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
             response.setContentType("application/json");
