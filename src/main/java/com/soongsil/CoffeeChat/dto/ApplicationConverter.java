@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.dto;
 
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationGetResponse;
+import com.soongsil.CoffeeChat.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.entity.Application;
 import com.soongsil.CoffeeChat.entity.Mentee;
 import com.soongsil.CoffeeChat.entity.Mentor;
@@ -40,6 +41,12 @@ public class ApplicationConverter {
                 .applicationDate(application.getPossibleDate().getDate())
                 .applicationStartTime(application.getPossibleDate().getStartTime())
                 .applicationEndTime(application.getPossibleDate().getEndTime())
+                .build();
+    }
+
+    public static ApplicationMatchResponse toResponse(Long applicationId) {
+        return ApplicationMatchResponse.builder()
+                .applicationId(applicationId)
                 .build();
     }
 }

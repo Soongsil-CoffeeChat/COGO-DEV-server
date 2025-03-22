@@ -187,8 +187,7 @@ public class ApplicationService {
                         .orElseThrow(
                                 () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
 
-        ApplicationMatchResponse responseDto =
-                ApplicationMatchResponse.builder().applicationId(applicationId).build();
+        ApplicationMatchResponse responseDto = ApplicationConverter.toResponse(applicationId);
         PossibleDate matchedPossibleDate = findApplication.getPossibleDate();
 
         // 가능시간 비활성화

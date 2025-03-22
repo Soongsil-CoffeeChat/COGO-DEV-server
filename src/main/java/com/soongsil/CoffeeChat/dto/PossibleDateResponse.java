@@ -27,4 +27,23 @@ public class PossibleDateResponse {
 
         private boolean isActive;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PossibleDateDetailResponse {
+        private Long possibleDateId;
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDate date;
+
+        @Schema(type = "string", pattern = "hh:mm:ss")
+        private LocalTime startTime;
+
+        @Schema(type = "string", pattern = "hh:mm:ss")
+        private LocalTime endTime;
+
+        private boolean isActive;
+    }
 }

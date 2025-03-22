@@ -74,15 +74,7 @@ public class PossibleDateService {
                         possibleDate ->
                                 !possibleDate.getDate().isBefore(today)
                                         && !possibleDate.getDate().isAfter(twoWeeksLater))
-                .map(
-                        possibleDate ->
-                                PossibleDateCreateResponse.builder()
-                                        .date(possibleDate.getDate())
-                                        .startTime(possibleDate.getStartTime())
-                                        .endTime(possibleDate.getEndTime())
-                                        .possibleDateId(possibleDate.getId())
-                                        .isActive(possibleDate.isActive())
-                                        .build())
+                .map(PossibleDateConverter::toResponse)
                 .collect(Collectors.toList());
     }
 
