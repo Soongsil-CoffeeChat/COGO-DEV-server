@@ -12,7 +12,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponse;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -29,8 +29,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        ApiResponseGenerator<Object> apiResponse =
-                ApiResponseGenerator.onSuccess(HttpStatus.UNAUTHORIZED, "인증이 필요합니다.", null);
+        ApiResponse<Object> apiResponse =
+                ApiResponse.onSuccess(HttpStatus.UNAUTHORIZED, "인증이 필요합니다.", null);
 
         objectMapper.writeValue(response.getWriter(), apiResponse);
     }

@@ -13,7 +13,7 @@ import lombok.NonNull;
 @Getter
 @JsonPropertyOrder({"statusCode", "message", "content"})
 @AllArgsConstructor
-public class ApiResponseGenerator<T> {
+public class ApiResponse<T> {
 
     @JsonProperty("statusCode")
     @NonNull
@@ -27,18 +27,17 @@ public class ApiResponseGenerator<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final T content;
 
-    public static <T> ApiResponseGenerator<T> onSuccess(
-            HttpStatus httpStatus, String message, T content) {
-        return new ApiResponseGenerator<>(String.valueOf(httpStatus.value()), message, content);
+    public static <T> ApiResponse<T> onSuccess(HttpStatus httpStatus, String message, T content) {
+        return new ApiResponse<>(String.valueOf(httpStatus.value()), message, content);
     }
 
-    public static <T> ApiResponseGenerator<T> onSuccessOK(T content) {
-        return new ApiResponseGenerator<>(
+    public static <T> ApiResponse<T> onSuccessOK(T content) {
+        return new ApiResponse<>(
                 String.valueOf(HttpStatus.OK.value()), HttpStatus.OK.name(), content);
     }
 
-    public static <T> ApiResponseGenerator<T> onSuccessCREATED(T content) {
-        return new ApiResponseGenerator<>(
+    public static <T> ApiResponse<T> onSuccessCREATED(T content) {
+        return new ApiResponse<>(
                 String.valueOf(HttpStatus.CREATED.value()), HttpStatus.CREATED.name(), content);
     }
 }

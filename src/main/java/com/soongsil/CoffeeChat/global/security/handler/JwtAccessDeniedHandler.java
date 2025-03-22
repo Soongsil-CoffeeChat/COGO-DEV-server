@@ -12,7 +12,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponse;
 
 @Component
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
@@ -29,8 +29,8 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        ApiResponseGenerator<Object> apiResponse =
-                ApiResponseGenerator.onSuccess(HttpStatus.FORBIDDEN, "권한이 없습니다.", null);
+        ApiResponse<Object> apiResponse =
+                ApiResponse.onSuccess(HttpStatus.FORBIDDEN, "권한이 없습니다.", null);
 
         objectMapper.writeValue(response.getWriter(), apiResponse);
     }

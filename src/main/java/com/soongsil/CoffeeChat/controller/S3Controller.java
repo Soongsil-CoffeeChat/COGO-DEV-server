@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.soongsil.CoffeeChat.global.api.ApiResponseGenerator;
+import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import com.soongsil.CoffeeChat.service.S3Service;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -37,8 +36,10 @@ public class S3Controller {
 
     @PostMapping(value = "/{directory}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "사진저장")
-    @ApiResponse(responseCode = "201", description = "사진 저장됨")
-    public ResponseEntity<ApiResponseGenerator<Map<String, String>>> saveImageInS3(
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "201",
+            description = "사진 저장됨")
+    public ResponseEntity<ApiResponse<Map<String, String>>> saveImageInS3(
             Authentication authentication,
             @RequestPart MultipartFile image,
             @PathVariable("directory") String directory)
@@ -46,6 +47,6 @@ public class S3Controller {
         String savedUrl =
                 s3Service.saveFile(directory, getUserNameByAuthentication(authentication), image);
         return ResponseEntity.created(URI.create(savedUrl))
-                .body(ApiResponseGenerator.onSuccessCREATED(Map.of("savedUrl", savedUrl)));
+                .body(ApiResponse.onSuccessCREATED(Map.of("savedUrl", savedUrl)));
     }
 }
