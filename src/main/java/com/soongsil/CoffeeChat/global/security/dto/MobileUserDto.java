@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.global.security.dto;
 
-import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.domain.entity.User;
 
 import lombok.Builder;
 import lombok.Getter;

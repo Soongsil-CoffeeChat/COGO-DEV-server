@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.soongsil.CoffeeChat.dto.MobileTokenResponseDTO;
-import com.soongsil.CoffeeChat.entity.User;
+import com.soongsil.CoffeeChat.domain.dto.MobileTokenResponseDTO;
+import com.soongsil.CoffeeChat.domain.entity.User;
+import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
+import com.soongsil.CoffeeChat.domain.service.RefreshTokenService;
+import com.soongsil.CoffeeChat.domain.service.UserService;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.dto.MobileUserDto;
@@ -24,9 +27,6 @@ import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.KakaoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.NaverResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.service.RefreshTokenService;
-import com.soongsil.CoffeeChat.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

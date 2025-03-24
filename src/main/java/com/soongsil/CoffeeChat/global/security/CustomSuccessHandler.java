@@ -13,10 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.soongsil.CoffeeChat.entity.Refresh;
+import com.soongsil.CoffeeChat.domain.entity.Refresh;
+import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
-import com.soongsil.CoffeeChat.repository.RefreshRepository;
 
 @Component
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
