@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.domain.service;
+package com.soongsil.CoffeeChat.infra.aws.s3.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.soongsil.CoffeeChat.domain.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
