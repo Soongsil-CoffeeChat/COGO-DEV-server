@@ -10,7 +10,6 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -45,11 +44,11 @@ public class SecurityConfig {
         RoleHierarchyImpl hierarchy = new RoleHierarchyImpl();
         hierarchy.setHierarchy(
                 """
-                    ROLE_ADMIN > ROLE_MENTEE
-                    ROLE_ADMIN > ROLE_MENTOR
-                    ROLE_MENTEE > ROLE_USER
-                    ROLE_MENTOR > ROLE_USER
-                """);
+                            ROLE_ADMIN > ROLE_MENTEE
+                            ROLE_ADMIN > ROLE_MENTOR
+                            ROLE_MENTEE > ROLE_USER
+                            ROLE_MENTOR > ROLE_USER
+                        """);
         return hierarchy;
     }
 
@@ -108,11 +107,16 @@ public class SecurityConfig {
                                 auth.requestMatchers(HttpMethod.OPTIONS, "/**")
                                         .permitAll()
                                         .requestMatchers(
+                                                "/v3/api-docs/**",
+                                                "/swagger-ui/**",
+                                                "/swagger-resources/**",
                                                 "/health-check",
                                                 "/",
                                                 "/auth/reissue/**",
                                                 "/security-check",
                                                 "/reissue")
+                                        .permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/admin/issue")
                                         .permitAll()
                                         .requestMatchers(
                                                 HttpMethod.GET, "/api/v2/mentors/{mentorId}/**")
@@ -140,11 +144,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web ->
-                web.ignoring()
-                        .requestMatchers(
-                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
-    }
+    //    @Bean
+    //    public WebSecurityCustomizer webSecurityCustomizer() {
+    //        return web ->
+    //                web.ignoring()
+    //                        .requestMatchers(
+    //                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+    //    }
 }

@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.soongsil.CoffeeChat.infra.aws.s3.service.S3Service;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+import com.soongsil.CoffeeChat.infra.aws.s3.service.S3Service;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

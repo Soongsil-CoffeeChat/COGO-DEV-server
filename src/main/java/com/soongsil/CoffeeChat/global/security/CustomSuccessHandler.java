@@ -3,11 +3,9 @@ package com.soongsil.CoffeeChat.global.security;
 import java.io.IOException;
 import java.util.Date;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -18,6 +16,8 @@ import com.soongsil.CoffeeChat.domain.entity.Refresh;
 import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

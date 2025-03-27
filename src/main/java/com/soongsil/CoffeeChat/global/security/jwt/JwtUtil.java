@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
+
+import io.jsonwebtoken.*;
 
 // JWT : username, role, 생성일, 만료일 포함, 0.12.3 버전 사용
 // username확인, role확인, 만료일 확인
@@ -39,9 +40,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            return getClaims(token)
-                    .getExpiration()
-                    .before(new Date());
+            return getClaims(token).getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             throw new GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
@@ -79,5 +78,4 @@ public class JwtUtil {
     public Claims getClaims(String token) {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     }
-
 }

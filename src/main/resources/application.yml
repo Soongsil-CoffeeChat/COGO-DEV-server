@@ -105,3 +105,6 @@ coolsms:
   from: ${SMS_FROM}
   api-key: ${SMS_KEY}
   api-secret: ${SMS_SECRET}
+
+admin:
+  password: ${ADMIN_PASSWORD}
