@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.entity.PossibleDate;
-import com.soongsil.CoffeeChat.repository.MenteeRepository;
-import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
-import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
-import com.soongsil.CoffeeChat.service.ApplicationService;
+import com.soongsil.CoffeeChat.domain.entity.PossibleDate;
+import com.soongsil.CoffeeChat.domain.repository.MenteeRepository;
+import com.soongsil.CoffeeChat.domain.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.domain.repository.PossibleDate.PossibleDateRepository;
+import com.soongsil.CoffeeChat.domain.service.ApplicationService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

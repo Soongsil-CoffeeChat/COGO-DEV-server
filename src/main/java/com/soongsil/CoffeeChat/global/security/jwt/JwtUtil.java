@@ -15,10 +15,7 @@ import org.springframework.stereotype.Component;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 
 // JWT : username, role, 생성일, 만료일 포함, 0.12.3 버전 사용
 // username확인, role확인, 만료일 확인
@@ -34,48 +31,16 @@ public class JwtUtil {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("username", String.class);
+        return getClaims(token).get("username", String.class);
     }
 
     public String getRole(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("role", String.class);
+        return getClaims(token).get("role", String.class);
     }
 
-    // fun validateToken(token: String): Boolean {
-    //        try {
-    //            return Jwts.parserBuilder().setSigningKey(this.key).build()
-    //                .parseClaimsJws(token).body.expiration.after(Date())
-    //        } catch (e: SignatureException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN)
-    //        } catch (e: MalformedJwtException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_MALFORMED_TOKEN)
-    //        } catch (e: ExpiredJwtException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN)
-    //        } catch (e: UnsupportedJwtException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_UNSUPPORTED_TOKEN)
-    //        } catch (e: IllegalArgumentException) {
-    //            throw GlobalException(GlobalErrorCode.INTERNAL_SERVER_ERROR)
-    //        }
-    //    }
     public boolean validateToken(String token) {
         try {
-            return Jwts.parser()
-                    .verifyWith(secretKey)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload()
-                    .getExpiration()
-                    .before(new Date());
+            return getClaims(token).getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             throw new GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
@@ -88,12 +53,7 @@ public class JwtUtil {
     }
 
     public String getCategory(String token) { // 토큰의 카테고리 꺼내는 로직 추가
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("category", String.class);
+        return getClaims(token).get("category", String.class);
     }
 
     public String createJwt(String category, String username, String role, Long expiredMs) { // 토큰생성
@@ -113,5 +73,9 @@ public class JwtUtil {
             return null;
         }
         return token.substring(7);
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
     }
 }

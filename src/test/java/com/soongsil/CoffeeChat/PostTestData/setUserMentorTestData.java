@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
-import com.soongsil.CoffeeChat.repository.Mentor.MentorRepository;
-import com.soongsil.CoffeeChat.repository.PossibleDate.PossibleDateRepository;
-import com.soongsil.CoffeeChat.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.service.UserService;
+import com.soongsil.CoffeeChat.domain.repository.Mentor.MentorRepository;
+import com.soongsil.CoffeeChat.domain.repository.PossibleDate.PossibleDateRepository;
+import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
+import com.soongsil.CoffeeChat.domain.service.UserService;
 
 @SpringBootTest
 @Transactional

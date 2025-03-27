@@ -38,6 +38,9 @@ public enum GlobalErrorCode {
 
     // Oauth 관련
     OAUTH_SERVICE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH-001", "OAuth 서비스 측에서 에러가 발생했습니다."),
+
+    // 어드민 관련
+    ADMIN_INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "ADMIN_400", "잘못된 비밀번호입니다"),
     ;
 
     private final HttpStatus httpStatus;

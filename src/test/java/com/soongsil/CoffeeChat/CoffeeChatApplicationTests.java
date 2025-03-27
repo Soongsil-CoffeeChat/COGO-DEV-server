@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.config.QueryDSLConfig;
+import com.soongsil.CoffeeChat.global.config.QueryDSLConfig;
 
 @SpringBootTest
 @Transactional

@@ -6,7 +6,7 @@
 // import com.soongsil.CoffeeChat.config.queryDSL.QueryDSLConfig;
 // import com.soongsil.CoffeeChat.entity.QMentor;
 // import com.soongsil.CoffeeChat.entity.QUser;
-// import com.soongsil.CoffeeChat.entity.User;
+// import com.soongsil.CoffeeChat.domain.entity.User;
 // import jakarta.persistence.EntityManager;
 //
 // import jakarta.transaction.Transactional;
