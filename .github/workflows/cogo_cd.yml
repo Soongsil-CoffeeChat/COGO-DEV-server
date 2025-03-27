@@ -72,6 +72,7 @@ jobs:
           -e SMS_KEY=${{ secrets.SMS_KEY }} \
           -e SMS_SECRET=${{ secrets.SMS_SECRET }} \
           -e SMS_FROM=${{ secrets.SMS_FROM }} \
+          -e ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }} \
           ${{ secrets.DOCKERHUB_USERNAME }}/cogoserver
           sleep 5
           sudo docker ps -a
