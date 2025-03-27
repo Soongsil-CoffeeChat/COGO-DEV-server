@@ -2,11 +2,14 @@ package com.soongsil.CoffeeChat.global.security.jwt;
 
 import java.io.IOException;
 
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,12 +22,9 @@ import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter { // 요청당 한번만 실행되면 됨
     private final JwtUtil jwtUtil; // JWT검증 위하여 주입
-
-    public JwtFilter(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
 
     @Override
     protected void doFilterInternal(
@@ -62,17 +62,9 @@ public class JwtFilter extends OncePerRequestFilter { // 요청당 한번만 실
             return;
         }
 
-        // 토큰 소멸 시간 검증
-        if (jwtUtil.validateToken(accessToken)) {
-            System.out.println("token expired");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 에러 반환
-            response.setContentType("application/json");
-            response.getWriter()
-                    .write("{\"error\": \"Access token expired\"}"); // 응답 json에 error : access
-            // token expired메시지 작성
-            filterChain.doFilter(request, response);
-            return;
-        }
+        // 토큰 유효성 검증
+        if (jwtUtil.validateToken(accessToken))
+            throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
 
         // 토큰에서 username과 role 획득
         String username = jwtUtil.getUsername(accessToken);
