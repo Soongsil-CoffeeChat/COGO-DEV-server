@@ -51,22 +51,6 @@ public class JwtUtil {
                 .get("role", String.class);
     }
 
-    // fun validateToken(token: String): Boolean {
-    //        try {
-    //            return Jwts.parserBuilder().setSigningKey(this.key).build()
-    //                .parseClaimsJws(token).body.expiration.after(Date())
-    //        } catch (e: SignatureException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN)
-    //        } catch (e: MalformedJwtException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_MALFORMED_TOKEN)
-    //        } catch (e: ExpiredJwtException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN)
-    //        } catch (e: UnsupportedJwtException) {
-    //            throw GlobalException(GlobalErrorCode.JWT_UNSUPPORTED_TOKEN)
-    //        } catch (e: IllegalArgumentException) {
-    //            throw GlobalException(GlobalErrorCode.INTERNAL_SERVER_ERROR)
-    //        }
-    //    }
     public boolean validateToken(String token) {
         try {
             return Jwts.parser()

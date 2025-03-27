@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -19,14 +20,10 @@ import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
 @Component
+@RequiredArgsConstructor
 public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
-
-    public CustomSuccessHandler(JwtUtil jwtUtil, RefreshRepository refreshRepository) {
-        this.jwtUtil = jwtUtil;
-        this.refreshRepository = refreshRepository;
-    }
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
         Date date = new Date(System.currentTimeMillis() + expiredMs);
@@ -42,7 +39,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
         String username = customUserDetails.getUsername();
