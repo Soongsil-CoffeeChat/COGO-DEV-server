@@ -48,7 +48,6 @@ public class ApplicationResponse {
     }
 
     @Getter
-    @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
