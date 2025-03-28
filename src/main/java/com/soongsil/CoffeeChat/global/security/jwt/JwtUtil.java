@@ -40,7 +40,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            return getClaims(token).getExpiration().before(new Date());
+            return getClaims(token).getExpiration().after(new Date());
         } catch (ExpiredJwtException e) {
             throw new GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {

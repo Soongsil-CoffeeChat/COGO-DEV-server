@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.global.security;
+package com.soongsil.CoffeeChat.global.security.handler;
 
 import java.io.IOException;
 import java.util.Date;
