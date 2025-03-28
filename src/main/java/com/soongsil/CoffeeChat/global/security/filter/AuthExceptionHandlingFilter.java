@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class AuthExceptionHandlingFilter extends OncePerRequestFilter {
-    private final ObjectMapper mapper;
 
     @Override
     protected void doFilterInternal(
@@ -37,6 +36,7 @@ public class AuthExceptionHandlingFilter extends OncePerRequestFilter {
 
             ErrorResponse errorResponse = new ErrorResponse(code);
 
+            ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getOutputStream(), errorResponse);
         }
     }

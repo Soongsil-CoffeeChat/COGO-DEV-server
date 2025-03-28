@@ -37,7 +37,7 @@ public enum GlobalErrorCode {
     JWT_UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "JWT_004", "지원하지 않는 형식의 토큰입니다."),
 
     // Oauth 관련
-    OAUTH_SERVICE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH-001", "OAuth 서비스 측에서 에러가 발생했습니다."),
+    OAUTH_SERVICE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH_500", "OAuth 서비스 측에서 에러가 발생했습니다."),
 
     // 어드민 관련
     ADMIN_INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "ADMIN_400", "잘못된 비밀번호입니다"),

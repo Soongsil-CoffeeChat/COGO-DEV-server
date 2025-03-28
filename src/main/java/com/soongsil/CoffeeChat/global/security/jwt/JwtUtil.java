@@ -16,6 +16,7 @@ import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 
 // JWT : username, role, 생성일, 만료일 포함, 0.12.3 버전 사용
 // username확인, role확인, 만료일 확인
@@ -38,16 +39,17 @@ public class JwtUtil {
         return getClaims(token).get("role", String.class);
     }
 
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
-            return getClaims(token).getExpiration().after(new Date());
+            if (getClaims(token).getExpiration().before(new Date()))
+                throw new GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN);
         } catch (ExpiredJwtException e) {
             throw new GlobalException(GlobalErrorCode.JWT_EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
             throw new GlobalException(GlobalErrorCode.JWT_MALFORMED_TOKEN);
         } catch (UnsupportedJwtException e) {
             throw new GlobalException(GlobalErrorCode.JWT_UNSUPPORTED_TOKEN);
-        } catch (IllegalArgumentException e) {
+        } catch (SignatureException | IllegalArgumentException e) {
             throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
         }
     }

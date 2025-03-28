@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.global.config;
+package com.soongsil.CoffeeChat.global.security;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,8 +11,8 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -141,8 +141,9 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(
                         new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
-                .addFilterAfter(
-                        new JwtAuthenticationFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtUtil),
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authExceptionHandlingFilter, JwtAuthenticationFilter.class);
         return http.build();
     }

@@ -12,13 +12,13 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.soongsil.CoffeeChat.global.exception.ErrorResponse;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void commence(
@@ -31,6 +31,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
 
         ErrorResponse errorResponse = new ErrorResponse(GlobalErrorCode.UNAUTHORIZED);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }
