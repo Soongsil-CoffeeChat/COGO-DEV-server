@@ -92,7 +92,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public Map<String, String> getSmsCode(String to) {
         Map<String, String> response = new HashMap<>();
-        String result = smsUtil.sendOne(to);
+        String result = smsUtil.send2FACode(to);
         if (result != null) {
             response.put("verificationCode", result);
             response.put("message", "Verification code sent successfully");

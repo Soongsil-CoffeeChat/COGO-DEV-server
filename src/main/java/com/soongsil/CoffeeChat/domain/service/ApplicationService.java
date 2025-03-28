@@ -136,12 +136,13 @@ public class ApplicationService {
         switch (decision) {
             case "reject" -> {
                 application.rejectApplication();
+                smsUtil.sendRejectCogoMessage(application);
                 return ApplicationConverter.toResponse(
                         applicationId, application.getAccept().name());
             }
             case "accept" -> {
                 application.acceptApplication();
-                smsUtil.sendCogo(application);
+                smsUtil.sendAcceptCogoMessage(application);
                 rejectUnmatchedApplications(application);
                 return ApplicationConverter.toResponse(
                         applicationId, application.getAccept().name());
