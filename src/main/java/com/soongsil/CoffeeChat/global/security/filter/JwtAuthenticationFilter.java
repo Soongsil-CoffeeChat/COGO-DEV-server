@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.global.security.jwt;
+package com.soongsil.CoffeeChat.global.security.filter;
 
 import java.io.IOException;
 
@@ -12,9 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
-import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.dto.UserDto;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter { // 요청당 한번만 실행되면 됨
+public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당 한번만 실행되면 됨
     private final JwtUtil jwtUtil; // JWT검증 위하여 주입
 
     @Override
@@ -40,8 +39,7 @@ public class JwtFilter extends OncePerRequestFilter { // 요청당 한번만 실
         }
 
         // 토큰 유효성 검증
-        if (jwtUtil.validateToken(accessToken))
-            throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
+        jwtUtil.validateToken(accessToken);
 
         // 토큰에서 username과 role 획득
         String username = jwtUtil.getUsername(accessToken);

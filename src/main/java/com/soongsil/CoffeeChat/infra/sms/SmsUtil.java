@@ -2,34 +2,20 @@ package com.soongsil.CoffeeChat.infra.sms;
 
 import java.util.Random;
 
-import jakarta.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import net.nurigo.sdk.NurigoApp;
+import com.soongsil.CoffeeChat.domain.entity.Application;
+
+import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @Component
+@RequiredArgsConstructor
 public class SmsUtil {
-    @Value("${coolsms.api-key}")
-    private String smsKey;
-
-    @Value("${coolsms.api-secret}")
-    private String smsSecret;
-
-    @Value("${coolsms.from}")
-    private String from;
-
-    private DefaultMessageService messageService;
-
-    @PostConstruct
-    private void init() {
-        this.messageService =
-                NurigoApp.INSTANCE.initialize(smsKey, smsSecret, "https://api.coolsms.co.kr");
-    }
+    private final DefaultMessageService messageService;
+    private final String from;
 
     // 단일 메시지 발송 예제
     public String sendOne(String to) {
@@ -56,14 +42,18 @@ public class SmsUtil {
         return verificationCode;
     }
 
-    public String sendCogo(String menteePhoneNum, String mentorPhoneNum) {
-        Message message1 = new Message();
+    public String sendCogo(Application application) {
+        String menteePhoneNum = application.getMentee().getUser().getPhoneNum();
+        String mentorPhoneNum = application.getMentor().getUser().getPhoneNum();
+
         // 전송메시지 생성
+        Message message1 = new Message();
         message1.setFrom(from);
         message1.setTo(menteePhoneNum);
         message1.setText("[COGO] 멘토링이 성사되었습니다.\n" + mentorPhoneNum + "으로 멘토님께 연락해 보세요!");
-        Message message2 = new Message();
+
         // 전송메시지 생성
+        Message message2 = new Message();
         message2.setFrom(from);
         message2.setTo(mentorPhoneNum);
         message2.setText("[COGO] 멘토링이 성사되었습니다.\n" + menteePhoneNum + "으로 멘티님께 연락해 보세요!");

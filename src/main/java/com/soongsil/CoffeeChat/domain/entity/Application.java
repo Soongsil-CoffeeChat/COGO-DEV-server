@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLRestriction;
 
 import com.soongsil.CoffeeChat.domain.entity.enums.ApplicationStatus;
 
@@ -21,16 +22,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
+@SQLRestriction("accept <> 'REJECTED'")
 public class Application {
     @Column(name = "application_id")
     @Id
@@ -54,4 +54,12 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "possible_date_id")
     private PossibleDate possibleDate;
+
+    public void acceptApplication() {
+        this.accept = ApplicationStatus.MATCHED;
+    }
+
+    public void rejectApplication() {
+        this.accept = ApplicationStatus.REJECTED;
+    }
 }

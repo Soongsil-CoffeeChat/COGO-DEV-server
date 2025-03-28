@@ -42,9 +42,11 @@ public class ApplicationConverter {
                 .build();
     }
 
-    public static ApplicationResponse.ApplicationMatchResponse toResponse(Long applicationId) {
+    public static ApplicationResponse.ApplicationMatchResponse toResponse(
+            Long applicationId, String status) {
         return ApplicationResponse.ApplicationMatchResponse.builder()
                 .applicationId(applicationId)
+                .applicationStatus(status)
                 .build();
     }
 }

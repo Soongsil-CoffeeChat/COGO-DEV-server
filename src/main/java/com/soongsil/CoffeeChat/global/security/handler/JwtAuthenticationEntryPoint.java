@@ -12,12 +12,13 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soongsil.CoffeeChat.global.api.ApiResponse;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.soongsil.CoffeeChat.global.exception.ErrorResponse;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void commence(
@@ -29,9 +30,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
-        ApiResponse<Object> apiResponse =
-                ApiResponse.onSuccess(HttpStatus.UNAUTHORIZED, "인증이 필요합니다.", null);
-
-        objectMapper.writeValue(response.getWriter(), apiResponse);
+        ErrorResponse errorResponse = new ErrorResponse(GlobalErrorCode.UNAUTHORIZED);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.writeValue(response.getWriter(), errorResponse);
     }
 }

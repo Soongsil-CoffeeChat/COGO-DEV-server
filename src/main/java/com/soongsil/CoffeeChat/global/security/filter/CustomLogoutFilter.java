@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.global.security.jwt;
+package com.soongsil.CoffeeChat.global.security.filter;
 
 import java.io.IOException;
 
@@ -13,18 +13,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class CustomLogoutFilter extends GenericFilterBean {
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
-
-    public CustomLogoutFilter(JwtUtil jwtUtil, RefreshRepository refreshRepository) {
-
-        this.jwtUtil = jwtUtil;
-        this.refreshRepository = refreshRepository;
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

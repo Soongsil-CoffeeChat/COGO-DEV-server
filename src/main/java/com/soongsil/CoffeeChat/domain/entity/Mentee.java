@@ -3,15 +3,7 @@ package com.soongsil.CoffeeChat.domain.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import com.soongsil.CoffeeChat.domain.entity.enums.PartEnum;
 
@@ -35,6 +27,10 @@ public class Mentee {
     @Column
     @Enumerated(EnumType.STRING)
     private PartEnum part;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

@@ -50,6 +50,10 @@ public class Mentor {
     @Enumerated(EnumType.STRING)
     private ClubEnum club;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
     private Introduction introduction;

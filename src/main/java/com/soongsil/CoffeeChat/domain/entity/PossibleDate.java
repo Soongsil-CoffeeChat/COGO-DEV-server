@@ -39,7 +39,12 @@ public class PossibleDate {
     LocalTime endTime;
 
     @OneToMany(mappedBy = "possibleDate")
+    @Builder.Default
     private List<Application> applications = new ArrayList<>();
 
-    @Column @Setter private boolean isActive = true;
+    @Column @Builder.Default private boolean isActive = true;
+
+    public void deactivate() {
+        isActive = false;
+    }
 }
