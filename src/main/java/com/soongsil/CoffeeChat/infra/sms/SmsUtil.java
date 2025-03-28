@@ -2,14 +2,11 @@ package com.soongsil.CoffeeChat.infra.sms;
 
 import java.util.Random;
 
-import com.soongsil.CoffeeChat.domain.entity.Application;
-import jakarta.annotation.PostConstruct;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import net.nurigo.sdk.NurigoApp;
+import com.soongsil.CoffeeChat.domain.entity.Application;
+
+import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.service.DefaultMessageService;
