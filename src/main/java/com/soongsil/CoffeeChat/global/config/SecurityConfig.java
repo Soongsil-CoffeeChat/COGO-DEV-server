@@ -17,11 +17,12 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.global.security.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
+import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
+import com.soongsil.CoffeeChat.global.security.handler.CustomSuccessHandler;
 import com.soongsil.CoffeeChat.global.security.handler.JwtAccessDeniedHandler;
 import com.soongsil.CoffeeChat.global.security.handler.JwtAuthenticationEntryPoint;
-import com.soongsil.CoffeeChat.global.security.jwt.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtFilter;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
 
@@ -38,6 +39,7 @@ public class SecurityConfig {
     private final RefreshRepository refreshRepository;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final AuthExceptionHandlingFilter authExceptionHandlingFilter;
 
     @Bean
     public RoleHierarchy roleHierarchy() {
@@ -139,8 +141,9 @@ public class SecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(
                         new CustomLogoutFilter(jwtUtil, refreshRepository), LogoutFilter.class)
-                .addFilterAfter(new JwtFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
-
+                .addFilterAfter(
+                        new JwtAuthenticationFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                .addFilterBefore(authExceptionHandlingFilter, JwtAuthenticationFilter.class);
         return http.build();
     }
 }
