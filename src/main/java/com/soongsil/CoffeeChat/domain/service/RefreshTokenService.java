@@ -52,8 +52,8 @@ public class RefreshTokenService {
 
         // Make new JWT
 
-        String newAccess = jwtUtil.createJwt("access", username, role, 1800000000L);
-        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+        String newAccess = jwtUtil.createAccessToken(username, role);
+        String newRefresh = jwtUtil.createRefreshToken(username, role);
 
         // Refresh 토큰 저장: DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
         refreshRepository.deleteByRefresh(refresh);
@@ -85,8 +85,8 @@ public class RefreshTokenService {
         String role = userService.findUserByUsername(username).getRole();
 
         // 5. 새로운 Access 및 Refresh 토큰 생성
-        String newAccessToken = jwtUtil.createJwt("access", username, role, 1800000000L); // 예: 30분
-        String newRefreshToken = jwtUtil.createJwt("refresh", username, role, 86400000L); // 예: 1일
+        String newAccessToken = jwtUtil.createAccessToken(username, role);
+        String newRefreshToken = jwtUtil.createRefreshToken(username, role);
 
         // 6. DB에서 기존 Refresh 토큰 삭제 및 새로운 Refresh 토큰 저장
         refreshRepository.deleteByRefresh(refreshToken);
