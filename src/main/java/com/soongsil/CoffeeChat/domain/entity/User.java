@@ -1,6 +1,10 @@
 package com.soongsil.CoffeeChat.domain.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
+import org.hibernate.annotations.SQLRestriction;
 
 import com.soongsil.CoffeeChat.domain.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.dto.MenteeRequest.*;
@@ -10,17 +14,14 @@ import com.soongsil.CoffeeChat.domain.dto.UserRequest.*;
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
-@Table
-@NoArgsConstructor
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLRestriction("is_deleted = false")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,10 @@ public class User {
     @Column private String phoneNum; // 전화번호
 
     @Column private String picture;
+
+    @Builder.Default @Column private Boolean isDeleted = false;
+
+    @Column private LocalDateTime deletedAt;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")
@@ -76,6 +81,11 @@ public class User {
     public void updateUser(OAuth2Response response) {
         this.name = response.getName();
         this.email = response.getEmail();
+    }
+
+    public void softDelete() {
+        this.isDeleted = true;
+        this.deletedAt = LocalDateTime.now();
     }
 
     public boolean isMentor() {

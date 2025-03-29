@@ -80,6 +80,6 @@ public class UserService {
     @Transactional
     public void deleteUser(String username) {
         User user = findUserByUsername(username);
-        userRepository.delete(user);
+        user.softDelete();
     }
 }
