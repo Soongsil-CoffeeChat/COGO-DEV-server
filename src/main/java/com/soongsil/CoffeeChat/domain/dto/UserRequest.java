@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.dto;
 
 import com.soongsil.CoffeeChat.domain.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.entity.enums.PartEnum;
+import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +24,7 @@ public class UserRequest {
         private String name;
         private String email;
         private String phoneNum;
-        private String role;
-        private PartEnum part;
-        private ClubEnum club;
         private String picture;
-        private Long mentorId;
     }
 
     @Getter
@@ -37,7 +34,7 @@ public class UserRequest {
         private String name;
         private String email;
         private String phoneNum;
-        private String role;
+        private Role role;
         private PartEnum part;
         private ClubEnum club;
         private String picture;

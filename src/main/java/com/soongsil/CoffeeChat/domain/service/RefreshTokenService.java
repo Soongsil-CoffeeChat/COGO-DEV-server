@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.dto.ReissueDto;
 import com.soongsil.CoffeeChat.domain.entity.Refresh;
+import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
@@ -47,7 +48,7 @@ public class RefreshTokenService {
         jwtUtil.validateToken(refresh);
 
         String username = jwtUtil.getUsername(refresh);
-        String role = userService.findUserByUsername(username).getRole();
+        Role role = userService.findUserByUsername(username).getRole();
         System.out.println("username = " + username);
 
         // Make new JWT
@@ -82,7 +83,7 @@ public class RefreshTokenService {
 
         // 4. Refresh 토큰에서 사용자 정보 추출
         String username = jwtUtil.getUsername(refreshToken);
-        String role = userService.findUserByUsername(username).getRole();
+        Role role = userService.findUserByUsername(username).getRole();
 
         // 5. 새로운 Access 및 Refresh 토큰 생성
         String newAccessToken = jwtUtil.createAccessToken(username, role);

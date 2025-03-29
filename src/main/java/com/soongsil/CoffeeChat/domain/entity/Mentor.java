@@ -3,18 +3,7 @@ package com.soongsil.CoffeeChat.domain.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import com.soongsil.CoffeeChat.domain.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.entity.enums.PartEnum;
@@ -34,8 +23,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(of = {"id", "part", "club"})
-// @DiscriminatorValue("mentor")
-// @PrimaryKeyJoinColumn(name = "mentor_id")
 public class Mentor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,13 +37,13 @@ public class Mentor {
     @Enumerated(EnumType.STRING)
     private ClubEnum club;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "mentor", fetch = FetchType.LAZY)
     private User user;
 
+    @Builder.Default
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "mentor_introduction", referencedColumnName = "introduction_id")
-    private Introduction introduction;
+    private Introduction introduction = new Introduction();
 
     @Builder.Default
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -65,12 +52,6 @@ public class Mentor {
     @Builder.Default
     @OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PossibleDate> possibleDates = new HashSet<>();
-
-    @Builder
-    public Mentor(String club, String part) {
-        this.club = ClubEnum.valueOf(club);
-        this.part = PartEnum.valueOf(part);
-    }
 
     public void addPossibleDate(PossibleDate possibleDate) {
         this.possibleDates.add(possibleDate);

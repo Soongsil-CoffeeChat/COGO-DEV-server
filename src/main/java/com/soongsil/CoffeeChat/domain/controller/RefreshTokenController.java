@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.domain.dto.MobileTokenResponseDTO;
+import com.soongsil.CoffeeChat.domain.dto.MobileTokenResponse;
 import com.soongsil.CoffeeChat.domain.dto.ReissueDto;
 import com.soongsil.CoffeeChat.domain.service.RefreshTokenService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
@@ -34,11 +34,11 @@ public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급
     }
 
     @PostMapping("/issue/mobile")
-    @Operation(summary = "[MOBILE] google 서버에서 받은 accessToken으로 서비스 accessToken 발급")
+    @Operation(summary = "[MOBILE] google 서버에서 받은 accessToken으로 서비스 accessToken 발급 및 유저 생성")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "유효한 google accessToken으로 요청시 body로 ROLE_USER 토큰 반환")
-    public ResponseEntity<ApiResponse<MobileTokenResponseDTO>> issueAccessToken(
+    public ResponseEntity<ApiResponse<MobileTokenResponse>> issueAccessToken(
             @RequestParam String accessToken, @RequestParam String name) {
         return ResponseEntity.ok()
                 .body(

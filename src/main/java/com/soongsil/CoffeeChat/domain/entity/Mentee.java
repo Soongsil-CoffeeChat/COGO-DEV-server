@@ -28,8 +28,7 @@ public class Mentee {
     @Enumerated(EnumType.STRING)
     private PartEnum part;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "mentee", fetch = FetchType.LAZY)
     private User user;
 
     @OneToMany(mappedBy = "mentee", cascade = CascadeType.ALL, orphanRemoval = true)

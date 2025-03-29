@@ -7,7 +7,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class MobileTokenResponseDTO {
+public class MobileTokenResponse {
     private String accessToken;
     private String refreshToken;
     private boolean isNewAccount;
