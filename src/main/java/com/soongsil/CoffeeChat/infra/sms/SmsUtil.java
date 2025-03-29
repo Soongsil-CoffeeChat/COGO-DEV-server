@@ -49,7 +49,7 @@ public class SmsUtil {
 
     public void sendRejectCogoMessage(Application application) {
         sendMessage(
-                application.getMentee().getUser(), "멘토님이 COGO 신청에 응답했습니다. COGO 앱에 접속해 확인해 보세요!");
+                application.getMentee().getUser(), "멘토님의 답장이 도착했어요. 지금 바로 코고 앱에서 확인해 보세요!");
     }
 
     private String generateVerificationCode() {
