@@ -142,11 +142,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 }
 
                 // JWT 토큰 생성
-                String newAccessToken =
-                        jwtUtil.createJwt("access", username, role, 1800000L); // Access token (30분)
-                String newRefreshToken =
-                        jwtUtil.createJwt(
-                                "refresh", username, role, 86400000L); // Refresh token (24시간)
+                String newAccessToken = jwtUtil.createAccessToken(username, role);
+                String newRefreshToken = jwtUtil.createRefreshToken(username, role);
 
                 // Refresh 토큰을 Redis 또는 DB에 저장 (선택적)
                 refreshTokenService.addRefreshEntity(username, newRefreshToken, 86400000L);

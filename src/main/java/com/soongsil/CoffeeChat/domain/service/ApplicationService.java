@@ -156,5 +156,6 @@ public class ApplicationService {
                 applicationRepository.findByPossibleDateAndAccept(
                         application.getPossibleDate(), ApplicationStatus.UNMATCHED);
         unmatchedApplications.forEach(Application::rejectApplication);
+        unmatchedApplications.forEach(smsUtil::sendRejectCogoMessage);
     }
 }

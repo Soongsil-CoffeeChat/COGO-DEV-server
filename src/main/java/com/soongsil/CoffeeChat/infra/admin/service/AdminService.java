@@ -21,7 +21,7 @@ public class AdminService {
         if (!password.equals(adminPassword)) {
             throw new GlobalException(GlobalErrorCode.ADMIN_INCORRECT_PASSWORD);
         }
-        String accessToken = jwtUtil.createJwt("access", "어드민", "ROLE_ADMIN", 1800000000L);
+        String accessToken = jwtUtil.createAccessToken("어드민", "ROLE_ADMIN");
         return accessToken;
     }
 }

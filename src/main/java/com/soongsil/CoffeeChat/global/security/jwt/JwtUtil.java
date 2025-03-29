@@ -24,6 +24,10 @@ import io.jsonwebtoken.security.SignatureException;
 public class JwtUtil {
     private final SecretKey secretKey;
 
+    // TODO test 이후 시간 줄이기
+    private final long accessExpiredMs = 86400000L * 7; // 3600000L; // 1시간
+    private final long refreshExpiredMs = 86400000L * 7; // 1주일
+
     public JwtUtil(@Value("${spring.jwt.secret}") String secret) {
         secretKey =
                 new SecretKeySpec(
@@ -58,7 +62,16 @@ public class JwtUtil {
         return getClaims(token).get("category", String.class);
     }
 
-    public String createJwt(String category, String username, String role, Long expiredMs) { // 토큰생성
+    public String createAccessToken(String username, String role) {
+        return createJwt("access", username, role, accessExpiredMs);
+    }
+
+    public String createRefreshToken(String username, String role) {
+        return createJwt("refresh", username, role, refreshExpiredMs);
+    }
+
+    private String createJwt(
+            String category, String username, String role, Long expiredMs) { // 토큰생성
         return Jwts.builder()
                 .claim("category", category)
                 .claim("username", username)

@@ -1,16 +1,17 @@
 package com.soongsil.CoffeeChat.infra.sms;
 
+import java.util.Random;
+
+import org.springframework.stereotype.Component;
+
 import com.soongsil.CoffeeChat.domain.entity.Application;
 import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
+
 import lombok.RequiredArgsConstructor;
-import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.springframework.stereotype.Component;
-
-import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
@@ -42,21 +43,13 @@ public class SmsUtil {
     }
 
     public void sendAcceptCogoMessage(Application application) {
-        sendMessage(
-                application.getMentee().getUser(),
-                "멘토링이 성사되었습니다. COGO 앱에 접속해 확인해 보세요!"
-        );
-        sendMessage(
-                application.getMentee().getUser(),
-                "멘토링이 성사되었습니다. COGO 앱에 접속해 확인해 보세요!"
-        );
+        sendMessage(application.getMentee().getUser(), "멘토링이 성사되었습니다. COGO 앱에 접속해 확인해 보세요!");
+        sendMessage(application.getMentee().getUser(), "멘토링이 성사되었습니다. COGO 앱에 접속해 확인해 보세요!");
     }
 
     public void sendRejectCogoMessage(Application application) {
         sendMessage(
-                application.getMentee().getUser(),
-                "멘토님이 COGO 신청에 응답했습니다. COGO 앱에 접속해 확인해 보세요!"
-        );
+                application.getMentee().getUser(), "멘토님이 COGO 신청에 응답했습니다. COGO 앱에 접속해 확인해 보세요!");
     }
 
     private String generateVerificationCode() {
