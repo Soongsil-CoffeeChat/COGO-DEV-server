@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.soongsil.CoffeeChat.domain.entity.Refresh;
+import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
@@ -43,7 +44,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
         String username = customUserDetails.getUsername();
-        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        Role role = Role.valueOf(authentication.getAuthorities().iterator().next().getAuthority());
 
         String refreshToken = jwtUtil.createRefreshToken(username, role);
 

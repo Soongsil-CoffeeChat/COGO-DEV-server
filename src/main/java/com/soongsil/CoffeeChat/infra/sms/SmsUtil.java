@@ -48,8 +48,7 @@ public class SmsUtil {
     }
 
     public void sendRejectCogoMessage(Application application) {
-        sendMessage(
-                application.getMentee().getUser(), "멘토님의 답장이 도착했어요. 지금 바로 코고 앱에서 확인해 보세요!");
+        sendMessage(application.getMentee().getUser(), "멘토님의 답장이 도착했어요. 지금 바로 코고 앱에서 확인해 보세요!");
     }
 
     private String generateVerificationCode() {

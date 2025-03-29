@@ -11,13 +11,7 @@ import com.soongsil.CoffeeChat.domain.entity.User;
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
     Optional<User> findByUsername(String username);
 
-    Optional<User> findByUsernameContaining(String usename);
-
     User findByMentor(Mentor mentor);
-
-    User findByMentorIdWithFetch(Long mentorId);
-
-    User findByUsernameWithFetch(String username);
 
     User findByMenteeId(Long menteeId);
 

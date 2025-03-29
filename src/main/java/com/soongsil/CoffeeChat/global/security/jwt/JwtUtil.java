@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
@@ -39,8 +40,8 @@ public class JwtUtil {
         return getClaims(token).get("username", String.class);
     }
 
-    public String getRole(String token) {
-        return getClaims(token).get("role", String.class);
+    public Role getRole(String token) {
+        return Role.valueOf(getClaims(token).get("role", String.class));
     }
 
     public void validateToken(String token) {
@@ -62,20 +63,19 @@ public class JwtUtil {
         return getClaims(token).get("category", String.class);
     }
 
-    public String createAccessToken(String username, String role) {
+    public String createAccessToken(String username, Role role) {
         return createJwt("access", username, role, accessExpiredMs);
     }
 
-    public String createRefreshToken(String username, String role) {
+    public String createRefreshToken(String username, Role role) {
         return createJwt("refresh", username, role, refreshExpiredMs);
     }
 
-    private String createJwt(
-            String category, String username, String role, Long expiredMs) { // 토큰생성
+    private String createJwt(String category, String username, Role role, Long expiredMs) { // 토큰생성
         return Jwts.builder()
                 .claim("category", category)
                 .claim("username", username)
-                .claim("role", role)
+                .claim("role", role.name())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)

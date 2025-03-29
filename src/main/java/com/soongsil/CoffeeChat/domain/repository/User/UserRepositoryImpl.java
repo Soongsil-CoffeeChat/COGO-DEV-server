@@ -6,8 +6,6 @@ import static com.soongsil.CoffeeChat.domain.entity.QPossibleDate.possibleDate;
 import static com.soongsil.CoffeeChat.domain.entity.QUser.user;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.*;
 import com.soongsil.CoffeeChat.domain.entity.QMentee;
@@ -49,15 +47,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         QMentor mentor = QMentor.mentor;
         QMentee mentee = QMentee.mentee;
 
-        // 역할을 결정하는 표현식
-        StringExpression roleExpression =
-                new CaseBuilder()
-                        .when(mentor.isNotNull())
-                        .then("MENTOR")
-                        .when(mentee.isNotNull())
-                        .then("MENTEE")
-                        .otherwise("UNKNOWN");
-
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -65,7 +54,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                                 user.name,
                                 user.email,
                                 user.phoneNum,
-                                roleExpression,
+                                user.role,
                                 mentor.part.coalesce(mentee.part), // 멘토의 part가 없으면 멘티의 part 사용
                                 mentor.club, // 멘토의 club, 멘티인 경우 null
                                 user.picture))

@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.global.security.dto.UserDto;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
@@ -43,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
 
         // 토큰에서 username과 role 획득
         String username = jwtUtil.getUsername(accessToken);
-        String role = jwtUtil.getRole(accessToken);
+        Role role = jwtUtil.getRole(accessToken);
 
         log.info("[*] Current User: " + username);
         log.info("[*] Current User Role: " + role);

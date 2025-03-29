@@ -3,7 +3,6 @@ package com.soongsil.CoffeeChat.domain.controller;
 import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
 
 import java.net.URI;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,20 +12,15 @@ import com.soongsil.CoffeeChat.domain.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
-import com.soongsil.CoffeeChat.domain.dto.PhoneNumUpdateDto;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
-import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.domain.service.UserService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "USER", description = "유저 관련 api")
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
 
     // TODO: 이 getUserNameByAuthentication 함수가 모든 controller에서 중복되므로 util로 빼기
     private String getUserNameByAuthentication(Authentication authentication) throws Exception {
@@ -48,7 +41,7 @@ public class UserController {
     @PostMapping()
     @Operation(summary = "기본정보 기입")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponse<UserInfoResponse>> joinWithMentor(
+    public ResponseEntity<ApiResponse<UserInfoResponse>> updateUser(
             Authentication authentication, @RequestBody UserJoinRequest dto) throws Exception {
         UserInfoResponse response =
                 userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
@@ -62,7 +55,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<MentorInfoResponse>> joinWithMentor(
             Authentication authentication, @RequestBody MentorJoinRequest dto) throws Exception {
         MentorInfoResponse mentorInfoResponse =
-                userService.saveMentorInformation(getUserNameByAuthentication(authentication), dto);
+                userService.registerMentor(getUserNameByAuthentication(authentication), dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentor"))
                 .body(ApiResponse.onSuccessCREATED(mentorInfoResponse));
     }
@@ -73,85 +66,27 @@ public class UserController {
     public ResponseEntity<ApiResponse<MenteeInfoResponse>> joinWithMentee(
             Authentication authentication, @RequestBody MenteeJoinRequest dto) throws Exception {
         MenteeInfoResponse response =
-                userService.saveMenteeInformation(getUserNameByAuthentication(authentication), dto);
+                userService.registerMentee(getUserNameByAuthentication(authentication), dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentee"))
                 .body(ApiResponse.onSuccessCREATED(response));
     }
 
-    @PutMapping("/picture")
-    @Operation(summary = "이미지 저장하기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponse<UserInfoResponse>> saveUserPicture(
-            Authentication authentication, @RequestBody String picture) throws Exception {
-        UserInfoResponse userInfoResponse =
-                userService.saveUserPicture(getUserNameByAuthentication(authentication), picture);
-        return ResponseEntity.created(URI.create(USER_URI + "/" + "picture"))
-                .body(ApiResponse.onSuccessCREATED(userInfoResponse));
-    }
-
     @GetMapping("/sms")
     @Operation(summary = "SMS 인증 요청하기", description = "전화번호로 SMS 인증번호를 요청합니다.")
-    @ApiResponses({
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-                responseCode = "200",
-                description = "인증 요청 성공",
-                content =
-                        @Content(
-                                mediaType = "application/json",
-                                schema =
-                                        @Schema(
-                                                example =
-                                                        "{\n\"verificationCode\": \"1234\",\n\"message\": \"Verification code sent successfully\"\n}"))),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-                responseCode = "400",
-                description = "인증번호 전송 실패",
-                content =
-                        @Content(
-                                mediaType = "application/json",
-                                schema =
-                                        @Schema(
-                                                example =
-                                                        "{\n\"message\": \"Failed to send verification code\"\n}")))
-    })
-    public ResponseEntity<ApiResponse<Map<String, String>>> getSmsCode(
-            Authentication authentication, @RequestParam("phoneNum") String phoneNum) {
-        return ResponseEntity.ok().body(ApiResponse.onSuccessOK(userService.getSmsCode(phoneNum)));
-    }
-
-    @PatchMapping("/phone")
-    @Operation(summary = "번호 저장하기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponse<PhoneNumUpdateDto>> saveUserPhone(
-            Authentication authentication, @RequestParam("phoneNum") String phoneNum)
-            throws Exception {
-        return ResponseEntity.created(URI.create(USER_URI + "/phone"))
-                .body(
-                        ApiResponse.onSuccessOK(
-                                userService.saveUserPhone(
-                                        phoneNum, getUserNameByAuthentication(authentication))));
-    }
-
-    @PatchMapping("/email")
-    @Operation(summary = "메일 저장하기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponse<UserInfoResponse>> saveUserEmail(
-            Authentication authentication, @RequestParam("email") String email) throws Exception {
-        return ResponseEntity.created(URI.create(USER_URI + "/email"))
-                .body(
-                        ApiResponse.onSuccessOK(
-                                userService.saveUserEmail(
-                                        email, getUserNameByAuthentication(authentication))));
+    public ResponseEntity<ApiResponse<String>> getSmsCode(
+            @RequestParam("phoneNum") String phoneNum) {
+        return ResponseEntity.ok().body(ApiResponse.onSuccessOK(userService.send2FACode(phoneNum)));
     }
 
     @PatchMapping()
     @Operation(summary = "사용자 정보 수정")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponse<UserInfoResponse>> saveUserEmail(
+    public ResponseEntity<ApiResponse<UserInfoResponse>> updateUser(
             Authentication authentication, @RequestBody UserUpdateRequest dto) throws Exception {
-        return ResponseEntity.created(URI.create(USER_URI + "/email"))
+        return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
-                                userService.changeUserInfo(
+                                userService.updateUser(
                                         dto, getUserNameByAuthentication(authentication))));
     }
 
@@ -163,8 +98,7 @@ public class UserController {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
-                                userService.findUserInfo(
-                                        getUserNameByAuthentication(authentication))));
+                                userService.getUser(getUserNameByAuthentication(authentication))));
     }
 
     @DeleteMapping()

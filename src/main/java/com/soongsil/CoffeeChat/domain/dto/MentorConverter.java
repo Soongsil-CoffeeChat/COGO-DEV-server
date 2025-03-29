@@ -5,8 +5,8 @@ import com.soongsil.CoffeeChat.domain.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.entity.User;
 
 public class MentorConverter {
-    public static Mentor toEntity(MentorRequest.MentorJoinRequest dto) {
-        return Mentor.builder().club(dto.getClub()).part(dto.getPart()).build();
+    public static Mentor toEntity(MentorRequest.MentorJoinRequest dto, User user) {
+        return Mentor.builder().club(dto.getClub()).part(dto.getPart()).user(user).build();
     }
 
     public static MentorResponse.MentorIntroductionGetUpdateResponse
