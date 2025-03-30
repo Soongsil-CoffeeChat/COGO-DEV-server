@@ -17,4 +17,12 @@ public class UserResponse {
         private String phoneNum; // 전화번호
         private String picture;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class User2FACodeResponse {
+        private String verificationCode;
+    }
 }

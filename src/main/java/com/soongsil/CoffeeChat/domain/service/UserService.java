@@ -13,6 +13,7 @@ import com.soongsil.CoffeeChat.domain.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserGetRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
+import com.soongsil.CoffeeChat.domain.dto.UserResponse.*;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.entity.Mentor;
@@ -60,8 +61,8 @@ public class UserService {
         return MenteeConverter.toResponse(mentee);
     }
 
-    public String send2FACode(String to) {
-        return smsUtil.send2FACode(to);
+    public User2FACodeResponse send2FACode(String to) {
+        return UserConverter.to2FACodeResponse(smsUtil.send2FACode(to));
     }
 
     @Transactional

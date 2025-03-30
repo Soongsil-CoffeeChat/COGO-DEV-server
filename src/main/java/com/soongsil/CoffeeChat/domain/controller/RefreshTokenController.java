@@ -52,7 +52,7 @@ public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급
             responseCode = "200",
             description = "유효한 refreshToken 요청시 body로 accessToken, refreshToken 반환")
     public ResponseEntity<ApiResponse<Map<String, String>>> reissueAccessTokenWithRefreshToken(
-            @RequestHeader(required = true) String refreshToken) {
+            @RequestHeader String refreshToken) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(

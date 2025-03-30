@@ -13,4 +13,8 @@ public class UserConverter {
                 .picture(user.getPicture())
                 .build();
     }
+
+    public static UserResponse.User2FACodeResponse to2FACodeResponse(String code) {
+        return UserResponse.User2FACodeResponse.builder().verificationCode(code).build();
+    }
 }
