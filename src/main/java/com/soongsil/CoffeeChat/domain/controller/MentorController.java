@@ -93,38 +93,15 @@ public class MentorController {
                                         getUserNameByAuthentication(authentication))));
     }
 
-    @GetMapping("/part")
-    @Operation(summary = "파트별 멘토 리스트 가져오기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200",
-            description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponse<List<MentorListResponse>>> getMentorListByPart(
-            @RequestParam("part") PartEnum part) {
-        return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(mentorService.getMentorDtoListByPart(part)));
-    }
-
-    @GetMapping("/club")
-    @Operation(summary = "동아리별 멘토 리스트 가져오기")
+    @GetMapping("/list")
+    @Operation(summary = "멘토 리스트 조회")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "DTO LIST형식으로 정보 반환")
     public ResponseEntity<ApiResponse<List<MentorListResponse>>> getMentorListByClub(
-            @RequestParam("club") ClubEnum club) {
+            @RequestParam(value = "part", required = false) PartEnum part,
+            @RequestParam(value = "club", required = false) ClubEnum club) {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(mentorService.getMentorDtoListByClub(club)));
-    }
-
-    @GetMapping("/part/club")
-    @Operation(summary = "파트+동아리별 멘토 리스트 가져오기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200",
-            description = "DTO LIST형식으로 정보 반환")
-    public ResponseEntity<ApiResponse<List<MentorListResponse>>> getMentorListByClub(
-            @RequestParam("part") PartEnum part, @RequestParam("club") ClubEnum club) {
-        return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                mentorService.getMentorDtoListByPartAndClub(part, club)));
+                .body(ApiResponse.onSuccessOK(mentorService.getMentorList(part, club)));
     }
 }

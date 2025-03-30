@@ -7,62 +7,18 @@ import static com.soongsil.CoffeeChat.domain.entity.QUser.user;
 import java.util.List;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.*;
-import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.entity.enums.PartEnum;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class MentorRepositoryImpl implements MentorRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    public MentorRepositoryImpl(JPAQueryFactory queryFactory) {
-        this.queryFactory = queryFactory;
-    }
-
-    @Override
-    public List<MentorListResponse> getMentorListByPart(PartEnum part) { // 일반 join
-
-        return queryFactory
-                .select(
-                        Projections.constructor(
-                                MentorListResponse.class,
-                                user.picture,
-                                user.name.as("mentorName"),
-                                mentor.part,
-                                mentor.club,
-                                user.username,
-                                mentor.id.as("mentorId"),
-                                introduction.title,
-                                introduction.description))
-                .from(user)
-                .join(user.mentor, mentor)
-                .join(mentor.introduction, introduction)
-                .where(mentor.part.eq(part))
-                .fetch();
-    }
-
-    @Override
-    public List<MentorListResponse> getMentorListByClub(ClubEnum club) { // 일반 join
-        return queryFactory
-                .select(
-                        Projections.constructor(
-                                MentorListResponse.class,
-                                user.picture,
-                                user.name.as("mentorName"),
-                                mentor.part,
-                                mentor.club,
-                                user.username,
-                                mentor.id.as("mentorId"),
-                                introduction.title,
-                                introduction.description))
-                .from(user)
-                .join(user.mentor, mentor)
-                .join(mentor.introduction, introduction)
-                .where(mentor.club.eq(club))
-                .fetch();
-    }
 
     @Override
     public List<MentorListResponse> getMentorListByPartAndClub(
@@ -81,23 +37,15 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                                 introduction.description))
                 .from(user)
                 .join(user.mentor, mentor)
-                .join(mentor.introduction, introduction)
-                .where(mentor.club.eq(club).and(mentor.part.eq(part)))
-                .fetch();
-    }
-
-    @Override
-    public List<User> getMentorListByPartWithFetch(PartEnum part) { // fetch join
-        return queryFactory
-                .selectFrom(user)
-                .join(user.mentor, mentor)
-                .fetchJoin()
-                .where(mentor.part.eq(part))
+                .leftJoin(mentor.introduction, introduction)
+                .on(introduction.isNotNull())
+                .where(clubEq(club), partEq(part))
                 .fetch();
     }
 
     @Override
     public MentorGetUpdateDetailResponse getMentorInfoByMentorId(Long mentorId) {
+
         return queryFactory
                 .select(
                         Projections.constructor(
@@ -114,7 +62,20 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                 .from(user)
                 .join(user.mentor, mentor)
                 .join(mentor.introduction, introduction)
-                .where(mentor.id.eq(mentorId))
+                .where(
+                        mentor.id.eq(mentorId),
+                        introduction.title.isNotNull(),
+                        introduction.description.isNotNull(),
+                        introduction.answer1.isNotNull(),
+                        introduction.answer2.isNotNull())
                 .fetchOne();
+    }
+
+    private BooleanExpression clubEq(ClubEnum club) {
+        return club != null ? mentor.club.eq(club) : null;
+    }
+
+    private BooleanExpression partEq(PartEnum part) {
+        return part != null ? mentor.part.eq(part) : null;
     }
 }

@@ -12,12 +12,10 @@ import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorGetUpdateDetailRe
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionGetUpdateResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.domain.entity.Introduction;
-import com.soongsil.CoffeeChat.domain.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.entity.enums.PartEnum;
 import com.soongsil.CoffeeChat.domain.repository.Mentor.MentorRepository;
-import com.soongsil.CoffeeChat.domain.repository.PossibleDate.PossibleDateRepository;
 import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
@@ -29,20 +27,9 @@ import lombok.RequiredArgsConstructor;
 public class MentorService {
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
-    private final PossibleDateRepository possibleDateRepository;
 
     @Transactional(readOnly = true)
-    public List<MentorListResponse> getMentorDtoListByPart(PartEnum part) {
-        return mentorRepository.getMentorListByPart(part); // 일반join
-    }
-
-    @Transactional(readOnly = true)
-    public List<MentorListResponse> getMentorDtoListByClub(ClubEnum club) {
-        return mentorRepository.getMentorListByClub(club); // 일반join
-    }
-
-    @Transactional(readOnly = true)
-    public List<MentorListResponse> getMentorDtoListByPartAndClub(PartEnum part, ClubEnum club) {
+    public List<MentorListResponse> getMentorList(PartEnum part, ClubEnum club) {
         return mentorRepository.getMentorListByPartAndClub(part, club);
     }
 
@@ -53,16 +40,6 @@ public class MentorService {
     }
 
     @Transactional(readOnly = true)
-    public MentorGetUpdateDetailResponse getMentorDtoById(Long mentorId) {
-        // TODO: join으로 바꾸면될듯
-        Mentor findMentor =
-                mentorRepository
-                        .findById(mentorId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
-        return MentorConverter.toMentorGetUpdateDetailDto(
-                findMentor, userRepository.findByMentor(findMentor));
-    }
-
     public MentorGetUpdateDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
@@ -87,18 +64,9 @@ public class MentorService {
     @Transactional
     public MentorIntroductionGetUpdateResponse updateMentorIntroduction(
             String userName, MentorIntroductionUpdateRequest dto) {
-        User findUser =
-                userRepository
-                        .findByUsername(userName)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        Introduction findMentorIntroduction =
-                mentorRepository
-                        .findById(findUser.getMentor().getId())
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND))
-                        .getIntroduction();
-
+        User findUser = findUserByUsername(userName);
+        Introduction findMentorIntroduction = findUser.getMentor().getIntroduction();
         findMentorIntroduction.updateIntroduction(dto);
-
         return MentorConverter.toMentorIntroductionGetUpdateResponse(findMentorIntroduction);
     }
 
