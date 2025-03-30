@@ -15,6 +15,7 @@ import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
+import com.soongsil.CoffeeChat.domain.dto.UserResponse.User2FACodeResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.service.UserService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
@@ -73,7 +74,7 @@ public class UserController {
 
     @GetMapping("/sms")
     @Operation(summary = "SMS 인증 요청하기", description = "전화번호로 SMS 인증번호를 요청합니다.")
-    public ResponseEntity<ApiResponse<String>> getSmsCode(
+    public ResponseEntity<ApiResponse<User2FACodeResponse>> getSmsCode(
             @RequestParam("phoneNum") String phoneNum) {
         return ResponseEntity.ok().body(ApiResponse.onSuccessOK(userService.send2FACode(phoneNum)));
     }
