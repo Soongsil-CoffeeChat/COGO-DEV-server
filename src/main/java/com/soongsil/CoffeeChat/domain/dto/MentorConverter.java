@@ -38,8 +38,6 @@ public class MentorConverter {
         return MentorResponse.MentorInfoResponse.builder()
                 .part(mentor.getPart())
                 .club(mentor.getClub())
-                .introductionId(mentor.getIntroduction().getId())
-                .isNewAccount(false)
                 .build();
     }
 }

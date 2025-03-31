@@ -11,6 +11,6 @@ public class MenteeConverter {
     }
 
     public static MenteeInfoResponse toResponse(Mentee mentee) {
-        return MenteeInfoResponse.builder().part(mentee.getPart()).isNewAccount(false).build();
+        return MenteeInfoResponse.builder().part(mentee.getPart()).build();
     }
 }

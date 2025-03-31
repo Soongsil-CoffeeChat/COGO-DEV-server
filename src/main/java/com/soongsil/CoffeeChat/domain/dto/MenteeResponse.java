@@ -11,6 +11,5 @@ public class MenteeResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MenteeInfoResponse {
         private PartEnum part;
-        private boolean isNewAccount;
     }
 }

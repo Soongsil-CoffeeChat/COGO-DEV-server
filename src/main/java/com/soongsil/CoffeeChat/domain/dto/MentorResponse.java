@@ -50,15 +50,15 @@ public class MentorResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentorGetUpdateDetailResponse {
-        Long mentorId;
-        String mentorName;
-        PartEnum part;
-        ClubEnum club;
-        String introductionTitle;
-        String introductionDescription;
-        String introductionAnswer1;
-        String introductionAnswer2;
-        String imageUrl;
+        private Long mentorId;
+        private String mentorName;
+        private PartEnum part;
+        private ClubEnum club;
+        private String introductionTitle;
+        private String introductionDescription;
+        private String introductionAnswer1;
+        private String introductionAnswer2;
+        private String imageUrl;
     }
 
     @Getter
@@ -68,7 +68,5 @@ public class MentorResponse {
     public static class MentorInfoResponse {
         private PartEnum part;
         private ClubEnum club;
-        private Long introductionId;
-        private boolean isNewAccount;
     }
 }
