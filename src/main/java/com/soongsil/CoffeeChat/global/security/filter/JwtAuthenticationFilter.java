@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
-import com.soongsil.CoffeeChat.global.security.dto.UserDto;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
@@ -49,13 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
         log.info("[*] Current User: " + username);
         log.info("[*] Current User Role: " + role);
 
-        // userDTO를 생성하여 값 set
-        UserDto userDTO = new UserDto();
-        userDTO.setUsername(username);
-        userDTO.setRole(role);
-
         // UserDetails 혹은 OAuth2User에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(username, role);
 
         // 스프링 시큐리티 인증 토큰 생성
         Authentication authToken =
