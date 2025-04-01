@@ -11,7 +11,6 @@ import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserGetRequest;
-import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.*;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
@@ -38,13 +37,6 @@ public class UserService {
         return userRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-    }
-
-    @Transactional
-    public UserInfoResponse saveUserInformation(String username, UserJoinRequest dto) {
-        User user = findUserByUsername(username);
-        user.updateNameAndPhoneNum(dto.getName(), dto.getPhoneNum());
-        return UserConverter.toResponse(user);
     }
 
     @Transactional

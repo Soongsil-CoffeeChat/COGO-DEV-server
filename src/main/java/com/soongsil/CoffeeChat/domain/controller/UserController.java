@@ -13,7 +13,6 @@ import com.soongsil.CoffeeChat.domain.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest;
-import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.User2FACodeResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
@@ -37,17 +36,6 @@ public class UserController {
         CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
         if (principal == null) throw new Exception(); // TODO : Exception 만들기
         return principal.getUsername();
-    }
-
-    @PostMapping()
-    @Operation(summary = "기본정보 기입")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponse<UserInfoResponse>> updateUser(
-            Authentication authentication, @RequestBody UserJoinRequest dto) throws Exception {
-        UserInfoResponse response =
-                userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
-        return ResponseEntity.created(URI.create(USER_URI))
-                .body(ApiResponse.onSuccessCREATED(response));
     }
 
     @PostMapping("/mentor")
