@@ -4,9 +4,11 @@ import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
 
 import java.net.URI;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.soongsil.CoffeeChat.domain.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MenteeResponse.MenteeInfoResponse;
@@ -97,5 +99,17 @@ public class UserController {
             throws Exception {
         userService.deleteUser(getUserNameByAuthentication(authentication));
         return ResponseEntity.ok().body(ApiResponse.onSuccessOK(null));
+    }
+
+    @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "유저 사진 등록하기")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
+    public ResponseEntity<ApiResponse<UserInfoResponse>> updatePicture(
+            Authentication authentication, @RequestPart(value = "image") MultipartFile image)
+            throws Exception {
+        UserInfoResponse response =
+                userService.uploadPicture(image, getUserNameByAuthentication(authentication));
+        return ResponseEntity.created(URI.create(USER_URI + "/" + "picture"))
+                .body(ApiResponse.onSuccessCREATED(response));
     }
 }

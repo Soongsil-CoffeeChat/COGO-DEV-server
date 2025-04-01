@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.soongsil.CoffeeChat.domain.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.dto.MenteeRequest.MenteeJoinRequest;
@@ -12,7 +13,7 @@ import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserGetRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
-import com.soongsil.CoffeeChat.domain.dto.UserResponse.*;
+import com.soongsil.CoffeeChat.domain.dto.UserResponse.User2FACodeResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.entity.Mentor;
@@ -20,6 +21,7 @@ import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
+import com.soongsil.CoffeeChat.infra.aws.s3.service.AmazonS3Service;
 import com.soongsil.CoffeeChat.infra.sms.SmsUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
     private final UserRepository userRepository;
     private final SmsUtil smsUtil;
+    private final AmazonS3Service s3Service;
 
     @Transactional(readOnly = true)
     public User findUserByUsername(String username) {
@@ -74,5 +77,16 @@ public class UserService {
     public void deleteUser(String username) {
         User user = findUserByUsername(username);
         user.softDelete();
+    }
+
+    @Transactional
+    public UserInfoResponse uploadPicture(MultipartFile image, String username) {
+        User user = findUserByUsername(username);
+        String picture =
+                user.getPicture() == null
+                        ? s3Service.uploadFile(image, "user")
+                        : s3Service.updateFile(user.getPicture(), image, "user");
+        user.updatePicture(picture);
+        return UserConverter.toResponse(user);
     }
 }
