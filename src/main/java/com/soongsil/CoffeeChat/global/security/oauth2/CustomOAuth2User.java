@@ -7,24 +7,13 @@ import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.soongsil.CoffeeChat.domain.entity.User;
-import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.global.security.dto.UserDto;
 
 public class CustomOAuth2User implements OAuth2User {
     private final UserDto userDTO;
 
-    public CustomOAuth2User(User user) {
-        this.userDTO =
-                UserDto.builder()
-                        .username(user.getUsername())
-                        .name(user.getName())
-                        .role(user.getRole())
-                        .build();
-    }
-
-    public CustomOAuth2User(String username, Role role) {
-        this.userDTO = UserDto.builder().username(username).role(role).build();
+    public CustomOAuth2User(UserDto userDTO) {
+        this.userDTO = userDTO;
     }
 
     @Override
@@ -38,8 +27,10 @@ public class CustomOAuth2User implements OAuth2User {
         Collection<GrantedAuthority> collection = new ArrayList<>();
         collection.add(
                 new GrantedAuthority() {
+
                     @Override
                     public String getAuthority() {
+
                         return userDTO.getRole().name();
                     }
                 });
@@ -52,6 +43,7 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     public String getUsername() { // 스프링애플리케이션 서버 ID반환 메소드
+
         return userDTO.getUsername();
     }
 }

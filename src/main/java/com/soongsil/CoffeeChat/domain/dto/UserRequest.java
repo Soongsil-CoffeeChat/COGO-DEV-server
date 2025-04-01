@@ -12,10 +12,19 @@ public class UserRequest {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class UserJoinRequest {
+        private String phoneNum;
+        private String name;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserUpdateRequest {
         private String name;
         private String email;
         private String phoneNum;
+        private String picture;
     }
 
     @Getter

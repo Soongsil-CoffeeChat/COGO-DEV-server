@@ -66,19 +66,21 @@ public class User {
         return mentee;
     }
 
+    public void updateNameAndPhoneNum(String newName, String newPhoneNum) {
+        this.name = newName;
+        this.phoneNum = newPhoneNum;
+    }
+
     public void updateUser(UserUpdateRequest request) {
         this.name = request.getName();
         this.phoneNum = request.getPhoneNum();
         this.email = request.getEmail();
+        this.picture = request.getPicture();
     }
 
     public void updateUser(OAuth2Response response) {
         this.name = response.getName();
         this.email = response.getEmail();
-    }
-
-    public void updatePicture(String picture) {
-        this.picture = picture;
     }
 
     public void softDelete() {

@@ -4,17 +4,16 @@ import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
 
 import java.net.URI;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.soongsil.CoffeeChat.domain.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest;
+import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserJoinRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.User2FACodeResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
@@ -38,6 +37,17 @@ public class UserController {
         CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
         if (principal == null) throw new Exception(); // TODO : Exception 만들기
         return principal.getUsername();
+    }
+
+    @PostMapping()
+    @Operation(summary = "기본정보 기입")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
+    public ResponseEntity<ApiResponse<UserInfoResponse>> updateUser(
+            Authentication authentication, @RequestBody UserJoinRequest dto) throws Exception {
+        UserInfoResponse response =
+                userService.saveUserInformation(getUserNameByAuthentication(authentication), dto);
+        return ResponseEntity.created(URI.create(USER_URI))
+                .body(ApiResponse.onSuccessCREATED(response));
     }
 
     @PostMapping("/mentor")
@@ -99,17 +109,5 @@ public class UserController {
             throws Exception {
         userService.deleteUser(getUserNameByAuthentication(authentication));
         return ResponseEntity.ok().body(ApiResponse.onSuccessOK(null));
-    }
-
-    @PostMapping(value = "/picture", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "유저 사진 등록하기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
-    public ResponseEntity<ApiResponse<UserInfoResponse>> updatePicture(
-            Authentication authentication, @RequestPart(value = "image") MultipartFile image)
-            throws Exception {
-        UserInfoResponse response =
-                userService.uploadPicture(image, getUserNameByAuthentication(authentication));
-        return ResponseEntity.created(URI.create(USER_URI + "/" + "picture"))
-                .body(ApiResponse.onSuccessCREATED(response));
     }
 }

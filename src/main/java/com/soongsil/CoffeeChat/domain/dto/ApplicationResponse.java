@@ -3,8 +3,6 @@ package com.soongsil.CoffeeChat.domain.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -19,15 +17,13 @@ public class ApplicationResponse {
         private Long menteeId;
         private String applicationMemo;
 
-        @JsonFormat(pattern = "yyyy-MM-dd")
+        @Schema(type = "string", pattern = "yyyy-mm-dd")
         private LocalDate applicationDate;
 
-        @JsonFormat(pattern = "HH:mm")
-        @Schema(type = "string", pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm:ss")
         private LocalTime applicationStartTime;
 
-        @JsonFormat(pattern = "HH:mm")
-        @Schema(type = "string", pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm:ss")
         private LocalTime applicationEndTime;
     }
 
@@ -41,16 +37,13 @@ public class ApplicationResponse {
         private String mentorName;
         private String applicationMemo;
 
-        @JsonFormat(pattern = "yyyy-MM-dd")
-        @Schema(type = "string", pattern = "yyyy-MM-dd")
+        @Schema(type = "string", pattern = "yyyy-mm-dd")
         private LocalDate applicationDate;
 
-        @JsonFormat(pattern = "HH:mm")
-        @Schema(type = "string", pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm:ss")
         private LocalTime applicationStartTime;
 
-        @JsonFormat(pattern = "HH:mm")
-        @Schema(type = "string", pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm:ss")
         private LocalTime applicationEndTime;
     }
 

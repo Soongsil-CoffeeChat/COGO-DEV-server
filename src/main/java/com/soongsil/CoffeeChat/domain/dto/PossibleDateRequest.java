@@ -16,12 +16,10 @@ public class PossibleDateRequest {
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate date;
 
-        @JsonFormat(pattern = "HH:mm")
-        @Schema(type = "string", pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm:ss")
         private LocalTime startTime;
 
-        @JsonFormat(pattern = "HH:mm")
-        @Schema(type = "string", pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm:ss")
         private LocalTime endTime;
     }
 }

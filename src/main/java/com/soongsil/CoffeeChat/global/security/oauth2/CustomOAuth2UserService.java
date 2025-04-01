@@ -10,18 +10,17 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import com.soongsil.CoffeeChat.domain.dto.MobileTokenResponse;
-import com.soongsil.CoffeeChat.domain.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.domain.service.RefreshTokenService;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import com.soongsil.CoffeeChat.global.security.dto.GoogleTokenInfoResponse;
+import com.soongsil.CoffeeChat.global.security.dto.UserDto;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.GoogleResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.KakaoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.NaverResponse;
@@ -35,133 +34,125 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+    private final UserRepository userRepository;
+
+    private final JwtUtil jwtUtil;
+
     private static final String GOOGLE_TOKEN_INFO_URL =
             "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=";
-
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
-    private final WebClient webClient;
 
+    // 리소스 서버에서 제공되는 유저정보 가져오기
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // 리소스서버로부터 유저 데이터를 받아 소셜 형식에 맞게 데이터 전처리(DTO로)
         OAuth2User oAuth2User = super.loadUser(userRequest);
-
+        System.out.println("oAuth2User = " + oAuth2User);
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        OAuth2Response oAuth2Response =
-                createOAuth2Response(registrationId, oAuth2User.getAttributes());
 
-        if (oAuth2Response == null) {
-            throw new OAuth2AuthenticationException(
-                    "Unsupported OAuth provider: " + registrationId);
+        OAuth2Response oAuth2Response;
+        switch (registrationId) {
+            case "naver" -> oAuth2Response = new NaverResponse(oAuth2User.getAttributes());
+            case "google" -> oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
+            case "kakao" -> oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
+            default -> {
+                return null;
+            }
         }
 
-        String username = createUsername(oAuth2Response);
+        // 리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
+        String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
-        // 유저 정보 가져오거나 새로 저장
-        User user =
-                userRepository
-                        .findByUsername(username)
-                        .map(
-                                existingUser -> {
-                                    // 소셜 정보로 사용자 정보 업데이트
-                                    existingUser.updateUser(oAuth2Response);
-                                    return existingUser; // @Transactional 내에서는 명시적 save 불필요
-                                })
-                        .orElseGet(
-                                () ->
-                                        userRepository.save(
-                                                UserConverter.toEntity(username, oAuth2Response)));
+        // 유저가 DB에 있는지 확인 후 없으면 새로 저장
+        Optional<User> existData = userRepository.findByUsername(username);
+        if (existData.isEmpty()) {
+            User user =
+                    User.builder()
+                            .username(username)
+                            .email(oAuth2Response.getEmail())
+                            .name(oAuth2Response.getName())
+                            .role(Role.ROLE_USER)
+                            .build();
 
-        // CustomOAuth2User 반환
-        return new CustomOAuth2User(user);
-    }
+            userRepository.save(user);
 
-    private OAuth2Response createOAuth2Response(
-            String registrationId, Map<String, Object> attributes) {
-        return switch (registrationId) {
-            case "naver" -> new NaverResponse(attributes);
-            case "google" -> new GoogleResponse(attributes);
-            case "kakao" -> new KakaoResponse(attributes);
-            default -> null;
-        };
-    }
+            UserDto userDTO = new UserDto();
+            userDTO.setUsername(username);
+            userDTO.setName(oAuth2Response.getName());
+            userDTO.setRole(Role.ROLE_USER);
 
-    private String createUsername(OAuth2Response oAuth2Response) {
-        return oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
-    }
+            return new CustomOAuth2User(userDTO);
+        } else { // 데이터가 이미 존재하면 업데이트 후 OAuth2User객체로 반환
+            // 소셜에서 로그인마다 업데이트를 선호하므로 로그인마다 DB 업데이트 진행
+            existData.get().updateUser(oAuth2Response);
+            userRepository.save(existData.get());
 
-    @Transactional
-    public MobileTokenResponse verifyGoogleToken(String accessToken) {
-        log.debug("Verifying Google token");
-
-        GoogleTokenInfoResponse tokenInfo = fetchGoogleTokenInfo(accessToken);
-        validateTokenInfo(tokenInfo);
-
-        String username = tokenInfo.getSub();
-
-        // 사용자 정보 처리
-        Optional<User> existingUser = userRepository.findByUsername(username);
-        boolean isNewAccount = existingUser.isEmpty();
-        Role role;
-
-        if (isNewAccount) {
-            User newUser = UserConverter.toEntity(username, tokenInfo);
-            userRepository.save(newUser);
-            role = Role.ROLE_USER;
-        } else {
-            role = existingUser.get().getRole();
+            UserDto userDTO = new UserDto();
+            userDTO.setUsername(existData.get().getUsername());
+            userDTO.setName(oAuth2Response.getName());
+            userDTO.setRole(existData.get().getRole());
+            return new CustomOAuth2User(userDTO);
         }
-
-        return generateTokenResponse(username, role, isNewAccount);
     }
 
-    private GoogleTokenInfoResponse fetchGoogleTokenInfo(String accessToken) {
+    public MobileTokenResponse verifyGoogleToken(String accessToken, String name) {
+        log.info("[*] TOKEN>>>>> " + accessToken);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = GOOGLE_TOKEN_INFO_URL + accessToken;
         try {
-            return webClient
-                    .get()
-                    .uri(
-                            uriBuilder ->
-                                    uriBuilder
-                                            .path("/oauth2/v3/tokeninfo")
-                                            .scheme("https")
-                                            .host("www.googleapis.com")
-                                            .queryParam("access_token", accessToken)
-                                            .build())
-                    .retrieve()
-                    .bodyToMono(GoogleTokenInfoResponse.class)
-                    .block();
-        } catch (WebClientResponseException e) {
-            log.error("Google API error: {}, Status: {}", e.getMessage(), e.getStatusCode());
-            throw new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR);
-        } catch (Exception e) {
-            log.error("Error fetching Google token info: {}", e.getMessage());
+            Map<String, Object> tokenInfo = restTemplate.getForObject(url, Map.class);
+            log.info("===== Token info received ===== " + tokenInfo);
+            if (tokenInfo != null && tokenInfo.containsKey("sub")) {
+                String email = (String) tokenInfo.get("email");
+                String username = (String) tokenInfo.get("sub");
+
+                // 사용자 정보 검색
+                Optional<User> existingUser = userRepository.findByUsername(username);
+                boolean isNewAccount;
+                Role role;
+
+                if (existingUser.isPresent()) {
+                    // 기존 사용자: Role 정보 가져오기
+                    isNewAccount = false;
+                    role = existingUser.get().getRole();
+                    log.info("Existing user found: " + username);
+                } else {
+                    isNewAccount = true;
+                    role = Role.ROLE_USER;
+                    log.info("New user created: " + username);
+
+                    // 신규 사용자 정보 저장
+                    User user =
+                            User.builder()
+                                    .username(username)
+                                    .email(email)
+                                    .name(name)
+                                    .role(Role.ROLE_USER)
+                                    .build();
+                    userRepository.save(user);
+                }
+
+                // JWT 토큰 생성
+                String newAccessToken = jwtUtil.createAccessToken(username, role);
+                String newRefreshToken = jwtUtil.createRefreshToken(username, role);
+
+                // Refresh 토큰을 Redis 또는 DB에 저장 (선택적)
+                refreshTokenService.addRefreshEntity(username, newRefreshToken, 86400000L);
+
+                // Access, Refresh 토큰 반환
+                return MobileTokenResponse.builder()
+                        .refreshToken(newRefreshToken)
+                        .accessToken(newAccessToken)
+                        .isNewAccount(isNewAccount)
+                        .build();
+            } else {
+                log.error("===== Invalid token info ===== {}", tokenInfo);
+                throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
+            }
+        } catch (HttpClientErrorException e) {
+            log.error("===== Error verifying Google token ===== {}", e.getResponseBodyAsString());
             throw new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR);
         }
-    }
-
-    private void validateTokenInfo(GoogleTokenInfoResponse tokenInfo) {
-        if (tokenInfo == null || !tokenInfo.isValid()) {
-            log.error("Invalid token info: {}", tokenInfo);
-            throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN);
-        }
-        log.info("Token info verified successfully");
-    }
-
-    // 토큰 생성 로직 통합
-    private MobileTokenResponse generateTokenResponse(
-            String username, Role role, boolean isNewAccount) {
-        String accessToken = jwtUtil.createAccessToken(username, role);
-        String refreshToken = jwtUtil.createRefreshToken(username, role);
-
-        // Refresh 토큰 저장
-        refreshTokenService.addRefreshEntity(username, refreshToken, 86400000L);
-
-        return MobileTokenResponse.builder()
-                .refreshToken(refreshToken)
-                .accessToken(accessToken)
-                .isNewAccount(isNewAccount)
-                .build();
     }
 }

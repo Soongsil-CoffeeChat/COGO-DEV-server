@@ -2,11 +2,11 @@ package com.soongsil.CoffeeChat.global.security.dto;
 
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
+@Setter
 public class UserDto {
     private Role role;
     private String name;
