@@ -44,7 +44,9 @@ public class PossibleDateService {
         possibleDateRepository.deleteAllByMentor(mentor);
 
         List<PossibleDate> possibleDates =
-                dtos.stream().map(PossibleDateConverter::toEntity).collect(Collectors.toList());
+                dtos.stream()
+                        .map(it -> PossibleDateConverter.toEntity(it, mentor))
+                        .collect(Collectors.toList());
 
         possibleDateRepository.saveAll(possibleDates);
 
