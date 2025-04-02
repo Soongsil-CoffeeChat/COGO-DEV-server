@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.dto.PossibleDateConverter;
-import com.soongsil.CoffeeChat.domain.dto.PossibleDateRequest.*;
-import com.soongsil.CoffeeChat.domain.dto.PossibleDateResponse.*;
+import com.soongsil.CoffeeChat.domain.dto.PossibleDateRequest.PossibleDateCreateRequest;
+import com.soongsil.CoffeeChat.domain.dto.PossibleDateResponse.PossibleDateCreateResponse;
 import com.soongsil.CoffeeChat.domain.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.entity.PossibleDate;
 import com.soongsil.CoffeeChat.domain.entity.User;
@@ -41,20 +41,10 @@ public class PossibleDateService {
         User user = findUserByUsername(username);
         Mentor mentor = user.getMentor();
 
-        // 가능 시간을 갱신하기 위해 모든 가능 시간을 삭제 후 새로운 값 삽입
-        // possibleDateRepository.deleteAllByMentor(mentor);
-        // log.info("[*] 멘토(" + username + ")의 가능시간 모두 삭제(가능시간 갱신 API 일부)");
+        possibleDateRepository.deleteAllByMentor(mentor);
 
         List<PossibleDate> possibleDates =
-                dtos.stream()
-                        .map(
-                                dto -> {
-                                    PossibleDate possibleDate = PossibleDateConverter.toEntity(dto);
-                                    possibleDate.setMentor(mentor);
-                                    mentor.addPossibleDate(possibleDate);
-                                    return possibleDate;
-                                })
-                        .collect(Collectors.toList());
+                dtos.stream().map(PossibleDateConverter::toEntity).collect(Collectors.toList());
 
         possibleDateRepository.saveAll(possibleDates);
 
@@ -80,23 +70,7 @@ public class PossibleDateService {
 
     @Transactional(readOnly = true)
     public List<PossibleDateCreateResponse> findMentorPossibleDateListByUsername(String username) {
-
         User user = findUserByUsername(username);
         return findPossibleDateListByMentor(user.getMentor().getId());
-    }
-
-    @Transactional
-    public String deletePossibleDate(Long possibleDateId, String username) {
-        // ID가 존재하는지 확인하고 예외 처리
-        if (!possibleDateRepository.existsById(possibleDateId)) {
-            throw new IllegalArgumentException(
-                    "The specified possibleDateId does not exist: " + possibleDateId);
-        }
-
-        // 삭제 수행
-        possibleDateRepository.deleteById(possibleDateId);
-
-        // 삭제 후 성공 여부 반환 (일반적으로 예외가 없으면 삭제 성공)
-        return "삭제완료";
     }
 }

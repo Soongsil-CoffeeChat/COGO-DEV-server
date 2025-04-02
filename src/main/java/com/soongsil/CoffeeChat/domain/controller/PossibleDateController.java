@@ -2,7 +2,6 @@ package com.soongsil.CoffeeChat.domain.controller;
 
 import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -32,17 +31,14 @@ public class PossibleDateController {
         return principal.getUsername();
     }
 
-    @PostMapping()
+    @PutMapping
     @Operation(summary = "멘토가 직접 커피챗 가능시간 갱신하기")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "201",
-            description = "DTO형식으로 정보 반환")
-    public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> addPossibleDate(
+    public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> updatePossibleDate(
             Authentication authentication, @RequestBody List<PossibleDateCreateRequest> dtos)
             throws Exception {
-        return ResponseEntity.created(URI.create(POSSIBLEDATE_URI))
+        return ResponseEntity.ok()
                 .body(
-                        ApiResponse.onSuccessCREATED(
+                        ApiResponse.onSuccessOK(
                                 possibleDateService.updatePossibleDate(
                                         dtos, getUserNameByAuthentication(authentication))));
     }
@@ -71,22 +67,6 @@ public class PossibleDateController {
                 .body(
                         ApiResponse.onSuccessOK(
                                 possibleDateService.findMentorPossibleDateListByUsername(
-                                        getUserNameByAuthentication(authentication))));
-    }
-
-    @DeleteMapping("{possibleDateId}")
-    @Operation(summary = "시간대ID로 등록한 시간대 삭제")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200",
-            description = "삭제 성공")
-    public ResponseEntity<ApiResponse<String>> deletePossibleDates(
-            Authentication authentication, @PathVariable("possibleDateId") Long possibleDateId)
-            throws Exception {
-        return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                possibleDateService.deletePossibleDate(
-                                        possibleDateId,
                                         getUserNameByAuthentication(authentication))));
     }
 }
