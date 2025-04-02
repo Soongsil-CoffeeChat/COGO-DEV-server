@@ -12,6 +12,7 @@ public class PossibleDateConverter {
                         .startTime(request.getStartTime())
                         .endTime(request.getEndTime())
                         .isActive(true)
+                        .mentor(mentor)
                         .build();
         mentor.addPossibleDate(possibleDate);
         return possibleDate;
