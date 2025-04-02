@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -21,7 +20,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 @ToString(of = {"id", "part", "club"})
 public class Mentor {
     @Id
