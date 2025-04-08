@@ -52,24 +52,16 @@ public class ApplicationService {
     }
 
     @Transactional
-    public ApplicationCreateResponse createApplication(
-            ApplicationCreateRequest request, String userName) {
+    public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) {
         PossibleDate requestedPossibleDate =
                 possibleDateRepository
                         .findById(request.getPossibleDateId())
-                        .orElseThrow(
-                                () -> new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND));
-        log.info("[*] Find possibleDate id: " + requestedPossibleDate.getId());
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND));
 
         // 선점된 가능시간
         if (!requestedPossibleDate.isActive()) {
-            log.warn(
-                    "[*] Found possibleDate(id:"
-                            + requestedPossibleDate.getId()
-                            + ") is already preempted");
             throw new GlobalException(GlobalErrorCode.PREEMPTED_POSSIBLE_DATE);
         }
-        log.info("[*] Found possibleDate is not preempted");
 
         // COGO 저장
         User user = findUserByUsername(userName);
@@ -83,6 +75,7 @@ public class ApplicationService {
                 ApplicationConverter.toEntity(
                         findMentor, findMentee, request.getMemo(), requestedPossibleDate);
         applicationRepository.save(application);
+        smsUtil.sendMentorNotificationMessage(application);
         return ApplicationConverter.toResponse(application);
     }
 
@@ -133,16 +126,15 @@ public class ApplicationService {
     public ApplicationMatchResponse updateApplicationStatus(Long applicationId, String decision) {
         Application application = findApplicationById(applicationId);
         application.getPossibleDate().deactivate();
+        smsUtil.sendMenteeNotificationMessage(application);
         switch (decision) {
             case "reject" -> {
                 application.rejectApplication();
-                smsUtil.sendRejectCogoMessage(application);
                 return ApplicationConverter.toResponse(
                         applicationId, application.getAccept().name());
             }
             case "accept" -> {
                 application.acceptApplication();
-                smsUtil.sendAcceptCogoMessage(application);
                 rejectUnmatchedApplications(application);
                 return ApplicationConverter.toResponse(
                         applicationId, application.getAccept().name());
@@ -156,6 +148,6 @@ public class ApplicationService {
                 applicationRepository.findByPossibleDateAndAccept(
                         application.getPossibleDate(), ApplicationStatus.UNMATCHED);
         unmatchedApplications.forEach(Application::rejectApplication);
-        unmatchedApplications.forEach(smsUtil::sendRejectCogoMessage);
+        unmatchedApplications.forEach(smsUtil::sendMenteeNotificationMessage);
     }
 }
