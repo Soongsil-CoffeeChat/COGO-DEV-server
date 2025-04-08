@@ -19,7 +19,7 @@ public class SmsUtil {
     private final DefaultMessageService messageService;
     private final String from;
 
-    public void sendMessage(String to, String message) {
+    private void sendMessage(String to, String message) {
         Message messageToSend = new Message();
         messageToSend.setFrom(from);
         messageToSend.setTo(to);
@@ -31,7 +31,7 @@ public class SmsUtil {
         }
     }
 
-    public void sendMessage(User to, String message) {
+    private void sendMessage(User to, String message) {
         sendMessage(to.getPhoneNum(), message);
     }
 
@@ -42,13 +42,12 @@ public class SmsUtil {
         return verificationCode;
     }
 
-    public void sendAcceptCogoMessage(Application application) {
-        sendMessage(application.getMentee().getUser(), "멘토링이 성사되었습니다. COGO 앱에 접속해 확인해 보세요!");
-        sendMessage(application.getMentee().getUser(), "멘토링이 성사되었습니다. COGO 앱에 접속해 확인해 보세요!");
+    public void sendMenteeNotificationMessage(Application application) {
+        sendMessage(application.getMentee().getUser(), "띵동~♪ 멘토님이 커피챗 요청에 응답했어요! 지금 바로 코고 앱에서 확인해 보세요");
     }
 
-    public void sendRejectCogoMessage(Application application) {
-        sendMessage(application.getMentee().getUser(), "멘토님의 답장이 도착했어요. 지금 바로 코고 앱에서 확인해 보세요!");
+    public void sendMentorNotificationMessage(Application application) {
+        sendMessage(application.getMentee().getUser(), "띵동~♪ 멘토님께 커피챗 신청서가 도착했어요! 지금 바로 코고 앱에서 확인해 보세요");
     }
 
     private String generateVerificationCode() {
