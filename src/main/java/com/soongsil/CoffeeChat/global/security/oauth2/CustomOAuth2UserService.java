@@ -17,6 +17,7 @@ import com.soongsil.CoffeeChat.domain.dto.MobileTokenResponse;
 import com.soongsil.CoffeeChat.domain.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
+import com.soongsil.CoffeeChat.domain.entity.enums.UserAccountStatus;
 import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.domain.service.RefreshTokenService;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -94,51 +95,55 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Transactional
     public MobileTokenResponse verifyGoogleToken(String accessToken) {
-        log.debug("Verifying Google token");
-
         GoogleTokenInfoResponse tokenInfo = fetchGoogleTokenInfo(accessToken);
         validateTokenInfo(tokenInfo);
 
         String username = tokenInfo.getSub();
 
-        // 사용자 정보 처리
-        Optional<User> existingUser = userRepository.findByUsername(username);
-        boolean isNewAccount = existingUser.isEmpty();
+        Optional<User> existingUser = userRepository.findByUsernameWithDeleted(username);
+        UserAccountStatus accountStatus;
         Role role;
 
-        if (isNewAccount) {
+        if (existingUser.isEmpty()) {
+            // 새 계정 생성
             User newUser = UserConverter.toEntity(username, tokenInfo);
             userRepository.save(newUser);
             role = Role.ROLE_USER;
+            accountStatus = UserAccountStatus.NEW_ACCOUNT;
         } else {
-            role = existingUser.get().getRole();
+            User user = existingUser.get();
+            role = user.getRole();
+
+            // 삭제된 계정이면 복구
+            if (user.getIsDeleted()) {
+                user.undoSoftDelete();
+                accountStatus = UserAccountStatus.RESTORED_ACCOUNT;
+            } else {
+                accountStatus = UserAccountStatus.EXISTING_ACCOUNT;
+            }
         }
 
-        return generateTokenResponse(username, role, isNewAccount);
+        return generateTokenResponse(username, role, accountStatus);
     }
 
     private GoogleTokenInfoResponse fetchGoogleTokenInfo(String accessToken) {
-        try {
-            return webClient
-                    .get()
-                    .uri(
-                            uriBuilder ->
-                                    uriBuilder
-                                            .path("/oauth2/v3/tokeninfo")
-                                            .scheme("https")
-                                            .host("www.googleapis.com")
-                                            .queryParam("access_token", accessToken)
-                                            .build())
-                    .retrieve()
-                    .bodyToMono(GoogleTokenInfoResponse.class)
-                    .block();
-        } catch (WebClientResponseException e) {
-            log.error("Google API error: {}, Status: {}", e.getMessage(), e.getStatusCode());
-            throw new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR);
-        } catch (Exception e) {
-            log.error("Error fetching Google token info: {}", e.getMessage());
-            throw new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR);
-        }
+        return webClient
+                .get()
+                .uri(
+                        uriBuilder ->
+                                uriBuilder
+                                        .scheme("https")
+                                        .host("www.googleapis.com")
+                                        .path("/oauth2/v3/tokeninfo")
+                                        .queryParam("access_token", accessToken)
+                                        .build())
+                .retrieve()
+                .bodyToMono(GoogleTokenInfoResponse.class)
+                .onErrorMap(
+                        WebClientResponseException.class,
+                        e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
+                .onErrorMap(e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
+                .block();
     }
 
     private void validateTokenInfo(GoogleTokenInfoResponse tokenInfo) {
@@ -151,7 +156,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 토큰 생성 로직 통합
     private MobileTokenResponse generateTokenResponse(
-            String username, Role role, boolean isNewAccount) {
+            String username, Role role, UserAccountStatus accountStatus) {
         String accessToken = jwtUtil.createAccessToken(username, role);
         String refreshToken = jwtUtil.createRefreshToken(username, role);
 
@@ -161,7 +166,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return MobileTokenResponse.builder()
                 .refreshToken(refreshToken)
                 .accessToken(accessToken)
-                .isNewAccount(isNewAccount)
+                .accessTokenExpiresIn(86400000L)
+                .accountStatus(accountStatus)
                 .build();
     }
 }

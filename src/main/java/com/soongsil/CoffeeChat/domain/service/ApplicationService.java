@@ -52,11 +52,13 @@ public class ApplicationService {
     }
 
     @Transactional
-    public ApplicationCreateResponse createApplication(ApplicationCreateRequest request, String userName) {
+    public ApplicationCreateResponse createApplication(
+            ApplicationCreateRequest request, String userName) {
         PossibleDate requestedPossibleDate =
                 possibleDateRepository
                         .findById(request.getPossibleDateId())
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND));
+                        .orElseThrow(
+                                () -> new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND));
 
         // 선점된 가능시간
         if (!requestedPossibleDate.isActive()) {

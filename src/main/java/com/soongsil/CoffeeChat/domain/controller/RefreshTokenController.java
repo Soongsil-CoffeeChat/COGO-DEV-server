@@ -37,7 +37,9 @@ public class RefreshTokenController { // Refresh토큰으로 Access토큰 발급
     @Operation(summary = "[MOBILE] google 서버에서 받은 accessToken으로 서비스 accessToken 발급 및 유저 생성")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
-            description = "유효한 google accessToken으로 요청시 body로 ROLE_USER 토큰 반환")
+            description =
+                    "유효한 google accessToken으로 요청시 body로 ROLE_USER 토큰 반환 "
+                            + "// accountStatus = NEW_ACCOUNT, EXISTING_ACCOUNT, RESTORED_ACCOUNT")
     public ResponseEntity<ApiResponse<MobileTokenResponse>> issueAccessToken(
             @RequestParam String accessToken) {
         return ResponseEntity.ok()
