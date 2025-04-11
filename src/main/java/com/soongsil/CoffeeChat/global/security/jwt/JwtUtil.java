@@ -19,15 +19,15 @@ import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 
-// JWT : username, role, 생성일, 만료일 포함, 0.12.3 버전 사용
-// username확인, role확인, 만료일 확인
 @Component
 public class JwtUtil {
     private final SecretKey secretKey;
 
-    // TODO test 이후 시간 줄이기
-    private final long accessExpiredMs = 86400000L * 7; // 3600000L; // 1시간
-    private final long refreshExpiredMs = 86400000L * 7; // 1주일
+    @Value("${spring.jwt.access-expiration}")
+    private long accessTokenExpiration;
+
+    @Value("${spring.jwt.refresh-expiration}")
+    private long refreshTokenExpiration;
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret) {
         secretKey =
@@ -64,11 +64,11 @@ public class JwtUtil {
     }
 
     public String createAccessToken(String username, Role role) {
-        return createJwt("access", username, role, accessExpiredMs);
+        return createJwt("access", username, role, accessTokenExpiration);
     }
 
     public String createRefreshToken(String username, Role role) {
-        return createJwt("refresh", username, role, refreshExpiredMs);
+        return createJwt("refresh", username, role, refreshTokenExpiration);
     }
 
     private String createJwt(String category, String username, Role role, Long expiredMs) { // 토큰생성
