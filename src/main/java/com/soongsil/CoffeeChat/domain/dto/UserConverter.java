@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.dto;
 
 import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
+import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.GoogleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 
@@ -37,8 +38,14 @@ public class UserConverter {
                 .name(response.getName())
                 .role(Role.ROLE_USER)
                 .build();
-        // String email = tokenInfo.getEmail();
-        //            String username = tokenInfo.getSub();
-        //            String userName = tokenInfo.getName();
+    }
+
+    public static User toEntity(String username, AppleTokenInfoResponse response) {
+        return User.builder()
+                .username(username)
+                .email(response.getEmail())
+                .name("Apple User")
+                .role(Role.ROLE_USER)
+                .build();
     }
 }

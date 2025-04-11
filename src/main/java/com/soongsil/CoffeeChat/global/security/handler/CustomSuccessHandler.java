@@ -6,6 +6,7 @@ import java.util.Date;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
@@ -26,13 +27,18 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
+    @Value("${spring.jwt.refresh-expiration}")
+    private long refreshTokenExpiration;
+
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
-        Refresh refreshEntity = new Refresh();
-        refreshEntity.setUsername(username);
-        refreshEntity.setRefresh(refresh);
-        refreshEntity.setExpiration(date.toString());
+        Refresh refreshEntity =
+                Refresh.builder()
+                        .username(username)
+                        .refresh(refresh)
+                        .expiration(date.toString())
+                        .build();
 
         refreshRepository.save(refreshEntity);
     }
@@ -48,7 +54,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String refreshToken = jwtUtil.createRefreshToken(username, role);
 
-        addRefreshEntity(username, refreshToken, 86400000L);
+        addRefreshEntity(username, refreshToken, refreshTokenExpiration);
 
         // Add Cookies
         addSameSiteCookie(response, "refresh", refreshToken);
