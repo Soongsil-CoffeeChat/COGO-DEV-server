@@ -86,6 +86,11 @@ public class User {
         this.deletedAt = LocalDateTime.now();
     }
 
+    public void undoSoftDelete() {
+        this.isDeleted = false;
+        this.deletedAt = null;
+    }
+
     public boolean isMentor() {
         return this.mentor != null;
     }

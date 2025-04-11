@@ -43,11 +43,14 @@ public class SmsUtil {
     }
 
     public void sendMenteeNotificationMessage(Application application) {
-        sendMessage(application.getMentee().getUser(), "띵동~♪ 멘토님이 커피챗 요청에 응답했어요! 지금 바로 코고 앱에서 확인해 보세요");
+        sendMessage(
+                application.getMentee().getUser(), "띵동~♪ 멘토님이 커피챗 요청에 응답했어요! 지금 바로 코고 앱에서 확인해 보세요");
     }
 
     public void sendMentorNotificationMessage(Application application) {
-        sendMessage(application.getMentee().getUser(), "띵동~♪ 멘토님께 커피챗 신청서가 도착했어요! 지금 바로 코고 앱에서 확인해 보세요");
+        sendMessage(
+                application.getMentee().getUser(),
+                "띵동~♪ 멘토님께 커피챗 신청서가 도착했어요! 지금 바로 코고 앱에서 확인해 보세요");
     }
 
     private String generateVerificationCode() {
