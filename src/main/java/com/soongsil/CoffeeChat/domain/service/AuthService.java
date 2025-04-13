@@ -202,7 +202,7 @@ public class AuthService {
                         e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
                 .onErrorMap(
                         e -> !(e instanceof GlobalException),
-                        e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
+                        e -> new GlobalException(GlobalErrorCode.INTERNAL_SERVER_ERROR))
                 .block();
     }
 

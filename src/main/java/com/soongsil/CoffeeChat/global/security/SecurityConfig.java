@@ -114,9 +114,10 @@ public class SecurityConfig {
                                                 "/swagger-resources/**",
                                                 "/health-check",
                                                 "/",
-                                                "/auth/reissue/**",
                                                 "/security-check",
-                                                "/reissue")
+                                                "/reissue",
+                                                "/auth/reissue",
+                                                "/auth/login/**")
                                         .permitAll()
                                         .requestMatchers(HttpMethod.GET, "/admin/issue")
                                         .permitAll()
@@ -124,10 +125,6 @@ public class SecurityConfig {
                                                 HttpMethod.GET, "/api/v2/mentors/{mentorId}/**")
                                         .permitAll()
                                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part")
-                                        .permitAll()
-                                        .requestMatchers("/auth/reissue/mobile/**")
-                                        .permitAll()
-                                        .requestMatchers("/auth/issue/mobile/**")
                                         .permitAll()
                                         .requestMatchers("/api/v2/possibleDates/**")
                                         .hasAnyRole("MENTOR", "MENTEE")
