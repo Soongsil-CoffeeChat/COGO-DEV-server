@@ -1,5 +1,8 @@
 package com.soongsil.CoffeeChat.domain.dto;
 
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorDetailResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionResponse;
 import com.soongsil.CoffeeChat.domain.entity.Introduction;
 import com.soongsil.CoffeeChat.domain.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.entity.User;
@@ -9,9 +12,8 @@ public class MentorConverter {
         return Mentor.builder().club(dto.getClub()).part(dto.getPart()).user(user).build();
     }
 
-    public static MentorResponse.MentorIntroductionGetUpdateResponse
-            toMentorIntroductionGetUpdateResponse(Introduction introduction) {
-        return MentorResponse.MentorIntroductionGetUpdateResponse.builder()
+    public static MentorIntroductionResponse toIntroductionResponse(Introduction introduction) {
+        return MentorResponse.MentorIntroductionResponse.builder()
                 .answer1(introduction.getAnswer1())
                 .answer2(introduction.getAnswer2())
                 .title(introduction.getTitle())
@@ -19,9 +21,8 @@ public class MentorConverter {
                 .build();
     }
 
-    public static MentorResponse.MentorGetUpdateDetailResponse toMentorGetUpdateDetailDto(
-            Mentor mentor, User user) {
-        return MentorResponse.MentorGetUpdateDetailResponse.builder()
+    public static MentorDetailResponse toDetailResponse(Mentor mentor, User user) {
+        return MentorDetailResponse.builder()
                 .mentorId(mentor.getId())
                 .mentorName(user.getName())
                 .imageUrl(user.getPicture())
@@ -34,7 +35,7 @@ public class MentorConverter {
                 .build();
     }
 
-    public static MentorResponse.MentorInfoResponse toResponse(Mentor mentor) {
+    public static MentorInfoResponse toResponse(Mentor mentor) {
         return MentorResponse.MentorInfoResponse.builder()
                 .part(mentor.getPart())
                 .club(mentor.getClub())

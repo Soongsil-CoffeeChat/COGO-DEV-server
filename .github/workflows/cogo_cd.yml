@@ -76,15 +76,6 @@ jobs:
           ${{ secrets.DOCKERHUB_USERNAME }}/cogoserver
           sleep 5
           sudo docker ps -a
-      #          -e MAIL_SENDER=${{ secrets.MAIL_SENDER }} \
-      #          -e MAIL_PW=${{ secrets.MAIL_PW }} \
-      #          -e NAVER_ID=${{ secrets.NAVER_ID }} \
-      #          -e NAVER_SECRET=${{ secrets.NAVER_SECRET }} \
-      #          -e NAVER_REDIRECT=${{ secrets.NAVER_REDIRECT }} \
-      #          -e KAKAO_ID=${{ secrets.KAKAO_ID }} \
-      #          -e KAKAO_SECRET=${{ secrets.KAKAO_SECRET }} \
-      #          -e KAKAO_REDIRECT=${{ secrets.KAKAO_REDIRECT }} \
-      #          -e SQS_NAME=${{ secrets.SQS_NAME }} \
 
       - name: Check Docker logs
         run: sudo docker logs cogo || true
