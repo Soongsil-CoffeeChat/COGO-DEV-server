@@ -1,7 +1,8 @@
 package com.soongsil.CoffeeChat.domain.dto;
 
-import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorDetailResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorInfoResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionResponse;
 import com.soongsil.CoffeeChat.domain.entity.Introduction;
 import com.soongsil.CoffeeChat.domain.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.entity.User;
@@ -20,8 +21,7 @@ public class MentorConverter {
                 .build();
     }
 
-    public static MentorDetailResponse toDetailResponse(
-            Mentor mentor, User user) {
+    public static MentorDetailResponse toDetailResponse(Mentor mentor, User user) {
         return MentorDetailResponse.builder()
                 .mentorId(mentor.getId())
                 .mentorName(user.getName())
@@ -35,7 +35,7 @@ public class MentorConverter {
                 .build();
     }
 
-    public static MentorResponse.MentorInfoResponse toResponse(Mentor mentor) {
+    public static MentorInfoResponse toResponse(Mentor mentor) {
         return MentorResponse.MentorInfoResponse.builder()
                 .part(mentor.getPart())
                 .club(mentor.getClub())
