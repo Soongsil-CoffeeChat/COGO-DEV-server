@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorIntroductionUpdateRequest;
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorUpdateRequest;
-import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorGetUpdateDetailResponse;
-import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionGetUpdateResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorDetailResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.domain.entity.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.entity.enums.PartEnum;
@@ -42,7 +42,7 @@ public class MentorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "변경된 멘토 세부 정보를 반환")
-    public ResponseEntity<ApiResponse<MentorGetUpdateDetailResponse>> updateMentorInfo(
+    public ResponseEntity<ApiResponse<MentorDetailResponse>> updateMentorInfo(
             Authentication authentication, @RequestBody MentorUpdateRequest request) {
         return ResponseEntity.ok()
                 .body(
@@ -58,7 +58,7 @@ public class MentorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "멘토 상세 정보 DTO 반환")
-    public ResponseEntity<ApiResponse<MentorGetUpdateDetailResponse>> getMentorInfo(
+    public ResponseEntity<ApiResponse<MentorDetailResponse>> getMentorInfo(
             @PathVariable("mentorId") Long mentorId) {
         return ResponseEntity.ok()
                 .body(ApiResponse.onSuccessOK(mentorService.getMentorDtoByIdWithJoin(mentorId)));
@@ -69,7 +69,7 @@ public class MentorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "자기소개의 수정된 버전을 반환")
-    public ResponseEntity<ApiResponse<MentorIntroductionGetUpdateResponse>> updateMentoIntroduction(
+    public ResponseEntity<ApiResponse<MentorIntroductionResponse>> updateMentoIntroduction(
             Authentication authentication, @RequestBody MentorIntroductionUpdateRequest dto)
             throws Exception {
         return ResponseEntity.ok()
@@ -84,7 +84,7 @@ public class MentorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "토큰으로 멘토 본인의 자기소개 조회")
-    public ResponseEntity<ApiResponse<MentorIntroductionGetUpdateResponse>> getMentorIntroduction(
+    public ResponseEntity<ApiResponse<MentorIntroductionResponse>> getMentorIntroduction(
             Authentication authentication) throws Exception {
         return ResponseEntity.ok()
                 .body(

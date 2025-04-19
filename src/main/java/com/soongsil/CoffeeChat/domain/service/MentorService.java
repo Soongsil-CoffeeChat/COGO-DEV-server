@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.soongsil.CoffeeChat.domain.dto.MentorConverter;
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorIntroductionUpdateRequest;
 import com.soongsil.CoffeeChat.domain.dto.MentorRequest.MentorUpdateRequest;
-import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorGetUpdateDetailResponse;
-import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionGetUpdateResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorDetailResponse;
+import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorIntroductionResponse;
 import com.soongsil.CoffeeChat.domain.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.domain.entity.Introduction;
 import com.soongsil.CoffeeChat.domain.entity.User;
@@ -40,12 +40,12 @@ public class MentorService {
     }
 
     @Transactional(readOnly = true)
-    public MentorGetUpdateDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
+    public MentorDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
 
     @Transactional
-    public MentorGetUpdateDetailResponse updateMentorInfo(
+    public MentorDetailResponse updateMentorInfo(
             String username, MentorUpdateRequest mentorUpdateRequest) {
         User findMentorUser = findUserByUsername(username);
         User updatedMentorUser =
@@ -62,18 +62,18 @@ public class MentorService {
     }
 
     @Transactional
-    public MentorIntroductionGetUpdateResponse updateMentorIntroduction(
+    public MentorIntroductionResponse updateMentorIntroduction(
             String userName, MentorIntroductionUpdateRequest dto) {
         User findUser = findUserByUsername(userName);
         Introduction findMentorIntroduction = findUser.getMentor().getIntroduction();
         findMentorIntroduction.updateIntroduction(dto);
-        return MentorConverter.toMentorIntroductionGetUpdateResponse(findMentorIntroduction);
+        return MentorConverter.toIntroductionResponse(findMentorIntroduction);
     }
 
     @Transactional(readOnly = true)
-    public MentorIntroductionGetUpdateResponse getMentorIntroduction(String username) {
+    public MentorIntroductionResponse getMentorIntroduction(String username) {
         User findUser = userRepository.findByUsername(username).orElseThrow();
         Introduction introduction = findUser.getMentor().getIntroduction();
-        return MentorConverter.toMentorIntroductionGetUpdateResponse(introduction);
+        return MentorConverter.toIntroductionResponse(introduction);
     }
 }

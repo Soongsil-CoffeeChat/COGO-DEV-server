@@ -11,7 +11,7 @@ public class MentorResponse {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class MentorIntroductionGetUpdateResponse {
+    public static class MentorIntroductionResponse {
 
         @JsonProperty("introduction_title")
         @NonNull
@@ -49,7 +49,7 @@ public class MentorResponse {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class MentorGetUpdateDetailResponse {
+    public static class MentorDetailResponse {
         private Long mentorId;
         private String mentorName;
         private PartEnum part;

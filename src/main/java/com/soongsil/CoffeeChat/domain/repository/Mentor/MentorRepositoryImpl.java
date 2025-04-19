@@ -44,12 +44,12 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
     }
 
     @Override
-    public MentorGetUpdateDetailResponse getMentorInfoByMentorId(Long mentorId) {
+    public MentorDetailResponse getMentorInfoByMentorId(Long mentorId) {
 
         return queryFactory
                 .select(
                         Projections.constructor(
-                                MentorGetUpdateDetailResponse.class,
+                                MentorDetailResponse.class,
                                 mentor.id.as("mentorId"),
                                 user.name.as("mentorName"),
                                 mentor.part,
