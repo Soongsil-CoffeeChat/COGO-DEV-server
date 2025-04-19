@@ -21,10 +21,10 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping(value = "/users/issue")
-    @Operation(summary = "어드민 권한을 보유한 유저 엑세스 토큰 발급")
+    @Operation(summary = "ROLE_ADMIN 권한을 보유한 유저 엑세스 토큰 발급")
     public ResponseEntity<ApiResponse<String>> issue(
-            @RequestParam Long userId, @RequestParam String password) {
-        String accessToken = adminService.issueAdmin(userId, password);
+            @RequestParam String username, @RequestParam String password) {
+        String accessToken = adminService.issueAdmin(username, password);
         return ResponseEntity.ok().body(ApiResponse.onSuccessOK(accessToken));
     }
 

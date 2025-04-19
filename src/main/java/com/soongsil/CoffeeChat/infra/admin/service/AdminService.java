@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.soongsil.CoffeeChat.domain.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.dto.UserResponse.UserInfoResponse;
-import com.soongsil.CoffeeChat.domain.entity.User;
 import com.soongsil.CoffeeChat.domain.entity.enums.Role;
 import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -25,15 +24,14 @@ public class AdminService {
     @Value("${admin.password}")
     private String adminPassword;
 
-    public String issueAdmin(Long userId, String password) {
+    public String issueAdmin(String username, String password) {
         if (!password.equals(adminPassword)) {
             throw new GlobalException(GlobalErrorCode.ADMIN_INCORRECT_PASSWORD);
         }
-        User user =
-                userRepository
-                        .findById(userId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        return jwtUtil.createAccessToken(user.getUsername(), Role.ROLE_ADMIN);
+        userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        return jwtUtil.createAccessToken(username, Role.ROLE_ADMIN);
     }
 
     public List<UserInfoResponse> getUserInfoList(String password) {

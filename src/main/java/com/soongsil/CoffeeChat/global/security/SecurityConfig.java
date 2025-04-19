@@ -119,7 +119,7 @@ public class SecurityConfig {
                                                 "/auth/reissue",
                                                 "/auth/login/**")
                                         .permitAll()
-                                        .requestMatchers(HttpMethod.GET, "/api/v2/admin/**")
+                                        .requestMatchers("/api/v2/admin/**")
                                         .permitAll()
                                         .requestMatchers(
                                                 HttpMethod.GET, "/api/v2/mentors/{mentorId}/**")
