@@ -94,6 +94,11 @@ dependencies {
 
 	// webflux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// websocket & stomp
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	implementation 'org.webjars:sockjs-client:1.5.1'
 }
 
 tasks.named('test') {
