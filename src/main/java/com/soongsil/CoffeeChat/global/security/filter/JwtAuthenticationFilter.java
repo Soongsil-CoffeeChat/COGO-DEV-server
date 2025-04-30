@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.soongsil.CoffeeChat.domain.entity.enums.Role;
+import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 

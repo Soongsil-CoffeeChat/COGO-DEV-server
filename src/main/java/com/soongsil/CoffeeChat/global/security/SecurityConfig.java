@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
 import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
 import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;

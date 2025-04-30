@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 
-import com.soongsil.CoffeeChat.domain.repository.Mentor.MentorRepository;
-import com.soongsil.CoffeeChat.domain.repository.PossibleDate.PossibleDateRepository;
-import com.soongsil.CoffeeChat.domain.repository.User.UserRepository;
-import com.soongsil.CoffeeChat.domain.service.UserService;
+import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
+import com.soongsil.CoffeeChat.domain.possibleDate.repository.PossibleDateRepository;
+import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+import com.soongsil.CoffeeChat.domain.user.service.UserService;
 
 @SpringBootTest
 @Transactional
@@ -69,14 +69,14 @@ public class setUserMentorTestData {
                 if (mentorOptional.isPresent()) {
                     Mentor mentor = mentorOptional.get();
                     for (int i = 0; i < 3; i++) {
-                        PossibleDate possibleDate = PossibleDate.builder()
+                        dto dto = dto.builder()
                                 .mentor(mentor)
                                 .date(LocalDate.now().plusDays(i))
                                 .startTime(LocalTime.of(10, 0).plusHours(i))
                                 .endTime(LocalTime.of(11, 0).plusHours(i))
                                 .apply(false)
                                 .build();
-                        possibleDateRepository.save(possibleDate);
+                        possibleDateRepository.save(dto);
                     }
                 }
             });

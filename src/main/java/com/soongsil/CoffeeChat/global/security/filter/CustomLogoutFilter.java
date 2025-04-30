@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;

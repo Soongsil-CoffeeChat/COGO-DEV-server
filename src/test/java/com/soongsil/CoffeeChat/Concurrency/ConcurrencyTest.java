@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.domain.entity.PossibleDate;
-import com.soongsil.CoffeeChat.domain.repository.MenteeRepository;
-import com.soongsil.CoffeeChat.domain.repository.Mentor.MentorRepository;
-import com.soongsil.CoffeeChat.domain.repository.PossibleDate.PossibleDateRepository;
-import com.soongsil.CoffeeChat.domain.service.ApplicationService;
+import com.soongsil.CoffeeChat.domain.application.service.ApplicationService;
+import com.soongsil.CoffeeChat.domain.mentee.repository.MenteeRepository;
+import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
+import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
+import com.soongsil.CoffeeChat.domain.possibleDate.repository.PossibleDateRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -71,7 +71,7 @@ public class ConcurrencyTest {
     //    @DisplayName("동시성 처리 안한 상태")
     //    @Test
     //    public void testConcurrency() throws InterruptedException {
-    //        Long possibleDateId = 2002L; // 테스트할 PossibleDate ID
+    //        Long possibleDateId = 2002L; // 테스트할 dto ID
     //        Mentor mentor = mentorRepository.findById(1L).orElseThrow(); // 테스트할 Mentor
     //        Mentee mentee = menteeRepository.findById(1L).orElseThrow(); // 테스트할 Mentee
     //

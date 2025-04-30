@@ -13,9 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.soongsil.CoffeeChat.domain.entity.Refresh;
-import com.soongsil.CoffeeChat.domain.entity.enums.Role;
-import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.domain.auth.entity.Refresh;
+import com.soongsil.CoffeeChat.domain.auth.enums.Role;
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
