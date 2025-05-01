@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum GlobalErrorCode {
     // 공통
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON-500", "서버 에러, 관리자에게 문의 바립니다."),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON-400", "요청 형식이 잘못되었습니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON-401", "인증 되지 않은 요청입니다."),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "서버 에러, 관리자에게 문의 바립니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON_400", "요청 형식이 잘못되었습니다."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON_401", "인증 되지 않은 요청입니다."),
 
     // 유저 관련
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_404", "해당 USER의 엔티티가 존재하지 않습니다."),
@@ -29,6 +29,14 @@ public enum GlobalErrorCode {
     // 커피쳇 가능 시간 관련
     POSSIBLE_DATE_NOT_FOUND(HttpStatus.NOT_FOUND, "POSSIBLE_DATE_404", "가능시간을 찾을 수 없습니다."),
     PREEMPTED_POSSIBLE_DATE(HttpStatus.GONE, "POSSIBLE_DATE_410", "선점된 가능시간입니다."),
+
+    // 채팅 메시지 관련 오류
+    MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "MESSAGE_404", "메시지를 찾을 수 없습니다."),
+    MESSAGE_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "MESSAGE_500", "메시지 전송에 실패했습니다."),
+
+    // 채팅방 관련 오류
+    CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "CHATROOM_404", "채팅방을 찾을 수 없습니다."),
+    CHATROOM_NOT_PARTICIPANT(HttpStatus.FORBIDDEN, "CHATROOM_403", "채팅방 참여자가 아닙니다."),
 
     // JWT 관련
     JWT_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "JWT_001", "유효하지 않는 토큰입니다."),
