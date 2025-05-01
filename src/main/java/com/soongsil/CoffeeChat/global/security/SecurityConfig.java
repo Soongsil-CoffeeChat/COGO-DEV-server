@@ -69,7 +69,8 @@ public class SecurityConfig {
                                                             "http://localhost:8080",
                                                             "https://back-coffeego.com",
                                                             "https://coffeego-ssu.web.app",
-                                                            "https://accounts.google.co.kr"));
+                                                            "https://accounts.google.co.kr",
+                                                            "https://jiangxy.github.io"));
 
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
@@ -132,6 +133,10 @@ public class SecurityConfig {
                                         .hasAnyRole("MENTOR", "MENTEE")
                                         .requestMatchers("/api/v2/applications/**")
                                         .hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/chat/**")
+                                        .hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/ws/**")
+                                        .permitAll()
                                         .anyRequest()
                                         .authenticated())
                 .sessionManagement(
