@@ -1,30 +1,81 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
-import org.springframework.stereotype.Controller;
+import java.security.Principal;
+import java.time.LocalDateTime;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
 import com.soongsil.CoffeeChat.domain.chat.service.ChatService;
+import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
+@RequestMapping("/api/v2/chat")
+@Tag(name = "CHAT", description = "채팅 관련 API")
 @RequiredArgsConstructor
 public class ChatController {
 
     private final ChatService chatService;
-    //
-    //    @MessageMapping("/{roomId}") //여기로 전송되면 메서드 호출 -> WebSocketConfig prefixes 에서 적용한건 앞에 생략
-    //    @SendTo("/room/{roomId}")   //구독하고 있는 장소로 메시지 전송 (목적지)  -> WebSocketConfig Broker 에서 적용한건
-    // 앞에 붙어줘야됨
-    //    public ChatMessage chat(@DestinationVariable Long roomId, ChatMessage message) {
-    //
-    //        //채팅 저장
-    //        Chat chat = chatService.createChat(roomId, message.getSender(),
-    // message.getSenderEmail(), message.getMessage());
-    //        return ChatMessage.builder()
-    //                .roomId(roomId)
-    //                .sender(chat.getSender())
-    //                .senderEmail(chat.getSenderEmail())
-    //                .message(chat.getMessage())
-    //                .build();
-    //    }
+    private final SimpMessagingTemplate messagingTemplate;
+
+    @GetMapping("/rooms")
+    @Operation(summary = "채팅방 목록 조회")
+    public ResponseEntity<ChatResponse.ChatRoomPageResponse> getChatRooms(
+            @Parameter(hidden = true) @CurrentUsername String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(chatService.getChatRooms(username, page, size));
+    }
+
+    @PostMapping("/rooms")
+    @Operation(summary = "채팅방 생성")
+    public ResponseEntity<ChatResponse.ChatRoomDetailResponse> createChatRoom(
+            @Parameter(hidden = true) @CurrentUsername String username,
+            @RequestBody ChatRequest.CreateChatRoomRequest request) {
+        return ResponseEntity.ok(chatService.createChatRoom(username, request));
+    }
+
+    @GetMapping("/rooms/{roomId}")
+    @Operation(summary = "채팅방 상세 조회")
+    public ResponseEntity<ChatResponse.ChatRoomDetailResponse> getChatRoomDetail(
+            @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long roomId) {
+        return ResponseEntity.ok(chatService.getChatRoomDetail(username, roomId));
+    }
+
+    @GetMapping("/rooms/{roomId}/messages")
+    @Operation(summary = "채팅방 메시지 목록 조회")
+    public ResponseEntity<ChatResponse.ChatMessagePageResponse> getChatMessages(
+            @Parameter(hidden = true) @CurrentUsername String username,
+            @PathVariable Long roomId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size,
+            @RequestParam(required = false) LocalDateTime before) {
+        return ResponseEntity.ok(chatService.getChatMessages(username, roomId, page, size, before));
+    }
+
+    @PostMapping("/rooms/{roomId}/leave")
+    @Operation(summary = "채팅방 나가기")
+    public ResponseEntity<Void> leaveChatRoom(
+            @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long roomId) {
+        chatService.leaveChatRoom(username, roomId);
+        return ResponseEntity.ok().build();
+    }
+
+    /** 메시지 전송 (STOMP 웹소켓) */
+    @MessageMapping("/chat.sendMessage")
+    public void sendMessage(@Payload ChatRequest.SendMessageRequest request, Principal principal) {
+        String username = principal.getName();
+        ChatResponse.ChatMessageResponse message = chatService.sendMessage(username, request);
+        messagingTemplate.convertAndSend("/topic/room." + request.getRoomId(), message);
+    }
 }
