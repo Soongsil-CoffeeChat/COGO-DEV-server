@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.soongsil.CoffeeChat.domain.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
 import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
 import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
@@ -69,7 +69,8 @@ public class SecurityConfig {
                                                             "http://localhost:8080",
                                                             "https://back-coffeego.com",
                                                             "https://coffeego-ssu.web.app",
-                                                            "https://accounts.google.co.kr"));
+                                                            "https://accounts.google.co.kr",
+                                                            "https://jiangxy.github.io"));
 
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
@@ -132,6 +133,10 @@ public class SecurityConfig {
                                         .hasAnyRole("MENTOR", "MENTEE")
                                         .requestMatchers("/api/v2/applications/**")
                                         .hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/chat/**")
+                                        .hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/ws/**")
+                                        .permitAll()
                                         .anyRequest()
                                         .authenticated())
                 .sessionManagement(

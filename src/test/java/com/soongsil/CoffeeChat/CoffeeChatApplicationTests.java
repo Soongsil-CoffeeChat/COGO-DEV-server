@@ -22,12 +22,12 @@ class CoffeeChatApplicationTests {
     /*
     @Test
     void contextLoads() {
-    	PossibleDate pd = new PossibleDate();
+    	dto pd = new dto();
     	em.persist(pd);
     	JPAQueryFactory query=new JPAQueryFactory(em);
-    	QPossibleDate qpd=new QPossibleDate("possibleDate");
+    	QPossibleDate qpd=new QPossibleDate("dto");
 
-    	PossibleDate result = queryFactory
+    	dto result = queryFactory
     			.selectFrom(qpd)
     			.fetchOne();
 

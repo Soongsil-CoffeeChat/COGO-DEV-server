@@ -4,8 +4,8 @@ import java.util.Random;
 
 import org.springframework.stereotype.Component;
 
-import com.soongsil.CoffeeChat.domain.entity.Application;
-import com.soongsil.CoffeeChat.domain.entity.User;
+import com.soongsil.CoffeeChat.domain.application.entity.Application;
+import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
