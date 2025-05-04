@@ -4,7 +4,6 @@ import static com.soongsil.CoffeeChat.global.uri.RequestUri.MENTOR_URI;
 
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +19,7 @@ import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +37,8 @@ public class MentorController {
             responseCode = "200",
             description = "변경된 멘토 세부 정보를 반환")
     public ResponseEntity<ApiResponse<MentorDetailResponse>> updateMentorInfo(
-            @RequestBody MentorUpdateRequest request, @Parameter(hidden = true) @CurrentUsername String username) {
+            @RequestBody MentorUpdateRequest request,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
                 .body(ApiResponse.onSuccessOK(mentorService.updateMentorInfo(username, request)));
     }
@@ -59,7 +60,8 @@ public class MentorController {
             responseCode = "200",
             description = "자기소개의 수정된 버전을 반환")
     public ResponseEntity<ApiResponse<MentorIntroductionResponse>> updateMentorIntroduction(
-            @RequestBody MentorIntroductionUpdateRequest dto, @Parameter(hidden = true) @CurrentUsername String username) {
+            @RequestBody MentorIntroductionUpdateRequest dto,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(

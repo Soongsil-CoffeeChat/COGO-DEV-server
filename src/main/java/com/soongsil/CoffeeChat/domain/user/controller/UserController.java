@@ -1,5 +1,14 @@
 package com.soongsil.CoffeeChat.domain.user.controller;
 
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
+
+import java.net.URI;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
@@ -11,18 +20,11 @@ import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
 import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.net.URI;
-
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
 
 @RestController
 @RequestMapping(USER_URI)
@@ -37,8 +39,7 @@ public class UserController {
     public ResponseEntity<ApiResponse<MentorInfoResponse>> joinWithMentor(
             @RequestBody MentorJoinRequest dto,
             @Parameter(hidden = true) @CurrentUsername String username) {
-        MentorInfoResponse mentorInfoResponse =
-                userService.registerMentor(username, dto);
+        MentorInfoResponse mentorInfoResponse = userService.registerMentor(username, dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentor"))
                 .body(ApiResponse.onSuccessCREATED(mentorInfoResponse));
     }
@@ -66,7 +67,8 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserInfoResponse>> updateUser(
             @RequestBody UserUpdateRequest dto,
             @Parameter(hidden = true) @CurrentUsername String username) {
-        return ResponseEntity.ok().body(ApiResponse.onSuccessOK(userService.updateUser(dto, username)));
+        return ResponseEntity.ok()
+                .body(ApiResponse.onSuccessOK(userService.updateUser(dto, username)));
     }
 
     @GetMapping()
@@ -80,7 +82,8 @@ public class UserController {
     @DeleteMapping()
     @Operation(summary = "탈퇴하기")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@Parameter(hidden = true) @CurrentUsername String username) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(
+            @Parameter(hidden = true) @CurrentUsername String username) {
         userService.deleteUser(username);
         return ResponseEntity.ok().body(ApiResponse.onSuccessOK(null));
     }

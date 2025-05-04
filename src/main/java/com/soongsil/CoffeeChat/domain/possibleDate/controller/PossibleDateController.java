@@ -1,20 +1,22 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.controller;
 
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.service.PossibleDateService;
 import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
 
 @RestController
 @RequestMapping(POSSIBLEDATE_URI)
@@ -29,7 +31,9 @@ public class PossibleDateController {
             @RequestBody List<PossibleDateCreateRequest> dtos,
             @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(possibleDateService.updatePossibleDate(dtos, username)));
+                .body(
+                        ApiResponse.onSuccessOK(
+                                possibleDateService.updatePossibleDate(dtos, username)));
     }
 
     @GetMapping("{mentorId}")
@@ -40,7 +44,9 @@ public class PossibleDateController {
     public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> getPossibleDates(
             @PathVariable("mentorId") Long mentorId) {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(possibleDateService.findPossibleDateListByMentor(mentorId)));
+                .body(
+                        ApiResponse.onSuccessOK(
+                                possibleDateService.findPossibleDateListByMentor(mentorId)));
     }
 
     @GetMapping("")
@@ -51,6 +57,9 @@ public class PossibleDateController {
     public ResponseEntity<ApiResponse<List<PossibleDateCreateResponse>>> getPossibleDatesByToken(
             @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(possibleDateService.findMentorPossibleDateListByUsername(username)));
+                .body(
+                        ApiResponse.onSuccessOK(
+                                possibleDateService.findMentorPossibleDateListByUsername(
+                                        username)));
     }
 }
