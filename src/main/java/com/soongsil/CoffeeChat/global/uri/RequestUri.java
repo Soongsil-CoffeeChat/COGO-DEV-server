@@ -11,4 +11,5 @@ public class RequestUri {
     public static final String USER_URI = prefix + "/users";
     public static final String EMAIL_URI = "/auth/email";
     public static final String REPORT_URI = prefix + "/report";
+    public static final String CHAT_URI = prefix + "/chat";
 }

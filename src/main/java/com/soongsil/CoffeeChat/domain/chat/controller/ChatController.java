@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.CHAT_URI;
+
 import java.security.Principal;
 import java.time.LocalDateTime;
 
@@ -20,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v2/chat")
+@RequestMapping(CHAT_URI)
 @Tag(name = "CHAT", description = "채팅 관련 API")
 @RequiredArgsConstructor
 public class ChatController {
