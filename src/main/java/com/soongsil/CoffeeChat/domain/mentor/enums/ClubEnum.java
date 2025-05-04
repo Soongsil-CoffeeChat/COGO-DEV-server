@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.domain.mentor.enums;
 
 public enum ClubEnum {
-    GDSC,
+    GDGoC,
     YOURSSU,
     UMC,
     LIKELION
