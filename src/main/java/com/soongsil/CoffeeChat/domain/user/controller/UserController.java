@@ -1,15 +1,5 @@
 package com.soongsil.CoffeeChat.domain.user.controller;
 
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
-
-import java.net.URI;
-
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
@@ -19,12 +9,20 @@ import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.User2FACodeResponse;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
+import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
-
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.net.URI;
+
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
 
 @RestController
 @RequestMapping(USER_URI)
@@ -33,20 +31,14 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     private final UserService userService;
 
-    // TODO: 이 getUserNameByAuthentication 함수가 모든 controller에서 중복되므로 util로 빼기
-    private String getUserNameByAuthentication(Authentication authentication) throws Exception {
-        CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
-        if (principal == null) throw new Exception(); // TODO : Exception 만들기
-        return principal.getUsername();
-    }
-
     @PostMapping("/mentor")
     @Operation(summary = "멘토로 가입하기!")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<ApiResponse<MentorInfoResponse>> joinWithMentor(
-            Authentication authentication, @RequestBody MentorJoinRequest dto) throws Exception {
+            @RequestBody MentorJoinRequest dto,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         MentorInfoResponse mentorInfoResponse =
-                userService.registerMentor(getUserNameByAuthentication(authentication), dto);
+                userService.registerMentor(username, dto);
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentor"))
                 .body(ApiResponse.onSuccessCREATED(mentorInfoResponse));
     }
@@ -55,11 +47,10 @@ public class UserController {
     @Operation(summary = "멘티로 가입하기!")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<ApiResponse<MenteeInfoResponse>> joinWithMentee(
-            Authentication authentication, @RequestBody MenteeJoinRequest dto) throws Exception {
-        MenteeInfoResponse response =
-                userService.registerMentee(getUserNameByAuthentication(authentication), dto);
+            @RequestBody MenteeJoinRequest dto,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.created(URI.create(USER_URI + "/" + "mentee"))
-                .body(ApiResponse.onSuccessCREATED(response));
+                .body(ApiResponse.onSuccessCREATED(userService.registerMentee(username, dto)));
     }
 
     @GetMapping("/sms")
@@ -73,31 +64,24 @@ public class UserController {
     @Operation(summary = "사용자 정보 수정")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<ApiResponse<UserInfoResponse>> updateUser(
-            Authentication authentication, @RequestBody UserUpdateRequest dto) throws Exception {
-        return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                userService.updateUser(
-                                        dto, getUserNameByAuthentication(authentication))));
+            @RequestBody UserUpdateRequest dto,
+            @Parameter(hidden = true) @CurrentUsername String username) {
+        return ResponseEntity.ok().body(ApiResponse.onSuccessOK(userService.updateUser(dto, username)));
     }
 
     @GetMapping()
     @Operation(summary = "기본정보 조회")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
     public ResponseEntity<ApiResponse<UserRequest.UserGetRequest>> getUserInfo(
-            Authentication authentication) throws Exception {
-        return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                userService.getUser(getUserNameByAuthentication(authentication))));
+            @Parameter(hidden = true) @CurrentUsername String username) {
+        return ResponseEntity.ok().body(ApiResponse.onSuccessOK(userService.getUser(username)));
     }
 
     @DeleteMapping()
     @Operation(summary = "탈퇴하기")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(Authentication authentication)
-            throws Exception {
-        userService.deleteUser(getUserNameByAuthentication(authentication));
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@Parameter(hidden = true) @CurrentUsername String username) {
+        userService.deleteUser(username);
         return ResponseEntity.ok().body(ApiResponse.onSuccessOK(null));
     }
 
@@ -105,11 +89,9 @@ public class UserController {
     @Operation(summary = "유저 사진 등록하기")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<ApiResponse<UserInfoResponse>> updatePicture(
-            Authentication authentication, @RequestPart(value = "image") MultipartFile image)
-            throws Exception {
-        UserInfoResponse response =
-                userService.uploadPicture(image, getUserNameByAuthentication(authentication));
+            @RequestPart(value = "image") MultipartFile image,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.created(URI.create(USER_URI + "/" + "picture"))
-                .body(ApiResponse.onSuccessCREATED(response));
+                .body(ApiResponse.onSuccessCREATED(userService.uploadPicture(image, username)));
     }
 }

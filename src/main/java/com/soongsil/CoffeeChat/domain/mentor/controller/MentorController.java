@@ -4,8 +4,8 @@ import static com.soongsil.CoffeeChat.global.uri.RequestUri.MENTOR_URI;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorIntroductionUpdateRequest;
@@ -16,8 +16,8 @@ import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorListRespon
 import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 import com.soongsil.CoffeeChat.domain.mentor.service.MentorService;
+import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,26 +31,15 @@ public class MentorController {
 
     private final MentorService mentorService;
 
-    private String getUserNameByAuthentication(Authentication authentication) throws Exception {
-        CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
-        if (principal == null) throw new Exception(); // TODO : Exception 만들기
-        return principal.getUsername();
-    }
-
     @PatchMapping
     @Operation(summary = "멘토의 세부 정보 수정")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "변경된 멘토 세부 정보를 반환")
     public ResponseEntity<ApiResponse<MentorDetailResponse>> updateMentorInfo(
-            Authentication authentication, @RequestBody MentorUpdateRequest request) {
+            @RequestBody MentorUpdateRequest request, @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                mentorService.updateMentorInfo(
-                                        ((CustomOAuth2User) authentication.getPrincipal())
-                                                .getUsername(),
-                                        request)));
+                .body(ApiResponse.onSuccessOK(mentorService.updateMentorInfo(username, request)));
     }
 
     @GetMapping("/{mentorId}")
@@ -69,14 +58,12 @@ public class MentorController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "자기소개의 수정된 버전을 반환")
-    public ResponseEntity<ApiResponse<MentorIntroductionResponse>> updateMentoIntroduction(
-            Authentication authentication, @RequestBody MentorIntroductionUpdateRequest dto)
-            throws Exception {
+    public ResponseEntity<ApiResponse<MentorIntroductionResponse>> updateMentorIntroduction(
+            @RequestBody MentorIntroductionUpdateRequest dto, @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
-                                mentorService.updateMentorIntroduction(
-                                        getUserNameByAuthentication(authentication), dto)));
+                                mentorService.updateMentorIntroduction(username, dto)));
     }
 
     @GetMapping("/introductions")
@@ -85,12 +72,9 @@ public class MentorController {
             responseCode = "200",
             description = "토큰으로 멘토 본인의 자기소개 조회")
     public ResponseEntity<ApiResponse<MentorIntroductionResponse>> getMentorIntroduction(
-            Authentication authentication) throws Exception {
+            @Parameter(hidden = true) @CurrentUsername String username) {
         return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                mentorService.getMentorIntroduction(
-                                        getUserNameByAuthentication(authentication))));
+                .body(ApiResponse.onSuccessOK(mentorService.getMentorIntroduction(username)));
     }
 
     @GetMapping("/list")

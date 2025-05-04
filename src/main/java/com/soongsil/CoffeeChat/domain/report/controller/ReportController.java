@@ -1,21 +1,19 @@
 package com.soongsil.CoffeeChat.domain.report.controller;
 
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.REPORT_URI;
-
+import com.soongsil.CoffeeChat.domain.report.dto.ReportDto;
+import com.soongsil.CoffeeChat.domain.report.service.ReportService;
+import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soongsil.CoffeeChat.domain.report.dto.ReportDto;
-import com.soongsil.CoffeeChat.domain.report.service.ReportService;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
-
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import lombok.RequiredArgsConstructor;
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.REPORT_URI;
 
 @RestController
 @RequestMapping(REPORT_URI)
@@ -23,29 +21,25 @@ import lombok.RequiredArgsConstructor;
 public class ReportController {
     private final ReportService reportService;
 
-    private String getUserNameByAuthentication(Authentication authentication) throws Exception {
-        CustomOAuth2User principal = (CustomOAuth2User) authentication.getPrincipal();
-        if (principal == null) throw new Exception(); // TODO : Exception 만들기
-        return principal.getUsername();
-    }
-
     @PostMapping("/mentor")
     @ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<?> createReportMentor(
-            Authentication authentication, @RequestBody ReportDto request) throws Exception {
+            @RequestBody ReportDto request,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         ReportDto response =
                 reportService.createReportMentor(
-                        request, getUserNameByAuthentication(authentication));
+                        request, username);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/mentee")
     @ApiResponse(responseCode = "201", description = "성공!")
     public ResponseEntity<?> createReportMentee(
-            Authentication authentication, @RequestBody ReportDto request) throws Exception {
+            @RequestBody ReportDto request,
+            @Parameter(hidden = true) @CurrentUsername String username) {
         ReportDto response =
                 reportService.createReportMentee(
-                        request, getUserNameByAuthentication(authentication));
+                        request, username);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
