@@ -9,7 +9,8 @@ import java.util.List;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.*;
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorDetailResponse;
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 
@@ -39,7 +40,13 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                 .join(user.mentor, mentor)
                 .leftJoin(mentor.introduction, introduction)
                 .on(introduction.isNotNull())
-                .where(clubEq(club), partEq(part))
+                .where(
+                        clubEq(club),
+                        partEq(part),
+                        introduction.title.isNotNull(),
+                        introduction.description.isNotNull(),
+                        introduction.answer1.isNotNull(),
+                        introduction.answer2.isNotNull())
                 .fetch();
     }
 
