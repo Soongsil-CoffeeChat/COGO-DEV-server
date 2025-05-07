@@ -9,5 +9,5 @@ import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 public interface MentorRepositoryCustom {
     List<MentorListResponse> getMentorListByPartAndClub(PartEnum part, ClubEnum club);
 
-    MentorDetailResponse getMentorInfoByMentorId(Long mentorId);
+    MentorDetailResponse getMentorDetailResponse(Long mentorId);
 }

@@ -40,8 +40,8 @@ public class MentorService {
     }
 
     @Transactional(readOnly = true)
-    public MentorDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
-        return mentorRepository.getMentorInfoByMentorId(mentorId);
+    public MentorDetailResponse getMentorDetailResponse(Long mentorId) {
+        return mentorRepository.getMentorDetailResponse(mentorId);
     }
 
     @Transactional

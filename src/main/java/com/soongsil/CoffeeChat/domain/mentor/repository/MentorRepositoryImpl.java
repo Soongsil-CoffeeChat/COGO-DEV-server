@@ -51,7 +51,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
     }
 
     @Override
-    public MentorDetailResponse getMentorInfoByMentorId(Long mentorId) {
+    public MentorDetailResponse getMentorDetailResponse(Long mentorId) {
 
         return queryFactory
                 .select(

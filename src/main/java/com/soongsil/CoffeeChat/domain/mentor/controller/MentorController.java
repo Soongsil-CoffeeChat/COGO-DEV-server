@@ -51,7 +51,7 @@ public class MentorController {
     public ResponseEntity<ApiResponse<MentorDetailResponse>> getMentorInfo(
             @PathVariable("mentorId") Long mentorId) {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(mentorService.getMentorDtoByIdWithJoin(mentorId)));
+                .body(ApiResponse.onSuccessOK(mentorService.getMentorDetailResponse(mentorId)));
     }
 
     @PatchMapping("/introductions")
