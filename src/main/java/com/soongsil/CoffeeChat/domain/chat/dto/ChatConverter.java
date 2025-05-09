@@ -47,6 +47,7 @@ public class ChatConverter {
                 .id(chat.getId())
                 .senderId(chat.getSender().getId())
                 .message(chat.getMessage())
+                .imageUrl(chat.getImageUrl())
                 .createdAt(chat.getCreatedAt())
                 .build();
     }

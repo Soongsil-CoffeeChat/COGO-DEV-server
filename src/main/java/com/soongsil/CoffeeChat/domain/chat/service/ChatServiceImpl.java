@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.soongsil.CoffeeChat.infra.aws.s3.service.AmazonS3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,8 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final UserRepository userRepository;
+
+    private final AmazonS3Service amazonS3Service;
 
     @Override
     public ChatRoomPageResponse getChatRooms(String username, int page, int size) {
@@ -181,18 +184,32 @@ public class ChatServiceImpl implements ChatService {
                 .findByChatRoomIdAndUserId(request.getRoomId(), currentUser.getId())
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
 
+        //이미지 업로드
+        String imageUrl=null;
+        if(request.getImage()!=null&&!request.getImage().isEmpty()){
+            imageUrl= amazonS3Service.uploadFile(request.getImage(),"chat");
+        }
+
+        //메시지, 이미지 둘 다 없으면 예외
+        if ((request.getMessage()==null || request.getMessage().isBlank())
+                && (imageUrl==null || imageUrl.isBlank())) {
+            throw new GlobalException(GlobalErrorCode.MESSAGE_INVALID_CONTENT);
+        }
+
         // 채팅 메시지 저장
         Chat chat =
                 Chat.builder()
                         .chatRoom(chatRoom)
                         .sender(currentUser)
                         .message(request.getMessage())
+                        .imageUrl(imageUrl)
                         .build();
 
         chatRepository.save(chat);
 
         return ChatConverter.toChatMessageResponse(chat);
     }
+
 
     private User findUserByUsername(String username) {
         return userRepository

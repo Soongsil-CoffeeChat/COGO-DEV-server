@@ -33,6 +33,7 @@ public enum GlobalErrorCode {
     // 채팅 메시지 관련 오류
     MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "MESSAGE_404", "메시지를 찾을 수 없습니다."),
     MESSAGE_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "MESSAGE_500", "메시지 전송에 실패했습니다."),
+    MESSAGE_INVALID_CONTENT(HttpStatus.BAD_REQUEST,"MESSAGE_400","메시지 컨텐츠가 비어있습니다."),
 
     // 채팅방 관련 오류
     CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "CHATROOM_404", "채팅방을 찾을 수 없습니다."),

@@ -56,6 +56,7 @@ public class ChatResponse {
         private Long id;
         private Long senderId;
         private String message;
+        private String imageUrl;
         private LocalDateTime createdAt;
     }
 

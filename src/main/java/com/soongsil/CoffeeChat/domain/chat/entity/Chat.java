@@ -29,4 +29,7 @@ public class Chat extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String message;
+
+    @Column(name="image_url")
+    private String imageUrl;
 }

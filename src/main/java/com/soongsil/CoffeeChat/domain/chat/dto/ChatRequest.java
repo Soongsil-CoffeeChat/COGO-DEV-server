@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ChatRequest {
 
@@ -22,5 +23,6 @@ public class ChatRequest {
     public static class SendMessageRequest {
         private Long roomId;
         private String message;
+        private MultipartFile image;
     }
 }
