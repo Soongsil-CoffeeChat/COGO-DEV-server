@@ -48,3 +48,4 @@ application.log
 /src/main/resources/logback.xml
 
 src/main/resources/firebase/*.json
+src/main/resources/firebase/*.json
