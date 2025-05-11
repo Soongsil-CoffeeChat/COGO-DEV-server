@@ -48,6 +48,8 @@ public class User {
 
     @Column private LocalDateTime deletedAt;
 
+    @Column String fcmToken;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")
     private Mentor mentor;
@@ -99,5 +101,9 @@ public class User {
 
     public boolean isMentee() {
         return this.mentee != null;
+    }
+
+    public void setFCMToken(String token) {
+        this.fcmToken = token;
     }
 }

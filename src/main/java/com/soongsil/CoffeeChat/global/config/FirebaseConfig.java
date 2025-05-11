@@ -15,7 +15,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 @Configuration
-public class FCMConfig {
+public class FirebaseConfig {
 
     @Value("${firebase.credential.json}")
     private String firebaseCredential;
