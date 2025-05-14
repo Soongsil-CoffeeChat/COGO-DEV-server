@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.domain.fcmNotification.entity;
 
-import com.soongsil.CoffeeChat.domain.user.entity.User;
 import jakarta.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,17 +15,21 @@ public class FCMToken {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")  // ✔ 일반적으로 user_id로 명명
-    private User user;
+    @JoinColumn(name = "user_id")
+    private FcmUser fcmUser;
 
     private String token;
 
-    public FCMToken(User user, String token) {
-        this.user = user;
+    public FCMToken(FcmUser fcmUser, String token) {
+        this.fcmUser = fcmUser;
         this.token = token;
     }
 
     public String getToken() {
         return token;
+    }
+
+    public FcmUser getFcmUser() {
+        return fcmUser;
     }
 }
