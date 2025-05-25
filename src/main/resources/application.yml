@@ -20,17 +20,17 @@ spring:
         show_sql: true
 
 
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    sender: ${MAIL_SENDER}
-#    password: ${MAIL_PW}
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
+  #  mail:
+  #    host: smtp.gmail.com
+  #    port: 587
+  #    sender: ${MAIL_SENDER}
+  #    password: ${MAIL_PW}
+  #    properties:
+  #      mail:
+  #        smtp:
+  #          auth: true
+  #          starttls:
+  #            enable: true
 
   jwt:
     access-expiration: 86400000 # 24시간
@@ -61,6 +61,13 @@ spring:
             redirect-uri: ${KAKAO_REDIRECT}
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image
+          apple:
+            client-id: ${APPLE_CLIENT_ID}
+            client-secret: ${APPLE_CLIENT_SECRET}
+            client-name: Apple
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: name, email
+
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -72,6 +79,11 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+          apple:
+            authorization-uri: https://appleid.apple.com/auth/authorize
+            token-uri: https://appleid.apple.com/auth/token
+            user-info-uri: https://appleid.apple.com/auth/userinfo
+            user-name-attribute: sub
   data:
     redis:
       host: ${REDIS_HOST}

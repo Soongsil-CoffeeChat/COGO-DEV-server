@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.global.security.oauth2;
 
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.*;
 import jakarta.transaction.Transactional;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -13,10 +14,6 @@ import org.springframework.stereotype.Service;
 import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.GoogleResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.KakaoResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.NaverResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +65,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             case "naver" -> new NaverResponse(attributes);
             case "google" -> new GoogleResponse(attributes);
             case "kakao" -> new KakaoResponse(attributes);
+            case "apple" -> new AppleResponse(attributes);
             default -> null;
         };
     }
