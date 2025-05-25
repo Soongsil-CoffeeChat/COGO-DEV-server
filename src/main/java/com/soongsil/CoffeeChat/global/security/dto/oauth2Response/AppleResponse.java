@@ -16,7 +16,7 @@ public class AppleResponse implements OAuth2Response {
         // id_token 파싱
         String idToken = (String) attribute.get("id_token");
         if (idToken != null) {
-            Map<String, Object> payload = JwtUtils.decodeJwtPayload(idToken); // JwtUtils는 직접 구현 필요
+            Map<String, Object> payload = JwtUtils.decodeJwtPayload(idToken);
             this.sub = (String) payload.get("sub");
             this.email = (String) payload.get("email");
             this.name = (String) payload.get("name");
