@@ -2,28 +2,31 @@ package com.soongsil.CoffeeChat.global.security.dto.oauth2Response;
 
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtils;
 
 public class AppleResponse implements OAuth2Response {
     private final Map<String, Object> attribute;
-    private final String sub;
-    private final String email;
-    private final String name;
+    private final AppleTokenInfoResponse tokenInfo;
 
     public AppleResponse(Map<String, Object> attribute) {
         this.attribute = attribute;
 
-        // id_token 파싱
         String idToken = (String) attribute.get("id_token");
         if (idToken != null) {
             Map<String, Object> payload = JwtUtils.decodeJwtPayload(idToken);
-            this.sub = (String) payload.get("sub");
-            this.email = (String) payload.get("email");
-            this.name = (String) payload.get("name");
+            this.tokenInfo =
+                    AppleTokenInfoResponse.builder()
+                            .sub((String) payload.get("sub"))
+                            .email((String) payload.get("email"))
+                            .emailVerified(
+                                    Boolean.valueOf(String.valueOf(payload.get("email_verified"))))
+                            .isPrivateEmail(
+                                    Boolean.valueOf(
+                                            String.valueOf(payload.get("is_private_email"))))
+                            .build();
         } else {
-            this.sub = (String) attribute.get("sub");
-            this.email = (String) attribute.get("email");
-            this.name = (String) attribute.get("name");
+            this.tokenInfo = AppleTokenInfoResponse.builder().build();
         }
     }
 
@@ -34,16 +37,20 @@ public class AppleResponse implements OAuth2Response {
 
     @Override
     public String getProviderId() {
-        return sub;
+        return tokenInfo.getSub();
     }
 
     @Override
     public String getEmail() {
-        return email;
+        return tokenInfo.getEmail();
     }
 
     @Override
     public String getName() {
-        return name;
+        return null;
+    }
+
+    public AppleTokenInfoResponse getTokenInfo() {
+        return tokenInfo;
     }
 }
