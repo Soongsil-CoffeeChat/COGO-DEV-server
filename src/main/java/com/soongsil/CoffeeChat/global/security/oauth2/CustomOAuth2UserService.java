@@ -2,7 +2,6 @@ package com.soongsil.CoffeeChat.global.security.oauth2;
 
 import java.util.Map;
 
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.*;
 import jakarta.transaction.Transactional;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -62,10 +62,11 @@ spring:
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image
           apple:
+            client-name: Apple
             client-id: ${APPLE_CLIENT_ID}
             client-secret: ${APPLE_CLIENT_SECRET}
-            client-name: Apple
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            redirect-uri: ${APPLE_REDIRECT}
+            authorization-grant-type: authorization_code
             scope: name, email
 
         provider:

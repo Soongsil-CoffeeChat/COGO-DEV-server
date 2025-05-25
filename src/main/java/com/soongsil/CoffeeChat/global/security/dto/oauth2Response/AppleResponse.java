@@ -2,7 +2,7 @@ package com.soongsil.CoffeeChat.global.security.dto.oauth2Response;
 
 import java.util.Map;
 
-public class AppleResponse implements OAuth2Response{
+public class AppleResponse implements OAuth2Response {
     private final Map<String, Object> attribute;
 
     public AppleResponse(Map<String, Object> attribute) {
