@@ -46,8 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             attributes = oAuth2User.getAttributes();
         }
 
-        OAuth2Response oAuth2Response =
-                createOAuth2Response(registrationId, attributes);
+        OAuth2Response oAuth2Response = createOAuth2Response(registrationId, attributes);
 
         if (oAuth2Response == null) {
             throw new OAuth2AuthenticationException(
