@@ -95,6 +95,9 @@ dependencies {
 	// webflux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	// Netty DNS resolver for MacOS ARM (M1/M2/M3)
+	runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.104.Final:osx-aarch_64'
+
 	// websocket & stomp
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.webjars:stomp-websocket:2.3.4'

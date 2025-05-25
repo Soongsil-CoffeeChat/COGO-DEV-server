@@ -107,3 +107,8 @@ coolsms:
 
 admin:
   password: ${ADMIN_PASSWORD}
+
+firebase:
+  credential:
+    json: ${FIREBASE_CREDENTIAL_JSON}
+
