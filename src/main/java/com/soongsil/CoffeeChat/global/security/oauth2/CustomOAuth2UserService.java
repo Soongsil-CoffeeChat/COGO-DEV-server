@@ -27,11 +27,27 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User = super.loadUser(userRequest);
-
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+        Map<String, Object> attributes;
+
+        if ("apple".equals(registrationId)) {
+
+            // 1. id_token 직접 추출
+            String idToken = (String) userRequest.getAdditionalParameters().get("id_token");
+            if (idToken == null) {
+                throw new OAuth2AuthenticationException("Apple id_token is missing");
+            }
+
+            // 2. attributes에 id_token만 담아서 넘김
+            attributes = Map.of("id_token", idToken);
+        } else {
+            OAuth2User oAuth2User = super.loadUser(userRequest);
+            attributes = oAuth2User.getAttributes();
+        }
+
         OAuth2Response oAuth2Response =
-                createOAuth2Response(registrationId, oAuth2User.getAttributes());
+                createOAuth2Response(registrationId, attributes);
 
         if (oAuth2Response == null) {
             throw new OAuth2AuthenticationException(
@@ -39,7 +55,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String username = createUsername(oAuth2Response);
-
         // 유저 정보 가져오거나 새로 저장
         User user =
                 userRepository

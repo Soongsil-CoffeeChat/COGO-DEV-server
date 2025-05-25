@@ -4,9 +4,25 @@ import java.util.Map;
 
 public class AppleResponse implements OAuth2Response {
     private final Map<String, Object> attribute;
+    private final String sub;
+    private final String email;
+    private final String name;
 
     public AppleResponse(Map<String, Object> attribute) {
         this.attribute = attribute;
+
+        // id_token 파싱
+        String idToken = (String) attribute.get("id_token");
+        if (idToken != null) {
+            Map<String, Object> payload = JwtUtils.decodeJwtPayload(idToken); // JwtUtils는 직접 구현 필요
+            this.sub = (String) payload.get("sub");
+            this.email = (String) payload.get("email");
+            this.name = (String) payload.get("name");
+        } else {
+            this.sub = (String) attribute.get("sub");
+            this.email = (String) attribute.get("email");
+            this.name = (String) attribute.get("name");
+        }
     }
 
     @Override
@@ -16,16 +32,16 @@ public class AppleResponse implements OAuth2Response {
 
     @Override
     public String getProviderId() {
-        return attribute.get("sub").toString();
+        return sub;
     }
 
     @Override
     public String getEmail() {
-        return attribute.get("email").toString();
+        return email;
     }
 
     @Override
     public String getName() {
-        return attribute.get("name").toString();
+        return name;
     }
 }

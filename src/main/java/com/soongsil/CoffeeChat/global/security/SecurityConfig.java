@@ -102,8 +102,9 @@ public class SecurityConfig {
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
                                                 userInfoEndpoint ->
-                                                        userInfoEndpoint.userService(
-                                                                customOAuth2UserService))
+                                                        userInfoEndpoint
+                                                                .userService(customOAuth2UserService))
+
                                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests(
                         auth ->
