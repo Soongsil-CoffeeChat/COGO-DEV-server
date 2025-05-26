@@ -33,19 +33,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if ("apple".equals(registrationId)) {
 
-            // 1. id_token 직접 추출
+            // 애플 서버에서 반환받은 id_token을 꺼내고,
             String idToken = (String) userRequest.getAdditionalParameters().get("id_token");
             if (idToken == null) {
                 throw new OAuth2AuthenticationException("Apple id_token is missing");
             }
 
-            // 2. attributes에 id_token만 담아서 넘김
+            // attributes에 id_token만 담아서 넘김
             attributes = Map.of("id_token", idToken);
         } else {
             OAuth2User oAuth2User = super.loadUser(userRequest);
             attributes = oAuth2User.getAttributes();
         }
 
+        // AppleResponse 안에서 JWT 형식인 id_token을 파싱하여 사용자 정보를 추출
         OAuth2Response oAuth2Response = createOAuth2Response(registrationId, attributes);
 
         if (oAuth2Response == null) {
