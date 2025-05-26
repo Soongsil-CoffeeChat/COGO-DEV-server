@@ -2,8 +2,13 @@ package com.soongsil.CoffeeChat.global.security.oauth2;
 
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.global.security.apple.AppleTokenService;
+import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import jakarta.transaction.Transactional;
 
+import lombok.SneakyThrows;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -23,69 +28,51 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
+    private final AppleTokenService appleTokenService;
 
+    @SneakyThrows
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-
+        OAuth2Response response;
         Map<String, Object> attributes;
 
         if ("apple".equals(registrationId)) {
 
-            // 애플 서버에서 반환받은 id_token을 꺼내고,
+            // 클라이언트에서 받은 id_token만 처리
             String idToken = (String) userRequest.getAdditionalParameters().get("id_token");
             if (idToken == null) {
                 throw new OAuth2AuthenticationException("Apple id_token is missing");
             }
-
+            appleTokenService.processToken(Map.of("id_token", idToken));
             // attributes에 id_token만 담아서 넘김
             attributes = Map.of("id_token", idToken);
+            response = new AppleResponse(attributes);
         } else {
             OAuth2User oAuth2User = super.loadUser(userRequest);
             attributes = oAuth2User.getAttributes();
+            response = createOAuth2Response(registrationId, attributes);
+            if (response == null) {
+                throw new OAuth2AuthenticationException("Unsupported provider: " + registrationId);
+            }
         }
+        String username = response.getProvider() + " " + response.getProviderId();
+        User user = userRepository.findByUsername(username)
+                .map(existing -> {
+                    existing.updateUser(response);
+                    return existing;
+                })
+                .orElseGet(() -> userRepository.save(UserConverter.toEntity(username, response)));
 
-        // AppleResponse 안에서 JWT 형식인 id_token을 파싱하여 사용자 정보를 추출
-        OAuth2Response oAuth2Response = createOAuth2Response(registrationId, attributes);
-
-        if (oAuth2Response == null) {
-            throw new OAuth2AuthenticationException(
-                    "Unsupported OAuth provider: " + registrationId);
-        }
-
-        String username = createUsername(oAuth2Response);
-        // 유저 정보 가져오거나 새로 저장
-        User user =
-                userRepository
-                        .findByUsername(username)
-                        .map(
-                                existingUser -> {
-                                    // 소셜 정보로 사용자 정보 업데이트
-                                    existingUser.updateUser(oAuth2Response);
-                                    return existingUser; // @Transactional 내에서는 명시적 save 불필요
-                                })
-                        .orElseGet(
-                                () ->
-                                        userRepository.save(
-                                                UserConverter.toEntity(username, oAuth2Response)));
-
-        // CustomOAuth2User 반환
         return new CustomOAuth2User(user);
     }
-
-    private OAuth2Response createOAuth2Response(
-            String registrationId, Map<String, Object> attributes) {
+    private OAuth2Response createOAuth2Response(String registrationId, Map<String, Object> attributes) {
         return switch (registrationId) {
             case "naver" -> new NaverResponse(attributes);
             case "google" -> new GoogleResponse(attributes);
             case "kakao" -> new KakaoResponse(attributes);
-            case "apple" -> new AppleResponse(attributes);
             default -> null;
         };
-    }
-
-    private String createUsername(OAuth2Response oAuth2Response) {
-        return oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
     }
 }
