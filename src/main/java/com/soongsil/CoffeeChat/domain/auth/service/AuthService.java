@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import com.soongsil.CoffeeChat.global.security.apple.AppleTokenService;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefreshRepository refreshRepository;
     private final UserService userService;
+    private final AppleTokenService appleTokenService;
 
     @Value("${spring.jwt.access-expiration}")
     private long accessTokenExpiration;
@@ -65,14 +67,30 @@ public class AuthService {
      * @param accessToken Apple에서 발급받은 액세스 토큰
      * @return 인증 토큰 응답
      */
+//    @Transactional
+//    public AuthTokenResponse verifyAppleToken(String accessToken) {
+//        AppleTokenInfoResponse tokenInfo = fetchAppleTokenInfo(accessToken);
+//        validateTokenInfo(tokenInfo, "Apple");
+//
+//        String username = tokenInfo.getSub();
+//        return processUserAuthentication(
+//                username, () -> UserConverter.toEntity(username, tokenInfo));
+//    }
     @Transactional
-    public AuthTokenResponse verifyAppleToken(String accessToken) {
-        AppleTokenInfoResponse tokenInfo = fetchAppleTokenInfo(accessToken);
-        validateTokenInfo(tokenInfo, "Apple");
+    public AuthTokenResponse verifyAppleToken(String code) {
+        // 1) 서버에서 authorization code를 Apple로 보내 토큰 교환
+        //    → appleTokenService.exchangeCodeForTokens(code)
+        var tokenMap = appleTokenService.exchangeCodeForTokens(code);
 
-        String username = tokenInfo.getSub();
+        // 2) 받은 ID 토큰 검증 및 사용자 정보 추출
+        AppleTokenInfoResponse info = appleTokenService.processToken(tokenMap);
+        validateTokenInfo(info, "Apple");
+
+        // 3) 사용자 처리 및 세션 토큰 발급
         return processUserAuthentication(
-                username, () -> UserConverter.toEntity(username, tokenInfo));
+                info.getSub(),
+                () -> UserConverter.toEntity(info.getSub(), info)
+        );
     }
 
     /**

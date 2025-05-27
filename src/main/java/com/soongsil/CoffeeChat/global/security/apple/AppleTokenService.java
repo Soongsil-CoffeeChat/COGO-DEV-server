@@ -1,27 +1,137 @@
+//package com.soongsil.CoffeeChat.global.security.apple;
+//
+//import com.nimbusds.jwt.SignedJWT;
+//import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
+//import org.springframework.http.HttpEntity;
+//import org.springframework.http.HttpHeaders;
+//import org.springframework.http.MediaType;
+//import org.springframework.stereotype.Service;
+//import org.springframework.web.client.RestTemplate;
+//
+//import java.text.ParseException;
+//import java.util.Map;
+//
+//@Service
+//public class AppleTokenService {
+//    private final JwtValidator jwtValidator;
+//    private final RestTemplate restTemplate = new RestTemplate();
+//
+//    public AppleTokenService(JwtValidator jwtValidator) {
+//        this.jwtValidator = jwtValidator;
+//    }
+//
+//    public AppleTokenInfoResponse processToken(Map<String, Object> attribute) throws ParseException {
+//        String idToken = (String) attribute.get("id_token");
+//        SignedJWT jwt = jwtValidator.validate(idToken);
+//        var claims = jwt.getJWTClaimsSet();
+//        return AppleTokenInfoResponse.builder()
+//                .sub(claims.getSubject())
+//                .email(claims.getStringClaim("email"))
+//                .emailVerified(claims.getBooleanClaim("email_verified"))
+//                .isPrivateEmail(claims.getBooleanClaim("is_private_email"))
+//                .build();
+//    }
+//
+//    public Map<String, Object> refreshTokens(String refreshToken) {
+//        String url = "https://appleid.apple.com/auth/token";
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        String body = "grant_type=refresh_token"
+//                + "&refresh_token=" + refreshToken
+//                + "&client_id=" + /* your client_id */ ""
+//                + "&client_secret=" + /* your JWT client_secret */ "";
+//
+//        HttpEntity<String> request = new HttpEntity<>(body, headers);
+//
+//        return restTemplate.postForObject(url, request, Map.class);
+//    }
+//}
 package com.soongsil.CoffeeChat.global.security.apple;
 
-import com.nimbusds.jwt.SignedJWT;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.*;
+import com.nimbusds.jwt.*;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.interfaces.RSAPrivateKey;
 import java.text.ParseException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 @Service
 public class AppleTokenService {
+    private static final String TOKEN_URL = "https://appleid.apple.com/auth/token";
     private final JwtValidator jwtValidator;
     private final RestTemplate restTemplate = new RestTemplate();
+    private final RSAPrivateKey applePrivateKey;
 
-    public AppleTokenService(JwtValidator jwtValidator) {
+    @Value("${spring.security.oauth2.client.registration.apple.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.apple.team-id}")
+    private String teamId;
+
+    @Value("${spring.security.oauth2.client.registration.apple.key-id}")
+    private String keyId;
+
+    @Value("${spring.security.oauth2.client.registration.apple.redirect-uri}")
+    private String redirectUri;
+
+    public AppleTokenService(JwtValidator jwtValidator, RSAPrivateKey applePrivateKey) {
         this.jwtValidator = jwtValidator;
+        this.applePrivateKey = applePrivateKey;
     }
 
-    public AppleTokenInfoResponse processToken(Map<String, Object> attribute) throws ParseException {
-        String idToken = (String) attribute.get("id_token");
+    /**
+     * Authorization Code → Apple 토큰 교환
+     * @param code authorization code
+     * @return token response map (access_token, id_token, refresh_token 등)
+     */
+    public Map<String, Object> exchangeCodeForTokens(String code) {
+        String clientSecret = buildClientSecretJWT();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        String body = "grant_type=authorization_code"
+                + "&code=" + code
+                + "&redirect_uri=" + redirectUri
+                + "&client_id=" + clientId
+                + "&client_secret=" + clientSecret;
+
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        return restTemplate.postForObject(TOKEN_URL, request, Map.class);
+    }
+
+    /**
+     * 토큰 갱신 (Refresh Token Grant)
+     */
+    public Map<String, Object> refreshTokens(String refreshToken) {
+        String clientSecret = buildClientSecretJWT();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        String body = "grant_type=refresh_token"
+                + "&refresh_token=" + refreshToken
+                + "&client_id=" + clientId
+                + "&client_secret=" + clientSecret;
+
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        return restTemplate.postForObject(TOKEN_URL, request, Map.class);
+    }
+
+    /**
+     * 받은 토큰맵에서 ID 토큰을 추출, 검증 후 사용자 정보 매핑
+     */
+    public AppleTokenInfoResponse processToken(Map<String, Object> tokenMap) throws ParseException {
+        String idToken = (String) tokenMap.get("id_token");
+        // 서명 및 클레임 검증 (JwtValidator 내부에서 처리)
         SignedJWT jwt = jwtValidator.validate(idToken);
         var claims = jwt.getJWTClaimsSet();
         return AppleTokenInfoResponse.builder()
@@ -32,17 +142,31 @@ public class AppleTokenService {
                 .build();
     }
 
-    public Map<String, Object> refreshTokens(String refreshToken) {
-        String url = "https://appleid.apple.com/auth/token";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        String body = "grant_type=refresh_token"
-                + "&refresh_token=" + refreshToken
-                + "&client_id=" + /* your client_id */ ""
-                + "&client_secret=" + /* your JWT client_secret */ "";
+    /**
+     * Apple에 제출할 client_secret JWT 생성
+     */
+    private String buildClientSecretJWT() {
+        Instant now = Instant.now();
+        JWTClaimsSet claims = new JWTClaimsSet.Builder()
+                .issuer(teamId)
+                .issueTime(Date.from(now))
+                .expirationTime(Date.from(now.plusSeconds(300))) // 5분 유효
+                .audience("https://appleid.apple.com")
+                .subject(clientId)
+                .build();
 
-        HttpEntity<String> request = new HttpEntity<>(body, headers);
+        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
+                .keyID(keyId)
+                .type(JOSEObjectType.JWT)
+                .build();
 
-        return restTemplate.postForObject(url, request, Map.class);
+        SignedJWT signedJWT = new SignedJWT(header, claims);
+        try {
+            JWSSigner signer = new RSASSASigner(applePrivateKey);
+            signedJWT.sign(signer);
+            return signedJWT.serialize();
+        } catch (JOSEException e) {
+            throw new IllegalStateException("Failed to create Apple client_secret JWT", e);
+        }
     }
 }
