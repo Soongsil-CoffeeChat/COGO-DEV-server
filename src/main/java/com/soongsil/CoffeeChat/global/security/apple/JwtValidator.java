@@ -1,22 +1,24 @@
 package com.soongsil.CoffeeChat.global.security.apple;
 
+import java.text.ParseException;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-
-import java.text.ParseException;
-import java.util.Date;
 
 @Component
 public class JwtValidator {
     @Value("${spring.security.oauth2.client.registration.apple.client-id}")
-    private String clientId;private final ApplePublicKeyProvider keyProvider;
+    private String clientId;
+
+    private final ApplePublicKeyProvider keyProvider;
 
     public JwtValidator(ApplePublicKeyProvider keyProvider) {
         this.keyProvider = keyProvider;
@@ -28,7 +30,8 @@ public class JwtValidator {
             JWSHeader header = jwt.getHeader();
             // Verify algorithm
             if (!JWSAlgorithm.RS256.equals(header.getAlgorithm())) {
-                throw new IllegalArgumentException("Unexpected JWS algorithm: " + header.getAlgorithm());
+                throw new IllegalArgumentException(
+                        "Unexpected JWS algorithm: " + header.getAlgorithm());
             }
             // Fetch matching key and verify signature
             var jwk = keyProvider.getKeyById(header.getKeyID());

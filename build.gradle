@@ -104,7 +104,7 @@ dependencies {
 	implementation 'org.webjars:sockjs-client:1.5.1'
 
 	// apple login
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
 
 }
 

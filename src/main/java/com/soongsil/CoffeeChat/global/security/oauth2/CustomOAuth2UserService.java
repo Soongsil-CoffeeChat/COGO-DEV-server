@@ -2,13 +2,8 @@ package com.soongsil.CoffeeChat.global.security.oauth2;
 
 import java.util.Map;
 
-import com.soongsil.CoffeeChat.global.security.apple.AppleTokenService;
-import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import jakarta.transaction.Transactional;
 
-import lombok.SneakyThrows;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -18,9 +13,11 @@ import org.springframework.stereotype.Service;
 import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+import com.soongsil.CoffeeChat.global.security.apple.AppleTokenService;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.*;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -58,16 +55,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             }
         }
         String username = response.getProvider() + " " + response.getProviderId();
-        User user = userRepository.findByUsername(username)
-                .map(existing -> {
-                    existing.updateUser(response);
-                    return existing;
-                })
-                .orElseGet(() -> userRepository.save(UserConverter.toEntity(username, response)));
+        User user =
+                userRepository
+                        .findByUsername(username)
+                        .map(
+                                existing -> {
+                                    existing.updateUser(response);
+                                    return existing;
+                                })
+                        .orElseGet(
+                                () ->
+                                        userRepository.save(
+                                                UserConverter.toEntity(username, response)));
 
         return new CustomOAuth2User(user);
     }
-    private OAuth2Response createOAuth2Response(String registrationId, Map<String, Object> attributes) {
+
+    private OAuth2Response createOAuth2Response(
+            String registrationId, Map<String, Object> attributes) {
         return switch (registrationId) {
             case "naver" -> new NaverResponse(attributes);
             case "google" -> new GoogleResponse(attributes);
