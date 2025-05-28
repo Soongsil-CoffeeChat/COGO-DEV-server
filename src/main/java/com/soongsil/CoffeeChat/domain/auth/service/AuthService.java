@@ -1,5 +1,9 @@
 package com.soongsil.CoffeeChat.domain.auth.service;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
@@ -74,7 +78,11 @@ public class AuthService {
      * @return 인증 토큰 응답
      */
     @Transactional
-    public AuthTokenResponse verifyAppleToken(String code) {
+    public AuthTokenResponse verifyAppleToken(String code)
+            throws IOException,
+                    NoSuchAlgorithmException,
+                    InvalidKeySpecException,
+                    InvalidKeyException {
         // 1) authorization code 로 Apple 쪽 토큰 교환
         Map<String, Object> tokenMap = appleTokenService.exchangeCodeForTokens(code);
         // 2) 받은 tokenMap 에서 id_token 꺼내 검증 → AppleTokenInfoResponse

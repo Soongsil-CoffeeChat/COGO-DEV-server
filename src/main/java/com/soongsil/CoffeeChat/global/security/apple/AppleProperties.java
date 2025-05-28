@@ -15,15 +15,31 @@ public class AppleProperties {
         return clientId;
     }
 
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     public String getTeamId() {
         return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 
     public String getKeyId() {
         return keyId;
     }
 
+    public void setKeyId(String keyId) {
+        this.keyId = keyId;
+    }
+
     public String getPrivateKeyLocation() {
         return privateKeyLocation;
+    }
+
+    public void setPrivateKeyLocation(String privateKeyLocation) {
+        this.privateKeyLocation = privateKeyLocation;
     }
 }
