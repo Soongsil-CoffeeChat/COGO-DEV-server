@@ -10,7 +10,7 @@ spring:
     password: ${DB_PW}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
@@ -80,11 +80,11 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-          apple:
-            authorization-uri: https://appleid.apple.com/auth/authorize
-            token-uri: https://appleid.apple.com/auth/token
-            user-info-uri: https://appleid.apple.com/auth/userinfo
-            user-name-attribute: sub
+#          apple:
+#            authorization-uri: https://appleid.apple.com/auth/authorize
+#            token-uri: https://appleid.apple.com/auth/token
+#            user-info-uri: https://appleid.apple.com/auth/userinfo
+#            user-name-attribute: sub
   data:
     redis:
       host: ${REDIS_HOST}
@@ -125,3 +125,14 @@ firebase:
   credential:
     json: ${FIREBASE_CREDENTIAL_JSON}
 
+# ====== 여기서부터 추가 ======
+social-login:
+  provider:
+    apple:
+      redirect-uri: ${APPLE_REDIRECT}
+      client-id: ${APPLE_CLIENT_ID}
+      key-id: ${APPLE_KEY_ID}
+      team-id: ${APPLE_TEAM_ID}
+      audience: https://appleid.apple.com
+      private-key: ${APPLE_SECRET}
+# ============================
