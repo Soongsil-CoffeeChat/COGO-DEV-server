@@ -3,7 +3,7 @@ package com.soongsil.CoffeeChat.global.security.apple;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.util.Map;
@@ -13,9 +13,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.*;
-import com.nimbusds.jwt.*;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
 
@@ -25,23 +22,23 @@ public class AppleTokenService {
     private final JwtValidator jwtValidator;
     private final AppleJwtGenerator appleJwtGenerator;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final RSAPrivateKey applePrivateKey;
+    private final ECPrivateKey applePrivateKey;
 
-    @Value("${spring.security.oauth2.client.registration.apple.client-id}")
+    @Value("${social-login.provider.apple.client-id}")
     private String clientId;
 
-    @Value("${spring.security.oauth2.client.registration.apple.team-id}")
+    @Value("${social-login.provider.apple.team-id}")
     private String teamId;
 
-    @Value("${spring.security.oauth2.client.registration.apple.key-id}")
+    @Value("${social-login.provider.apple.team-id}")
     private String keyId;
 
-    @Value("${spring.security.oauth2.client.registration.apple.redirect-uri}")
+    @Value("${social-login.provider.apple.redirect-uri}")
     private String redirectUri;
 
     public AppleTokenService(
             AppleJwtGenerator appleJwtGenerator,
-            RSAPrivateKey applePrivateKey,
+            ECPrivateKey applePrivateKey,
             JwtValidator jwtValidator) {
 
         this.appleJwtGenerator = appleJwtGenerator;
@@ -117,32 +114,4 @@ public class AppleTokenService {
                 .isPrivateEmail(claims.getBooleanClaim("is_private_email"))
                 .build();
     }
-
-    /** Apple에 제출할 client_secret JWT 생성 */
-    //    private String buildClientSecretJWT() {
-    //        Instant now = Instant.now();
-    //        JWTClaimsSet claims =
-    //                new JWTClaimsSet.Builder()
-    //                        .issuer(teamId)
-    //                        .issueTime(Date.from(now))
-    //                        .expirationTime(Date.from(now.plusSeconds(300))) // 5분 유효
-    //                        .audience("https://appleid.apple.com")
-    //                        .subject(clientId)
-    //                        .build();
-    //
-    //        JWSHeader header =
-    //                new JWSHeader.Builder(JWSAlgorithm.RS256)
-    //                        .keyID(keyId)
-    //                        .type(JOSEObjectType.JWT)
-    //                        .build();
-    //
-    //        SignedJWT signedJWT = new SignedJWT(header, claims);
-    //        try {
-    //            JWSSigner signer = new RSASSASigner(applePrivateKey);
-    //            signedJWT.sign(signer);
-    //            return signedJWT.serialize();
-    //        } catch (JOSEException e) {
-    //            throw new IllegalStateException("Failed to create Apple client_secret JWT", e);
-    //        }
-    //    }
 }
