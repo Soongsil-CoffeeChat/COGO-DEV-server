@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "apple")
+@ConfigurationProperties(prefix = "social-login.provider.apple")
 public class AppleProperties {
     private String clientId;
     private String teamId;
@@ -41,5 +41,9 @@ public class AppleProperties {
 
     public void setPrivateKeyLocation(String privateKeyLocation) {
         this.privateKeyLocation = privateKeyLocation;
+    }
+
+    public String getRedirectUri() {
+        return getRedirectUri();
     }
 }

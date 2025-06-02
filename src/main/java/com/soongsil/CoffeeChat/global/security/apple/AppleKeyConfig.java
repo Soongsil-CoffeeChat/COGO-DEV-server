@@ -27,11 +27,7 @@ public class AppleKeyConfig {
                 resourceLoader.getResource(appleProperties.getPrivateKeyLocation());
 
         try (InputStream is = privateKeyResource.getInputStream()) {
-            String key =
-                    new String(is.readAllBytes())
-                            .replace("-----BEGIN PRIVATE KEY-----", "")
-                            .replace("-----END PRIVATE KEY-----", "")
-                            .replaceAll("\\s+", "");
+            String key = appleProperties.getPrivateKeyLocation();
 
             byte[] decoded = Base64.getDecoder().decode(key);
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);

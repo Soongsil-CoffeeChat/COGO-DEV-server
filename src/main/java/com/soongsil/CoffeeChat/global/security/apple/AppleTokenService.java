@@ -117,32 +117,4 @@ public class AppleTokenService {
                 .isPrivateEmail(claims.getBooleanClaim("is_private_email"))
                 .build();
     }
-
-    /** Apple에 제출할 client_secret JWT 생성 */
-    //    private String buildClientSecretJWT() {
-    //        Instant now = Instant.now();
-    //        JWTClaimsSet claims =
-    //                new JWTClaimsSet.Builder()
-    //                        .issuer(teamId)
-    //                        .issueTime(Date.from(now))
-    //                        .expirationTime(Date.from(now.plusSeconds(300))) // 5분 유효
-    //                        .audience("https://appleid.apple.com")
-    //                        .subject(clientId)
-    //                        .build();
-    //
-    //        JWSHeader header =
-    //                new JWSHeader.Builder(JWSAlgorithm.RS256)
-    //                        .keyID(keyId)
-    //                        .type(JOSEObjectType.JWT)
-    //                        .build();
-    //
-    //        SignedJWT signedJWT = new SignedJWT(header, claims);
-    //        try {
-    //            JWSSigner signer = new RSASSASigner(applePrivateKey);
-    //            signedJWT.sign(signer);
-    //            return signedJWT.serialize();
-    //        } catch (JOSEException e) {
-    //            throw new IllegalStateException("Failed to create Apple client_secret JWT", e);
-    //        }
-    //    }
 }

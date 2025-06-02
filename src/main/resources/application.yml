@@ -64,11 +64,11 @@ spring:
           apple:
             client-name: Apple
             client-id: ${APPLE_CLIENT_ID}
-            client-secret: ${APPLE_CLIENT_SECRET}
+#            client-secret: ${APPLE_CLIENT_SECRET}
             redirect-uri: ${APPLE_REDIRECT}
             authorization-grant-type: authorization_code
             scope: name, email
-
+    
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -129,10 +129,10 @@ firebase:
 social-login:
   provider:
     apple:
-      redirect-uri: ${APPLE_REDIRECT}
+#      redirect-uri: ${APPLE_REDIRECT}
       client-id: ${APPLE_CLIENT_ID}
       key-id: ${APPLE_KEY_ID}
       team-id: ${APPLE_TEAM_ID}
       audience: https://appleid.apple.com
-      private-key: ${APPLE_SECRET}
+      private-key-location: ${APPLE_SECRET}
 # ============================
