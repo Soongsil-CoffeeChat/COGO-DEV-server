@@ -55,6 +55,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+	implementation 'com.nimbusds:nimbus-jose-jwt:9.37.3'
 
 	// Mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -105,6 +106,7 @@ dependencies {
 
 	// apple login
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'
+
 }
 
 tasks.named('test') {
