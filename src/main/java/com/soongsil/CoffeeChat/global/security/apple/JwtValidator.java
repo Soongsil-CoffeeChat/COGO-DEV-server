@@ -10,7 +10,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSVerifier;
-import com.nimbusds.jose.crypto.ECDSAVerifier;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
 
 @Component
@@ -29,13 +29,13 @@ public class JwtValidator {
             SignedJWT jwt = SignedJWT.parse(idToken);
             JWSHeader header = jwt.getHeader();
             // Verify algorithm
-            if (!JWSAlgorithm.ES256.equals(header.getAlgorithm())) {
+            if (!JWSAlgorithm.RS256.equals(header.getAlgorithm())) {
                 throw new IllegalArgumentException(
                         "Unexpected JWS algorithm: " + header.getAlgorithm());
             }
             // Fetch matching key and verify signature
             var jwk = keyProvider.getKeyById(header.getKeyID());
-            JWSVerifier verifier = new ECDSAVerifier(jwk.toECKey());
+            JWSVerifier verifier = new RSASSAVerifier(jwk.toRSAKey());
             if (!jwt.verify(verifier)) {
                 throw new IllegalArgumentException("Invalid JWT signature");
             }

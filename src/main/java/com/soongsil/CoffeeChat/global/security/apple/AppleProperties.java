@@ -4,12 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "social-login.provider.apple")
+@ConfigurationProperties(prefix = "apple")
 public class AppleProperties {
     private String clientId;
     private String teamId;
     private String keyId;
-    private String privateKey;
+    private String privateKeyLocation;
 
     public String getClientId() {
         return clientId;
@@ -35,11 +35,11 @@ public class AppleProperties {
         this.keyId = keyId;
     }
 
-    public String getPrivateKey() {
-        return privateKey;
+    public String getPrivateKeyLocation() {
+        return privateKeyLocation;
     }
 
-    public void setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
+    public void setPrivateKeyLocation(String privateKeyLocation) {
+        this.privateKeyLocation = privateKeyLocation;
     }
 }
