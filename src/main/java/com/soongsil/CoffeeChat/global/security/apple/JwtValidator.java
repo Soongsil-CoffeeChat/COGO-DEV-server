@@ -15,7 +15,7 @@ import com.nimbusds.jwt.SignedJWT;
 
 @Component
 public class JwtValidator {
-    @Value("${spring.security.oauth2.client.registration.apple.client-id}")
+    @Value("${social-login.provider.apple.client-id}")
     private String clientId;
 
     private final ApplePublicKeyProvider keyProvider;

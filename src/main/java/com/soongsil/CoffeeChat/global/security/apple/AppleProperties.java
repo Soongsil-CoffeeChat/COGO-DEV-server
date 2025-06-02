@@ -11,6 +11,7 @@ public class AppleProperties {
     private String keyId;
     private String privateKeyLocation;
     private String privateKey;
+    private String redirectUri;
 
     public String getClientId() {
         return clientId;
@@ -53,6 +54,10 @@ public class AppleProperties {
     }
 
     public String getRedirectUri() {
-        return getRedirectUri();
+        return this.redirectUri;
+    }
+
+    public void setRedirectUri(String redirectUri) {
+        this.redirectUri = redirectUri;
     }
 }

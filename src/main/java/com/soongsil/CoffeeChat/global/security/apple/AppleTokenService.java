@@ -3,7 +3,7 @@ package com.soongsil.CoffeeChat.global.security.apple;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.util.Map;
@@ -25,23 +25,24 @@ public class AppleTokenService {
     private final JwtValidator jwtValidator;
     private final AppleJwtGenerator appleJwtGenerator;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final RSAPrivateKey applePrivateKey;
+    //    private final RSAPrivateKey applePrivateKey;
+    private final ECPrivateKey applePrivateKey;
 
-    @Value("${spring.security.oauth2.client.registration.apple.client-id}")
+    @Value("${social-login.provider.apple.client-id}")
     private String clientId;
 
-    @Value("${spring.security.oauth2.client.registration.apple.team-id}")
+    @Value("${social-login.provider.apple.team-id}")
     private String teamId;
 
-    @Value("${spring.security.oauth2.client.registration.apple.key-id}")
+    @Value("${social-login.provider.apple.key-id}")
     private String keyId;
 
-    @Value("${spring.security.oauth2.client.registration.apple.redirect-uri}")
+    @Value("${social-login.provider.apple.redirect-uri}")
     private String redirectUri;
 
     public AppleTokenService(
             AppleJwtGenerator appleJwtGenerator,
-            RSAPrivateKey applePrivateKey,
+            ECPrivateKey applePrivateKey,
             JwtValidator jwtValidator) {
 
         this.appleJwtGenerator = appleJwtGenerator;

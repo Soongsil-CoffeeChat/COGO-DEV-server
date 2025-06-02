@@ -1,35 +1,35 @@
 package com.soongsil.CoffeeChat.global.security.apple;
 
-import java.io.InputStream;
 import java.security.KeyFactory;
-import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.ECPrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 @Configuration
 public class AppleKeyConfig {
     private final AppleProperties appleProperties;
-    private final ResourceLoader resourceLoader;
+
+    //    private final ResourceLoader resourceLoader;
 
     public AppleKeyConfig(AppleProperties appleProperties, ResourceLoader resourceLoader) {
         this.appleProperties = appleProperties;
-        this.resourceLoader = resourceLoader;
+        //        this.resourceLoader = resourceLoader;
     }
 
     @Bean
-    public RSAPrivateKey applePrivateKey() throws Exception {
-        Resource privateKeyResource = resourceLoader.getResource(appleProperties.getPrivateKey());
-        InputStream is = privateKeyResource.getInputStream();
-        String key = appleProperties.getPrivateKey();
+    public ECPrivateKey applePrivateKey() throws Exception {
+        String baseKey = appleProperties.getPrivateKey();
 
-        byte[] decoded = Base64.getDecoder().decode(key);
+        baseKey = baseKey.replaceAll("\\s+", "");
+
+        byte[] decoded = Base64.getDecoder().decode(baseKey);
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        return (RSAPrivateKey) kf.generatePrivate(spec);
+
+        KeyFactory kf = KeyFactory.getInstance("EC");
+        return (ECPrivateKey) kf.generatePrivate(spec);
     }
 }
