@@ -10,6 +10,7 @@ public class AppleProperties {
     private String teamId;
     private String keyId;
     private String privateKeyLocation;
+    private String privateKey;
 
     public String getClientId() {
         return clientId;
@@ -37,6 +38,14 @@ public class AppleProperties {
 
     public String getPrivateKeyLocation() {
         return privateKeyLocation;
+    }
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 
     public void setPrivateKeyLocation(String privateKeyLocation) {

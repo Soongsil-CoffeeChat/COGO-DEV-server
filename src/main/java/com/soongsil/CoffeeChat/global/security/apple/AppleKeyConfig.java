@@ -23,16 +23,13 @@ public class AppleKeyConfig {
 
     @Bean
     public RSAPrivateKey applePrivateKey() throws Exception {
-        Resource privateKeyResource =
-                resourceLoader.getResource(appleProperties.getPrivateKeyLocation());
+        Resource privateKeyResource = resourceLoader.getResource(appleProperties.getPrivateKey());
+        InputStream is = privateKeyResource.getInputStream();
+        String key = appleProperties.getPrivateKey();
 
-        try (InputStream is = privateKeyResource.getInputStream()) {
-            String key = appleProperties.getPrivateKeyLocation();
-
-            byte[] decoded = Base64.getDecoder().decode(key);
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            return (RSAPrivateKey) kf.generatePrivate(spec);
-        }
+        byte[] decoded = Base64.getDecoder().decode(key);
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decoded);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        return (RSAPrivateKey) kf.generatePrivate(spec);
     }
 }
