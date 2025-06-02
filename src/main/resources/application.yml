@@ -107,6 +107,13 @@ cloud:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+  com.soongsil.CoffeeChat.domain.auth: debug
+  com.soongsil.CoffeeChat.global.security: debug
+# webClient 내부 HTTP 요청/응답 로깅
+  reactor.netty.http.client: debug
+  reactor.netty.http.server: debug
+# webflux 로깅
+  org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
 
 server:
   servlet:
