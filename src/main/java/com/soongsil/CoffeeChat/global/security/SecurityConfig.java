@@ -70,7 +70,10 @@ public class SecurityConfig {
                                                             "https://back-coffeego.com",
                                                             "https://coffeego-ssu.web.app",
                                                             "https://accounts.google.co.kr",
-                                                            "https://jiangxy.github.io"));
+                                                            "https://jiangxy.github.io",
+                                                            "https://cogo.github.io",
+                                                            "https://cogo.github.io/web"
+                                                    ));
 
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
