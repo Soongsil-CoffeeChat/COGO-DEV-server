@@ -47,3 +47,4 @@ out/
 application.log
 /src/main/resources/logback.xml
 
+/src/main/resources/*.p8
