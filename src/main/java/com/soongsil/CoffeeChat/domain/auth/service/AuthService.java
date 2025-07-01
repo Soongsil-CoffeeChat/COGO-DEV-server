@@ -1,6 +1,12 @@
 package com.soongsil.CoffeeChat.domain.auth.service;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -11,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import com.nimbusds.jwt.SignedJWT;
 import com.soongsil.CoffeeChat.domain.auth.dto.AuthTokenResponse;
 import com.soongsil.CoffeeChat.domain.auth.entity.Refresh;
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
@@ -22,6 +29,8 @@ import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
+import com.soongsil.CoffeeChat.global.security.apple.AppleTokenService;
+import com.soongsil.CoffeeChat.global.security.apple.JwtValidator;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.GoogleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
@@ -36,6 +45,8 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefreshRepository refreshRepository;
     private final UserService userService;
+    private final AppleTokenService appleTokenService;
+    private final JwtValidator jwtValidator;
 
     @Value("${spring.jwt.access-expiration}")
     private long accessTokenExpiration;
@@ -62,17 +73,30 @@ public class AuthService {
     /**
      * Apple 액세스 토큰을 검증하고 사용자 인증을 처리합니다.
      *
-     * @param accessToken Apple에서 발급받은 액세스 토큰
+     * <p>//* @param accessToken Apple에서 발급받은 액세스 토큰
+     *
      * @return 인증 토큰 응답
      */
     @Transactional
-    public AuthTokenResponse verifyAppleToken(String accessToken) {
-        AppleTokenInfoResponse tokenInfo = fetchAppleTokenInfo(accessToken);
-        validateTokenInfo(tokenInfo, "Apple");
-
-        String username = tokenInfo.getSub();
+    public AuthTokenResponse verifyAppleToken(String code)
+            throws IOException,
+                    NoSuchAlgorithmException,
+                    InvalidKeySpecException,
+                    InvalidKeyException {
+        // 1) authorization code 로 Apple 쪽 토큰 교환
+        Map<String, Object> tokenMap = appleTokenService.exchangeCodeForTokens(code);
+        // 2) 받은 tokenMap 에서 id_token 꺼내 검증 → AppleTokenInfoResponse
+        AppleTokenInfoResponse info;
+        try {
+            info = appleTokenService.processToken(tokenMap);
+        } catch (ParseException e) {
+            throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN, e);
+        }
+        // 3) sub 가 유효한지 확인
+        validateTokenInfo(info, "Apple");
+        // 4) 사용자 매핑 & 자체 JWT 발급
         return processUserAuthentication(
-                username, () -> UserConverter.toEntity(username, tokenInfo));
+                info.getSub(), () -> UserConverter.toEntity(info.getSub(), info));
     }
 
     /**
@@ -210,30 +234,44 @@ public class AuthService {
     /**
      * Apple 토큰 정보를 가져옵니다.
      *
-     * @param accessToken Apple 액세스 토큰
+     * <p>//* @param accessToken Apple 액세스 토큰
+     *
      * @return 토큰 정보 응답
      */
-    private AppleTokenInfoResponse fetchAppleTokenInfo(String accessToken) {
-        return webClient
-                .get()
-                .uri(
-                        uriBuilder ->
-                                uriBuilder
-                                        .scheme("https")
-                                        .host("appleid.apple.com")
-                                        .path("/auth/oauth2/v1/introspect")
-                                        .queryParam("client_id", "YOUR_CLIENT_ID")
-                                        .queryParam("token", accessToken)
-                                        .build())
-                .retrieve()
-                .bodyToMono(AppleTokenInfoResponse.class)
-                .onErrorMap(
-                        WebClientResponseException.class,
-                        e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
-                .onErrorMap(
-                        e -> !(e instanceof GlobalException),
-                        e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
-                .block();
+    //    private AppleTokenInfoResponse fetchAppleTokenInfo(String accessToken) {
+    //        return webClient
+    //                .get()
+    //                .uri(
+    //                        uriBuilder ->
+    //                                uriBuilder
+    //                                        .scheme("https")
+    //                                        .host("appleid.apple.com")
+    //                                        .path("/auth/oauth2/v1/introspect")
+    //                                        .queryParam("client_id", "YOUR_CLIENT_ID")
+    //                                        .queryParam("token", accessToken)
+    //                                        .build())
+    //                .retrieve()
+    //                .bodyToMono(AppleTokenInfoResponse.class)
+    //                .onErrorMap(
+    //                        WebClientResponseException.class,
+    //                        e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
+    //                .onErrorMap(
+    //                        e -> !(e instanceof GlobalException),
+    //                        e -> new GlobalException(GlobalErrorCode.OAUTH_SERVICE_ERROR))
+    //                .block();
+    //    }
+    private AppleTokenInfoResponse processToken(Map<String, Object> tokenMap)
+            throws ParseException {
+
+        String idToken = (String) tokenMap.get("id_token");
+        SignedJWT jwt = jwtValidator.validate(idToken);
+        var claims = jwt.getJWTClaimsSet();
+        return AppleTokenInfoResponse.builder()
+                .sub(claims.getSubject())
+                .email(claims.getStringClaim("email"))
+                .emailVerified(claims.getBooleanClaim("email_verified"))
+                .isPrivateEmail(claims.getBooleanClaim("is_private_email"))
+                .build();
     }
 
     /**
