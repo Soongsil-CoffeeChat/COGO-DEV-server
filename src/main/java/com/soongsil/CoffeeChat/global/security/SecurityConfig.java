@@ -69,10 +69,8 @@ public class SecurityConfig {
                                                             "http://localhost:8080",
                                                             "https://back-coffeego.com",
                                                             "https://coffeego-ssu.web.app",
-                                                            "https://accounts.google.co.kr",
                                                             "https://jiangxy.github.io",
-                                                            "https://soongsil-coffeechat.github.io/cogo.github.io/web"
-//                                                            "https://soongsil-coffeechat.github.io/cogo.github.io"
+                                                            "https://soongsil-coffeechat.github.io"
                                                     ));
 
                                             configuration.setAllowedMethods(
