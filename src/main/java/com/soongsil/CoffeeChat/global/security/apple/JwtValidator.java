@@ -1,20 +1,20 @@
-//package com.soongsil.CoffeeChat.global.security.apple;
+// package com.soongsil.CoffeeChat.global.security.apple;
 //
-//import java.text.ParseException;
-//import java.util.Date;
+// import java.text.ParseException;
+// import java.util.Date;
 //
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Component;
+// import org.springframework.beans.factory.annotation.Value;
+// import org.springframework.stereotype.Component;
 //
-//import com.nimbusds.jose.JOSEException;
-//import com.nimbusds.jose.JWSAlgorithm;
-//import com.nimbusds.jose.JWSHeader;
-//import com.nimbusds.jose.JWSVerifier;
-//import com.nimbusds.jose.crypto.RSASSAVerifier;
-//import com.nimbusds.jwt.SignedJWT;
+// import com.nimbusds.jose.JOSEException;
+// import com.nimbusds.jose.JWSAlgorithm;
+// import com.nimbusds.jose.JWSHeader;
+// import com.nimbusds.jose.JWSVerifier;
+// import com.nimbusds.jose.crypto.RSASSAVerifier;
+// import com.nimbusds.jwt.SignedJWT;
 //
-//@Component
-//public class JwtValidator {
+// @Component
+// public class JwtValidator {
 //    @Value("${social-login.provider.apple.client-id}")
 //    private String clientId;
 //
@@ -56,4 +56,4 @@
 //            throw new IllegalArgumentException("Failed to validate ID token", e);
 //        }
 //    }
-//}
+// }

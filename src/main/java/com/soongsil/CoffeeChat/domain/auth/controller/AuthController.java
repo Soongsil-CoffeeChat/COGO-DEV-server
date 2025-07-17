@@ -1,10 +1,5 @@
 package com.soongsil.CoffeeChat.domain.auth.controller;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,19 +32,19 @@ public class AuthController {
 
     // 1) 클라이언트가 Apple OAuth 화면에서 승인을 완료하면
     // 2) Apple이 이 콜백으로 authorization code를 보내줍니다.
-    @PostMapping("/apple/callback")
-    @Operation(
-            summary = "애플 로그인",
-            description = "애플 OAuth 승인 후 authorization code로 서비스 토큰 발급 및 사용자 생성")
-    public ResponseEntity<ApiResponse<AuthTokenResponse>> appleCallback(
-            @RequestParam("code") String code, @RequestParam("state") String state)
-            throws IOException,
-                    NoSuchAlgorithmException,
-                    InvalidKeySpecException,
-                    InvalidKeyException {
-        AuthTokenResponse tokenResponse = authService.verifyAppleToken(code);
-        return ResponseEntity.ok(ApiResponse.onSuccessOK(tokenResponse));
-    }
+    //    @PostMapping("/apple/callback")
+    //    @Operation(
+    //            summary = "애플 로그인",
+    //            description = "애플 OAuth 승인 후 authorization code로 서비스 토큰 발급 및 사용자 생성")
+    //    public ResponseEntity<ApiResponse<AuthTokenResponse>> appleCallback(
+    //            @RequestParam("code") String code, @RequestParam("state") String state)
+    //            throws IOException,
+    //                    NoSuchAlgorithmException,
+    //                    InvalidKeySpecException,
+    //                    InvalidKeyException {
+    //        AuthTokenResponse tokenResponse = authService.verifyAppleToken(code);
+    //        return ResponseEntity.ok(ApiResponse.onSuccessOK(tokenResponse));
+    //    }
 
     @PostMapping("/reissue")
     @Operation(summary = "토큰 재발급", description = "리프레시 토큰으로 액세스 토큰과 리프레시 토큰 재발급")

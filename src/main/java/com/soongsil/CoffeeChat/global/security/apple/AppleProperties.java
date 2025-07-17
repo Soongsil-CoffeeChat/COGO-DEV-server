@@ -1,11 +1,11 @@
-//package com.soongsil.CoffeeChat.global.security.apple;
+// package com.soongsil.CoffeeChat.global.security.apple;
 //
-//import org.springframework.boot.context.properties.ConfigurationProperties;
-//import org.springframework.stereotype.Component;
+// import org.springframework.boot.context.properties.ConfigurationProperties;
+// import org.springframework.stereotype.Component;
 //
-//@Component
-//@ConfigurationProperties(prefix = "social-login.provider.apple")
-//public class AppleProperties {
+// @Component
+// @ConfigurationProperties(prefix = "social-login.provider.apple")
+// public class AppleProperties {
 //    private String clientId;
 //    private String teamId;
 //    private String keyId;
@@ -60,4 +60,4 @@
 //    public void setRedirectUri(String redirectUri) {
 //        this.redirectUri = redirectUri;
 //    }
-//}
+// }

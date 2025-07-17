@@ -1,29 +1,29 @@
-//package com.soongsil.CoffeeChat.global.security.jwt;
+// package com.soongsil.CoffeeChat.global.security.jwt;
 //
-//import java.io.BufferedReader;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.security.InvalidKeyException;
-//import java.security.KeyFactory;
-//import java.security.NoSuchAlgorithmException;
-//import java.security.PrivateKey;
-//import java.security.spec.InvalidKeySpecException;
-//import java.security.spec.PKCS8EncodedKeySpec;
-//import java.util.Base64;
-//import java.util.Date;
-//import java.util.stream.Collectors;
+// import java.io.BufferedReader;
+// import java.io.IOException;
+// import java.io.InputStreamReader;
+// import java.security.InvalidKeyException;
+// import java.security.KeyFactory;
+// import java.security.NoSuchAlgorithmException;
+// import java.security.PrivateKey;
+// import java.security.spec.InvalidKeySpecException;
+// import java.security.spec.PKCS8EncodedKeySpec;
+// import java.util.Base64;
+// import java.util.Date;
+// import java.util.stream.Collectors;
 //
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.core.io.Resource;
-//import org.springframework.core.io.ResourceLoader;
-//import org.springframework.stereotype.Component;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.core.io.Resource;
+// import org.springframework.core.io.ResourceLoader;
+// import org.springframework.stereotype.Component;
 //
-//import com.soongsil.CoffeeChat.global.security.apple.AppleProperties;
+// import com.soongsil.CoffeeChat.global.security.apple.AppleProperties;
 //
-//import io.jsonwebtoken.Jwts;
+// import io.jsonwebtoken.Jwts;
 //
-//@Component
-//public class AppleJwtGenerator {
+// @Component
+// public class AppleJwtGenerator {
 //
 //    private final AppleProperties appleProperties;
 //    private final ResourceLoader resourceLoader;
@@ -74,4 +74,4 @@
 //            return keyFactory.generatePrivate(keySpec);
 //        }
 //    }
-//}
+// }

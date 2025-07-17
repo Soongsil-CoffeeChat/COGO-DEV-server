@@ -1,26 +1,26 @@
-//package com.soongsil.CoffeeChat.global.security.apple;
+// package com.soongsil.CoffeeChat.global.security.apple;
 //
-//import java.io.IOException;
-//import java.security.InvalidKeyException;
-//import java.security.NoSuchAlgorithmException;
-//import java.security.interfaces.ECPrivateKey;
-//import java.security.spec.InvalidKeySpecException;
-//import java.text.ParseException;
-//import java.util.Map;
+// import java.io.IOException;
+// import java.security.InvalidKeyException;
+// import java.security.NoSuchAlgorithmException;
+// import java.security.interfaces.ECPrivateKey;
+// import java.security.spec.InvalidKeySpecException;
+// import java.text.ParseException;
+// import java.util.Map;
 //
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.http.*;
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.client.RestTemplate;
+// import org.springframework.beans.factory.annotation.Value;
+// import org.springframework.http.*;
+// import org.springframework.stereotype.Service;
+// import org.springframework.web.client.RestTemplate;
 //
-//import com.nimbusds.jose.*;
-//import com.nimbusds.jose.crypto.*;
-//import com.nimbusds.jwt.*;
-//import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
-//import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
+// import com.nimbusds.jose.*;
+// import com.nimbusds.jose.crypto.*;
+// import com.nimbusds.jwt.*;
+// import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
+// import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
 //
-//@Service
-//public class AppleTokenService {
+// @Service
+// public class AppleTokenService {
 //    private static final String TOKEN_URL = "https://appleid.apple.com/auth/token";
 //    private final JwtValidator jwtValidator;
 //    private final AppleJwtGenerator appleJwtGenerator;
@@ -106,7 +106,8 @@
 //    }
 //
 //    /** 받은 토큰맵에서 ID 토큰을 추출, 검증 후 사용자 정보 매핑 */
-//    public AppleTokenInfoResponse processToken(Map<String, Object> tokenMap) throws ParseException {
+//    public AppleTokenInfoResponse processToken(Map<String, Object> tokenMap) throws ParseException
+// {
 //        String idToken = (String) tokenMap.get("id_token");
 //        // 서명 및 클레임 검증 (JwtValidator 내부에서 처리)
 //        var jwt = jwtValidator.validate(idToken);
@@ -118,4 +119,4 @@
 //                .isPrivateEmail(claims.getBooleanClaim("is_private_email"))
 //                .build();
 //    }
-//}
+// }
