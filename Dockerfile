@@ -2,13 +2,20 @@
 FROM gradle:8.2.1-jdk17 AS builder
 WORKDIR /app
 
-# 의존성 정의 파일 우선 복사
+# wrapper 스크립트, 설정 복사
+COPY gradlew .
+RUN gradle gradle
+
+# 실행 권한 부여
+RUN chmod +x gradlew
+
+# 의존성 캐싱 -> build 파일 복사
 COPY build.gradle settings.gradle ./
-RUN gradle dependencies --no-daemon
+RUN ./gradlew dependencies --no-daemon
 
 # 나머지 소스 복사 및 빌드
 COPY . .
-RUN gradle clean bootJar --no-daemon
+RUN ./gradlew clean bootJar --no-daemon
 
 # Runtime
 FROM eclipse-temurin:17-jdk-jammy
