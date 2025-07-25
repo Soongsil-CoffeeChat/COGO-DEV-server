@@ -3,7 +3,7 @@ name: Deploy Docker Image
 on:
   workflow_run:
     workflows:
-      - CI
+      - Build Docker Image
     types:
       - completed
 
