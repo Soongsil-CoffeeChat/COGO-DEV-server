@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 
-// 서버다시올리기
 @OpenAPIDefinition(
         servers = {
             @Server(url = "https://back-coffeego.com", description = "Production server"),
