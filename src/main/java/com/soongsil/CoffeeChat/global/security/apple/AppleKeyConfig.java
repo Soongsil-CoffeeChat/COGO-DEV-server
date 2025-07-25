@@ -12,11 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class AppleKeyConfig {
     private final AppleProperties appleProperties;
 
-    //    private final ResourceLoader resourceLoader;
-
     public AppleKeyConfig(AppleProperties appleProperties) {
         this.appleProperties = appleProperties;
-        //        this.resourceLoader = resourceLoader;
     }
 
     @Bean

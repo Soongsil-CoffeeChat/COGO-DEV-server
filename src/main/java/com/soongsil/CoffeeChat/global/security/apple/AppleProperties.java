@@ -9,7 +9,6 @@ public class AppleProperties {
     private String clientId;
     private String teamId;
     private String keyId;
-//    private String privateKeyLocation;
     private String privateKey;
     private String redirectUri;
 
@@ -37,10 +36,6 @@ public class AppleProperties {
         this.keyId = keyId;
     }
 
-//    public String getPrivateKeyLocation() {
-//        return privateKeyLocation;
-//    }
-
     public String getPrivateKey() {
         return privateKey;
     }
@@ -48,10 +43,6 @@ public class AppleProperties {
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
     }
-
-//    public void setPrivateKeyLocation(String privateKeyLocation) {
-//        this.privateKeyLocation = privateKeyLocation;
-//    }
 
     public String getRedirectUri() {
         return this.redirectUri;

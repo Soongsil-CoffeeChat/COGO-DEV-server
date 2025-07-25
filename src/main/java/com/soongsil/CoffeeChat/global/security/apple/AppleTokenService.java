@@ -25,7 +25,6 @@ public class AppleTokenService {
     private final JwtValidator jwtValidator;
     private final AppleJwtGenerator appleJwtGenerator;
     private final RestTemplate restTemplate = new RestTemplate();
-    //    private final RSAPrivateKey applePrivateKey;
     private final ECPrivateKey applePrivateKey;
 
     @Value("${social-login.provider.apple.client-id}")
