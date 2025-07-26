@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Deploy to EC2 via SSm
+    name: Deploy to EC2 via SSM
     runs-on: ubuntu-latest
 
     permissions:
@@ -25,20 +25,23 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_IAM_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Pull & restart on EC2
-        uses: aws-actions/ssm-send-command@v1
+      - name: Pull & restart on EC2 via SSM
+        uses: peterkimzz/aws-ssm-send-command@v1.1.1
+        id: ssm
         with:
+          aws-region: ap-northeast-2
+          aws-access-key-id: ${{ secrets.AWS_IAM_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_IAM_SECRET_ACCESS_KEY }}
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
-          document-name: AWS-RunShellScript
+          working-directory: /home/ubuntu/cogo-server
+          command: |
+            echo "Deploy 시작"
+            aws s3 cp s3://cogo-server-env/.env .env
+            docker pull coffeego/cogo-server:latest
+            docker rm -f cogo-server || true
+            docker run -d \
+              --name cogo-server \
+              --env-file ./.env \
+              -p 80:8080 \
+              coffeego/cogo-server:latest
           comment: "Deploy latest cogo-server"
-          parameters: |
-            commands:
-              - cd /home/ubuntu/cogo
-              - aws s3 cp s3://cogo-server-env/.env .env
-              - docker pull coffeego/cogo-server:latest
-              - docker rm -f cogo-server || true
-              - docker run -d \
-                  --name cogo-server \
-                  --env-file ./.env \
-                  -p 80:8080 \
-                  coffeego/cogo-server:latest
