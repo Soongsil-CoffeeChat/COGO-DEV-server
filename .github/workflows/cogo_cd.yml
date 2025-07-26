@@ -35,13 +35,13 @@ jobs:
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
           working-directory: /home/ubuntu/cogo-server
           command: |
+            cd /home/ubuntu/cogo-server
             echo "Deploy 시작"
-            aws s3 cp s3://cogo-server-env/.env /home/ubuntu/cogo-server/.env
             docker pull coffeego/cogo-server:latest
             docker rm -f cogo-server || true
             docker run -d \
               --name cogo-server \
-              --env-file ./.env \
+              --env-file /home/ubuntu/cogo-server/.env \
               -p 80:8080 \
               coffeego/cogo-server:latest
           comment: "Deploy latest cogo-server"
