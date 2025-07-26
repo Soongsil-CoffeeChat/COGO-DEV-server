@@ -36,7 +36,7 @@ jobs:
           working-directory: /home/ubuntu/cogo-server
           command: |
             echo "Deploy 시작"
-            aws s3 cp s3://cogo-server-env/.env .env
+            aws s3 cp s3://cogo-server-env/.env /home/ubuntu/cogo-server/.env
             docker pull coffeego/cogo-server:latest
             docker rm -f cogo-server || true
             docker run -d \
