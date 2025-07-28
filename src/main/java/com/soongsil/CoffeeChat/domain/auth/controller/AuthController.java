@@ -52,7 +52,7 @@ public class AuthController {
     }
 
     @PostMapping("/reissue")
-    @Operation(summary = "토큰 재발급", description = "리프레시 토큰으로 액세스 토큰과 리프레시 토큰 재발급")
+    @Operation(summary = "토큰 재발급", description = "리프레시 토큰으로 액세스 토큰과 리프레시 토큰 재발급합니다.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "새로운 액세스 토큰과 리프레시 토큰 반환")
