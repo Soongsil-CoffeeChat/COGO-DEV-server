@@ -56,7 +56,7 @@ public class ApplicationController {
                 .body(ApiResponse.onSuccessOK(applicationService.getApplication(applicationId)));
     }
 
-    @GetMapping("/applications")
+    @GetMapping("/list")
     @Operation(summary = "신청 받은 COGO 조회 ")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
