@@ -37,10 +37,14 @@ public class AuthController {
 
     // 1) 클라이언트가 Apple OAuth 화면에서 승인을 완료하면
     // 2) Apple이 이 콜백으로 authorization code를 보내줍니다.
-    @PostMapping("/apple/callback")
+    @PostMapping("/login/apple/callback")
     @Operation(
             summary = "애플 로그인",
             description = "애플 OAuth 승인 후 authorization code로 서비스 토큰 발급 및 사용자 생성")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description =
+                    "유효한 애플 accessToken 요청 시 계정 상태와 토큰 반환")
     public ResponseEntity<ApiResponse<AuthTokenResponse>> appleCallback(
             @RequestParam("code") String code, @RequestParam("state") String state)
             throws IOException,
