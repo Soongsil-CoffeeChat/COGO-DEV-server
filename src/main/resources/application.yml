@@ -107,6 +107,7 @@ cloud:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+  com.soongsil.CoffeeChat.domain.auth: debug
 
 server:
   servlet:

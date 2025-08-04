@@ -54,8 +54,6 @@ public class AuthController {
                     InvalidKeySpecException,
                     InvalidKeyException {
 
-        logger.debug("▶ appleCallback 호출 – code=[{}], state=[{}]", code, state);
-
         AuthTokenResponse tokenResponse = authService.verifyAppleToken(code);
 
         logger.debug("▶ appleCallback 완료 – AuthTokenResponse=[{}]", tokenResponse);
