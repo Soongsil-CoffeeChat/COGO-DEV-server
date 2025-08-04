@@ -88,7 +88,7 @@ public class AuthService {
                     NoSuchAlgorithmException,
                     InvalidKeySpecException,
                     InvalidKeyException {
-        logger.debug("verifyAppleToken 시작 – 받은 code=[{}]",code);
+        logger.debug("verifyAppleToken 시작 – 받은 code=[{}]", code);
         // 1) authorization code 로 Apple 쪽 토큰 교환
         Map<String, Object> tokenMap = appleTokenService.exchangeCodeForTokens(code);
         // 2) 받은 tokenMap 에서 id_token 꺼내 검증 → AppleTokenInfoResponse

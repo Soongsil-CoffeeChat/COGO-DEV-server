@@ -5,6 +5,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/login/google")
     @Operation(summary = "구글 로그인", description = "구글 서버에서 받은 accessToken으로 서비스 토큰 발급 및 사용자 생성")
@@ -43,15 +46,20 @@ public class AuthController {
             description = "애플 OAuth 승인 후 authorization code로 서비스 토큰 발급 및 사용자 생성")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
-            description =
-                    "유효한 애플 accessToken 요청 시 계정 상태와 토큰 반환")
+            description = "유효한 애플 accessToken 요청 시 계정 상태와 토큰 반환")
     public ResponseEntity<ApiResponse<AuthTokenResponse>> appleCallback(
             @RequestParam("code") String code, @RequestParam("state") String state)
             throws IOException,
                     NoSuchAlgorithmException,
                     InvalidKeySpecException,
                     InvalidKeyException {
+
+        logger.debug("▶ appleCallback 호출 – code=[{}], state=[{}]", code, state);
+
         AuthTokenResponse tokenResponse = authService.verifyAppleToken(code);
+
+        logger.debug("▶ appleCallback 완료 – AuthTokenResponse=[{}]", tokenResponse);
+
         return ResponseEntity.ok(ApiResponse.onSuccessOK(tokenResponse));
     }
 

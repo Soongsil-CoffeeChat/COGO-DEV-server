@@ -21,7 +21,6 @@ import com.nimbusds.jwt.*;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
 
-
 @Service
 public class AppleTokenService {
     private static final String TOKEN_URL = "https://appleid.apple.com/auth/token";
@@ -31,7 +30,7 @@ public class AppleTokenService {
 
     private final ECPrivateKey applePrivateKey;
 
-    private static final Logger logger= LoggerFactory.getLogger(AppleTokenService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppleTokenService.class);
 
     @Value("${social-login.provider.apple.client-id}")
     private String clientId;
@@ -87,7 +86,6 @@ public class AppleTokenService {
                         + "&client_secret="
                         + clientSecret;
         logger.debug("   요청 body=[{}]", body);
-
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         return restTemplate.postForObject(TOKEN_URL, request, Map.class);
