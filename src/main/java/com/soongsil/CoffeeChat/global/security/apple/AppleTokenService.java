@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.nimbusds.jose.*;
@@ -88,7 +90,22 @@ public class AppleTokenService {
         logger.debug("   요청 body=[{}]", body);
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject(TOKEN_URL, request, Map.class);
+
+        try{
+            ResponseEntity<Map> response=restTemplate.exchange(
+                    TOKEN_URL,HttpMethod.POST,request,Map.class
+            );
+            logger.debug("   Apple 토큰 응답 status={}, body={}",
+                    response.getStatusCode(),response.getBody());
+            return response.getBody();
+        }catch (HttpClientErrorException e){
+            logger.error("   Apple 토큰 교환 실패: status={}, body={}",
+                    e.getStatusCode(),e.getResponseBodyAsString());
+            throw e;
+        }catch (RestClientException e){
+            logger.error("   Apple 토큰 교환 중 예외 발생",e);
+            throw e;
+        }
     }
 
     /** 토큰 갱신 (Refresh Token Grant) */
