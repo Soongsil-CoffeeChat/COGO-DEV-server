@@ -8,6 +8,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,13 +21,18 @@ import com.nimbusds.jwt.*;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
 
+import static com.soongsil.CoffeeChat.domain.auth.service.AuthService.logger;
+
 @Service
 public class AppleTokenService {
     private static final String TOKEN_URL = "https://appleid.apple.com/auth/token";
     private final JwtValidator jwtValidator;
     private final AppleJwtGenerator appleJwtGenerator;
     private final RestTemplate restTemplate = new RestTemplate();
+
     private final ECPrivateKey applePrivateKey;
+
+    private static final Logger logger= LoggerFactory.getLogger(AppleTokenService.class);
 
     @Value("${social-login.provider.apple.client-id}")
     private String clientId;
@@ -60,7 +67,12 @@ public class AppleTokenService {
                     NoSuchAlgorithmException,
                     InvalidKeySpecException,
                     InvalidKeyException {
+
+        logger.debug("▶ exchangeCodeForTokens 시작 – code=[{}]", code);
+
         String clientSecret = appleJwtGenerator.createClientSecret();
+
+        logger.debug("   생성된 clientSecret (일부)=[{}...]", clientSecret.substring(0, 10));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -75,6 +87,8 @@ public class AppleTokenService {
                         + clientId
                         + "&client_secret="
                         + clientSecret;
+        logger.debug("   요청 body=[{}]", body);
+
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         return restTemplate.postForObject(TOKEN_URL, request, Map.class);
