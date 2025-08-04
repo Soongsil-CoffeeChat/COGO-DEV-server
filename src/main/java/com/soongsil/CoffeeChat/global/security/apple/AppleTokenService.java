@@ -21,7 +21,6 @@ import com.nimbusds.jwt.*;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
 
-import static com.soongsil.CoffeeChat.domain.auth.service.AuthService.logger;
 
 @Service
 public class AppleTokenService {
