@@ -1,14 +1,14 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.4'
     id 'org.jetbrains.kotlin.jvm'
-	id 'com.diffplug.spotless' version '6.23.3'
+    id 'com.diffplug.spotless' version '6.23.3'
 }
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.3"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.3"
+    }
 }
 
 group = 'com.soongsil'
@@ -18,104 +18,106 @@ java {
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	// Test dependencies
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'com.h2database:h2'
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2'
 
-	// Swagger
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-	implementation 'io.swagger.core.v3:swagger-models-jakarta:2.2.7'
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'io.swagger.core.v3:swagger-models-jakarta:2.2.7'
 
-	// Auth
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Auth
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	// Core
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    // Core
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	// JPA
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
-	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	// Test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 
 
-	// JWT
-	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
-	implementation 'com.nimbusds:nimbus-jose-jwt:9.37.3'
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.37.3'
 
-	// Mail
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-	// S3
-	implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.619'
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-	// Apache Commons Codec for Base64
-	implementation 'commons-codec:commons-codec:1.15'
+    // S3
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.619'
 
-	// Mail
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // Apache Commons Codec for Base64
+    implementation 'commons-codec:commons-codec:1.15'
+
+    // Mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 // query dsl 버전 명시해야 jakarta사용 (javax X)
-	implementation 'com.querydsl:querydsl-apt:5.0.0'
-	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-	implementation 'com.querydsl:querydsl-core:5.0.0'
+    implementation 'com.querydsl:querydsl-apt:5.0.0'
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    implementation 'com.querydsl:querydsl-core:5.0.0'
 
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 
-	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	//쿼리 로깅할때 ? 없애기
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+    //쿼리 로깅할때 ? 없애기
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 
-	//Redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    //Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-	//Cool SMS
-	implementation 'net.nurigo:sdk:4.2.7'
+    //Cool SMS
+    implementation 'net.nurigo:sdk:4.2.7'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
-	//SQS
-	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1")
-	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
+    //SQS
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1")
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
 
-	// webflux
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // webflux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	// Netty DNS resolver for MacOS ARM (M1/M2/M3)
-	runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.104.Final:osx-aarch_64'
+    // Netty DNS resolver for MacOS ARM (M1/M2/M3)
+    runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.104.Final:osx-aarch_64'
 
-	// websocket & stomp
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'org.webjars:stomp-websocket:2.3.4'
-	implementation 'org.webjars:sockjs-client:1.5.1'
+    // websocket & stomp
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.webjars:stomp-websocket:2.3.4'
+    implementation 'org.webjars:sockjs-client:1.5.1'
 
-	// apple login
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    // apple login
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 // Querydsl 빌드 옵션 설정
@@ -123,17 +125,17 @@ def generated = 'src/main/generated'
 
 // querydsl QClass 파일 생성 위치를 지정
 tasks.withType(JavaCompile) {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
 }
 
 // java source set 에 querydsl QClass 위치 추가
 sourceSets {
-	main.java.srcDirs += [ generated ]
+    main.java.srcDirs += [generated]
 }
 
 // gradle clean 시에 QClass 디렉토리 삭제
 clean {
-	delete file(generated)
+    delete file(generated)
 }
 
 kotlin {
@@ -141,16 +143,16 @@ kotlin {
 }
 
 tasks.named('compileJava') {
-	dependsOn 'spotlessApply'
+    dependsOn 'spotlessApply'
 }
 
 spotless {
-	java {
-		removeUnusedImports()
-		trimTrailingWhitespace()
-		endWithNewline()
-		googleJavaFormat().aosp()
-		importOrder('java', 'javax', 'jakarta', 'org', 'com')
-	}
+    java {
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+        googleJavaFormat().aosp()
+        importOrder('java', 'javax', 'jakarta', 'org', 'com')
+    }
 }
 
