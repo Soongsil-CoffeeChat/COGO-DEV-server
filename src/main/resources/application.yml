@@ -10,7 +10,7 @@ spring:
     password: ${DB_PW}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
@@ -107,6 +107,10 @@ cloud:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+  com.soongsil.CoffeeChat.domain.auth: debug
+  com.soongsil.CoffeeChat.global.security.apple.AppleTokenService: debug
+  com.soongsil.CoffeeChat.domain.auth.service.AuthService: debug
+
 
 server:
   servlet:

@@ -1,28 +1,31 @@
-# Dockerfile
+# JAR 빌드
+FROM gradle:8.2.1-jdk17 AS builder
+WORKDIR /app
 
-# jdk17 Image Start
-#FROM --platform=linux/amd64 ubuntu:latest
-FROM openjdk:17
+# wrapper 스크립트, 설정 복사
+COPY gradlew .
+COPY gradle gradle
 
-# 인자 설정 - Jar_File
-ARG JAR_FILE=build/libs/*.jar
+# 실행 권한 부여
+RUN chmod +x gradlew
 
-# jar 파일 복제
-COPY ${JAR_FILE} app.jar
+# 의존성 캐싱 -> build 파일 복사
+COPY build.gradle settings.gradle ./
+RUN ./gradlew dependencies --no-daemon
 
-# 인자 설정 부분과 jar 파일 복제 부분 합쳐서 진행해도 무방
-#COPY build/libs/*.jar app.jar
+# 나머지 소스 복사 및 빌드
+COPY . .
+RUN ./gradlew clean bootJar --no-daemon
 
-# 실행 명령어
+# Runtime
+FROM eclipse-temurin:17-jdk-jammy
+WORKDIR /app
+
+# 빌드된 JAR만 복사
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+# Spring boot 기본 8080
+EXPOSE 8080
+
+# 컨테이너 실행 시 JAR 실행
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
-# docker build --platform linux/amd64 -t philip2767/demo .
-
-# 아래의 과정으로 CD과정을 구축한다.
-# 새로운 이미지 풀받기 sudo docker pull [username]/github-actions-demo
-# 실행중인 컨테이너 종료하기 sudo docker stop demo (demo라는 이름으로 실행할 예정)
-# 새로 풀받은 이미지 실행 sudo docker run --name demo --rm -d -p 8080:8080 [username]/github-actions-demo
-# 기존 이미지 정리 sudo docker system prune -f (모두 예로 강제함)
-
-# 모든 컨테이너 한번에 종료 sudo docker stop $(sudo docker ps -qa)
-# 실행중인 모든 컨테이너 종료(컨테이너 존재하지 않아도 오류발생 x) sudo docker stop $(sudo docker ps -q) 2>/dev/null || true

@@ -13,6 +13,7 @@ import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest.Applica
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationMatchResponse;
+import com.soongsil.CoffeeChat.domain.application.dto.ApplicationSummaryResponse;
 import com.soongsil.CoffeeChat.domain.application.service.ApplicationService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
@@ -55,20 +56,19 @@ public class ApplicationController {
                 .body(ApiResponse.onSuccessOK(applicationService.getApplication(applicationId)));
     }
 
-    @GetMapping("/status")
-    @Operation(summary = "신청 받은 COGO 조회 (MATCHED/UNMATCHED)")
+    @GetMapping("/list")
+    @Operation(summary = "신청 받은 COGO 조회 ")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
-            description = "조건에 맞는 COGO LIST 반환")
-    public ResponseEntity<ApiResponse<List<ApplicationGetResponse>>> getApplications(
-            Authentication authentication, @RequestParam("status") String applicationStatus) {
+            description = "Application 상대 이름, 날짜, 상태 반환")
+    public ResponseEntity<ApiResponse<List<ApplicationSummaryResponse>>> getApplications(
+            Authentication authentication) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
                                 applicationService.getApplications(
                                         ((CustomOAuth2User) authentication.getPrincipal())
-                                                .getUsername(),
-                                        applicationStatus)));
+                                                .getUsername())));
     }
 
     @PatchMapping("/{applicationId}/decision")

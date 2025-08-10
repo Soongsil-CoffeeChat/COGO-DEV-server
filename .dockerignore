@@ -1,0 +1,13 @@
+# Git 메타데이터 제외
+.git
+.gitignore
+
+# 빌드 아티팩트 제외
+build/
+target/
+*.jar
+
+# IDE, 에디터, OS 파일들
+.vscode/
+*.log
+.DS_Store
