@@ -61,14 +61,24 @@ spring:
             redirect-uri: ${KAKAO_REDIRECT}
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image
-#          apple:
-#            client-name: Apple
-#            client-id: ${APPLE_CLIENT_ID}
-##            client-secret: ${APPLE_CLIENT_SECRET}
-#            redirect-uri: ${APPLE_REDIRECT}
-#            authorization-grant-type: authorization_code
-#            scope: name, email
-    
+          #          apple:
+          #            client-name: Apple
+          #            client-id: ${APPLE_CLIENT_ID}
+          ##            client-secret: ${APPLE_CLIENT_SECRET}
+          #            redirect-uri: ${APPLE_REDIRECT}
+          #            authorization-grant-type: authorization_code
+          #            scope: name, email
+
+          # ===(추가) Apple OIDC 활성 설정===
+          apple:
+            client-name: apple
+            client-id: ${APPLE_CLIENT_ID}
+            client-secret: ${APPLE_CLIENT_SECRET}   # ES256로 서명한 client secret JWT
+            redirect-uri: ${APPLE_REDIRECT}
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            scope: openid, email, name
+
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -80,11 +90,15 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-#          apple:
-#            authorization-uri: https://appleid.apple.com/auth/authorize
-#            token-uri: https://appleid.apple.com/auth/token
-#            user-info-uri: https://appleid.apple.com/auth/userinfo
-#            user-name-attribute: sub
+          #          apple:
+          #            authorization-uri: https://appleid.apple.com/auth/authorize
+          #            token-uri: https://appleid.apple.com/auth/token
+          #            user-info-uri: https://appleid.apple.com/auth/userinfo
+          #            user-name-attribute: sub
+
+          # ===(추가) Apple은 OIDC issuer 기반 자동 설정===
+          apple:
+            issuer-uri: https://appleid.apple.com
   data:
     redis:
       host: ${REDIS_HOST}
@@ -137,6 +151,6 @@ social-login:
       client-id: ${APPLE_CLIENT_ID}
       key-id: ${APPLE_KEY_ID}
       team-id: ${APPLE_TEAM_ID}
-#      audience: https://appleid.apple.com
+      #      audience: https://appleid.apple.com
       private-key: ${APPLE_SECRET}
 # ============================

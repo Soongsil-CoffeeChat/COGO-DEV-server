@@ -91,19 +91,22 @@ public class AppleTokenService {
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
 
-        try{
-            ResponseEntity<Map> response=restTemplate.exchange(
-                    TOKEN_URL,HttpMethod.POST,request,Map.class
-            );
-            logger.debug("   Apple 토큰 응답 status={}, body={}",
-                    response.getStatusCode(),response.getBody());
+        try {
+            ResponseEntity<Map> response =
+                    restTemplate.exchange(TOKEN_URL, HttpMethod.POST, request, Map.class);
+            logger.debug(
+                    "   Apple 토큰 응답 status={}, body={}",
+                    response.getStatusCode(),
+                    response.getBody());
             return response.getBody();
-        }catch (HttpClientErrorException e){
-            logger.error("   Apple 토큰 교환 실패: status={}, body={}",
-                    e.getStatusCode(),e.getResponseBodyAsString());
+        } catch (HttpClientErrorException e) {
+            logger.error(
+                    "   Apple 토큰 교환 실패: status={}, body={}",
+                    e.getStatusCode(),
+                    e.getResponseBodyAsString());
             throw e;
-        }catch (RestClientException e){
-            logger.error("   Apple 토큰 교환 중 예외 발생",e);
+        } catch (RestClientException e) {
+            logger.error("   Apple 토큰 교환 중 예외 발생", e);
             throw e;
         }
     }
