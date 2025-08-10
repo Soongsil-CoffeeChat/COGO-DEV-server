@@ -97,7 +97,7 @@ public class SecurityConfig {
                                         .authenticationEntryPoint(
                                                 jwtAuthenticationEntryPoint) // 401
                                         .accessDeniedHandler(jwtAccessDeniedHandler) // 403
-                        )
+                )
                 .oauth2Login(
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
@@ -106,7 +106,7 @@ public class SecurityConfig {
                                                                         customOAuth2UserService) // OAuth2: naver/kakao/구글(OAuth2)
                                                                 .oidcUserService(
                                                                         customAppleOidcUserService) // ★ OIDC: apple
-                                                )
+                                        )
                                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests(
                         auth ->
