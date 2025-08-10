@@ -72,10 +72,7 @@ public class SecurityConfig {
                                                             "https://accounts.google.co.kr",
                                                             "https://jiangxy.github.io",
                                                             "https://soongsil-coffeechat.github.io/cogo.github.io/web"
-                                                            //
-                                                            //
-                                                            // "https://soongsil-coffeechat.github.io/cogo.github.io"
-                                                            ));
+                                                    ));
 
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
@@ -102,7 +99,7 @@ public class SecurityConfig {
                                         .authenticationEntryPoint(
                                                 jwtAuthenticationEntryPoint) // 401 처리
                                         .accessDeniedHandler(jwtAccessDeniedHandler) // 403 처리
-                        )
+                )
                 .oauth2Login(
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
