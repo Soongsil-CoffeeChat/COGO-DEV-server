@@ -70,7 +70,8 @@ public class SecurityConfig {
                                                             "https://back-coffeego.com",
                                                             "https://coffeego-ssu.web.app",
                                                             "https://jiangxy.github.io",
-                                                            "https://soongsil-coffeechat.github.io"));
+                                                            "https://soongsil-coffeechat.github.io/cogo.github.io/web"
+                                                    ));
 
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
@@ -97,7 +98,7 @@ public class SecurityConfig {
                                         .authenticationEntryPoint(
                                                 jwtAuthenticationEntryPoint) // 401 처리
                                         .accessDeniedHandler(jwtAccessDeniedHandler) // 403 처리
-                        )
+                )
                 .oauth2Login(
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
