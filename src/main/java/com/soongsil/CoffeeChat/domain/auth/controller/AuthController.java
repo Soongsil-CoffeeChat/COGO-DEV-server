@@ -48,7 +48,7 @@ public class AuthController {
             responseCode = "200",
             description = "유효한 애플 accessToken 요청 시 계정 상태와 토큰 반환")
     public ResponseEntity<ApiResponse<AuthTokenResponse>> appleCallback(
-            @RequestParam("code") String code, @RequestParam("state") String state)
+            @RequestParam("code") String code)
             throws IOException,
                     NoSuchAlgorithmException,
                     InvalidKeySpecException,
