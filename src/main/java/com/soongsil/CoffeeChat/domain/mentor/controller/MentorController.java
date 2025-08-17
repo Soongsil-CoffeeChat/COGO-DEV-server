@@ -1,13 +1,5 @@
 package com.soongsil.CoffeeChat.domain.mentor.controller;
 
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.MENTOR_URI;
-
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorIntroductionUpdateRequest;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorUpdateRequest;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorDetailResponse;
@@ -18,10 +10,16 @@ import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 import com.soongsil.CoffeeChat.domain.mentor.service.MentorService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.MENTOR_URI;
 
 @RequestMapping(MENTOR_URI)
 @RestController

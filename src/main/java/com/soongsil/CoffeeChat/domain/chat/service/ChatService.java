@@ -1,12 +1,12 @@
 package com.soongsil.CoffeeChat.domain.chat.service;
 
-import java.time.LocalDateTime;
-
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessagePageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomDetailResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomPageResponse;
+
+import java.time.LocalDateTime;
 
 public interface ChatService {
     ChatRoomPageResponse getChatRooms(String username, int page, int size);

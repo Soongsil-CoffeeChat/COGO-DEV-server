@@ -1,15 +1,5 @@
 package com.soongsil.CoffeeChat.domain.user.controller;
 
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
-
-import java.net.URI;
-
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
@@ -21,10 +11,18 @@ import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.net.URI;
+
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.USER_URI;
 
 @RestController
 @RequestMapping(USER_URI)

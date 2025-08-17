@@ -1,9 +1,9 @@
 package com.soongsil.CoffeeChat.global.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Base64;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JwtUtils {
     public static Map<String, Object> decodeJwtPayload(String jwt) {

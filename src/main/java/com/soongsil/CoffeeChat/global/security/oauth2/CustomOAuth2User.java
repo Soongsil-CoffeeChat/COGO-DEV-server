@@ -1,15 +1,14 @@
 package com.soongsil.CoffeeChat.global.security.oauth2;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.global.security.dto.UserDto;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 
 public class CustomOAuth2User implements OAuth2User {
     private final UserDto userDTO;
