@@ -39,8 +39,9 @@ public class AuthController {
                 .body(ApiResponse.onSuccessOK(authService.verifyGoogleToken(accessToken)));
     }
 
+
     // 1) 클라이언트가 Apple OAuth 화면에서 승인을 완료하면
-    // 2) Apple이 이 콜백으로 authorization code를 보내줍니다.
+    // 2) Apple이 이 콜백으로 authorization code를client-name: apple 보내줍니다.
     @PostMapping("/login/apple/callback")
     @Operation(
             summary = "애플 로그인",
@@ -51,9 +52,9 @@ public class AuthController {
     public ResponseEntity<ApiResponse<AuthTokenResponse>> appleCallback(
             @RequestParam("code") String code)
             throws IOException,
-                    NoSuchAlgorithmException,
-                    InvalidKeySpecException,
-                    InvalidKeyException {
+            NoSuchAlgorithmException,
+            InvalidKeySpecException,
+            InvalidKeyException {
 
         AuthTokenResponse tokenResponse = authService.verifyAppleToken(code);
 
