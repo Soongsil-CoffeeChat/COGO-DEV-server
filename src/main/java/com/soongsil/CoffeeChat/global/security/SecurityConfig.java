@@ -71,10 +71,7 @@ public class SecurityConfig {
                                                             "https://coffeego-ssu.web.app",
                                                             "https://accounts.google.co.kr",
                                                             "https://jiangxy.github.io",
-                                                            "https://soongsil-coffeechat.github.io/cogo.github.io/web"
-                                                            //
-                                                            //
-                                                            // "https://soongsil-coffeechat.github.io/cogo.github.io"
+                                                            "https://back-coffeego.com/auth/login/apple/callback"
                                                             ));
 
                                             configuration.setAllowedMethods(
