@@ -1,22 +1,22 @@
 package com.soongsil.CoffeeChat.global.security.oauth2;
 
-import java.util.Map;
-
+import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
+import com.soongsil.CoffeeChat.domain.user.entity.User;
+import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.GoogleResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.KakaoResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.NaverResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 import jakarta.transaction.Transactional;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
-import com.soongsil.CoffeeChat.domain.user.entity.User;
-import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.*;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
 
 @Service
 @Slf4j

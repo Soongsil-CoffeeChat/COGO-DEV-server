@@ -1,15 +1,14 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.*;
 import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChatConverter {
 

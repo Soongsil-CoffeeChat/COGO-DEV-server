@@ -1,19 +1,18 @@
 package com.soongsil.CoffeeChat.domain.user.repository;
 
-import static com.soongsil.CoffeeChat.domain.mentee.entity.QMentee.mentee;
-import static com.soongsil.CoffeeChat.domain.mentor.entity.QMentor.mentor;
-import static com.soongsil.CoffeeChat.domain.possibleDate.entity.QPossibleDate.possibleDate;
-import static com.soongsil.CoffeeChat.domain.user.entity.QUser.user;
-
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.domain.mentee.entity.QMentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.QMentor;
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.*;
+import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
 import com.soongsil.CoffeeChat.domain.user.entity.QUser;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
-
 import lombok.RequiredArgsConstructor;
+
+import static com.soongsil.CoffeeChat.domain.mentee.entity.QMentee.mentee;
+import static com.soongsil.CoffeeChat.domain.mentor.entity.QMentor.mentor;
+import static com.soongsil.CoffeeChat.domain.possibleDate.entity.QPossibleDate.possibleDate;
+import static com.soongsil.CoffeeChat.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {

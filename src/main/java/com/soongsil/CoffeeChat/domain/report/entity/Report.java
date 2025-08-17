@@ -1,14 +1,12 @@
 package com.soongsil.CoffeeChat.domain.report.entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.*;
-
 import com.soongsil.CoffeeChat.domain.report.dto.ReportDto;
 import com.soongsil.CoffeeChat.domain.report.enums.ReportReason;
 import com.soongsil.CoffeeChat.domain.report.enums.ReportStatus;
-
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter

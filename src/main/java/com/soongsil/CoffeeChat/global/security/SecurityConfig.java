@@ -1,8 +1,16 @@
 package com.soongsil.CoffeeChat.global.security;
 
-import java.util.Arrays;
-import java.util.Collections;
-
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.global.security.apple.CustomAppleOidcUserService;
+import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
+import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
+import com.soongsil.CoffeeChat.global.security.handler.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.global.security.handler.JwtAccessDeniedHandler;
+import com.soongsil.CoffeeChat.global.security.handler.JwtAuthenticationEntryPoint;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,18 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.global.security.apple.CustomAppleOidcUserService;
-import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
-import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
-import com.soongsil.CoffeeChat.global.security.handler.CustomSuccessHandler;
-import com.soongsil.CoffeeChat.global.security.handler.JwtAccessDeniedHandler;
-import com.soongsil.CoffeeChat.global.security.handler.JwtAuthenticationEntryPoint;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity

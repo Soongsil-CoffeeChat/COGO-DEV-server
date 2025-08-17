@@ -1,12 +1,11 @@
 package com.soongsil.CoffeeChat.domain.application.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ApplicationResponse {
     @Getter

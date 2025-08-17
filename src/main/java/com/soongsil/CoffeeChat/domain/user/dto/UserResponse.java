@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.domain.user.dto;
 
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
-
 import lombok.*;
 
 public class UserResponse {

@@ -1,12 +1,13 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
 
 public class PossibleDateRequest {
     @Getter

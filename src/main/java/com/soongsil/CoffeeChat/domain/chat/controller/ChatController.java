@@ -1,23 +1,21 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
-import java.security.Principal;
-import java.time.LocalDateTime;
-
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
+import com.soongsil.CoffeeChat.domain.chat.service.ChatService;
+import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
-import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
-import com.soongsil.CoffeeChat.domain.chat.service.ChatService;
-import com.soongsil.CoffeeChat.global.annotation.CurrentUsername;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import java.security.Principal;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/v2/chat")

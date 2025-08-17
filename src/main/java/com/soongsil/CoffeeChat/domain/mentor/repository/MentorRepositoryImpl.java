@@ -1,11 +1,5 @@
 package com.soongsil.CoffeeChat.domain.mentor.repository;
 
-import static com.soongsil.CoffeeChat.domain.mentor.entity.QIntroduction.introduction;
-import static com.soongsil.CoffeeChat.domain.mentor.entity.QMentor.mentor;
-import static com.soongsil.CoffeeChat.domain.user.entity.QUser.user;
-
-import java.util.List;
-
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,8 +7,13 @@ import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorDetailResp
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorListResponse;
 import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
-
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
+import static com.soongsil.CoffeeChat.domain.mentor.entity.QIntroduction.introduction;
+import static com.soongsil.CoffeeChat.domain.mentor.entity.QMentor.mentor;
+import static com.soongsil.CoffeeChat.domain.user.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class MentorRepositoryImpl implements MentorRepositoryCustom {

@@ -1,9 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.entity;
 
-import jakarta.persistence.*;
-
 import com.soongsil.CoffeeChat.domain.user.entity.User;
-
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
