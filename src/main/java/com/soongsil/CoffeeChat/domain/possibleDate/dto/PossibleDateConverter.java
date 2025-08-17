@@ -1,7 +1,7 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.dto;
 
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.*;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 
 public class PossibleDateConverter {

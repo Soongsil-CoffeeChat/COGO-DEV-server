@@ -1,13 +1,11 @@
 package com.soongsil.CoffeeChat.domain.chat.entity;
 
+import com.soongsil.CoffeeChat.global.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.*;
-
-import com.soongsil.CoffeeChat.global.BaseEntity;
-
-import lombok.*;
 
 @Entity
 @Getter

@@ -1,14 +1,13 @@
 package com.soongsil.CoffeeChat.domain.user.repository;
 
-import java.util.Optional;
-
+import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
+import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
+import com.soongsil.CoffeeChat.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.*;
-import com.soongsil.CoffeeChat.domain.user.entity.User;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
     @Query(value = "select * from User where username = :username", nativeQuery = true)

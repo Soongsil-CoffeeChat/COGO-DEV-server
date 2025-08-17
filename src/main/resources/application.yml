@@ -10,7 +10,7 @@ spring:
     password: ${DB_PW}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
@@ -61,14 +61,7 @@ spring:
             redirect-uri: ${KAKAO_REDIRECT}
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image
-#          apple:
-#            client-name: Apple
-#            client-id: ${APPLE_CLIENT_ID}
-##            client-secret: ${APPLE_CLIENT_SECRET}
-#            redirect-uri: ${APPLE_REDIRECT}
-#            authorization-grant-type: authorization_code
-#            scope: name, email
-    
+
         provider:
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
@@ -80,11 +73,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-#          apple:
-#            authorization-uri: https://appleid.apple.com/auth/authorize
-#            token-uri: https://appleid.apple.com/auth/token
-#            user-info-uri: https://appleid.apple.com/auth/userinfo
-#            user-name-attribute: sub
+
   data:
     redis:
       host: ${REDIS_HOST}
@@ -107,6 +96,10 @@ cloud:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+  com.soongsil.CoffeeChat.domain.auth: debug
+  com.soongsil.CoffeeChat.global.security.apple.AppleTokenService: debug
+  com.soongsil.CoffeeChat.domain.auth.service.AuthService: debug
+
 
 server:
   servlet:
@@ -133,6 +126,6 @@ social-login:
       client-id: ${APPLE_CLIENT_ID}
       key-id: ${APPLE_KEY_ID}
       team-id: ${APPLE_TEAM_ID}
-#      audience: https://appleid.apple.com
+      #      audience: https://appleid.apple.com
       private-key: ${APPLE_SECRET}
 # ============================

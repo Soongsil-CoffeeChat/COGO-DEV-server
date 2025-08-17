@@ -1,5 +1,16 @@
 package com.soongsil.CoffeeChat.global.security.apple;
 
+import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
+import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -8,25 +19,16 @@ import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.*;
-import com.nimbusds.jwt.*;
-import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
-import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
-
 @Service
 public class AppleTokenService {
     private static final String TOKEN_URL = "https://appleid.apple.com/auth/token";
     private final JwtValidator jwtValidator;
     private final AppleJwtGenerator appleJwtGenerator;
     private final RestTemplate restTemplate = new RestTemplate();
-    //    private final RSAPrivateKey applePrivateKey;
+
     private final ECPrivateKey applePrivateKey;
+
+    private static final Logger logger = LoggerFactory.getLogger(AppleTokenService.class);
 
     @Value("${social-login.provider.apple.client-id}")
     private String clientId;
@@ -61,7 +63,12 @@ public class AppleTokenService {
                     NoSuchAlgorithmException,
                     InvalidKeySpecException,
                     InvalidKeyException {
+
+        logger.debug("▶ exchangeCodeForTokens 시작 – code=[{}]", code);
+
         String clientSecret = appleJwtGenerator.createClientSecret();
+
+        logger.debug("   생성된 clientSecret (일부)=[{}...]", clientSecret.substring(0, 10));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -76,9 +83,28 @@ public class AppleTokenService {
                         + clientId
                         + "&client_secret="
                         + clientSecret;
+        logger.debug("   요청 body=[{}]", body);
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject(TOKEN_URL, request, Map.class);
+
+        try {
+            ResponseEntity<Map> response =
+                    restTemplate.exchange(TOKEN_URL, HttpMethod.POST, request, Map.class);
+            logger.debug(
+                    "   Apple 토큰 응답 status={}, body={}",
+                    response.getStatusCode(),
+                    response.getBody());
+            return response.getBody();
+        } catch (HttpClientErrorException e) {
+            logger.error(
+                    "   Apple 토큰 교환 실패: status={}, body={}",
+                    e.getStatusCode(),
+                    e.getResponseBodyAsString());
+            throw e;
+        } catch (RestClientException e) {
+            logger.error("   Apple 토큰 교환 중 예외 발생", e);
+            throw e;
+        }
     }
 
     /** 토큰 갱신 (Refresh Token Grant) */

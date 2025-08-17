@@ -1,8 +1,16 @@
 package com.soongsil.CoffeeChat.global.security;
 
-import java.util.Arrays;
-import java.util.Collections;
-
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.global.security.apple.CustomAppleOidcUserService;
+import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
+import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
+import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
+import com.soongsil.CoffeeChat.global.security.handler.CustomSuccessHandler;
+import com.soongsil.CoffeeChat.global.security.handler.JwtAccessDeniedHandler;
+import com.soongsil.CoffeeChat.global.security.handler.JwtAuthenticationEntryPoint;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,17 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
-import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
-import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
-import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
-import com.soongsil.CoffeeChat.global.security.handler.CustomSuccessHandler;
-import com.soongsil.CoffeeChat.global.security.handler.JwtAccessDeniedHandler;
-import com.soongsil.CoffeeChat.global.security.handler.JwtAuthenticationEntryPoint;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2UserService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomAppleOidcUserService customAppleOidcUserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
@@ -62,18 +62,15 @@ public class SecurityConfig {
                                         request -> {
                                             CorsConfiguration configuration =
                                                     new CorsConfiguration();
-
                                             configuration.setAllowedOrigins(
                                                     Arrays.asList(
                                                             "https://localhost:3000",
                                                             "http://localhost:8080",
                                                             "https://back-coffeego.com",
                                                             "https://coffeego-ssu.web.app",
-                                                            "https://accounts.google.co.kr",
                                                             "https://jiangxy.github.io",
                                                             "https://back-coffeego.com/auth/login/apple/callback"
                                                             ));
-
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
                                                             "GET", "POST", "PUT", "DELETE", "PATCH",
@@ -90,22 +87,25 @@ public class SecurityConfig {
                                             configuration.setMaxAge(3600L);
                                             return configuration;
                                         }))
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .formLogin(formLogin -> formLogin.disable()) // 폼 로그인 비활성화
-                .httpBasic(httpBasic -> httpBasic.disable()) // HTTP Basic 인증 비활성화
+                .csrf(csrf -> csrf.disable())
+                .formLogin(formLogin -> formLogin.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
                 .exceptionHandling(
                         exception ->
                                 exception
                                         .authenticationEntryPoint(
-                                                jwtAuthenticationEntryPoint) // 401 처리
-                                        .accessDeniedHandler(jwtAccessDeniedHandler) // 403 처리
+                                                jwtAuthenticationEntryPoint) // 401
+                                        .accessDeniedHandler(jwtAccessDeniedHandler) // 403
                         )
                 .oauth2Login(
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
-                                                userInfoEndpoint ->
-                                                        userInfoEndpoint.userService(
-                                                                customOAuth2UserService))
+                                                userInfo ->
+                                                        userInfo.userService(
+                                                                        customOAuth2UserService) // OAuth2: naver/kakao/구글(OAuth2)
+                                                                .oidcUserService(
+                                                                        customAppleOidcUserService) // ★ OIDC: apple
+                                                )
                                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests(
                         auth ->
@@ -149,6 +149,7 @@ public class SecurityConfig {
                         new JwtAuthenticationFilter(jwtUtil),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authExceptionHandlingFilter, JwtAuthenticationFilter.class);
+
         return http.build();
     }
 }

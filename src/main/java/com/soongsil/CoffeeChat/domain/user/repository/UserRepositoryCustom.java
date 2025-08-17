@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.domain.user.repository;
 
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.*;
+import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 public interface UserRepositoryCustom {

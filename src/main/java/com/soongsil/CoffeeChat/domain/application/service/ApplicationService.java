@@ -1,19 +1,11 @@
 package com.soongsil.CoffeeChat.domain.application.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import jakarta.persistence.EntityManager;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationConverter;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationMatchResponse;
+import com.soongsil.CoffeeChat.domain.application.dto.ApplicationSummaryResponse;
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
@@ -27,9 +19,15 @@ import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.infra.sms.SmsUtil;
-
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -95,37 +93,75 @@ public class ApplicationService {
                 findApplication, findMentorUser.getName(), findMenteeUser.getName());
     }
 
-    @Transactional(readOnly = true)
-    public List<ApplicationGetResponse> getApplications(String username, String applicationStatus) {
-        if (!"matched".equalsIgnoreCase(applicationStatus)
-                && !"unmatched".equalsIgnoreCase(applicationStatus)) {
-            log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
-            throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
-        }
-        log.info("[*] Find applications with condition [" + applicationStatus + "]");
+    //    @Transactional(readOnly = true)
+    //    public List<ApplicationGetResponse> getApplications(String username, String
+    // applicationStatus) {
+    //        if (!"matched".equalsIgnoreCase(applicationStatus)
+    //                && !"unmatched".equalsIgnoreCase(applicationStatus)) {
+    //            log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
+    //            throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
+    //        }
+    //        log.info("[*] Find applications with condition [" + applicationStatus + "]");
+    //
+    //        // TODO: JOIN문으로 변경
+    //        List<ApplicationGetResponse> dtos = new ArrayList<>();
+    //        User user = findUserByUsername(username);
+    //        List<Application> findApplications;
+    //
+    //        findApplications =
+    //                user.isMentor()
+    //                        ? applicationRepository.findApplicationByMentor(user.getMentor())
+    //                        : user.isMentee()
+    //                                ?
+    // applicationRepository.findApplicationByMentee(user.getMentee())
+    //                                : Collections.emptyList();
+    //
+    //        for (Application app : findApplications) {
+    //            if (app.getAccept() == ApplicationStatus.valueOf(applicationStatus.toUpperCase()))
+    // {
+    //                User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
+    //                // MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
+    //                dtos.add(
+    //                        ApplicationConverter.toGetResponse(
+    //                                app, user.getName(), findMenteeUser.getName()));
+    //            }
+    //        }
+    //        return dtos;
+    //    }
 
-        // TODO: JOIN문으로 변경
-        List<ApplicationGetResponse> dtos = new ArrayList<>();
+    @Transactional
+    public List<ApplicationSummaryResponse> getApplications(String username) {
         User user = findUserByUsername(username);
-        List<Application> findApplications;
 
-        findApplications =
+        List<Application> apps =
                 user.isMentor()
                         ? applicationRepository.findApplicationByMentor(user.getMentor())
                         : user.isMentee()
                                 ? applicationRepository.findApplicationByMentee(user.getMentee())
                                 : Collections.emptyList();
 
-        for (Application app : findApplications) {
-            if (app.getAccept() == ApplicationStatus.valueOf(applicationStatus.toUpperCase())) {
-                User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
-                // MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
-                dtos.add(
-                        ApplicationConverter.toGetResponse(
-                                app, user.getName(), findMenteeUser.getName()));
-            }
-        }
-        return dtos;
+        return apps.stream()
+                .map(
+                        app -> {
+                            String otherPartyName =
+                                    app.getMentor().getUser().getName().equals(username)
+                                            ? app.getMentee().getUser().getName()
+                                            : app.getMentor().getUser().getName();
+                            String status =
+                                    app.getAccept() == ApplicationStatus.MATCHED ? "수락" : "거절";
+
+                            return ApplicationSummaryResponse.builder()
+                                    .applicationId(app.getId())
+                                    .otherPartyName(otherPartyName)
+                                    .applicationStatus(status)
+                                    .applicationDate(app.getPossibleDate().getDate())
+                                    .build();
+                        })
+                // 최신 순 정렬
+                .sorted(
+                        Comparator.comparing(ApplicationSummaryResponse::getApplicationDate)
+                                .reversed())
+                .toList();
     }
 
     @Transactional

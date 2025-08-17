@@ -1,13 +1,7 @@
 package com.soongsil.CoffeeChat.domain.mentor.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.*;
-
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorIntroductionUpdateRequest;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
