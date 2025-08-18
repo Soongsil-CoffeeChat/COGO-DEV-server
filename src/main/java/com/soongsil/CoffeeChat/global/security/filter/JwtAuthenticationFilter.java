@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
         String accessToken = jwtUtil.resolveToken(request);
 
         // 토큰이 없다면 다음 필터로 넘김
-        if (accessToken == null) {
+        if (accessToken == null || accessToken.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
 
         log.info("[*] Current User: " + username);
         log.info("[*] Current User Role: " + role);
+        log.debug("[JWT] authenticated user={}, role={}", username, role);
 
         // UserDetails 혹은 OAuth2User에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(username, role);
