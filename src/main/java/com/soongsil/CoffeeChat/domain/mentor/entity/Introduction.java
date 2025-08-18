@@ -1,7 +1,9 @@
 package com.soongsil.CoffeeChat.domain.mentor.entity;
 
-import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorIntroductionUpdateRequest;
 import jakarta.persistence.*;
+
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorIntroductionUpdateRequest;
+
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,20 +1,23 @@
 package com.soongsil.CoffeeChat.global.security.filter;
 
-import com.soongsil.CoffeeChat.domain.auth.enums.Role;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+import java.io.IOException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.io.IOException;
+import com.soongsil.CoffeeChat.domain.auth.enums.Role;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
         String accessToken = jwtUtil.resolveToken(request);
 
         // 토큰이 없다면 다음 필터로 넘김
-        if (accessToken == null) {
+        if (accessToken == null || accessToken.isBlank()) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -44,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
 
         log.info("[*] Current User: " + username);
         log.info("[*] Current User Role: " + role);
+        log.debug("[JWT] authenticated user={}, role={}", username, role);
 
         // UserDetails 혹은 OAuth2User에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(username, role);

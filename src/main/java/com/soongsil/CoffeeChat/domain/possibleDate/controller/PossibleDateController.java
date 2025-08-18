@@ -1,20 +1,22 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.controller;
 
+import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.service.PossibleDateService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
 
 @RestController
 @RequestMapping(POSSIBLEDATE_URI)

@@ -1,5 +1,14 @@
 package com.soongsil.CoffeeChat.domain.application.service;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import jakarta.persistence.EntityManager;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationConverter;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest.ApplicationCreateRequest;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationCreateResponse;
@@ -19,15 +28,9 @@ import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.infra.sms.SmsUtil;
-import jakarta.persistence.EntityManager;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

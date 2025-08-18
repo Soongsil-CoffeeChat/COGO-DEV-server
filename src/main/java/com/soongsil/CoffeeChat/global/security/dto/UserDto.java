@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.global.security.dto;
 
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
+
 import lombok.Builder;
 import lombok.Getter;
 

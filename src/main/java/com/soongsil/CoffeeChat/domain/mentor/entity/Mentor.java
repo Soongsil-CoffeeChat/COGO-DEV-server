@@ -1,15 +1,17 @@
 package com.soongsil.CoffeeChat.domain.mentor.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.*;
+
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
-import jakarta.persistence.*;
-import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

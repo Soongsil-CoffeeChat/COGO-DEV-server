@@ -1,9 +1,5 @@
 package com.soongsil.CoffeeChat.global.annotation;
 
-import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
-import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +8,12 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

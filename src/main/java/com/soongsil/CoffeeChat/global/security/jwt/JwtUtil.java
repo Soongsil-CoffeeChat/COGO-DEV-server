@@ -1,19 +1,23 @@
 package com.soongsil.CoffeeChat.global.security.jwt;
 
-import com.soongsil.CoffeeChat.domain.auth.enums.Role;
-import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
-import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
+import com.soongsil.CoffeeChat.domain.auth.enums.Role;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class JwtUtil {

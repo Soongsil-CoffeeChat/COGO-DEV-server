@@ -1,15 +1,17 @@
 package com.soongsil.CoffeeChat.domain.report.service;
 
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.soongsil.CoffeeChat.domain.report.dto.ReportDto;
 import com.soongsil.CoffeeChat.domain.report.entity.Report;
 import com.soongsil.CoffeeChat.domain.report.repository.ReportRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

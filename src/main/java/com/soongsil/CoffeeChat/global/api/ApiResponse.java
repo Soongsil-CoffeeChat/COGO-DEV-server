@@ -1,12 +1,14 @@
 package com.soongsil.CoffeeChat.global.api;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @JsonPropertyOrder({"statusCode", "message", "content"})

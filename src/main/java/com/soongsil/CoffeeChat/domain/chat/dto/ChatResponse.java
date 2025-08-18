@@ -1,9 +1,9 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.*;
 
 public class ChatResponse {
 

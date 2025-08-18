@@ -1,7 +1,13 @@
 package com.soongsil.CoffeeChat.global.security.apple;
 
-import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
-import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.ECPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.text.ParseException;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,13 +17,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.ECPrivateKey;
-import java.security.spec.InvalidKeySpecException;
-import java.text.ParseException;
-import java.util.Map;
+import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
+import com.soongsil.CoffeeChat.global.security.jwt.AppleJwtGenerator;
 
 @Service
 public class AppleTokenService {

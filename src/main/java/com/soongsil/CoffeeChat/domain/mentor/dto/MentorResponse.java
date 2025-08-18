@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.domain.mentor.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
+
 import lombok.*;
 
 public class MentorResponse {

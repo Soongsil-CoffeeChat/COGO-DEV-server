@@ -1,15 +1,17 @@
 package com.soongsil.CoffeeChat.infra.admin.controller;
 
-import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
-import com.soongsil.CoffeeChat.global.api.ApiResponse;
-import com.soongsil.CoffeeChat.infra.admin.service.AdminService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
+import com.soongsil.CoffeeChat.global.api.ApiResponse;
+import com.soongsil.CoffeeChat.infra.admin.service.AdminService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor

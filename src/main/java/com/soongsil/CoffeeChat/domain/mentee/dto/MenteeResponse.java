@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.mentee.dto;
 
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
+
 import lombok.*;
 
 public class MenteeResponse {
