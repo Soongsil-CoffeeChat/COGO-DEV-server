@@ -1,14 +1,17 @@
 package com.soongsil.CoffeeChat.domain.application.entity;
 
+import jakarta.persistence.*;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLRestriction;
+
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
-import jakarta.persistence.*;
+
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter

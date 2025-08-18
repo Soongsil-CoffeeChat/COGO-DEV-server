@@ -1,12 +1,13 @@
 package com.soongsil.CoffeeChat.domain.chat.repository;
 
-import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
+import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 

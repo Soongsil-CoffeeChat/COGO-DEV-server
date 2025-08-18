@@ -1,11 +1,10 @@
 package com.soongsil.CoffeeChat.global.security.apple;
 
-import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
-import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.AppleResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
+import java.util.HashMap;
+import java.util.Map;
+
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -13,8 +12,12 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
+import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.AppleResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

@@ -1,15 +1,17 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.soongsil.CoffeeChat.domain.application.entity.Application;
-import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.soongsil.CoffeeChat.domain.application.entity.Application;
+import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
+
+import lombok.*;
 
 @Entity
 @Builder

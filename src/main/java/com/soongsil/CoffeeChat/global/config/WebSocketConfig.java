@@ -1,13 +1,8 @@
 package com.soongsil.CoffeeChat.global.config;
 
-import com.soongsil.CoffeeChat.domain.auth.enums.Role;
-import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
-import com.soongsil.CoffeeChat.domain.user.entity.User;
-import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
-import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
-import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +22,15 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-import java.util.Collection;
-import java.util.List;
+import com.soongsil.CoffeeChat.domain.auth.enums.Role;
+import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
+import com.soongsil.CoffeeChat.domain.user.entity.User;
+import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSocketMessageBroker

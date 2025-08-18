@@ -1,5 +1,10 @@
 package com.soongsil.CoffeeChat.infra.admin.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
@@ -7,11 +12,8 @@ import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

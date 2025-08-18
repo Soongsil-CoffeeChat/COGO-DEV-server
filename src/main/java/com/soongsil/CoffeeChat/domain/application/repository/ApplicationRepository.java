@@ -1,16 +1,18 @@
 package com.soongsil.CoffeeChat.domain.application.repository;
 
+import java.util.List;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     List<Application> findApplicationByMentor(Mentor mentor);

@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.report.dto;
 
 import com.soongsil.CoffeeChat.domain.report.entity.Report;
 import com.soongsil.CoffeeChat.domain.report.enums.ReportReason;
+
 import lombok.Builder;
 import lombok.Getter;
 

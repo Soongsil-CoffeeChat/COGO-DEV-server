@@ -1,16 +1,18 @@
 package com.soongsil.CoffeeChat.global.security.apple;
 
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
-import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
 
 // 애플 공개 키를 주기적으로 가져와 캐싱
 @Component

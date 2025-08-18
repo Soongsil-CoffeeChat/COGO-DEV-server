@@ -1,5 +1,11 @@
 package com.soongsil.CoffeeChat.domain.user.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+
+import org.hibernate.annotations.SQLRestriction;
+
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
@@ -9,11 +15,8 @@ import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
+import lombok.*;
 
 @Entity
 @Getter

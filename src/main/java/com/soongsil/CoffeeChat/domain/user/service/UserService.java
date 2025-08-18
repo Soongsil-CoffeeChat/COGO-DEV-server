@@ -1,5 +1,9 @@
 package com.soongsil.CoffeeChat.domain.user.service;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeResponse.MenteeInfoResponse;
@@ -19,11 +23,9 @@ import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.infra.aws.s3.service.AmazonS3Service;
 import com.soongsil.CoffeeChat.infra.sms.SmsUtil;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor

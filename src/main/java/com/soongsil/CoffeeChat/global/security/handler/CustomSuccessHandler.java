@@ -1,13 +1,11 @@
 package com.soongsil.CoffeeChat.global.security.handler;
 
-import com.soongsil.CoffeeChat.domain.auth.entity.Refresh;
-import com.soongsil.CoffeeChat.domain.auth.enums.Role;
-import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+import java.io.IOException;
+import java.util.Date;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -15,8 +13,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Date;
+import com.soongsil.CoffeeChat.domain.auth.entity.Refresh;
+import com.soongsil.CoffeeChat.domain.auth.enums.Role;
+import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
+import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
