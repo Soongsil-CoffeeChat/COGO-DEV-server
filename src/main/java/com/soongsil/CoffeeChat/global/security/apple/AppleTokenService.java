@@ -89,6 +89,7 @@ public class AppleTokenService {
         HttpEntity<String> request = new HttpEntity<>(body, headers);
 
         try {
+            // 토큰 만료 되지 않았을떄. restTemplate.exchange에서 오류가 생김.
             ResponseEntity<Map> response =
                     restTemplate.exchange(TOKEN_URL, HttpMethod.POST, request, Map.class);
             logger.debug(
