@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
-import com.soongsil.CoffeeChat.global.security.apple.CustomAppleOidcUserService;
 import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
 import com.soongsil.CoffeeChat.global.security.filter.CustomLogoutFilter;
 import com.soongsil.CoffeeChat.global.security.filter.JwtAuthenticationFilter;
@@ -35,7 +34,6 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomAppleOidcUserService customAppleOidcUserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
@@ -103,9 +101,8 @@ public class SecurityConfig {
                                 oauth2.userInfoEndpoint(
                                                 userInfo ->
                                                         userInfo.userService(
-                                                                        customOAuth2UserService) // OAuth2: naver/kakao/구글(OAuth2)
-                                                                .oidcUserService(
-                                                                        customAppleOidcUserService) // ★ OIDC: apple
+                                                                customOAuth2UserService) // OAuth2:
+                                                // naver/kakao/구글(OAuth2)
                                                 )
                                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests(

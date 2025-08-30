@@ -1,12 +1,6 @@
 package com.soongsil.CoffeeChat.domain.auth.service;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -19,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import com.nimbusds.jwt.SignedJWT;
 import com.soongsil.CoffeeChat.domain.auth.dto.AuthTokenResponse;
 import com.soongsil.CoffeeChat.domain.auth.entity.Refresh;
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
@@ -31,8 +24,6 @@ import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import com.soongsil.CoffeeChat.global.security.apple.AppleTokenService;
-import com.soongsil.CoffeeChat.global.security.apple.JwtValidator;
 import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.GoogleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
@@ -48,8 +39,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefreshRepository refreshRepository;
     private final UserService userService;
-    private final AppleTokenService appleTokenService;
-    private final JwtValidator jwtValidator;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
@@ -73,37 +62,6 @@ public class AuthService {
         String username = tokenInfo.getSub();
         return processUserAuthentication(
                 username, () -> UserConverter.toEntity(username, tokenInfo));
-    }
-
-    /**
-     * Apple 액세스 토큰을 검증하고 사용자 인증을 처리합니다.
-     *
-     * <p>//* @param accessToken Apple에서 발급받은 액세스 토큰
-     *
-     * @return 인증 토큰 응답
-     */
-    @Transactional
-    public AuthTokenResponse verifyAppleToken(String code)
-            throws IOException,
-                    NoSuchAlgorithmException,
-                    InvalidKeySpecException,
-                    InvalidKeyException {
-        logger.debug("verifyAppleToken 시작 – 받은 code=[{}]", code);
-        // 1) authorization code 로 Apple 쪽 토큰 교환
-        Map<String, Object> tokenMap = appleTokenService.exchangeCodeForTokens(code);
-        // 2) 받은 tokenMap 에서 id_token 꺼내 검증 → AppleTokenInfoResponse
-        AppleTokenInfoResponse info;
-        try {
-            info = appleTokenService.processToken(tokenMap);
-            logger.debug("exchangeCodeForTokens 응답 tokenMap={}", tokenMap);
-        } catch (ParseException e) {
-            throw new GlobalException(GlobalErrorCode.JWT_INVALID_TOKEN, e);
-        }
-        // 3) sub 가 유효한지 확인
-        validateTokenInfo(info, "Apple");
-        // 4) 사용자 매핑 & 자체 JWT 발급
-        return processUserAuthentication(
-                info.getSub(), () -> UserConverter.toEntity(info.getSub(), info));
     }
 
     /**
@@ -236,20 +194,6 @@ public class AuthService {
                         e -> !(e instanceof GlobalException),
                         e -> new GlobalException(GlobalErrorCode.INTERNAL_SERVER_ERROR))
                 .block();
-    }
-
-    private AppleTokenInfoResponse processToken(Map<String, Object> tokenMap)
-            throws ParseException {
-
-        String idToken = (String) tokenMap.get("id_token");
-        SignedJWT jwt = jwtValidator.validate(idToken);
-        var claims = jwt.getJWTClaimsSet();
-        return AppleTokenInfoResponse.builder()
-                .sub(claims.getSubject())
-                .email(claims.getStringClaim("email"))
-                .emailVerified(claims.getBooleanClaim("email_verified"))
-                .isPrivateEmail(claims.getBooleanClaim("is_private_email"))
-                .build();
     }
 
     /**
