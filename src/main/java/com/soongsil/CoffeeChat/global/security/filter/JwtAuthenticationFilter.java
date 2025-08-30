@@ -33,8 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
         String accessToken = jwtUtil.resolveToken(request);
 
         // 프리플라이트 패스
-        if("OPTIONS".equalsIgnoreCase(request.getMethod())){
-            filterChain.doFilter(request,response);
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
             return;
         }
 
