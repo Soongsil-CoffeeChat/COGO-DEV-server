@@ -30,11 +30,11 @@ public class ApplicationConverter {
     }
 
     public static ApplicationResponse.ApplicationGetResponse toGetResponse(
-            Application application, String mentorName, String menteeName) {
+            Application application, Long mentorId, Long menteeId) {
         return ApplicationResponse.ApplicationGetResponse.builder()
                 .applicationId(application.getId())
-                .mentorName(mentorName)
-                .menteeName(menteeName)
+                .mentorId(mentorId)
+                .menteeId(menteeId)
                 .applicationMemo(application.getMemo())
                 .applicationDate(application.getPossibleDate().getDate())
                 .applicationStartTime(application.getPossibleDate().getStartTime())

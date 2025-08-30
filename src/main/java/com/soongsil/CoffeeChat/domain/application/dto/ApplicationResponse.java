@@ -37,8 +37,8 @@ public class ApplicationResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ApplicationGetResponse {
         private Long applicationId;
-        private String menteeName;
-        private String mentorName;
+        private Long menteeId;
+        private Long mentorId;
         private String applicationMemo;
 
         @JsonFormat(pattern = "yyyy-MM-dd")

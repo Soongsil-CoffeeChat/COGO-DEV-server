@@ -89,11 +89,10 @@ public class ApplicationService {
     @Transactional(readOnly = true)
     public ApplicationGetResponse getApplication(Long applicationId) {
         Application findApplication = findApplicationById(applicationId);
-        User findMenteeUser = userRepository.findByMenteeId(findApplication.getMentee().getId());
-        User findMentorUser = userRepository.findByMentor(findApplication.getMentor());
+        Long findMentee = findApplication.getMentee().getId();
+        Long findMentor = findApplication.getMentor().getId();
         // TODO: toDTO 빌더 만들어두고, join으로 묶자
-        return ApplicationConverter.toGetResponse(
-                findApplication, findMentorUser.getName(), findMenteeUser.getName());
+        return ApplicationConverter.toGetResponse(findApplication, findMentee, findMentor);
     }
 
     //    @Transactional(readOnly = true)
