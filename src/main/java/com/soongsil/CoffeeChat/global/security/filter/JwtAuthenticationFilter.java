@@ -32,6 +32,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 요청당
         // 헤더에서 authorization키에 담긴 토큰을 꺼냄
         String accessToken = jwtUtil.resolveToken(request);
 
+        // 프리플라이트 패스
+        if("OPTIONS".equalsIgnoreCase(request.getMethod())){
+            filterChain.doFilter(request,response);
+            return;
+        }
+
         // 토큰이 없다면 다음 필터로 넘김
         if (accessToken == null || accessToken.isBlank()) {
             filterChain.doFilter(request, response);

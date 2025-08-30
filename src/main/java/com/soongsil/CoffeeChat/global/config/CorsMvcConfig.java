@@ -16,7 +16,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
                         "http://localhost:8080",
                         "https://back-coffeego.com",
                         "https://accounts.google.co.kr",
-                        "https://soongsil-coffeechat.github.io/COGO-DEV-app")
+                        "https://soongsil-coffeechat.github.io")
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowedHeaders("*")
                 .exposedHeaders("Set-Cookie", "Authorization", "loginStatus")
