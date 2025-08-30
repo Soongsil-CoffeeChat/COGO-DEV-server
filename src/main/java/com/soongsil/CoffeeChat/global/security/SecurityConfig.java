@@ -67,8 +67,7 @@ public class SecurityConfig {
                                                             "https://localhost:3000",
                                                             "http://localhost:8080",
                                                             "https://back-coffeego.com",
-//                                                            "https://back-coffeego.com/auth/login/apple/callback",
-                                                            "https://soongsil-coffeechat.github.io"));
+                                                            "https://soongsil-coffeechat.github.io/COGO-DEV-app"));
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
                                                             "GET", "POST", "PUT", "DELETE", "PATCH",
