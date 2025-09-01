@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.domain.chat.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.soongsil.CoffeeChat.domain.user.entity.User;
 import lombok.*;
 
 public class ChatResponse {
@@ -30,7 +31,12 @@ public class ChatResponse {
         private Long id;
         private String name;
         private String lastChat;
-        private LocalDateTime createdAt;
+        private LocalDateTime updateAt;
+        // 사용자 받가 or 필요한 부분만 받기
+        /*
+        1: User 받기
+        2: User - ChatRoomUser 끌고와서
+         */
     }
 
     /** 채팅 메시지 페이징 응답 DTO */
