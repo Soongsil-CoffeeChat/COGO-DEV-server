@@ -1,7 +1,6 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -58,9 +57,8 @@ public class ChatController {
             @Parameter(hidden = true) @CurrentUsername String username,
             @PathVariable Long roomId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "50") int size,
-            @RequestParam(required = false) LocalDateTime before) {
-        return ResponseEntity.ok(chatService.getChatMessages(username, roomId, page, size, before));
+            @RequestParam(defaultValue = "50") int size) {
+        return ResponseEntity.ok(chatService.getChatMessages(username, roomId, page, size));
     }
 
     @PostMapping("/rooms/{roomId}/leave")

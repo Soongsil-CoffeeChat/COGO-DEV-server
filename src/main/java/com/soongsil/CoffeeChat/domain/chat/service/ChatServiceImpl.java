@@ -109,7 +109,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public ChatMessagePageResponse getChatMessages(
-            String username, Long roomId, int page, int size, LocalDateTime before) {
+            String username, Long roomId, int page, int size) {
         User currentUser = findUserByUsername(username);
 
         // 채팅방 존재 확인
@@ -125,13 +125,18 @@ public class ChatServiceImpl implements ChatService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Chat> chats;
 
-        if (before != null) {
-            chats =
-                    chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-                            roomId, before, pageable);
-        } else {
-            chats = chatRepository.findByChatRoomIdOrderByCreatedAtDesc(roomId, pageable);
-        }
+        chats =
+                chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+                        roomId, LocalDateTime.now(), pageable);
+
+        // 날짜 맞게 조회 필요 시 이용
+        //        if (before != null) {
+        //            chats =
+        //                    chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+        //                            roomId, before, pageable);
+        //        } else {
+        //            chats = chatRepository.findByChatRoomIdOrderByCreatedAtDesc(roomId, pageable);
+        //        }
 
         return ChatConverter.toChatMessagePageResponse(chats);
     }
