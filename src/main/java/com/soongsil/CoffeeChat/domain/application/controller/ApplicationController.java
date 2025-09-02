@@ -31,7 +31,7 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @PostMapping
-    @Operation(summary = "COGO 신청하기")
+    @Operation(summary = "COGO 신청하기 + 테스트용 출력")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "201",
             description = "COGO 기본 정보 반환")
