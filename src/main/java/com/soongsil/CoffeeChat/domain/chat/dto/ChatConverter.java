@@ -107,26 +107,6 @@ public class ChatConverter {
                 .totalPages(chatRoomPage.getTotalPages())
                 .last(chatRoomPage.isLast())
                 .build();
-        //        List<ChatRoomResponse> content =
-        //                chatRoomPage.getContent().stream()
-        //                        .map(
-        //                                room -> {
-        //                                    int index = chatRoomPage.getContent().indexOf(room);
-        //                                    String lastChat =
-        //                                            index < lastChats.size() ?
-        // lastChats.get(index) : "";
-        //                                    return toChatRoomResponse(room, lastChat);
-        //                                })
-        //                        .collect(Collectors.toList());
-        //
-        //        return ChatRoomPageResponse.builder()
-        //                .content(content)
-        //                .pageNumber(chatRoomPage.getNumber())
-        //                .pageSize(chatRoomPage.getSize())
-        //                .totalElements(chatRoomPage.getTotalElements())
-        //                .totalPages(chatRoomPage.getTotalPages())
-        //                .last(chatRoomPage.isLast())
-        //                .build();
     }
 
     public static ChatRoom toChatRoom(
