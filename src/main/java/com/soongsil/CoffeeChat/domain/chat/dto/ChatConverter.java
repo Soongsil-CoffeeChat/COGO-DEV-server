@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.chat.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
 
@@ -13,12 +14,15 @@ import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 public class ChatConverter {
 
-    public static ChatRoomResponse toChatRoomResponse(ChatRoom chatRoom, String lastChat) {
+    public static ChatRoomResponse toChatRoomResponse(
+            ChatRoom chatRoom, String lastChat, List<ChatParticipantResponse> participants) {
+
         return ChatRoomResponse.builder()
                 .id(chatRoom.getId())
                 .name(chatRoom.getName())
                 .lastChat(lastChat)
-                .updateAt(chatRoom.getUpdatedDate())
+                .updatedAt(chatRoom.getUpdatedDate())
+                .participants(participants)
                 .build();
     }
 
@@ -68,18 +72,32 @@ public class ChatConverter {
     }
 
     public static ChatRoomPageResponse toChatRoomPageResponse(
-            Page<ChatRoom> chatRoomPage, List<String> lastChats) {
+            Page<ChatRoom> chatRoomPage,
+            List<String> lastChats,
+            List<List<ChatParticipantResponse>> partiesList) {
+
+        final List<ChatRoom> rooms = chatRoomPage.getContent();
+        final int n = rooms.size();
 
         List<ChatRoomResponse> content =
-                chatRoomPage.getContent().stream()
-                        .map(
-                                room -> {
-                                    int index = chatRoomPage.getContent().indexOf(room);
-                                    String lastChat =
-                                            index < lastChats.size() ? lastChats.get(index) : "";
-                                    return toChatRoomResponse(room, lastChat);
+                IntStream.range(0, n)
+                        .mapToObj(
+                                i -> {
+                                    ChatRoom room = rooms.get(i);
+
+                                    String last =
+                                            (i < lastChats.size() && lastChats.get(i) != null)
+                                                    ? lastChats.get(i)
+                                                    : "";
+
+                                    List<ChatParticipantResponse> parties =
+                                            (i < partiesList.size() && partiesList.get(i) != null)
+                                                    ? partiesList.get(i)
+                                                    : List.of();
+
+                                    return toChatRoomResponse(room, last, parties);
                                 })
-                        .collect(Collectors.toList());
+                        .toList();
 
         return ChatRoomPageResponse.builder()
                 .content(content)

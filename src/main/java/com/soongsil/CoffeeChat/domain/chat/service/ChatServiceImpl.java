@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatConverter;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessagePageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomDetailResponse;
@@ -61,7 +62,28 @@ public class ChatServiceImpl implements ChatService {
                                 })
                         .collect(Collectors.toList());
 
-        return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats);
+        // 내가 아닌 채팅방 참여자 정보 조회
+        List<List<ChatResponse.ChatParticipantResponse>> partiesList =
+                chatRooms.getContent().stream()
+                        .map(
+                                room ->
+                                        room.getParticipants().stream()
+                                                .map(ChatRoomUser::getUser)
+                                                .filter(u -> !u.getId().equals(currentUser.getId()))
+                                                .map(
+                                                        u ->
+                                                                ChatResponse.ChatParticipantResponse
+                                                                        .builder()
+                                                                        .userId(u.getId())
+                                                                        .username(u.getUsername())
+                                                                        .profileImage(
+                                                                                u.getPicture())
+                                                                        .build())
+                                                // 읽기 전용 List 형태로 반환
+                                                .toList())
+                        .toList();
+
+        return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList);
     }
 
     @Override
