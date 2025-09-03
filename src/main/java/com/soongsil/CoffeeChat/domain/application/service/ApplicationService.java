@@ -91,45 +91,8 @@ public class ApplicationService {
         Application findApplication = findApplicationById(applicationId);
         Long findMentee = findApplication.getMentee().getId();
         Long findMentor = findApplication.getMentor().getId();
-        // TODO: toDTO 빌더 만들어두고, join으로 묶자
         return ApplicationConverter.toGetResponse(findApplication, findMentee, findMentor);
     }
-
-    //    @Transactional(readOnly = true)
-    //    public List<ApplicationGetResponse> getApplications(String username, String
-    // applicationStatus) {
-    //        if (!"matched".equalsIgnoreCase(applicationStatus)
-    //                && !"unmatched".equalsIgnoreCase(applicationStatus)) {
-    //            log.warn("[*] Requested applicationStatus is not MATCHED or UNMATCHED");
-    //            throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
-    //        }
-    //        log.info("[*] Find applications with condition [" + applicationStatus + "]");
-    //
-    //        // TODO: JOIN문으로 변경
-    //        List<ApplicationGetResponse> dtos = new ArrayList<>();
-    //        User user = findUserByUsername(username);
-    //        List<Application> findApplications;
-    //
-    //        findApplications =
-    //                user.isMentor()
-    //                        ? applicationRepository.findApplicationByMentor(user.getMentor())
-    //                        : user.isMentee()
-    //                                ?
-    // applicationRepository.findApplicationByMentee(user.getMentee())
-    //                                : Collections.emptyList();
-    //
-    //        for (Application app : findApplications) {
-    //            if (app.getAccept() == ApplicationStatus.valueOf(applicationStatus.toUpperCase()))
-    // {
-    //                User findMenteeUser = userRepository.findByMenteeId(app.getMentee().getId());
-    //                // MATCHED든 UNMATCHED든 둘 중 하나 필터링 된 것들 다 반환
-    //                dtos.add(
-    //                        ApplicationConverter.toGetResponse(
-    //                                app, user.getName(), findMenteeUser.getName()));
-    //            }
-    //        }
-    //        return dtos;
-    //    }
 
     @Transactional
     public List<ApplicationSummaryResponse> getApplications(String username) {

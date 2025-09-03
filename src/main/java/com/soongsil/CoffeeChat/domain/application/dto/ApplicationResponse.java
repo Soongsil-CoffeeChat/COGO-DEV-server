@@ -38,7 +38,7 @@ public class ApplicationResponse {
     public static class ApplicationGetResponse {
         private Long applicationId;
 
-        @Schema(type= "Long")
+        @Schema(type = "Long")
         private Long menteeId;
 
         @Schema(type = "Long")
