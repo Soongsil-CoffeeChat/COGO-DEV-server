@@ -19,19 +19,6 @@ spring:
         format_sql: true
         show_sql: true
 
-
-  #  mail:
-  #    host: smtp.gmail.com
-  #    port: 587
-  #    sender: ${MAIL_SENDER}
-  #    password: ${MAIL_PW}
-  #    properties:
-  #      mail:
-  #        smtp:
-  #          auth: true
-  #          starttls:
-  #            enable: true
-
   jwt:
     access-expiration: 86400000 # 24시간
     refresh-expiration: 1209600000 # 14일
@@ -100,7 +87,6 @@ logging.level:
   com.soongsil.CoffeeChat.global.security.apple.AppleTokenService: debug
   com.soongsil.CoffeeChat.domain.auth.service.AuthService: debug
 
-
 server:
   servlet:
     session:
@@ -118,14 +104,14 @@ firebase:
   credential:
     json: ${FIREBASE_CREDENTIAL_JSON}
 
-# ====== 여기서부터 추가 ======
-social-login:
-  provider:
-    apple:
-      redirect-uri: ${APPLE_REDIRECT}
-      client-id: ${APPLE_CLIENT_ID}
-      key-id: ${APPLE_KEY_ID}
-      team-id: ${APPLE_TEAM_ID}
-      #      audience: https://appleid.apple.com
-      private-key: ${APPLE_SECRET}
-# ============================
+  #  mail:
+  #    host: smtp.gmail.com
+  #    port: 587
+  #    sender: ${MAIL_SENDER}
+  #    password: ${MAIL_PW}
+  #    properties:
+  #      mail:
+  #        smtp:
+  #          auth: true
+  #          starttls:
+  #            enable: true
