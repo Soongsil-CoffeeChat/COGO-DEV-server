@@ -2,8 +2,8 @@ package com.soongsil.CoffeeChat.domain.user.dto;
 
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
-import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
-import com.soongsil.CoffeeChat.global.security.dto.GoogleTokenInfoResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.AppleTokenInfoResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.GoogleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 
 public class UserConverter {

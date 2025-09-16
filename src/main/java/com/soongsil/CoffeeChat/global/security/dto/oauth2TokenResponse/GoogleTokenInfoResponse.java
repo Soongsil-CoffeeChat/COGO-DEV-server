@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.global.security.dto;
+package com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
