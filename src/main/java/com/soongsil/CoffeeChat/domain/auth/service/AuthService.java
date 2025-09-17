@@ -27,6 +27,9 @@ import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.GoogleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
+import com.soongsil.CoffeeChat.global.security.service.AppleClientSecretService;
+import com.soongsil.CoffeeChat.global.security.service.AppleOAuthClient;
+import com.soongsil.CoffeeChat.global.security.service.AppleTokenService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +43,10 @@ public class AuthService {
     private final RefreshRepository refreshRepository;
     private final UserService userService;
 
+    private final AppleClientSecretService appleClientSecretService;
+    private final AppleOAuthClient appleOAuthClient;
+    private final AppleTokenService appleTokenService;
+
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     @Value("${spring.jwt.access-expiration}")
@@ -47,6 +54,29 @@ public class AuthService {
 
     @Value("${spring.jwt.refresh-expiration}")
     private long refreshTokenExpiration;
+
+    @Value("${spring.apple.web-service-id}")
+    private String serviceId;
+
+    /**
+     * Apple authorization code 를 교환 -> ID 토큰 검증 후 자체 JWT 를 발급합니다.
+     *
+     * @param code 프론트로부터 받은 authorization code
+     * @param redirectUri 프론트가 인고요청하여 사용한 Return URL
+     * @param codeVerifier PKCE 사용 (필수x)
+     */
+    @Transactional
+    public AuthTokenResponse appleCodeLogin(String code, String redirectUri, String codeVerifier) {
+        String clientSecret = appleClientSecretService.createClientSecret();
+        var appleTokens =
+                appleOAuthClient.exchangeCode(code, clientSecret, redirectUri, codeVerifier);
+        var tokenInfo = appleTokenService.validateAndExtract(appleTokens.getIdToken());
+
+        String username = tokenInfo.getSub();
+
+        return processUserAuthentication(
+                username, () -> UserConverter.toEntity(username, tokenInfo));
+    }
 
     /**
      * Google 액세스 토큰을 검증하고 사용자 인증을 처리합니다.

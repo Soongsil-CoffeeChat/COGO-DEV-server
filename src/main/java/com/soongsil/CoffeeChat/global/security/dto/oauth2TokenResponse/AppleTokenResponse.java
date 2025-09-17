@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

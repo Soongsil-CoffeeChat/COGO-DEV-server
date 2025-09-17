@@ -63,7 +63,6 @@ spring:
   apple:
     team-id: ${APPLE_TEAM_ID}
     key-id: ${APPLE_KEY_ID}
-    client-id: ${APPLE_BUNDLE_ID}
     web-service-id: ${APPLE_SERVICE_ID}
     private-key: ${APPLE_P8}
     token-url: https://appleid.apple.com/auth/token

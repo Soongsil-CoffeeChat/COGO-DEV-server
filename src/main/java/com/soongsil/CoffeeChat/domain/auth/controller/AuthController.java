@@ -21,6 +21,22 @@ public class AuthController {
     private final AuthService authService;
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    @PostMapping("/login/apple/code")
+    @io.swagger.v3.oas.annotations.Operation(
+            summary = "Apple 로그인",
+            description =
+                    "프론트가 받은 authorization code를 서버에서 교환합니다. "
+                            + "redirectUri는 인가요청과 동일한 URL이어야 합니다.")
+    public ResponseEntity<ApiResponse<AuthTokenResponse>> appleLogin(
+            @RequestParam String code,
+            @RequestParam String redirectUri,
+            @RequestParam(required = false) String codeVerifier) {
+        return ResponseEntity.ok()
+                .body(
+                        ApiResponse.onSuccessOK(
+                                authService.appleCodeLogin(code, redirectUri, codeVerifier)));
+    }
+
     @PostMapping("/login/google")
     @Operation(summary = "구글 로그인", description = "구글 서버에서 받은 accessToken으로 서비스 토큰 발급 및 사용자 생성")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
