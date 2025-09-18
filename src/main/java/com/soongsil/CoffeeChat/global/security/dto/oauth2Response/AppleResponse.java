@@ -2,7 +2,7 @@ package com.soongsil.CoffeeChat.global.security.dto.oauth2Response;
 
 import java.util.Map;
 
-import com.soongsil.CoffeeChat.global.security.dto.AppleTokenInfoResponse;
+import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtils;
 
 public class AppleResponse implements OAuth2Response {

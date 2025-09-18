@@ -46,9 +46,11 @@ public enum GlobalErrorCode {
 
     // Oauth 관련
     OAUTH_SERVICE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "OAUTH_500", "OAuth 서비스 측에서 에러가 발생했습니다."),
+    OAUTH_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "OAUTH_401", "유효하지 않거나 검증할 수 없는 OAuth 토큰입니다."),
+    OAUTH_MISSING_REDIRECT_URI(HttpStatus.BAD_REQUEST, "OAuth_400", "redirectUri 가 필요합니다."),
 
     // 어드민 관련
-    ADMIN_INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "ADMIN_400", "잘못된 비밀번호입니다"),
+    ADMIN_INCORRECT_PASSWORD(HttpStatus.BAD_REQUEST, "ADMIN_400", "잘못된 비밀번호입니다."),
     ;
 
     private final HttpStatus httpStatus;
