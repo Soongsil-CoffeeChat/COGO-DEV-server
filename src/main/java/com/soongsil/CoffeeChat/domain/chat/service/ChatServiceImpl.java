@@ -227,21 +227,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public ChatResponse.ChatApplicationResponse getChatRoomApplication(Long applicationId) {
-        /*
-               Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
 
-        return ChatResponse.ChatApplicationResponse.builder()
-                .applicationId(application.getId())
-                .status(application.getAccept() != null ? application.getAccept().name() : null)
-                .mentorId(application.getMentor().getId())
-                .mentorName(application.getMentor().getUser().getName())
-                .menteeId(application.getMentee().getId())
-                .menteeName(application.getMentee().getUser().getName())
-                .possibleDateId(application.getPossibleDate() != null ? application.getPossibleDate().getId() : null)
-                .reservedAt(extractPossibleDateTime(application)) // 필요 시 구현
-                .build();
-         */
         Application application =
                 applicationRepository
                         .findById(applicationId)
