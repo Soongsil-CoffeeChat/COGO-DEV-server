@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +14,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     @Query("SELECT DISTINCT cr FROM ChatRoom cr JOIN cr.participants p WHERE p.user.id = :userId")
     Page<ChatRoom> findAllByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    Optional<ChatRoom> findByApplicationId(Long applicationId);
 }

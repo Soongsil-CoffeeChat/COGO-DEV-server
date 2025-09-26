@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.service;
 
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessagePageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomDetailResponse;
@@ -19,4 +20,6 @@ public interface ChatService {
     void leaveChatRoom(String username, Long roomId);
 
     ChatMessageResponse sendMessage(String username, ChatRequest.SendMessageRequest request);
+
+    ChatResponse.ChatApplicationResponse getChatRoomApplication(Long applicationId);
 }

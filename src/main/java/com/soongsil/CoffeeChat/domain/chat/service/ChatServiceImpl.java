@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.soongsil.CoffeeChat.domain.application.entity.Application;
+import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatConverter;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
@@ -41,6 +43,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final UserRepository userRepository;
+    private final ApplicationRepository applicationRepository;
 
     @Override
     public ChatRoomPageResponse getChatRooms(String username, int page, int size) {
@@ -219,6 +222,35 @@ public class ChatServiceImpl implements ChatService {
         chatRepository.save(chat);
 
         return ChatConverter.toChatMessageResponse(chat);
+    }
+
+    @Override
+    @Transactional
+    public ChatResponse.ChatApplicationResponse getChatRoomApplication(Long applicationId) {
+        /*
+               Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
+
+        return ChatResponse.ChatApplicationResponse.builder()
+                .applicationId(application.getId())
+                .status(application.getAccept() != null ? application.getAccept().name() : null)
+                .mentorId(application.getMentor().getId())
+                .mentorName(application.getMentor().getUser().getName())
+                .menteeId(application.getMentee().getId())
+                .menteeName(application.getMentee().getUser().getName())
+                .possibleDateId(application.getPossibleDate() != null ? application.getPossibleDate().getId() : null)
+                .reservedAt(extractPossibleDateTime(application)) // 필요 시 구현
+                .build();
+         */
+        Application application =
+                applicationRepository
+                        .findById(applicationId)
+                        .orElseThrow(
+                                () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
+
+        return ChatResponse.ChatApplicationResponse.builder()
+                .applicationId(application.getId())
+                .build();
     }
 
     private User findUserByUsername(String username) {

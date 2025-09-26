@@ -31,6 +31,7 @@ public class ChatResponse {
         private String name;
         private String lastChat;
         private LocalDateTime updatedAt;
+        private ChatApplicationResponse application;
         private List<ChatParticipantResponse> participants;
     }
 
@@ -80,5 +81,14 @@ public class ChatResponse {
         private Long userId;
         private String username;
         private String profileImage;
+    }
+
+    /** 채팅 코고 정보 응답 DTO */
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ChatApplicationResponse {
+        private Long applicationId;
     }
 }
