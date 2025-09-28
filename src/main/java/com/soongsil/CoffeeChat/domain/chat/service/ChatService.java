@@ -21,5 +21,5 @@ public interface ChatService {
 
     ChatMessageResponse sendMessage(String username, ChatRequest.SendMessageRequest request);
 
-    ChatResponse.ChatApplicationResponse getChatRoomApplication(Long applicationId);
+    ChatResponse.ChatRoomApplicationResponse getChatRoomApplication(Long applicationId);
 }

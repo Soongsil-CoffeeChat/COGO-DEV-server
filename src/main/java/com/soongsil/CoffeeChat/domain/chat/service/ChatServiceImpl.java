@@ -226,17 +226,15 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public ChatResponse.ChatApplicationResponse getChatRoomApplication(Long applicationId) {
+    public ChatResponse.ChatRoomApplicationResponse getChatRoomApplication(Long chatRoomId) {
 
-        Application application =
-                applicationRepository
-                        .findById(applicationId)
-                        .orElseThrow(
-                                () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
+        ChatRoom chatRoom = chatRoomRepository.findWithApplicationById(chatRoomId)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND));
 
-        return ChatResponse.ChatApplicationResponse.builder()
-                .applicationId(application.getId())
-                .build();
+        ChatResponse.ChatRoomApplicationResponse response = ChatConverter.toChatRoomApplication(chatRoom.getApplication());
+
+        if (response == null) throw new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND);
+        return response;
     }
 
     private User findUserByUsername(String username) {

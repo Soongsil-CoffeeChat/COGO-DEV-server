@@ -31,7 +31,7 @@ public class ChatResponse {
         private String name;
         private String lastChat;
         private LocalDateTime updatedAt;
-        private ChatApplicationResponse application;
+        private ChatRoomApplicationResponse application;
         private List<ChatParticipantResponse> participants;
     }
 
@@ -88,7 +88,7 @@ public class ChatResponse {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class ChatApplicationResponse {
+    public static class ChatRoomApplicationResponse {
         private Long applicationId;
     }
 }

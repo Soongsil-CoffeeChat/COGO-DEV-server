@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import org.springframework.data.domain.Page;
 
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.*;
@@ -118,5 +119,12 @@ public class ChatConverter {
                         .toList();
         chatRoom.getParticipants().addAll(chatRoomUserList);
         return chatRoom;
+    }
+
+    public static ChatRoomApplicationResponse toChatRoomApplication(Application application) {
+        if (application == null) return null;
+        return ChatRoomApplicationResponse.builder()
+                .applicationId(application.getId())
+                .build();
     }
 }
