@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatConverter;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
@@ -228,10 +227,13 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     public ChatResponse.ChatRoomApplicationResponse getChatRoomApplication(Long chatRoomId) {
 
-        ChatRoom chatRoom = chatRoomRepository.findWithApplicationById(chatRoomId)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND));
+        ChatRoom chatRoom =
+                chatRoomRepository
+                        .findWithApplicationById(chatRoomId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND));
 
-        ChatResponse.ChatRoomApplicationResponse response = ChatConverter.toChatRoomApplication(chatRoom.getApplication());
+        ChatResponse.ChatRoomApplicationResponse response =
+                ChatConverter.toChatRoomApplication(chatRoom.getApplication());
 
         if (response == null) throw new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND);
         return response;

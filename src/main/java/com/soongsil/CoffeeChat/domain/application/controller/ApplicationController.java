@@ -14,11 +14,13 @@ import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.Applic
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationGetResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationSummaryResponse;
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.application.service.ApplicationService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.security.oauth2.CustomOAuth2User;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -57,18 +59,24 @@ public class ApplicationController {
     }
 
     @GetMapping("/list")
-    @Operation(summary = "신청 받은 COGO 조회 ")
+    @Operation(
+            summary = "신청 받은 COGO 조회 ",
+            description = "해당 사용자가 관여한 코고 시넝서를 status (unmatched/matched/rejected)로 필터링")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "Application 상대 이름, 날짜, 상태 반환")
     public ResponseEntity<ApiResponse<List<ApplicationSummaryResponse>>> getApplications(
-            Authentication authentication) {
-        return ResponseEntity.ok()
-                .body(
-                        ApiResponse.onSuccessOK(
-                                applicationService.getApplications(
-                                        ((CustomOAuth2User) authentication.getPrincipal())
-                                                .getUsername())));
+            Authentication authentication,
+            @Parameter(name = "status", description = "unmatched | matched | rejected | 공란 시 전체 조회")
+                    @RequestParam(required = false)
+                    ApplicationStatus status) {
+
+        String userName = ((CustomOAuth2User) authentication.getPrincipal()).getName();
+
+        List<ApplicationSummaryResponse> responses =
+                applicationService.getApplications(userName, status);
+
+        return ResponseEntity.ok(ApiResponse.onSuccessOK(responses));
     }
 
     @PatchMapping("/{applicationId}/decision")

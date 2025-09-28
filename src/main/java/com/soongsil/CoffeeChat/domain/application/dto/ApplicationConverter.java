@@ -49,4 +49,13 @@ public class ApplicationConverter {
                 .applicationStatus(status)
                 .build();
     }
+
+    public static ApplicationSummaryResponse toSummaryResponse(
+            Application application, Long myUserid) {
+        return ApplicationSummaryResponse.builder()
+                .applicationId(application.getId())
+                .otherPartyName(application.getOtherPartyName(myUserid))
+                .applicationDate(application.getPossibleDate().getDate())
+                .build();
+    }
 }

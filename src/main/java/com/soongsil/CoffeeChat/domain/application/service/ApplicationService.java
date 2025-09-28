@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.domain.application.service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import jakarta.persistence.EntityManager;
@@ -94,38 +92,56 @@ public class ApplicationService {
         return ApplicationConverter.toGetResponse(findApplication, findMentee, findMentor);
     }
 
+    //    @Transactional
+    //    public List<ApplicationSummaryResponse> getApplications(String username) {
+    //        User user = findUserByUsername(username);
+    //
+    //        List<Application> apps =
+    //                user.isMentor()
+    //                        ? applicationRepository.findApplicationByMentor(user.getMentor())
+    //                        : user.isMentee()
+    //                                ?
+    // applicationRepository.findApplicationByMentee(user.getMentee())
+    //                                : Collections.emptyList();
+    //
+    //        return apps.stream()
+    //                .map(
+    //                        app -> {
+    //                            String otherPartyName =
+    //                                    app.getMentor().getUser().getName().equals(username)
+    //                                            ? app.getMentee().getUser().getName()
+    //                                            : app.getMentor().getUser().getName();
+    //                            String status =
+    //                                    app.getAccept() == ApplicationStatus.MATCHED ? "수락" :
+    // "거절";
+    //
+    //                            return ApplicationSummaryResponse.builder()
+    //                                    .applicationId(app.getId())
+    //                                    .otherPartyName(otherPartyName)
+    //                                    .applicationStatus(status)
+    //                                    .applicationDate(app.getPossibleDate().getDate())
+    //                                    .build();
+    //                        })
+    //                // 최신 순 정렬
+    //                .sorted(
+    //                        Comparator.comparing(ApplicationSummaryResponse::getApplicationDate)
+    //                                .reversed())
+    //                .toList();
+    //    }
+
     @Transactional
-    public List<ApplicationSummaryResponse> getApplications(String username) {
-        User user = findUserByUsername(username);
+    public List<ApplicationSummaryResponse> getApplications(
+            String userName, ApplicationStatus status) {
+        User optionalUser =
+                userRepository
+                        .findByUsername(userName)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
 
-        List<Application> apps =
-                user.isMentor()
-                        ? applicationRepository.findApplicationByMentor(user.getMentor())
-                        : user.isMentee()
-                                ? applicationRepository.findApplicationByMentee(user.getMentee())
-                                : Collections.emptyList();
-
-        return apps.stream()
-                .map(
-                        app -> {
-                            String otherPartyName =
-                                    app.getMentor().getUser().getName().equals(username)
-                                            ? app.getMentee().getUser().getName()
-                                            : app.getMentor().getUser().getName();
-                            String status =
-                                    app.getAccept() == ApplicationStatus.MATCHED ? "수락" : "거절";
-
-                            return ApplicationSummaryResponse.builder()
-                                    .applicationId(app.getId())
-                                    .otherPartyName(otherPartyName)
-                                    .applicationStatus(status)
-                                    .applicationDate(app.getPossibleDate().getDate())
-                                    .build();
-                        })
-                // 최신 순 정렬
-                .sorted(
-                        Comparator.comparing(ApplicationSummaryResponse::getApplicationDate)
-                                .reversed())
+        Long userId = optionalUser.getId();
+        List<Application> applications =
+                applicationRepository.findByUserIdAndOptionalStatus(userId, status);
+        return applications.stream()
+                .map(application -> ApplicationConverter.toSummaryResponse(application, userId))
                 .toList();
     }
 
