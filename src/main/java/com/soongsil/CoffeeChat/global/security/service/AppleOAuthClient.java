@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.global.security.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -12,6 +13,7 @@ import com.soongsil.CoffeeChat.global.exception.GlobalException;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.AppleTokenResponse;
 
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,9 @@ public class AppleOAuthClient {
 
         // redirect uri 누락 방지
         if (redirectUri == null || redirectUri.isBlank()) {
+            throw new GlobalException(GlobalErrorCode.OAUTH_MISSING_REDIRECT_URI);
+        }
+        if (code==null||code.isBlank()){
             throw new GlobalException(GlobalErrorCode.OAUTH_INVALID_TOKEN);
         }
 
@@ -40,17 +45,29 @@ public class AppleOAuthClient {
         form.add("client_secret", clientSecret);
         form.add("redirect_uri", redirectUri);
 
-        // 필순가?
+        // 선택
         if (codeVerifier != null && !codeVerifier.isBlank()) {
             form.add("code_verifier", codeVerifier);
         }
 
-        return webClient
-                .post()
+        return webClient.post()
                 .uri(tokenUrl)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(form))
-                .retrieve()
-                .bodyToMono(AppleTokenResponse.class)
+                .exchangeToMono(res -> {
+                    if (res.statusCode().is2xxSuccessful()) {
+                        return res.bodyToMono(AppleTokenResponse.class);
+                    }
+                    return res.bodyToMono(String.class).defaultIfEmpty("")
+                            .flatMap(body -> {
+                                return Mono.error(
+                                        new GlobalException(
+                                                GlobalErrorCode.OAUTH_SERVICE_ERROR,
+                                                new IllegalStateException("Apple token error" + res.statusCode() + " body" + body)
+                                        )
+                                );
+                            });
+                })
                 .block();
     }
 }
