@@ -77,7 +77,7 @@ public class ChatController {
         messagingTemplate.convertAndSend("/topic/room." + request.getRoomId(), message);
     }
 
-    @GetMapping("/chatRoom/application/chatRoomId}")
+    @GetMapping("/chatRoom/application/{chatRoomId}")
     @Operation(summary = "채팅방과 연결된 코고 조회")
     public ResponseEntity<ChatResponse.ChatRoomApplicationResponse> getApplication(
             @PathVariable("chatRoomId") Long chatRoomId) {
