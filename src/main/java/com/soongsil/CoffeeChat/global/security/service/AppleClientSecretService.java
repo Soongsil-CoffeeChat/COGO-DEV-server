@@ -6,6 +6,7 @@ import java.security.KeyFactory;
 import java.security.interfaces.ECPrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 
@@ -46,18 +47,22 @@ public class AppleClientSecretService {
             // ECDSA 알고리즘
             ECPrivateKey privateKey = loadPrivateKey(privateKeyPem);
 
-            var header = new JWSHeader.Builder(JWSAlgorithm.ES256).keyID(keyId).build();
+            // JWS 헤더
+            JWSHeader header = new JWSHeader
+                    .Builder(JWSAlgorithm.ES256)
+                    .keyID(keyId)
+                    .build();
 
             Instant now = Instant.now();
-            var claims =
-                    new JWTClaimsSet.Builder()
-                            .issuer(teamId)
-                            .issueTime(Date.from(now.plus(150, DAYS))) // 5개월
-                            .audience("https://appleid.apple.com")
-                            .subject(serviceId)
-                            .build();
+            JWTClaimsSet claims = new JWTClaimsSet.Builder()
+                    .issuer(teamId)
+                    .issueTime(Date.from(now))
+                    .expirationTime(Date.from(now.plus(150, DAYS)))
+                    .audience("https://appleid.apple.com")
+                    .subject(serviceId)
+                    .build();
 
-            var jwt = new SignedJWT(header, claims);
+            SignedJWT jwt = new SignedJWT(header, claims);
             JWSSigner signer = new ECDSASigner(privateKey);
             jwt.sign(signer);
 
