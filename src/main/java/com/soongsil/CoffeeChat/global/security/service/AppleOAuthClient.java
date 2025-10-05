@@ -1,8 +1,6 @@
 package com.soongsil.CoffeeChat.global.security.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.Logger;
-import org.eclipse.jdt.internal.compiler.batch.Main;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
