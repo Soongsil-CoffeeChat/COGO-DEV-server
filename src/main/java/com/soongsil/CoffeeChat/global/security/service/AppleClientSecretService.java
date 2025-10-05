@@ -6,7 +6,6 @@ import java.security.KeyFactory;
 import java.security.interfaces.ECPrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
 
@@ -24,8 +23,8 @@ import com.nimbusds.jwt.SignedJWT;
  * .p8 (EC키) 이용 최대 6개월 유효 client_secret 생성
  * Apple client_secret (ES256) 생성
  * 요구사항 : ES256으로 서명된 JWT Compact 문자열
- * Nimbus 이용하여 JWS 서명된 JWT 생성
- * Signed JWT = JWT(claim) + JWS (Signed)
+ * -> Nimbus 이용하여 JWS 서명된 JWT 생성
+ * -> Signed JWT = JWT(claim) + JWS (Signed)
  */
 @Service
 public class AppleClientSecretService {
