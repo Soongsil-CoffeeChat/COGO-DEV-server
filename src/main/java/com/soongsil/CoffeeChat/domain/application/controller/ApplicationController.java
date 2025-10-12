@@ -76,6 +76,7 @@ public class ApplicationController {
                     ApplicationStatus status) {
 
         String userName = authentication.getName();
+        log.info(">> 로그 출력: auth.name={}",authentication.getName());
 
         List<ApplicationSummaryResponse> responses =
                 applicationService.getApplications(userName, status);
