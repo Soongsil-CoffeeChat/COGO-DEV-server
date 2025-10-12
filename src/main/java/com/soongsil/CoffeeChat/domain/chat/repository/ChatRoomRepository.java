@@ -12,8 +12,9 @@ import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
-    @Query("SELECT DISTINCT cr FROM ChatRoom cr JOIN cr.participants p WHERE p.user.id = :userId")
-    Page<ChatRoom> findAllByUserId(@Param("userId") Long userId, Pageable pageable);
+    @Query(
+            "SELECT DISTINCT cr FROM ChatRoom cr JOIN cr.participants p WHERE p.user.username = :username")
+    Page<ChatRoom> findAllByUserName(@Param("username") String userName, Pageable pageable);
 
     @Query("SELECT cr from ChatRoom cr join fetch cr.application a where cr.id = :chatRoomId")
     Optional<ChatRoom> findWithApplicationById(@Param("chatRoomId") Long chatRoomID);

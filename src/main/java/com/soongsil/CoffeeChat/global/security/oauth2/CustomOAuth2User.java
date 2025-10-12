@@ -48,7 +48,9 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     @Override
-    public String getName() {return userDTO.getUsername();}
+    public String getName() {
+        return userDTO.getUsername();
+    }
 
     public String getUsername() { // 스프링애플리케이션 서버 ID반환 메소드
         return userDTO.getUsername();

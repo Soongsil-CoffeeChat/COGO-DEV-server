@@ -5,11 +5,8 @@ import static com.soongsil.CoffeeChat.global.uri.RequestUri.APPLICATION_URI;
 import java.net.URI;
 import java.util.List;
 
-import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest.ApplicationCreateRequest;
@@ -26,6 +23,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -76,7 +74,7 @@ public class ApplicationController {
                     ApplicationStatus status) {
 
         String userName = authentication.getName();
-        log.info(">> 로그 출력: auth.name={}",authentication.getName());
+        log.info(">> 로그 출력: auth.name={}", authentication.getName());
 
         List<ApplicationSummaryResponse> responses =
                 applicationService.getApplications(userName, status);
