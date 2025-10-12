@@ -92,59 +92,24 @@ public class ApplicationService {
         return ApplicationConverter.toGetResponse(findApplication, findMentee, findMentor);
     }
 
-    //    @Transactional
-    //    public List<ApplicationSummaryResponse> getApplications(String username) {
-    //        User user = findUserByUsername(username);
-    //
-    //        List<Application> apps =
-    //                user.isMentor()
-    //                        ? applicationRepository.findApplicationByMentor(user.getMentor())
-    //                        : user.isMentee()
-    //                                ?
-    // applicationRepository.findApplicationByMentee(user.getMentee())
-    //                                : Collections.emptyList();
-    //
-    //        return apps.stream()
-    //                .map(
-    //                        app -> {
-    //                            String otherPartyName =
-    //                                    app.getMentor().getUser().getName().equals(username)
-    //                                            ? app.getMentee().getUser().getName()
-    //                                            : app.getMentor().getUser().getName();
-    //                            String status =
-    //                                    app.getAccept() == ApplicationStatus.MATCHED ? "수락" :
-    // "거절";
-    //
-    //                            return ApplicationSummaryResponse.builder()
-    //                                    .applicationId(app.getId())
-    //                                    .otherPartyName(otherPartyName)
-    //                                    .applicationStatus(status)
-    //                                    .applicationDate(app.getPossibleDate().getDate())
-    //                                    .build();
-    //                        })
-    //                // 최신 순 정렬
-    //                .sorted(
-    //                        Comparator.comparing(ApplicationSummaryResponse::getApplicationDate)
-    //                                .reversed())
-    //                .toList();
-    //    }
-
     @Transactional
     public List<ApplicationSummaryResponse> getApplications(
             String userName, ApplicationStatus status) {
-        User optionalUser =
+        User User =
                 userRepository
                         .findByUsername(userName)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
 
-        log.trace("유저 이름: {}", userName);
-
         List<Application> applications =
                 applicationRepository.findByUserNameAndOptionalStatus(userName, status);
-        log.trace("유저 아이디: {}", userName);
 
         return applications.stream()
-                .map(application -> ApplicationConverter.toSummaryResponse(application, userName))
+                .map(
+                        application -> {
+                            User otherPartyUser = getOtherParty(application, userName);
+                            return ApplicationConverter.toSummaryResponse(
+                                    application, otherPartyUser.getName());
+                        })
                 .toList();
     }
 
@@ -175,5 +140,15 @@ public class ApplicationService {
                         application.getPossibleDate(), ApplicationStatus.UNMATCHED);
         unmatchedApplications.forEach(Application::rejectApplication);
         unmatchedApplications.forEach(smsUtil::sendMenteeNotificationMessage);
+    }
+
+    public User getOtherParty(Application application, String userName) {
+        User user =
+                userRepository
+                        .findByUsername(userName)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+
+        if (user.isMentee()) return application.getMentor().getUser();
+        else return application.getMentee().getUser();
     }
 }
