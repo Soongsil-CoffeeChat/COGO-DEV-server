@@ -50,7 +50,7 @@ public class ChatServiceImpl implements ChatService {
         Pageable pageable = PageRequest.of(page, size);
 
         Page<ChatRoom> chatRooms =
-                chatRoomRepository.findAllByUserName(currentUser.getName(), pageable);
+                chatRoomRepository.findAllByUserName(currentUser.getUsername(), pageable);
 
         // 각 채팅방의 마지막 메시지 조회
         List<String> lastChats =
