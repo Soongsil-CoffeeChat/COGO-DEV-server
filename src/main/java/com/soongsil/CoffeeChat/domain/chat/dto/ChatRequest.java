@@ -10,7 +10,6 @@ public class ChatRequest {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class CreateChatRoomRequest {
-        private String name;
         private Long participantId;
     }
 

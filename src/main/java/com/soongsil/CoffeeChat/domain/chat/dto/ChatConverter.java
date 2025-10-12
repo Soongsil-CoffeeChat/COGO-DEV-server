@@ -20,7 +20,6 @@ public class ChatConverter {
 
         return ChatRoomResponse.builder()
                 .id(chatRoom.getId())
-                .name(chatRoom.getName())
                 .lastChat(lastChat)
                 .updatedAt(chatRoom.getUpdatedDate())
                 .participants(participants)
@@ -42,7 +41,6 @@ public class ChatConverter {
 
         return ChatRoomDetailResponse.builder()
                 .id(chatRoom.getId())
-                .name(chatRoom.getName())
                 .participants(participantResponses)
                 .build();
     }
@@ -112,7 +110,7 @@ public class ChatConverter {
 
     public static ChatRoom toChatRoom(
             ChatRequest.CreateChatRoomRequest request, List<User> userList) {
-        ChatRoom chatRoom = ChatRoom.builder().name(request.getName()).build();
+        ChatRoom chatRoom = ChatRoom.builder().build();
         List<ChatRoomUser> chatRoomUserList =
                 userList.stream()
                         .map(user -> ChatRoomUser.builder().chatRoom(chatRoom).user(user).build())

@@ -47,19 +47,17 @@ public class AppleClientSecretService {
             ECPrivateKey privateKey = loadPrivateKey(privateKeyPem);
 
             // JWS 헤더
-            JWSHeader header = new JWSHeader
-                    .Builder(JWSAlgorithm.ES256)
-                    .keyID(keyId)
-                    .build();
+            JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.ES256).keyID(keyId).build();
 
             Instant now = Instant.now();
-            JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                    .issuer(teamId)
-                    .issueTime(Date.from(now))
-                    .expirationTime(Date.from(now.plus(150, DAYS)))
-                    .audience("https://appleid.apple.com")
-                    .subject(serviceId)
-                    .build();
+            JWTClaimsSet claims =
+                    new JWTClaimsSet.Builder()
+                            .issuer(teamId)
+                            .issueTime(Date.from(now))
+                            .expirationTime(Date.from(now.plus(150, DAYS)))
+                            .audience("https://appleid.apple.com")
+                            .subject(serviceId)
+                            .build();
 
             SignedJWT jwt = new SignedJWT(header, claims);
             JWSSigner signer = new ECDSASigner(privateKey);
