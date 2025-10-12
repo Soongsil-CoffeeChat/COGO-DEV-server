@@ -39,6 +39,23 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     List<Application> findByUserIdAndOptionalStatus(
             @Param("userId") Long userId, @Param("status") ApplicationStatus status);
 
+    @EntityGraph(
+            attributePaths = {
+                "mentor", "mentor.user",
+                "mentee", "mentee.user"
+            })
+    @Query(
+            """
+            select a from Application a
+            join a.mentor mentor
+            join mentor.user uMentor
+            join a.mentee mentee
+            join mentee.user uMentee
+            where (uMentor.username= :username or uMentee.username= :username)
+                and (:status is null or a.accept = :status)
+            """)
+    List<Application> findByUserNameAndOptionalStatus(
+            @Param("username") String username, @Param("status") ApplicationStatus status);
     //    @Modifying
     //    @Transactional
     //    @Query(

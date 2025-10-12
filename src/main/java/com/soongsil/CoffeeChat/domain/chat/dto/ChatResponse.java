@@ -28,11 +28,14 @@ public class ChatResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomResponse {
         private Long id;
-        private String name;
         private String lastChat;
-        private LocalDateTime updatedAt;
-        private ChatRoomApplicationResponse application;
-        private List<ChatParticipantResponse> participants;
+        private LocalDateTime updateAt;
+
+        // 사용자 받가 or 필요한 부분만 받기
+        /*
+        1: User 받기
+        2: User - ChatRoomUser 끌고와서
+         */
     }
 
     /** 채팅 메시지 페이징 응답 DTO */
@@ -83,7 +86,6 @@ public class ChatResponse {
         private String profileImage;
     }
 
-    /** 채팅 코고 정보 응답 DTO */
     @Getter
     @Builder
     @AllArgsConstructor

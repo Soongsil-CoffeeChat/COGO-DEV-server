@@ -137,11 +137,14 @@ public class ApplicationService {
                         .findByUsername(userName)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
 
-        Long userId = optionalUser.getId();
+        log.trace("유저 이름: {}", userName);
+
         List<Application> applications =
-                applicationRepository.findByUserIdAndOptionalStatus(userId, status);
+                applicationRepository.findByUserNameAndOptionalStatus(userName, status);
+        log.trace("유저 아이디: {}", userName);
+
         return applications.stream()
-                .map(application -> ApplicationConverter.toSummaryResponse(application, userId))
+                .map(application -> ApplicationConverter.toSummaryResponse(application, userName))
                 .toList();
     }
 

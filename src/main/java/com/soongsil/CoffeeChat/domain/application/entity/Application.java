@@ -55,20 +55,20 @@ public class Application {
     }
 
     // userId 기준 상대방 User 반환
-    public User getOtherPartyUser(Long myUserId) {
+    public User getOtherPartyUser(String myUserName) {
         User mentorUser = (mentor != null && mentor.getUser() != null) ? mentor.getUser() : null;
         User menteeUser = (mentee != null && mentee.getUser() != null) ? mentee.getUser() : null;
 
-        if (myUserId != null) {
-            if (mentorUser != null && myUserId.equals(mentorUser.getId())) return mentorUser;
-            if (menteeUser != null && myUserId.equals(menteeUser.getId())) return menteeUser;
+        if (myUserName != null) {
+            if (mentorUser != null && myUserName.equals(mentorUser.getName())) return mentorUser;
+            if (menteeUser != null && myUserName.equals(menteeUser.getName())) return menteeUser;
         }
         return (menteeUser != null) ? menteeUser : mentorUser;
     }
 
     // 상대방 이름 반환
-    public String getOtherPartyName(Long myUserId) {
-        User user = getOtherPartyUser(myUserId);
+    public String getOtherPartyName(String myUserName) {
+        User user = getOtherPartyUser(myUserName);
         return user.getName();
     }
 }

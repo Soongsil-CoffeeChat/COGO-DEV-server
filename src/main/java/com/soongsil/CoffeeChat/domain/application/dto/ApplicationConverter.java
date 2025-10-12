@@ -51,10 +51,10 @@ public class ApplicationConverter {
     }
 
     public static ApplicationSummaryResponse toSummaryResponse(
-            Application application, Long myUserid) {
+            Application application, String myUserName) {
         return ApplicationSummaryResponse.builder()
                 .applicationId(application.getId())
-                .otherPartyName(application.getOtherPartyName(myUserid))
+                .otherPartyName(application.getOtherPartyName(myUserName))
                 .applicationDate(application.getPossibleDate().getDate())
                 .build();
     }
