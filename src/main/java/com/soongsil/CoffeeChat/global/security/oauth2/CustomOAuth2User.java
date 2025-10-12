@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.global.security.oauth2;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,7 @@ public class CustomOAuth2User implements OAuth2User {
     @Override
     public Map<String, Object> getAttributes() { // 받은 데이터값 리턴
         // 여러 소셜 로그인을 진행하면 받는 Attribute 형식이 다르므로 사용 X
-        return null;
+        return Collections.emptyMap();
     }
 
     @Override
@@ -47,9 +48,7 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     @Override
-    public String getName() {
-        return userDTO.getName();
-    }
+    public String getName() {return userDTO.getUsername();}
 
     public String getUsername() { // 스프링애플리케이션 서버 ID반환 메소드
         return userDTO.getUsername();
