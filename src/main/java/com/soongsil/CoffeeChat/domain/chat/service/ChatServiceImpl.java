@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -52,6 +54,8 @@ public class ChatServiceImpl implements ChatService {
         Page<ChatRoom> chatRooms =
                 chatRoomRepository.findAllByUserName(currentUser.getUsername(), pageable);
 
+        log.trace(">>chatRooms 조회 로그: {}",chatRooms);
+
         // 각 채팅방의 마지막 메시지 조회
         List<String> lastChats =
                 chatRooms.getContent().stream()
@@ -63,6 +67,8 @@ public class ChatServiceImpl implements ChatService {
                                     return lastChat.map(Chat::getMessage).orElse("");
                                 })
                         .collect(Collectors.toList());
+
+        log.trace(">>lastChats 조회 로그: {}",lastChats);
 
         // 내가 아닌 채팅방 참여자 정보 조회
         List<List<ChatResponse.ChatParticipantResponse>> partiesList =
@@ -84,6 +90,7 @@ public class ChatServiceImpl implements ChatService {
                                                 // 읽기 전용 List 형태로 반환
                                                 .toList())
                         .toList();
+        log.trace(">>chatPartiesList 생성 로그: {}",partiesList);
 
         return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList);
     }
