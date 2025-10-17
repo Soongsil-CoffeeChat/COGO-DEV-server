@@ -74,9 +74,9 @@ public class ChatServiceImpl implements ChatService {
         List<List<ChatResponse.ChatParticipantResponse>> partiesList =
                 chatRooms.getContent().stream()
                         .map(
-                                room ->{
-                                    User otherUser=getOtherParty(room,username);
-                                    ChatResponse.ChatParticipantResponse otherUserDto=
+                                room -> {
+                                    User otherUser = getOtherParty(room, username);
+                                    ChatResponse.ChatParticipantResponse otherUserDto =
                                             ChatResponse.ChatParticipantResponse.builder()
                                                     .userId(otherUser.getId())
                                                     .username(otherUser.getUsername())
@@ -84,7 +84,7 @@ public class ChatServiceImpl implements ChatService {
                                                     .build();
                                     return List.of(otherUserDto);
                                 })
-                                .toList();
+                        .toList();
 
         log.trace(">>chatPartiesList 생성 로그: {}", partiesList);
 
@@ -248,10 +248,11 @@ public class ChatServiceImpl implements ChatService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
-    private User getOtherParty(ChatRoom chatRoom, String username){
-        User user=userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+    private User getOtherParty(ChatRoom chatRoom, String username) {
+        User user =
+                userRepository
+                        .findByUsername(username)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
         if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
         else return chatRoom.getApplication().getMentee().getUser();
     }
