@@ -97,6 +97,8 @@ public class ChatConverter {
                                 })
                         .toList();
 
+        // ChatRoomPageResponse
+
         return ChatRoomPageResponse.builder()
                 .content(content)
                 .pageNumber(chatRoomPage.getNumber())

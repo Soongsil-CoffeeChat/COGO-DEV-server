@@ -31,6 +31,9 @@ public class ChatResponse {
         private String lastChat;
         private LocalDateTime updateAt;
 
+        private String otherPartyName;
+        private String otherPartyProfileImage;
+
         // 사용자 받가 or 필요한 부분만 받기
         /*
         1: User 받기

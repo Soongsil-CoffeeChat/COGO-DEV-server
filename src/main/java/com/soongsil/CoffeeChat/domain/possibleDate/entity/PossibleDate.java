@@ -40,7 +40,7 @@ public class PossibleDate {
     @JsonFormat(pattern = "HH:mm")
     LocalTime endTime;
 
-    @OneToMany(mappedBy = "possibleDate", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "possibleDate")
     @Builder.Default
     private List<Application> applications = new ArrayList<>();
 

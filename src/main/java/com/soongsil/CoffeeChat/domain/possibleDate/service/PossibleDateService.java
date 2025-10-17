@@ -7,11 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateConverter;
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateResponse;
-import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.repository.PossibleDateRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
@@ -34,29 +31,29 @@ public class PossibleDateService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
-    @Transactional
-    public List<PossibleDateCreateResponse> updatePossibleDate(
-            List<PossibleDateCreateRequest> dtos, String username) {
-
-        User user = findUserByUsername(username);
-        Mentor mentor = user.getMentor();
-
-        possibleDateRepository.deleteAllByMentor(mentor);
-
-        List<PossibleDate> possibleDates =
-                dtos.stream()
-                        .map(it -> PossibleDateConverter.toEntity(it, mentor))
-                        .collect(Collectors.toList());
-
-        possibleDateRepository.saveAll(possibleDates);
-
-        return possibleDates.stream()
-                .map(PossibleDateConverter::toResponse)
-                .collect(Collectors.toList());
-    }
+    //    @Transactional
+    //    public List<PossibleDateDetailResponse> updatePossibleDate(
+    //            List<PossibleDateCreateRequest> dtos, String username) {
+    //
+    //        User user = findUserByUsername(username);
+    //        Mentor mentor = user.getMentor();
+    //
+    //        possibleDateRepository.deleteAllByMentor(mentor);
+    //
+    //        List<PossibleDate> possibleDates =
+    //                dtos.stream()
+    //                        .map(it -> PossibleDateConverter.toEntity(it, mentor))
+    //                        .collect(Collectors.toList());
+    //
+    //        possibleDateRepository.saveAll(possibleDates);
+    //
+    //        return possibleDates.stream()
+    //                .map(PossibleDateConverter::toResponse)
+    //                .collect(Collectors.toList());
+    //    }
 
     @Transactional(readOnly = true)
-    public List<PossibleDateCreateResponse> findPossibleDateListByMentor(Long mentorId) {
+    public List<PossibleDateDetailResponse> findPossibleDateListByMentor(Long mentorId) {
         // 2주로 설정
         LocalDate today = LocalDate.now();
         LocalDate twoWeeksLater = today.plusWeeks(2);
@@ -71,7 +68,7 @@ public class PossibleDateService {
     }
 
     @Transactional(readOnly = true)
-    public List<PossibleDateCreateResponse> findMentorPossibleDateListByUsername(String username) {
+    public List<PossibleDateDetailResponse> findMentorPossibleDateListByUsername(String username) {
         User user = findUserByUsername(username);
         return findPossibleDateListByMentor(user.getMentor().getId());
     }

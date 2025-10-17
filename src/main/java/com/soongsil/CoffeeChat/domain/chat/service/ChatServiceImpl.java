@@ -74,22 +74,18 @@ public class ChatServiceImpl implements ChatService {
         List<List<ChatResponse.ChatParticipantResponse>> partiesList =
                 chatRooms.getContent().stream()
                         .map(
-                                room ->
-                                        room.getParticipants().stream()
-                                                .map(ChatRoomUser::getUser)
-                                                .filter(u -> !u.getId().equals(currentUser.getId()))
-                                                .map(
-                                                        u ->
-                                                                ChatResponse.ChatParticipantResponse
-                                                                        .builder()
-                                                                        .userId(u.getId())
-                                                                        .username(u.getUsername())
-                                                                        .profileImage(
-                                                                                u.getPicture())
-                                                                        .build())
-                                                // 읽기 전용 List 형태로 반환
-                                                .toList())
-                        .toList();
+                                room ->{
+                                    User otherUser=getOtherParty(room,username);
+                                    ChatResponse.ChatParticipantResponse otherUserDto=
+                                            ChatResponse.ChatParticipantResponse.builder()
+                                                    .userId(otherUser.getId())
+                                                    .username(otherUser.getUsername())
+                                                    .profileImage(otherUser.getPicture())
+                                                    .build();
+                                    return List.of(otherUserDto);
+                                })
+                                .toList();
+
         log.trace(">>chatPartiesList 생성 로그: {}", partiesList);
 
         return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList);
@@ -250,5 +246,13 @@ public class ChatServiceImpl implements ChatService {
         return userRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+    }
+
+    private User getOtherParty(ChatRoom chatRoom, String username){
+        User user=userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
+        else return chatRoom.getApplication().getMentee().getUser();
     }
 }

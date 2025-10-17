@@ -18,9 +18,9 @@ public class PossibleDateConverter {
         return possibleDate;
     }
 
-    public static PossibleDateResponse.PossibleDateCreateResponse toResponse(
+    public static PossibleDateResponse.PossibleDateDetailResponse toResponse(
             PossibleDate possibleDate) {
-        return PossibleDateResponse.PossibleDateCreateResponse.builder()
+        return PossibleDateResponse.PossibleDateDetailResponse.builder()
                 .date(possibleDate.getDate())
                 .startTime(possibleDate.getStartTime())
                 .endTime(possibleDate.getEndTime())
