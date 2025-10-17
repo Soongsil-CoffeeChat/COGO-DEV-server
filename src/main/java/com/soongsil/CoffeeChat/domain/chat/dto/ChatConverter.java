@@ -19,7 +19,7 @@ public class ChatConverter {
             ChatRoom chatRoom, String lastChat, List<ChatParticipantResponse> participants) {
 
         return ChatRoomResponse.builder()
-                .id(chatRoom.getId())
+                .roomId(chatRoom.getId())
                 .lastChat(lastChat)
                 .updateAt(chatRoom.getUpdatedDate())
                 .build();
@@ -39,7 +39,7 @@ public class ChatConverter {
                         .collect(Collectors.toList());
 
         return ChatRoomDetailResponse.builder()
-                .id(chatRoom.getId())
+                .roomId(chatRoom.getId())
                 .participants(participantResponses)
                 .build();
     }

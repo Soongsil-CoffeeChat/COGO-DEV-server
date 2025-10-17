@@ -27,7 +27,7 @@ public class ChatResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomResponse {
-        private Long id;
+        private Long roomId;
         private String lastChat;
         private LocalDateTime updateAt;
 
@@ -70,7 +70,7 @@ public class ChatResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomDetailResponse {
-        private Long id;
+        private Long roomId;
         private String name;
         private List<ChatParticipantResponse> participants;
     }

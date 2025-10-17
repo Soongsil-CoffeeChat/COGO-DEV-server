@@ -2,8 +2,6 @@ package com.soongsil.CoffeeChat.domain.application.service;
 
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApplicationService {
 
-    private final EntityManager em;
+    //    private final EntityManager em;
     private final ApplicationRepository applicationRepository;
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
