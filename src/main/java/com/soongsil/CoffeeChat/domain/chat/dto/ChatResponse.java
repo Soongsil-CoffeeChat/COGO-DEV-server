@@ -29,7 +29,7 @@ public class ChatResponse {
     public static class ChatRoomResponse {
         private Long roomId;
         private String lastChat;
-        private LocalDateTime updateAt;
+        private LocalDateTime updatedAt;
 
         private String otherPartyName;
         private String otherPartyProfileImage;

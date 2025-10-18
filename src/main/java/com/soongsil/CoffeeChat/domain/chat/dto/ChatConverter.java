@@ -21,7 +21,7 @@ public class ChatConverter {
         return ChatRoomResponse.builder()
                 .roomId(chatRoom.getId())
                 .lastChat(lastChat)
-                .updateAt(chatRoom.getUpdatedDate())
+                .updatedAt(chatRoom.getUpdatedDate())
                 .build();
     }
 
