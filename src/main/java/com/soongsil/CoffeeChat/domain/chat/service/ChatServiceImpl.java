@@ -56,6 +56,7 @@ public class ChatServiceImpl implements ChatService {
 
         log.trace(">>chatRooms 조회 로그: {}", chatRooms);
 
+        //application get mentee null
         // 각 채팅방의 마지막 메시지 조회
         List<String> lastChats =
                 chatRooms.getContent().stream()
@@ -253,6 +254,11 @@ public class ChatServiceImpl implements ChatService {
                 userRepository
                         .findByUsername(username)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        log.trace("user.isMentee: {}",user.isMentee());
+        log.trace("Application id: {}",chatRoom.getApplication().getId());
+        log.trace("Application getMentor: {}",chatRoom.getApplication().getMentor());
+        log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
+
         if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
         else return chatRoom.getApplication().getMentee().getUser();
     }
