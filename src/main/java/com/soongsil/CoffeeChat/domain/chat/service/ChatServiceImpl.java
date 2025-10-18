@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatConverter;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
@@ -56,7 +57,7 @@ public class ChatServiceImpl implements ChatService {
 
         log.trace(">>chatRooms 조회 로그: {}", chatRooms);
 
-        //application get mentee null
+        // application get mentee null
         // 각 채팅방의 마지막 메시지 조회
         List<String> lastChats =
                 chatRooms.getContent().stream()
@@ -111,7 +112,13 @@ public class ChatServiceImpl implements ChatService {
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
         participants.add(user);
 
-        ChatRoom chatRoom = ChatConverter.toChatRoom(request, participants);
+        Application application =
+                applicationRepository
+                        .findById(request.getApplicationId())
+                        .orElseThrow(
+                                () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
+
+        ChatRoom chatRoom = ChatConverter.toChatRoom(application, participants);
         chatRoomRepository.save(chatRoom);
 
         return ChatConverter.toChatRoomDetailResponse(chatRoom);
@@ -254,9 +261,9 @@ public class ChatServiceImpl implements ChatService {
                 userRepository
                         .findByUsername(username)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        log.trace("user.isMentee: {}",user.isMentee());
-        log.trace("Application id: {}",chatRoom.getApplication().getId());
-        log.trace("Application getMentor: {}",chatRoom.getApplication().getMentor());
+        log.trace("user.isMentee: {}", user.isMentee());
+        log.trace("Application id: {}", chatRoom.getApplication().getId());
+        log.trace("Application getMentor: {}", chatRoom.getApplication().getMentor());
         log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
 
         if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();

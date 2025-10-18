@@ -109,9 +109,8 @@ public class ChatConverter {
                 .build();
     }
 
-    public static ChatRoom toChatRoom(
-            ChatRequest.CreateChatRoomRequest request, List<User> userList) {
-        ChatRoom chatRoom = ChatRoom.builder().build();
+    public static ChatRoom toChatRoom(Application application, List<User> userList) {
+        ChatRoom chatRoom = ChatRoom.builder().application(application).build();
         List<ChatRoomUser> chatRoomUserList =
                 userList.stream()
                         .map(user -> ChatRoomUser.builder().chatRoom(chatRoom).user(user).build())
