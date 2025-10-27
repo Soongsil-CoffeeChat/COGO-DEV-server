@@ -27,6 +27,7 @@ import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
+import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -235,7 +236,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ChatResponse.ChatRoomApplicationResponse getChatRoomApplication(Long chatRoomId) {
 
         ChatRoom chatRoom =
@@ -243,11 +244,13 @@ public class ChatServiceImpl implements ChatService {
                         .findWithApplicationById(chatRoomId)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND));
 
-        ChatResponse.ChatRoomApplicationResponse response =
-                ChatConverter.toChatRoomApplication(chatRoom.getApplication());
+        Application application = chatRoom.getApplication();
+        if (application == null) throw new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND);
+        PossibleDate possibleDate = application.getPossibleDate();
+        if (possibleDate == null)
+            throw new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND);
 
-        if (response == null) throw new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND);
-        return response;
+        return ChatConverter.toChatRoomApplicationResponse(application, possibleDate);
     }
 
     private User findUserByUsername(String username) {

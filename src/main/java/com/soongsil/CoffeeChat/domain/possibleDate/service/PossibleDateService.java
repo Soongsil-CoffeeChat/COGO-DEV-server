@@ -4,16 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
-import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
-import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
+import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateConverter;
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateUpdateResponse;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
+import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import com.soongsil.CoffeeChat.domain.possibleDate.repository.PossibleDateRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
@@ -60,16 +60,16 @@ public class PossibleDateService {
 
     @Transactional
     public PossibleDateCreateUpdateResponse createPossibleDate(
-            PossibleDateCreateRequest request, String userName){
-        User user=findUserByUsername(userName);
-        Mentor mentor= mentorRepository.findById(user.getMentor().getId())
-                .orElseThrow(()->new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+            PossibleDateCreateRequest request, String userName) {
+        User user = findUserByUsername(userName);
+        Mentor mentor =
+                mentorRepository
+                        .findById(user.getMentor().getId())
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
 
-        PossibleDate possibleDate=
-                PossibleDateConverter.toEntity(request,mentor);
+        PossibleDate possibleDate = PossibleDateConverter.toEntity(request, mentor);
 
         possibleDateRepository.save(possibleDate);
         return PossibleDateConverter.toCreateUpdateResponse(possibleDate);
     }
-
 }

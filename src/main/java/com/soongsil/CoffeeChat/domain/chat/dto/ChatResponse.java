@@ -3,6 +3,8 @@ package com.soongsil.CoffeeChat.domain.chat.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
+
 import lombok.*;
 
 public class ChatResponse {
@@ -95,5 +97,6 @@ public class ChatResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomApplicationResponse {
         private Long applicationId;
+        private PossibleDate possibleDate;
     }
 }

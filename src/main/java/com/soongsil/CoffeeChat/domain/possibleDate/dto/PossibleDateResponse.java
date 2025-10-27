@@ -49,5 +49,4 @@ public class PossibleDateResponse {
 
         private boolean isActive;
     }
-
 }

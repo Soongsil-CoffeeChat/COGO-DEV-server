@@ -20,8 +20,7 @@ public class PossibleDateConverter {
         return possibleDate;
     }
 
-    public static PossibleDateDetailResponse toResponse(
-            PossibleDate possibleDate) {
+    public static PossibleDateDetailResponse toResponse(PossibleDate possibleDate) {
         return PossibleDateDetailResponse.builder()
                 .date(possibleDate.getDate())
                 .startTime(possibleDate.getStartTime())
@@ -32,7 +31,7 @@ public class PossibleDateConverter {
     }
 
     public static PossibleDateCreateUpdateResponse toCreateUpdateResponse(
-            PossibleDate possibleDate){
+            PossibleDate possibleDate) {
         return PossibleDateCreateUpdateResponse.builder()
                 .date(possibleDate.getDate())
                 .startTime(possibleDate.getStartTime())
