@@ -2,6 +2,8 @@ package com.soongsil.CoffeeChat.domain.possibleDate.dto;
 
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateUpdateResponse;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 
 public class PossibleDateConverter {
@@ -18,9 +20,20 @@ public class PossibleDateConverter {
         return possibleDate;
     }
 
-    public static PossibleDateResponse.PossibleDateDetailResponse toResponse(
+    public static PossibleDateDetailResponse toResponse(
             PossibleDate possibleDate) {
-        return PossibleDateResponse.PossibleDateDetailResponse.builder()
+        return PossibleDateDetailResponse.builder()
+                .date(possibleDate.getDate())
+                .startTime(possibleDate.getStartTime())
+                .endTime(possibleDate.getEndTime())
+                .possibleDateId(possibleDate.getId())
+                .isActive(possibleDate.isActive())
+                .build();
+    }
+
+    public static PossibleDateCreateUpdateResponse toCreateUpdateResponse(
+            PossibleDate possibleDate){
+        return PossibleDateCreateUpdateResponse.builder()
                 .date(possibleDate.getDate())
                 .startTime(possibleDate.getStartTime())
                 .endTime(possibleDate.getEndTime())

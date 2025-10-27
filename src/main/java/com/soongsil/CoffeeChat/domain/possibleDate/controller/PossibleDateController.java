@@ -30,18 +30,6 @@ public class PossibleDateController {
         return principal.getUsername();
     }
 
-    //    @PutMapping
-    //    @Operation(summary = "멘토가 직접 커피챗 가능시간 갱신하기")
-    //    public ResponseEntity<ApiResponse<List<PossibleDateDetailResponse>>> updatePossibleDate(
-    //            Authentication authentication, @RequestBody List<PossibleDateCreateRequest> dtos)
-    //            throws Exception {
-    //        return ResponseEntity.ok()
-    //                .body(
-    //                        ApiResponse.onSuccessOK(
-    //                                possibleDateService.updatePossibleDate(
-    //                                        dtos, getUserNameByAuthentication(authentication))));
-    //    }
-
     @GetMapping("{mentorId}")
     @Operation(summary = "멘토ID로 커피챗 가능시간 불러오기")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -68,4 +56,7 @@ public class PossibleDateController {
                                 possibleDateService.findMentorPossibleDateListByUsername(
                                         getUserNameByAuthentication(authentication))));
     }
+
+    //PostMappping
+    //PatchMapping
 }

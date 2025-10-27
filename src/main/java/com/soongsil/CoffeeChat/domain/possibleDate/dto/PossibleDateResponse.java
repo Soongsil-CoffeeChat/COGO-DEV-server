@@ -29,4 +29,25 @@ public class PossibleDateResponse {
 
         private boolean isActive;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class PossibleDateCreateUpdateResponse {
+        private Long possibleDateId;
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDate date;
+
+        @JsonFormat(pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm")
+        private LocalTime startTime;
+
+        @JsonFormat(pattern = "HH:mm")
+        @Schema(type = "string", pattern = "hh:mm")
+        private LocalTime endTime;
+
+        private boolean isActive;
+    }
+
 }

@@ -4,11 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
+import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
+import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateConverter;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateUpdateResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.repository.PossibleDateRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
@@ -24,33 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 public class PossibleDateService {
     private final PossibleDateRepository possibleDateRepository;
     private final UserRepository userRepository;
+    private final MentorRepository mentorRepository;
 
     private User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
-
-    //    @Transactional
-    //    public List<PossibleDateDetailResponse> updatePossibleDate(
-    //            List<PossibleDateCreateRequest> dtos, String username) {
-    //
-    //        User user = findUserByUsername(username);
-    //        Mentor mentor = user.getMentor();
-    //
-    //        possibleDateRepository.deleteAllByMentor(mentor);
-    //
-    //        List<PossibleDate> possibleDates =
-    //                dtos.stream()
-    //                        .map(it -> PossibleDateConverter.toEntity(it, mentor))
-    //                        .collect(Collectors.toList());
-    //
-    //        possibleDateRepository.saveAll(possibleDates);
-    //
-    //        return possibleDates.stream()
-    //                .map(PossibleDateConverter::toResponse)
-    //                .collect(Collectors.toList());
-    //    }
 
     @Transactional(readOnly = true)
     public List<PossibleDateDetailResponse> findPossibleDateListByMentor(Long mentorId) {
@@ -72,4 +57,19 @@ public class PossibleDateService {
         User user = findUserByUsername(username);
         return findPossibleDateListByMentor(user.getMentor().getId());
     }
+
+    @Transactional
+    public PossibleDateCreateUpdateResponse createPossibleDate(
+            PossibleDateCreateRequest request, String userName){
+        User user=findUserByUsername(userName);
+        Mentor mentor= mentorRepository.findById(user.getMentor().getId())
+                .orElseThrow(()->new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+
+        PossibleDate possibleDate=
+                PossibleDateConverter.toEntity(request,mentor);
+
+        possibleDateRepository.save(possibleDate);
+        return PossibleDateConverter.toCreateUpdateResponse(possibleDate);
+    }
+
 }
