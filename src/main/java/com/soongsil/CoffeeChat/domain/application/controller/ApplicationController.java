@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest.ApplicationCreateRequest;
+import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationGetResponse;
-import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationSummaryResponse;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.application.service.ApplicationService;
@@ -35,7 +36,7 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @PostMapping
-    @Operation(summary = "COGO 신청하기 + 테스트용 출력")
+    @Operation(summary = "COGO 신청하기")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "201",
             description = "COGO 기본 정보 반환")
@@ -86,12 +87,14 @@ public class ApplicationController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "수락 / 거절한 COGO 정보 반환")
-    public ResponseEntity<ApiResponse<ApplicationMatchResponse>> updateApplicationStatus(
-            @PathVariable Long applicationId, @RequestParam("decision") String decision) {
+    public ResponseEntity<ApiResponse<ApplicationResponse.ApplicationUpdateResponse>>
+            updateApplicationStatus(
+                    @PathVariable Long applicationId,
+                    @RequestBody ApplicationRequest.ApplicationStatusUpdateRequest request) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
                                 applicationService.updateApplicationStatus(
-                                        applicationId, decision)));
+                                        applicationId, request)));
     }
 }

@@ -1,5 +1,8 @@
 package com.soongsil.CoffeeChat.domain.application.dto;
 
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationRejectReason;
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +18,8 @@ public class ApplicationRequest {
     }
 
     @Getter
-    // 왜 여기도 NoA~? Builder 랑 다른가
     public static class ApplicationStatusUpdateRequest {
-        private String decision;
-        private String reason;
+        private ApplicationStatus status;
+        private ApplicationRejectReason reason;
     }
 }

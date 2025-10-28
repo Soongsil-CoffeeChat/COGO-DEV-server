@@ -1,10 +1,12 @@
 package com.soongsil.CoffeeChat.domain.report.dto;
 
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.soongsil.CoffeeChat.domain.report.enums.ReportReason;
 import com.soongsil.CoffeeChat.domain.report.enums.ReportStatus;
-import lombok.*;
 
-import java.time.LocalDateTime;
+import lombok.*;
 
 public class ReportResponse {
 
@@ -18,8 +20,10 @@ public class ReportResponse {
         private Long reportedUserId;
         private ReportReason reportReason;
         private String additionalDetails;
+
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime reportedAt;
+
         private ReportStatus status;
     }
-
 }

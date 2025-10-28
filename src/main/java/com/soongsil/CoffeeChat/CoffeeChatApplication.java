@@ -22,12 +22,12 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @EnableScheduling
 public class CoffeeChatApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(CoffeeChatApplication.class, args);
-    }
-
     @PostConstruct
     public void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(CoffeeChatApplication.class, args);
     }
 }

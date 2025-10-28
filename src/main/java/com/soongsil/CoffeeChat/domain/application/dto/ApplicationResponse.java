@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationRejectReason;
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -18,6 +20,7 @@ public class ApplicationResponse {
         private Long mentorId;
         private Long menteeId;
         private String applicationMemo;
+        private ApplicationRejectReason rejectReason;
 
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate applicationDate;
@@ -37,14 +40,10 @@ public class ApplicationResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ApplicationGetResponse {
         private Long applicationId;
-
-        @Schema(type = "Long")
         private Long menteeId;
-
-        @Schema(type = "Long")
         private Long mentorId;
-
         private String applicationMemo;
+        private ApplicationRejectReason applicationRejectReason;
 
         @JsonFormat(pattern = "yyyy-MM-dd")
         @Schema(type = "string", pattern = "yyyy-MM-dd")
@@ -63,8 +62,9 @@ public class ApplicationResponse {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class ApplicationMatchResponse {
+    public static class ApplicationUpdateResponse {
         private Long applicationId;
-        private String applicationStatus;
+        private ApplicationStatus applicationStatus;
+        private ApplicationRejectReason reason;
     }
 }
