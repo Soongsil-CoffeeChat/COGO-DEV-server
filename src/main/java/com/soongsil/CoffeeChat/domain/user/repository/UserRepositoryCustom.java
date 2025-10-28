@@ -1,6 +1,6 @@
 package com.soongsil.CoffeeChat.domain.user.repository;
 
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
+import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserGetResponse;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 public interface UserRepositoryCustom {
@@ -8,5 +8,5 @@ public interface UserRepositoryCustom {
 
     User findByUsernameWithFetch(String username);
 
-    UserGetRequest findUserInfoByUsername(String username);
+    UserGetResponse findUserInfoByUsername(String username);
 }

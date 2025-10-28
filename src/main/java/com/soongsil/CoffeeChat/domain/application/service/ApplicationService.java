@@ -116,6 +116,8 @@ public class ApplicationService {
         Application application = findApplicationById(applicationId);
         application.getPossibleDate().deactivate();
         smsUtil.sendMenteeNotificationMessage(application);
+        // switch 문이 최선일까
+        // 오버로딩?
         switch (decision) {
             case "reject" -> {
                 application.rejectApplication();

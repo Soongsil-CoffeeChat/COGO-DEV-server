@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationRejectReason;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
@@ -36,6 +37,10 @@ public class Application {
     private Mentee mentee;
 
     @Column private String memo;
+
+    // application 생성 로직에 추가
+    @Enumerated(EnumType.STRING)
+    private ApplicationRejectReason rejectReason;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")

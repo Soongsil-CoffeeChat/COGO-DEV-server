@@ -14,8 +14,8 @@ import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeResponse.MenteeInfoResponse;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorInfoResponse;
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
+import com.soongsil.CoffeeChat.domain.user.dto.UserResponse;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.User2FACodeResponse;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
@@ -84,7 +84,7 @@ public class UserController {
     @GetMapping()
     @Operation(summary = "기본정보 조회")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공!")
-    public ResponseEntity<ApiResponse<UserRequest.UserGetRequest>> getUserInfo(
+    public ResponseEntity<ApiResponse<UserResponse.UserGetResponse>> getUserInfo(
             Authentication authentication) throws Exception {
         return ResponseEntity.ok()
                 .body(

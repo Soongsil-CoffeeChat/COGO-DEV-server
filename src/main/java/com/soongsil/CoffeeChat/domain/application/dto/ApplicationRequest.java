@@ -13,4 +13,11 @@ public class ApplicationRequest {
         private Long possibleDateId;
         private String memo;
     }
+
+    @Getter
+    // 왜 여기도 NoA~? Builder 랑 다른가
+    public static class ApplicationStatusUpdateRequest {
+        private String decision;
+        private String reason;
+    }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
+import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserGetResponse;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
@@ -20,5 +20,5 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
     User findByMenteeId(Long menteeId);
 
-    UserGetRequest findUserInfoByUsername(String username);
+    UserGetResponse findUserInfoByUsername(String username);
 }

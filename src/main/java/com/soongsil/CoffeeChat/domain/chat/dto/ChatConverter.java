@@ -47,7 +47,7 @@ public class ChatConverter {
 
     public static ChatMessageResponse toChatMessageResponse(Chat chat) {
         return ChatMessageResponse.builder()
-                .id(chat.getId())
+                .chatId(chat.getId())
                 .senderId(chat.getSender().getId())
                 .message(chat.getMessage())
                 .createdAt(chat.getCreatedAt())

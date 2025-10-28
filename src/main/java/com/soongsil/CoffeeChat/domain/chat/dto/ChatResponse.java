@@ -63,7 +63,7 @@ public class ChatResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatMessageResponse {
-        private Long id;
+        private Long chatId;
         private Long senderId;
         private String message;
         private LocalDateTime createdAt;

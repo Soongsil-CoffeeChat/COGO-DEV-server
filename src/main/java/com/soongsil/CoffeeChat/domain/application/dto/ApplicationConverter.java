@@ -13,6 +13,7 @@ public class ApplicationConverter {
                 .mentee(mentee)
                 .memo(memo)
                 .possibleDate(possibleDate)
+                .rejectReason(null)
                 .build();
     }
 
