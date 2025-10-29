@@ -18,7 +18,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @ToString(of = {"id", "date", "startTime", "endTime", "isActive"})
 public class PossibleDate {
     @Id
@@ -48,5 +47,11 @@ public class PossibleDate {
 
     public void deactivate() {
         isActive = false;
+    }
+
+    public void updatePossibleDateTime(LocalDate newDate, LocalTime newStart, LocalTime newEnd) {
+        this.date = newDate;
+        this.startTime = newStart;
+        this.endTime = newEnd;
     }
 }

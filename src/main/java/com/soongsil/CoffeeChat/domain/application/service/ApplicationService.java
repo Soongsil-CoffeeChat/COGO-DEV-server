@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationConverter;
+import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationRequest.ApplicationCreateRequest;
+import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationCreateResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationGetResponse;
-import com.soongsil.CoffeeChat.domain.application.dto.ApplicationResponse.ApplicationMatchResponse;
 import com.soongsil.CoffeeChat.domain.application.dto.ApplicationSummaryResponse;
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
@@ -112,32 +113,21 @@ public class ApplicationService {
     }
 
     @Transactional
-    public ApplicationMatchResponse updateApplicationStatus(Long applicationId, String decision) {
+    public ApplicationResponse.ApplicationUpdateResponse updateApplicationStatus(
+            Long applicationId, ApplicationRequest.ApplicationStatusUpdateRequest request) {
         Application application = findApplicationById(applicationId);
+
+        // activate 필요한가
         application.getPossibleDate().deactivate();
-        smsUtil.sendMenteeNotificationMessage(application);
-        switch (decision) {
-            case "reject" -> {
-                application.rejectApplication();
-                return ApplicationConverter.toResponse(
-                        applicationId, application.getAccept().name());
-            }
-            case "accept" -> {
-                application.acceptApplication();
-                rejectUnmatchedApplications(application);
-                return ApplicationConverter.toResponse(
-                        applicationId, application.getAccept().name());
-            }
+        //        smsUtil.sendMenteeNotificationMessage(application);
+
+        switch (request.getStatus()) {
+            case UNMATCHED -> application.rejectApplication(request.getReason());
+            case MATCHED -> application.acceptApplication();
             default -> throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
         }
-    }
 
-    private void rejectUnmatchedApplications(Application application) {
-        List<Application> unmatchedApplications =
-                applicationRepository.findByPossibleDateAndAccept(
-                        application.getPossibleDate(), ApplicationStatus.UNMATCHED);
-        unmatchedApplications.forEach(Application::rejectApplication);
-        unmatchedApplications.forEach(smsUtil::sendMenteeNotificationMessage);
+        return ApplicationConverter.toUpdateResponse(application);
     }
 
     public User getOtherParty(Application application, String userName) {

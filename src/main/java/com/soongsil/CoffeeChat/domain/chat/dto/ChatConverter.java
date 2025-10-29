@@ -11,6 +11,7 @@ import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.*;
 import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
+import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 public class ChatConverter {
@@ -46,7 +47,7 @@ public class ChatConverter {
 
     public static ChatMessageResponse toChatMessageResponse(Chat chat) {
         return ChatMessageResponse.builder()
-                .id(chat.getId())
+                .chatId(chat.getId())
                 .senderId(chat.getSender().getId())
                 .message(chat.getMessage())
                 .createdAt(chat.getCreatedAt())
@@ -119,8 +120,12 @@ public class ChatConverter {
         return chatRoom;
     }
 
-    public static ChatRoomApplicationResponse toChatRoomApplication(Application application) {
+    public static ChatRoomApplicationResponse toChatRoomApplicationResponse(
+            Application application, PossibleDate possibleDate) {
         if (application == null) return null;
-        return ChatRoomApplicationResponse.builder().applicationId(application.getId()).build();
+        return ChatRoomApplicationResponse.builder()
+                .applicationId(application.getId())
+                .possibleDate(possibleDate)
+                .build();
     }
 }

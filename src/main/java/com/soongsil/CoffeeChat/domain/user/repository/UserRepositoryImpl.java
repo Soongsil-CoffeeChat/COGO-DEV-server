@@ -9,7 +9,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.domain.mentee.entity.QMentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.QMentor;
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
+import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserGetResponse;
 import com.soongsil.CoffeeChat.domain.user.entity.QUser;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public UserGetRequest findUserInfoByUsername(String username) {
+    public UserGetResponse findUserInfoByUsername(String username) {
         QUser user = QUser.user;
         QMentor mentor = QMentor.mentor;
         QMentee mentee = QMentee.mentee;
@@ -50,7 +50,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return queryFactory
                 .select(
                         Projections.constructor(
-                                UserGetRequest.class,
+                                UserGetResponse.class,
                                 user.name,
                                 user.email,
                                 user.phoneNum,

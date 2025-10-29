@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.application.dto;
 
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
@@ -12,6 +13,8 @@ public class ApplicationConverter {
                 .mentor(mentor)
                 .mentee(mentee)
                 .memo(memo)
+                .rejectReason(null)
+                .applicationStatus(ApplicationStatus.UNMATCHED)
                 .possibleDate(possibleDate)
                 .build();
     }
@@ -23,6 +26,7 @@ public class ApplicationConverter {
                 .mentorId(application.getMentor().getId())
                 .menteeId(application.getMentee().getId())
                 .applicationMemo(application.getMemo())
+                .rejectReason(application.getRejectReason())
                 .applicationDate(application.getPossibleDate().getDate())
                 .applicationStartTime(application.getPossibleDate().getStartTime())
                 .applicationEndTime(application.getPossibleDate().getEndTime())
@@ -36,17 +40,19 @@ public class ApplicationConverter {
                 .mentorId(mentorId)
                 .menteeId(menteeId)
                 .applicationMemo(application.getMemo())
+                .applicationRejectReason(application.getRejectReason())
                 .applicationDate(application.getPossibleDate().getDate())
                 .applicationStartTime(application.getPossibleDate().getStartTime())
                 .applicationEndTime(application.getPossibleDate().getEndTime())
                 .build();
     }
 
-    public static ApplicationResponse.ApplicationMatchResponse toResponse(
-            Long applicationId, String status) {
-        return ApplicationResponse.ApplicationMatchResponse.builder()
-                .applicationId(applicationId)
-                .applicationStatus(status)
+    public static ApplicationResponse.ApplicationUpdateResponse toUpdateResponse(
+            Application application) {
+        return ApplicationResponse.ApplicationUpdateResponse.builder()
+                .applicationId(application.getId())
+                .applicationStatus(application.getApplicationStatus())
+                .reason(application.getRejectReason())
                 .build();
     }
 

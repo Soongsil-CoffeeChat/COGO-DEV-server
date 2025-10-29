@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.soongsil.CoffeeChat.domain.application.enums.ApplicationRejectReason;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
@@ -22,8 +23,8 @@ import lombok.*;
 // @SQLRestriction("accept <> 'REJECTED'")
 @Table(name = "Application")
 public class Application {
-    @Column(name = "application_id")
     @Id
+    @Column(name = "application_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,19 +38,25 @@ public class Application {
 
     @Column private String memo;
 
+    // application 생성 로직에 추가
+    @Enumerated(EnumType.STRING)
+    @Column(name = "reject_reason")
+    private ApplicationRejectReason rejectReason;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")
-    private ApplicationStatus accept;
+    private ApplicationStatus applicationStatus;
 
     @ManyToOne
     @JoinColumn(name = "possible_date_id")
     private PossibleDate possibleDate;
 
     public void acceptApplication() {
-        this.accept = ApplicationStatus.MATCHED;
+        this.applicationStatus = ApplicationStatus.MATCHED;
     }
 
-    public void rejectApplication() {
-        this.accept = ApplicationStatus.REJECTED;
+    public void rejectApplication(ApplicationRejectReason reason) {
+        this.applicationStatus = ApplicationStatus.REJECTED;
+        this.rejectReason = reason;
     }
 }

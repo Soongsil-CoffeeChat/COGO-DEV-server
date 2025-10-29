@@ -13,9 +13,9 @@ import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorResponse.MentorInfoResponse;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
-import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserGetRequest;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.User2FACodeResponse;
+import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserGetResponse;
 import com.soongsil.CoffeeChat.domain.user.dto.UserResponse.UserInfoResponse;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
@@ -68,7 +68,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserGetRequest getUser(String username) {
+    public UserGetResponse getUser(String username) {
         // TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨
         return userRepository.findUserInfoByUsername(username);
     }
