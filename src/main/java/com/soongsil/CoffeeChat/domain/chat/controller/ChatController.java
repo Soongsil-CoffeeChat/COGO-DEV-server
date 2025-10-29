@@ -44,12 +44,13 @@ public class ChatController {
         return ResponseEntity.ok(chatService.createChatRoom(username, request));
     }
 
-//    @GetMapping("/rooms/{roomId}")
-//    @Operation(summary = "채팅방 상세 조회")
-//    public ResponseEntity<ChatResponse.ChatRoomDetailResponse> getChatRoomDetail(
-//            @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long roomId) {
-//        return ResponseEntity.ok(chatService.getChatRoomDetail(username, roomId));
-//    }
+    //    @GetMapping("/rooms/{roomId}")
+    //    @Operation(summary = "채팅방 상세 조회")
+    //    public ResponseEntity<ChatResponse.ChatRoomDetailResponse> getChatRoomDetail(
+    //            @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long
+    // roomId) {
+    //        return ResponseEntity.ok(chatService.getChatRoomDetail(username, roomId));
+    //    }
 
     @GetMapping("/rooms/{roomId}/messages")
     @Operation(summary = "채팅방 메시지 목록 조회")
