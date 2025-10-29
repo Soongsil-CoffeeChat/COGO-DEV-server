@@ -12,39 +12,20 @@ import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
-    @EntityGraph(
-            attributePaths = {
-                "mentor", "mentor.user",
-                "mentee", "mentee.user"
-            })
+    @EntityGraph(attributePaths = {"metee.user", "mentor.user"})
     @Query(
-            """
+            value =
+                    """
             select a from Application a
-            join a.mentor mentor
-            join mentor.user uMentor
-            join a.mentee mentee
-            join mentee.user uMentee
-            where (uMentor.id= :userId or uMentee.id= :userId)
-                and (:status is null or a.status = :status)
-            """)
-    List<Application> findByUserIdAndOptionalStatus(
-            @Param("userId") Long userId, @Param("status") ApplicationStatus status);
-
-    @EntityGraph(
-            attributePaths = {
-                "mentor", "mentor.user",
-                "mentee", "mentee.user"
-            })
-    @Query(
-            """
-            select a from Application a
-            join a.mentor mentor
-            join mentor.user uMentor
-            join a.mentee mentee
-            join mentee.user uMentee
-            where (uMentor.username= :username or uMentee.username= :username)
-                and (:status is null or a.status = :status)
-            """)
+            join a.mentee me
+            join me.user meu
+            join a.mentor mo
+            join mo.user mou
+            where (meu.username= :username or mou.uername= :username)
+                and (:status is null or a.status= :status)
+            order by a.id desc
+            """,
+            nativeQuery = true)
     List<Application> findByUserNameAndOptionalStatus(
             @Param("username") String username, @Param("status") ApplicationStatus status);
 }
