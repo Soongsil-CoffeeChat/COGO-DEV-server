@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,4 +18,6 @@ public interface PossibleDateRepository
     @Modifying
     @Query("DELETE FROM PossibleDate pd WHERE pd.mentor = :mentor")
     void deleteAllByMentor(@Param("mentor") Mentor mentor);
+
+    Optional<PossibleDate> findByIdAndMentor_Id(Long id, Long mentorId);
 }

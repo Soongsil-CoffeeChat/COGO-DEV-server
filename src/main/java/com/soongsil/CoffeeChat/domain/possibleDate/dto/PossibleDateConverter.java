@@ -1,13 +1,13 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.dto;
 
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateRequest;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateUpdateRequest;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateUpdateResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 
 public class PossibleDateConverter {
-    public static PossibleDate toEntity(PossibleDateCreateRequest request, Mentor mentor) {
+    public static PossibleDate toEntity(PossibleDateCreateUpdateRequest request, Mentor mentor) {
         PossibleDate possibleDate =
                 PossibleDate.builder()
                         .date(request.getDate())
@@ -39,5 +39,11 @@ public class PossibleDateConverter {
                 .possibleDateId(possibleDate.getId())
                 .isActive(possibleDate.isActive())
                 .build();
+    }
+
+    public static void updateEntity(
+            PossibleDate possibleDate, PossibleDateCreateUpdateRequest request) {
+        possibleDate.updatePossibleDateTime(
+                request.getDate(), request.getStartTime(), request.getEndTime());
     }
 }

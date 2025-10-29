@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 public enum GlobalErrorCode {
     // 공통
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "서버 에러, 관리자에게 문의 바립니다."),
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON_400", "요청 형식이 잘못되었습니다."),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON_400", "잘못된 요청 형식입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON_401", "인증 되지 않은 요청입니다."),
 
     // 유저 관련
@@ -21,14 +21,16 @@ public enum GlobalErrorCode {
     // 멘토 관련
     MENTOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MENTOR_404", "멘토를 찾을 수 없습니다."),
 
-    // 커피쳇 관련
+    // 커피챗 관련
     APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "APPLICATION_404", "COGO를 찾을 수 없습니다."),
     APPLICATION_INVALID_MATCH_STATUS(
             HttpStatus.BAD_REQUEST, "APPLICATION_400", "매칭 수락 여부를 잘못 입력하였습니다."),
 
-    // 커피쳇 가능 시간 관련
+    // 커피챗 가능 시간 관련
     POSSIBLE_DATE_NOT_FOUND(HttpStatus.NOT_FOUND, "POSSIBLE_DATE_404", "가능시간을 찾을 수 없습니다."),
     PREEMPTED_POSSIBLE_DATE(HttpStatus.GONE, "POSSIBLE_DATE_410", "선점된 가능시간입니다."),
+    INVALID_DATE_RANGE(HttpStatus.UNPROCESSABLE_ENTITY, "POSSIBLE_DATE_422", "잘못된 날짜 범위입니다."),
+    INVALID_TIME_RANGE(HttpStatus.UNPROCESSABLE_ENTITY, "POSSIBLE_TIME_422", "잘못된 시간 범위입니다."),
 
     // 채팅 메시지 관련 오류
     MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "MESSAGE_404", "메시지를 찾을 수 없습니다."),
