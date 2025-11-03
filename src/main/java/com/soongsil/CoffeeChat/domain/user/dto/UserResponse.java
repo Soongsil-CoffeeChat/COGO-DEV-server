@@ -29,6 +29,7 @@ public class UserResponse {
     }
 
     @Getter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UserGetResponse {
