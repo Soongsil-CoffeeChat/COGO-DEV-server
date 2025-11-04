@@ -17,7 +17,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
             """
             select distinct a from Application a
             where (a.mentee.user.username= :username or a.mentor.user.username= :username)
-                and (:status is null or a.status= :status)
+                and (:status is null or a.applicationStatus= :status)
             order by a.id desc
             """)
     List<Application> findByUserNameAndOptionalStatus(
