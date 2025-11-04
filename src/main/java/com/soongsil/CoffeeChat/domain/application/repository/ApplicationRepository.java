@@ -12,7 +12,7 @@ import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
-    @EntityGraph(attributePaths = {"metee.user", "mentor.user"})
+    @EntityGraph(attributePaths = {"mentee.user", "mentor.user"})
     @Query(
             value =
                     """
@@ -21,7 +21,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
             join me.user meu
             join a.mentor mo
             join mo.user mou
-            where (meu.username= :username or mou.uername= :username)
+            where (meu.username= :username or mou.username= :username)
                 and (:status is null or a.status= :status)
             order by a.id desc
             """,
