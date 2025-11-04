@@ -69,7 +69,6 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserGetResponse getUser(String username) {
-        // TODO: 유저가 멘토인지 멘티인지 구분 후 파트와 동아리 넣어줘야됨
         return userRepository.findUserInfoByUsername(username);
     }
 

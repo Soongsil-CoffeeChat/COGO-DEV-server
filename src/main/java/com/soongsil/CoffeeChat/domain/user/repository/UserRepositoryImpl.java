@@ -41,7 +41,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchOne();
     }
 
-    @Override
+    //    @Override
     public UserGetResponse findUserInfoByUsername(String username) {
         QUser user = QUser.user;
         QMentor mentor = QMentor.mentor;
@@ -51,6 +51,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .select(
                         Projections.constructor(
                                 UserGetResponse.class,
+                                user.id,
                                 user.name,
                                 user.email,
                                 user.phoneNum,
