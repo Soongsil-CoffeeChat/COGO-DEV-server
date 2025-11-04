@@ -12,14 +12,11 @@ import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
-    @Query("""
+    @EntityGraph(attributePaths = {"mentee.user", "mentor.user", "possibleDate"})
+    @Query(
+            """
             select distinct a from Application a
-            join fetch a.mentee me
-            join fetch me.user meu
-            join fetch a.mentor mo
-            join fetch mo.user mou
-            left join fetch a.possibleDate pd
-            where (meu.username= :username or mou.username= :username)
+            where (a.mentee.user.username= :username or a.mentor.user.username= :username)
                 and (:status is null or a.status= :status)
             order by a.id desc
             """)
