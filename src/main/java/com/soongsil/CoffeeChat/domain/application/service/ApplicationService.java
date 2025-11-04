@@ -130,6 +130,7 @@ public class ApplicationService {
         return ApplicationConverter.toUpdateResponse(application);
     }
 
+    @Transactional(readOnly = true)
     public User getOtherParty(Application application, String userName) {
         User user =
                 userRepository
