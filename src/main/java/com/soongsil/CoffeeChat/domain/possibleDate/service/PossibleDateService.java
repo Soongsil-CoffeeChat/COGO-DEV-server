@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PossibleDateService {
@@ -55,21 +57,28 @@ public class PossibleDateService {
     @Transactional(readOnly = true)
     public List<PossibleDateDetailResponse> findPossibleDateListByMentor(Long mentorId) {
         // 2주로 설정
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate twoWeeksLater = today.plusWeeks(2);
 
-        return possibleDateRepository.getPossibleDatesByMentorId(mentorId).stream()
+        List<PossibleDateDetailResponse> result= possibleDateRepository.getPossibleDatesByMentorId(mentorId).stream()
                 .filter(
                         possibleDate ->
                                 !possibleDate.getDate().isBefore(today)
                                         && !possibleDate.getDate().isAfter(twoWeeksLater))
                 .map(PossibleDateConverter::toResponse)
                 .collect(Collectors.toList());
+        log.debug("findSlots mentorId={}, range=[{} ~ {}], result={}",
+                mentorId, today, twoWeeksLater,result.size());
+        return result;
     }
 
     @Transactional(readOnly = true)
     public List<PossibleDateDetailResponse> findMentorPossibleDateListByUsername(String username) {
         User user = findUserByUsername(username);
+        if(!user.isMentor()){
+            throw new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND);
+        }
+
         return findPossibleDateListByMentor(user.getMentor().getId());
     }
 
@@ -103,8 +112,6 @@ public class PossibleDateService {
                         .findByIdAndMentor_Id(possibleDateId, mentor.getId())
                         .orElseThrow(
                                 () -> new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND));
-
-        // TODO: 시간 중복 여부
 
         validateDate(possibleDate.getDate());
         validateTime(possibleDate.getStartTime(), possibleDate.getEndTime());

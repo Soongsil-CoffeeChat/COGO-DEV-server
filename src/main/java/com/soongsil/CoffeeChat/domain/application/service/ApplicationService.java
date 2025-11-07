@@ -117,7 +117,6 @@ public class ApplicationService {
             Long applicationId, ApplicationRequest.ApplicationStatusUpdateRequest request) {
         Application application = findApplicationById(applicationId);
 
-        // activate 필요한가
         application.getPossibleDate().deactivate();
         //        smsUtil.sendMenteeNotificationMessage(application);
 
