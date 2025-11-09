@@ -145,7 +145,7 @@ public class ApplicationService {
             case UNMATCHED -> {
                 throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
             }
-            default -> throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS)
+            default -> throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
         }
 
         return ApplicationConverter.toUpdateResponse(application);
