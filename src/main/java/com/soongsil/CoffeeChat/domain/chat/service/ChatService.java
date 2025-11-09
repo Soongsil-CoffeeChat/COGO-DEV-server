@@ -101,15 +101,15 @@ public class ChatService {
         List<User> participants = new ArrayList<>();
         participants.add(currentUser);
 
-        if (!request.getParticipantId().equals(currentUser.getId())) {
+        if (!request.getParticipantUserId().equals(currentUser.getId())) {
             throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
         }
 
-        User user =
+        User otherUser =
                 userRepository
-                        .findById(request.getParticipantId())
+                        .findById(request.getParticipantUserId())
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        participants.add(user);
+        participants.add(otherUser);
 
         Application application =
                 applicationRepository

@@ -11,7 +11,7 @@ public class ChatRequest {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class CreateChatRoomRequest {
         private Long applicationId;
-        private Long participantId;
+        private Long participantUserId;
     }
 
     /** 채팅 메시지 전송 요청 DTO */
