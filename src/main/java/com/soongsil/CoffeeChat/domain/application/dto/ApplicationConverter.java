@@ -62,6 +62,7 @@ public class ApplicationConverter {
         return ApplicationSummaryResponse.builder()
                 .applicationId(application.getId())
                 .otherPartyName(otherPartyUserName)
+                .applicationStatus(application.getApplicationStatus().toString())
                 .applicationDate(application.getPossibleDate().getDate())
                 .build();
     }
