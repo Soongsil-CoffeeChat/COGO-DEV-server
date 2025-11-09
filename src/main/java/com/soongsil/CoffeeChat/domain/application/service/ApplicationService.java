@@ -136,7 +136,7 @@ public class ApplicationService {
                         .findByUsername(userName)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
 
-        if (user.isMentee()) return application.getMentee().getUser();
-        else return application.getMentor().getUser();
+        if (user.isMentee()) return application.getMentor().getUser();
+        else return application.getMentee().getUser();
     }
 }
