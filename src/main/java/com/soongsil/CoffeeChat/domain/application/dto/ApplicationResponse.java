@@ -43,6 +43,7 @@ public class ApplicationResponse {
         private Long menteeId;
         private Long mentorId;
         private String applicationMemo;
+        private ApplicationStatus applicationStatus;
         private ApplicationRejectReason applicationRejectReason;
 
         @JsonFormat(pattern = "yyyy-MM-dd")

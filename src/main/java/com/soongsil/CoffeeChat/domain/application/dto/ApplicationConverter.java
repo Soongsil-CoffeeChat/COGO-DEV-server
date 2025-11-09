@@ -40,6 +40,7 @@ public class ApplicationConverter {
                 .mentorId(mentorId)
                 .menteeId(menteeId)
                 .applicationMemo(application.getMemo())
+                .applicationStatus(application.getApplicationStatus())
                 .applicationRejectReason(application.getRejectReason())
                 .applicationDate(application.getPossibleDate().getDate())
                 .applicationStartTime(application.getPossibleDate().getStartTime())
