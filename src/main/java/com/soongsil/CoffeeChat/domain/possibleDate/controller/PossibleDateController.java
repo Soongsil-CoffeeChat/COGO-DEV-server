@@ -5,6 +5,7 @@ import static com.soongsil.CoffeeChat.global.uri.RequestUri.POSSIBLEDATE_URI;
 import java.net.URI;
 import java.util.List;
 
+import feign.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -95,5 +96,20 @@ public class PossibleDateController {
                                 possibleDateId,
                                 request,
                                 getUserNameByAuthentication(authentication))));
+    }
+
+    @PutMapping("")
+    @Operation(summary = "멘토 가능 시간 전체 교체")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "2주 내의 active 슬롯 목록 반환")
+    public ResponseEntity<ApiResponse<List<PossibleDateDetailResponse>>> updatePossibleDateList(
+            Authentication authentication,
+            @RequestBody List<PossibleDateRequest.PossibleDateCreateUpdateRequest> requests) throws Exception{
+
+        String username=getUserNameByAuthentication(authentication);
+        List<PossibleDateDetailResponse> body=
+                possibleDateService.replaceMyPossibleDated(requests,username);
+        return ResponseEntity.ok(ApiResponse.onSuccessOK(body));
     }
 }

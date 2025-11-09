@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,5 +119,39 @@ public class PossibleDateService {
 
         PossibleDateConverter.updateEntity(possibleDate, request);
         return PossibleDateConverter.toCreateUpdateResponse(possibleDate);
+    }
+
+    @Transactional
+    public List<PossibleDateResponse.PossibleDateDetailResponse> replaceMyPossibleDated(
+            List<PossibleDateCreateUpdateRequest> requests, String username){
+
+        User user=findUserByUsername(username);
+        Mentor mentor=mentorRepository.findById(user.getMentor().getId())
+                .orElseThrow(()->new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+
+        // 기존 슬롯 모두 비활성화
+        List<PossibleDate> current=possibleDateRepository.getPossibleDatesByMentorId(mentor.getId());
+        for(PossibleDate possibleDate:current){
+            possibleDate.deactivate();
+        }
+
+        // 요청 목록 기준 자연키 매칭 통한 Upsert
+        for(PossibleDateCreateUpdateRequest request: requests){
+            validateDate(request.getDate());
+            validateTime(request.getStartTime(),request.getEndTime());
+
+            possibleDateRepository
+                    .findByMentor_IdAndDateAndStartTimeAndEndTime(
+                            mentor.getId(),request.getDate(),request.getStartTime(),request.getEndTime())
+                    .ifPresentOrElse(
+                            exist-> exist.activate(),
+                            ()->{
+                                PossibleDate created=PossibleDateConverter.toEntity(request,mentor);
+                                created.activate();
+                                possibleDateRepository.save(created);
+                            }
+                    );
+        }
+        return findMentorPossibleDateListByUsername(username);
     }
 }

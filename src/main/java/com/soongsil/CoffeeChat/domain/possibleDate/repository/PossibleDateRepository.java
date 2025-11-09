@@ -1,5 +1,7 @@
 package com.soongsil.CoffeeChat.domain.possibleDate.repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +22,8 @@ public interface PossibleDateRepository
     void deleteAllByMentor(@Param("mentor") Mentor mentor);
 
     Optional<PossibleDate> findByIdAndMentor_Id(Long id, Long mentorId);
+
+    Optional<PossibleDate> findByMentor_IdAndDateAndStartTimeAndEndTime(
+            Long mentorId, LocalDate date, LocalTime startTime, LocalTime endTime
+    );
 }

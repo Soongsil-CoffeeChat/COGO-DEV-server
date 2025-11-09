@@ -53,6 +53,17 @@ public class ApplicationService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
     }
 
+    @Transactional(readOnly = true)
+    public User getOtherParty(Application application, String userName) {
+        User user =
+                userRepository
+                        .findByUsername(userName)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+
+        if (user.isMentee()) return application.getMentor().getUser();
+        else return application.getMentee().getUser();
+    }
+
     @Transactional
     public ApplicationCreateResponse createApplication(
             ApplicationCreateRequest request, String userName) {
@@ -129,14 +140,4 @@ public class ApplicationService {
         return ApplicationConverter.toUpdateResponse(application);
     }
 
-    @Transactional(readOnly = true)
-    public User getOtherParty(Application application, String userName) {
-        User user =
-                userRepository
-                        .findByUsername(userName)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-
-        if (user.isMentee()) return application.getMentor().getUser();
-        else return application.getMentee().getUser();
-    }
 }
