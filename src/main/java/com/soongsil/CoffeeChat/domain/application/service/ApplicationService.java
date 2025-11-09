@@ -128,13 +128,24 @@ public class ApplicationService {
             Long applicationId, ApplicationRequest.ApplicationStatusUpdateRequest request) {
         Application application = findApplicationById(applicationId);
 
-        application.getPossibleDate().deactivate();
         //        smsUtil.sendMenteeNotificationMessage(application);
 
         switch (request.getStatus()) {
-            case UNMATCHED -> application.rejectApplication(request.getReason());
-            case MATCHED -> application.acceptApplication();
-            default -> throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
+            case MATCHED -> {
+                application.acceptApplication();
+                application.getPossibleDate().deactivate();;
+            }
+            case REJECTED -> {
+                if(request.getReason()==null){
+                    throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
+                }
+                application.rejectApplication(request.getReason());
+                application.getPossibleDate().deactivate();
+            }
+            case UNMATCHED -> {
+                throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
+            }
+            default -> throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS)
         }
 
         return ApplicationConverter.toUpdateResponse(application);
