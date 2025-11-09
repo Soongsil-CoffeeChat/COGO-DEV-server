@@ -101,7 +101,7 @@ public class ChatService {
         List<User> participants = new ArrayList<>();
         participants.add(currentUser);
 
-        if (!request.getParticipantUserId().equals(currentUser.getId())) {
+        if (request.getParticipantUserId().equals(currentUser.getId())) {
             throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
         }
 
