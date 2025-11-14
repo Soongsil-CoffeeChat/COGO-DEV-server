@@ -101,6 +101,7 @@ public class ChatService {
                                             ChatResponse.ChatParticipantResponse.builder()
                                                     .userId(otherUser.getId())
                                                     .username(otherUser.getUsername())
+                                                    .name(otherUser.getName())
                                                     .profileImage(otherUser.getPicture())
                                                     .build();
                                     return List.of(otherUserDto);

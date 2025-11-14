@@ -34,6 +34,7 @@ public class ChatConverter {
                                         ChatParticipantResponse.builder()
                                                 .userId(p.getUser().getId())
                                                 .username(p.getUser().getUsername())
+                                                .name(p.getUser().getName())
                                                 .profileImage(p.getUser().getPicture())
                                                 .build())
                         .collect(Collectors.toList());

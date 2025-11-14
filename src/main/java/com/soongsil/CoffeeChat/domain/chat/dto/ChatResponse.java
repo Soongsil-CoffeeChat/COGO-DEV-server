@@ -74,7 +74,6 @@ public class ChatResponse {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatRoomDetailResponse {
         private Long roomId;
-        private String name;
         private List<ChatParticipantResponse> participants;
     }
 
@@ -86,6 +85,7 @@ public class ChatResponse {
     public static class ChatParticipantResponse {
         private Long userId;
         private String username;
+        private String name;
         private String profileImage;
     }
 }
