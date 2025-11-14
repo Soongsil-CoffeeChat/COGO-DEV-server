@@ -27,7 +27,6 @@ import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
-import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -47,6 +46,26 @@ public class ChatService {
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final UserRepository userRepository;
     private final ApplicationRepository applicationRepository;
+
+    private User findUserByUsername(String username) {
+        return userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+    }
+
+    private User getOtherParty(ChatRoom chatRoom, String username) {
+        User user =
+                userRepository
+                        .findByUsername(username)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        log.trace("user.isMentee: {}", user.isMentee());
+        log.trace("Application id: {}", chatRoom.getApplication().getId());
+        log.trace("Application getMentor: {}", chatRoom.getApplication().getMentor());
+        log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
+
+        if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
+        else return chatRoom.getApplication().getMentee().getUser();
+    }
 
     public ChatRoomPageResponse getChatRooms(String username, int page, int size) {
         User currentUser = findUserByUsername(username);
@@ -230,7 +249,7 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public ChatResponse.ChatRoomApplicationResponse getChatRoomApplication(Long chatRoomId) {
+    public Long getChatRoomApplication(Long chatRoomId) {
 
         ChatRoom chatRoom =
                 chatRoomRepository
@@ -239,30 +258,7 @@ public class ChatService {
 
         Application application = chatRoom.getApplication();
         if (application == null) throw new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND);
-        PossibleDate possibleDate = application.getPossibleDate();
-        if (possibleDate == null)
-            throw new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND);
 
-        return ChatConverter.toChatRoomApplicationResponse(application, possibleDate);
-    }
-
-    private User findUserByUsername(String username) {
-        return userRepository
-                .findByUsername(username)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-    }
-
-    private User getOtherParty(ChatRoom chatRoom, String username) {
-        User user =
-                userRepository
-                        .findByUsername(username)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        log.trace("user.isMentee: {}", user.isMentee());
-        log.trace("Application id: {}", chatRoom.getApplication().getId());
-        log.trace("Application getMentor: {}", chatRoom.getApplication().getMentor());
-        log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
-
-        if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
-        else return chatRoom.getApplication().getMentee().getUser();
+        return application.getId();
     }
 }
