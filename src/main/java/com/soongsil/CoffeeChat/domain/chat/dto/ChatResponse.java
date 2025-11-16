@@ -31,14 +31,7 @@ public class ChatResponse {
         private String lastChat;
         private LocalDateTime updatedAt;
 
-        private String otherPartyName;
-        private String otherPartyProfileImage;
-
-        // 사용자 받가 or 필요한 부분만 받기
-        /*
-        1: User 받기
-        2: User - ChatRoomUser 끌고와서
-         */
+        private List<ChatParticipantResponse> participants;
     }
 
     /** 채팅 메시지 페이징 응답 DTO */
