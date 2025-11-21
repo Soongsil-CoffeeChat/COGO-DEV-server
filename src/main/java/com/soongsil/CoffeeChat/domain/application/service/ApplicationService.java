@@ -97,9 +97,9 @@ public class ApplicationService {
     @Transactional(readOnly = true)
     public ApplicationGetResponse getApplication(Long applicationId) {
         Application findApplication = findApplicationById(applicationId);
-        Long findMentee = findApplication.getMentee().getId();
         Long findMentor = findApplication.getMentor().getId();
-        return ApplicationConverter.toGetResponse(findApplication, findMentee, findMentor);
+        Long findMentee = findApplication.getMentee().getId();
+        return ApplicationConverter.toGetResponse(findApplication, findMentor, findMentee);
     }
 
     @Transactional
@@ -128,7 +128,7 @@ public class ApplicationService {
             Long applicationId, ApplicationRequest.ApplicationStatusUpdateRequest request) {
         Application application = findApplicationById(applicationId);
 
-        //        smsUtil.sendMenteeNotificationMessage(application);
+        smsUtil.sendMenteeNotificationMessage(application);
 
         switch (request.getStatus()) {
             case MATCHED -> {
