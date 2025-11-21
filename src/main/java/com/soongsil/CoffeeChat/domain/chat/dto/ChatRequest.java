@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 public class ChatRequest {
 
@@ -10,7 +11,9 @@ public class ChatRequest {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class CreateChatRoomRequest {
+        @NotNull
         private Long applicationId;
+        @NotNull
         private Long participantUserId;
     }
 

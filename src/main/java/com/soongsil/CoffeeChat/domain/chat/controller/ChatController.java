@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.chat.controller;
 
 import java.security.Principal;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -40,7 +41,7 @@ public class ChatController {
     @Operation(summary = "채팅방 생성")
     public ResponseEntity<ChatResponse.ChatRoomDetailResponse> createChatRoom(
             @Parameter(hidden = true) @CurrentUsername String username,
-            @RequestBody ChatRequest.CreateChatRoomRequest request) {
+            @Valid @RequestBody ChatRequest.CreateChatRoomRequest request) {
         return ResponseEntity.ok(chatService.createChatRoom(username, request));
     }
 
