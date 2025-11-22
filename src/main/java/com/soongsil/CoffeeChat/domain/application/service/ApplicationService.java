@@ -97,9 +97,9 @@ public class ApplicationService {
     @Transactional(readOnly = true)
     public ApplicationGetResponse getApplication(Long applicationId) {
         Application findApplication = findApplicationById(applicationId);
-        Long findMentor = findApplication.getMentor().getId();
-        Long findMentee = findApplication.getMentee().getId();
-        return ApplicationConverter.toGetResponse(findApplication, findMentor, findMentee);
+        Long findMenteeId = findApplication.getMentee().getUser().getId();
+        Long findMentorId = findApplication.getMentor().getUser().getId();
+        return ApplicationConverter.toGetResponse(findApplication, findMentorId, findMenteeId);
     }
 
     @Transactional
