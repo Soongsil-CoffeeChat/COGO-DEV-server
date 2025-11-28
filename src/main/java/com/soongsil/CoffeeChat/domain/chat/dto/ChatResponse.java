@@ -1,6 +1,8 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import lombok.*;
@@ -80,5 +82,15 @@ public class ChatResponse {
         private String username;
         private String name;
         private String profileImage;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ChatApplicationResponse{
+        private Long applicationId;
+        private LocalDate date;
+        private LocalTime startTime;
     }
 }

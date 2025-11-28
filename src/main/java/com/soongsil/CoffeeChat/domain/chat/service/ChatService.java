@@ -250,7 +250,7 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public Long getChatRoomApplication(Long chatRoomId) {
+    public ChatResponse.ChatApplicationResponse getChatRoomApplication(Long chatRoomId) {
 
         ChatRoom chatRoom =
                 chatRoomRepository
@@ -260,6 +260,6 @@ public class ChatService {
         Application application = chatRoom.getApplication();
         if (application == null) throw new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND);
 
-        return application.getId();
+        return ChatConverter.toChatApplicationResponse(application);
     }
 }

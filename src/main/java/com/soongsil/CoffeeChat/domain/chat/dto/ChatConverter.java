@@ -120,4 +120,12 @@ public class ChatConverter {
         chatRoom.getParticipants().addAll(chatRoomUserList);
         return chatRoom;
     }
+
+    public static ChatApplicationResponse toChatApplicationResponse(Application application){
+        return ChatApplicationResponse.builder()
+                .applicationId(application.getId())
+                .date(application.getPossibleDate().getDate())
+                .startTime(application.getPossibleDate().getStartTime())
+                .build();
+    }
 }
