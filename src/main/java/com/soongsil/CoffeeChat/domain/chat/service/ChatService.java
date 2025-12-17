@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,41 +77,74 @@ public class ChatService {
 
         log.trace(">>chatRooms 조회 로그: {}", chatRooms);
 
-        // application get mentee null
-        // 각 채팅방의 마지막 메시지 조회
-        List<String> lastChats =
-                chatRooms.getContent().stream()
-                        .map(
-                                room -> {
-                                    Optional<Chat> lastChat =
-                                            chatRepository.findTopByChatRoomIdOrderByCreatedAtDesc(
-                                                    room.getId());
-                                    return lastChat.map(Chat::getMessage).orElse("");
-                                })
-                        .collect(Collectors.toList());
+//        // application get mentee null
+//        // 각 채팅방의 마지막 메시지 조회
+//        List<String> lastChats =
+//                chatRooms.getContent().stream()
+//                        .map(
+//                                room -> {
+//                                    Optional<Chat> lastChat =
+//                                            chatRepository.findTopByChatRoomIdOrderByCreatedAtDesc(
+//                                                    room.getId());
+//                                    return lastChat.map(Chat::getMessage).orElse("");
+//                                })
+//                        .collect(Collectors.toList());
+//
+//        log.trace(">>lastChats 조회 로그: {}", lastChats);
+//
+//        // 내가 아닌 채팅방 참여자 정보 조회
+//        List<List<ChatResponse.ChatParticipantResponse>> partiesList =
+//                chatRooms.getContent().stream()
+//                        .map(
+//                                room -> {
+//                                    User otherUser = getOtherParty(room, username);
+//                                    ChatResponse.ChatParticipantResponse otherUserDto =
+//                                            ChatResponse.ChatParticipantResponse.builder()
+//                                                    .userId(otherUser.getId())
+//                                                    .username(otherUser.getUsername())
+//                                                    .name(otherUser.getName())
+//                                                    .profileImage(otherUser.getPicture())
+//                                                    .build();
+//                                    return List.of(otherUserDto);
+//                                })
+//                        .toList();
+//
+//        log.trace(">>chatPartiesList 생성 로그: {}", partiesList);
+//        return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList);
 
-        log.trace(">>lastChats 조회 로그: {}", lastChats);
-
-        // 내가 아닌 채팅방 참여자 정보 조회
-        List<List<ChatResponse.ChatParticipantResponse>> partiesList =
+        List<Optional<Chat>> lastChatOptList=
                 chatRooms.getContent().stream()
-                        .map(
-                                room -> {
-                                    User otherUser = getOtherParty(room, username);
-                                    ChatResponse.ChatParticipantResponse otherUserDto =
-                                            ChatResponse.ChatParticipantResponse.builder()
-                                                    .userId(otherUser.getId())
-                                                    .username(otherUser.getUsername())
-                                                    .name(otherUser.getName())
-                                                    .profileImage(otherUser.getPicture())
-                                                    .build();
-                                    return List.of(otherUserDto);
-                                })
+                        .map(room->chatRepository.findTopByChatRoomIdOrderByCreatedAtDesc(room.getId()))
                         .toList();
 
-        log.trace(">>chatPartiesList 생성 로그: {}", partiesList);
+        List<String> lastChats=
+                lastChatOptList.stream()
+                        .map(opt->opt.map(Chat::getMessage).orElse(""))
+                        .toList();
 
-        return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList);
+        List<LocalDateTime> updatedAts=
+                IntStream.range(0,chatRooms.getContent().size())
+                        .mapToObj(i->
+                                lastChatOptList.get(i)
+                                        .map(Chat::getCreatedAt)
+                                        .orElse(chatRooms.getContent().get(i).getUpdatedDate()))
+                        .toList();
+
+        List<List<ChatResponse.ChatParticipantResponse>> partiesList =
+                chatRooms.getContent().stream()
+                        .map(room -> {
+                            User otherUser=getOtherParty(room,username);
+                            ChatResponse.ChatParticipantResponse otherUserDto=
+                                    ChatResponse.ChatParticipantResponse.builder()
+                                            .userId(otherUser.getId())
+                                            .username(otherUser.getUsername())
+                                            .name(otherUser.getName())
+                                            .profileImage(otherUser.getPicture())
+                                            .build();
+                            return List.of(otherUserDto);
+                        })
+                        .toList();
+        return ChatConverter.toChatRoomPageResponse(chatRooms,lastChats,partiesList,updatedAts);
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -16,13 +17,16 @@ import com.soongsil.CoffeeChat.domain.user.entity.User;
 public class ChatConverter {
 
     public static ChatRoomResponse toChatRoomResponse(
-            ChatRoom chatRoom, String lastChat, List<ChatParticipantResponse> participants) {
+            ChatRoom chatRoom,
+            String lastChat,
+            List<ChatParticipantResponse> participants,
+            LocalDateTime updatedAt) {
 
         return ChatRoomResponse.builder()
                 .roomId(chatRoom.getId())
                 .lastChat(lastChat)
                 .participants(participants)
-                .updatedAt(chatRoom.getUpdatedDate())
+                .updatedAt(updatedAt)
                 .build();
     }
 
@@ -74,15 +78,16 @@ public class ChatConverter {
     public static ChatRoomPageResponse toChatRoomPageResponse(
             Page<ChatRoom> chatRoomPage,
             List<String> lastChats,
-            List<List<ChatParticipantResponse>> partiesList) {
+            List<List<ChatParticipantResponse>> partiesList,
+            List<LocalDateTime> updatedAts) {
 
         final List<ChatRoom> rooms = chatRoomPage.getContent();
         final int n = rooms.size();
 
+        // 최근 메시지 가져옴
         List<ChatRoomResponse> content =
                 IntStream.range(0, n)
-                        .mapToObj(
-                                i -> {
+                        .mapToObj(i -> {
                                     ChatRoom room = rooms.get(i);
 
                                     String last =
@@ -95,7 +100,11 @@ public class ChatConverter {
                                                     ? partiesList.get(i)
                                                     : List.of();
 
-                                    return toChatRoomResponse(room, last, parties);
+                                    LocalDateTime updatedAt=
+                                            (updatedAts!=null&&i<updatedAts.size()&&updatedAts.get(i)!=null)
+                                                    ?updatedAts.get(i)
+                                                    :room.getUpdatedDate();
+                                    return toChatRoomResponse(room, last, parties,updatedAt);
                                 })
                         .toList();
 
