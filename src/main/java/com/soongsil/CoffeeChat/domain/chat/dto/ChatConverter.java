@@ -87,7 +87,8 @@ public class ChatConverter {
         // 최근 메시지 가져옴
         List<ChatRoomResponse> content =
                 IntStream.range(0, n)
-                        .mapToObj(i -> {
+                        .mapToObj(
+                                i -> {
                                     ChatRoom room = rooms.get(i);
 
                                     String last =
@@ -100,11 +101,13 @@ public class ChatConverter {
                                                     ? partiesList.get(i)
                                                     : List.of();
 
-                                    LocalDateTime updatedAt=
-                                            (updatedAts!=null&&i<updatedAts.size()&&updatedAts.get(i)!=null)
-                                                    ?updatedAts.get(i)
-                                                    :room.getUpdatedDate();
-                                    return toChatRoomResponse(room, last, parties,updatedAt);
+                                    LocalDateTime updatedAt =
+                                            (updatedAts != null
+                                                            && i < updatedAts.size()
+                                                            && updatedAts.get(i) != null)
+                                                    ? updatedAts.get(i)
+                                                    : room.getUpdatedDate();
+                                    return toChatRoomResponse(room, last, parties, updatedAt);
                                 })
                         .toList();
 
@@ -130,7 +133,7 @@ public class ChatConverter {
         return chatRoom;
     }
 
-    public static ChatApplicationResponse toChatApplicationResponse(Application application){
+    public static ChatApplicationResponse toChatApplicationResponse(Application application) {
         return ChatApplicationResponse.builder()
                 .applicationId(application.getId())
                 .date(application.getPossibleDate().getDate())
