@@ -12,10 +12,11 @@ import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Builder
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Report {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +25,11 @@ public class Report {
 
     @Column private Long reportedUserId;
 
-    @Column private ReportReason reason;
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ReportReason reason;
+
+    @Column private String otherReason;
 
     @Column private String additionalDetails;
 
@@ -32,7 +37,6 @@ public class Report {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime reportedAt;
 
-    // Status of the report (e.g., PENDING, REVIEWED, ACTION_TAKEN)
     @Enumerated(EnumType.STRING)
     @Column
     private ReportStatus status;

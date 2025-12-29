@@ -1,7 +1,10 @@
 package com.soongsil.CoffeeChat.domain.report.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.jetbrains.annotations.NotNull;
+
 import com.soongsil.CoffeeChat.domain.report.enums.ReportReason;
+import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
+import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,11 +18,22 @@ public class ReportRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ReportCreateRequest {
-        private Long reporterId;
-        private Long reportedUserId;
-        private ReportReason reason;
 
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+        @NotNull private Long reporterId;
+
+        @NotNull private Long reportedUserId;
+
+        @NotNull private ReportReason reason;
+
+        private String otherReason;
         private String additionalDetails;
+
+        // ReportReason 타입이 OTHER 일 시, otherReason 필수 입력 검증
+        public void validateReason() {
+            if (reason == ReportReason.OTHER) {
+                if (otherReason == null || otherReason.isBlank())
+                    throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
+            }
+        }
     }
 }

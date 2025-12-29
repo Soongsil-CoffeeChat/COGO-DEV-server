@@ -2,6 +2,8 @@ package com.soongsil.CoffeeChat.domain.report.controller;
 
 import static com.soongsil.CoffeeChat.global.uri.RequestUri.REPORT_URI;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +30,20 @@ public class ReportController {
 
     @PostMapping
     @Operation(
-            summary = "사용자 리포트 등록하기",
-            description = "default status 는 PENDING, reportedAt 는 신고 시간")
+            summary = "사용자 리포트(신고) 등록",
+            description =
+                    """
+                     - default : status=PENDING, reportedAt= 신고 요청 시간
+                     - reason 값:
+                        - ABUSIVE_LANGUAGE, SPAM, INAPPROPRIATE_CONTENT, PRIVACY_VIOLATION, OTHER
+                     - reason 이 OTHER 인 경우, otherReason 필수 입력
+                     """)
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "Report의 세부 정보 반환")
     public ResponseEntity<ApiResponse<ReportResponse.ReportCreateResponse>> createReport(
-            Authentication authentication, @RequestBody ReportRequest.ReportCreateRequest request) {
+            Authentication authentication,
+            @Valid @RequestBody ReportRequest.ReportCreateRequest request) {
         ReportResponse.ReportCreateResponse response =
                 reportService.createReport(
                         ((CustomOAuth2User) authentication.getPrincipal()).getUsername(), request);

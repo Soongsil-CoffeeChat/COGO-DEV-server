@@ -29,6 +29,9 @@ public class ReportService {
     @Transactional
     public ReportCreateResponse createReport(String username, ReportCreateRequest request) {
         User user = findUserByUsername(username);
+
+        // other reason 검증 후 엔티티 생성
+        request.validateReason();
         Report report = ReportConverter.toEntity(request);
 
         reportRepository.save(report);
