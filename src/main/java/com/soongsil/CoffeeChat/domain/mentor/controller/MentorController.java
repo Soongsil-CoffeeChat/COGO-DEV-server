@@ -59,9 +59,13 @@ public class MentorController {
             responseCode = "200",
             description = "멘토 상세 정보 DTO 반환")
     public ResponseEntity<ApiResponse<MentorDetailResponse>> getMentorInfo(
-            @PathVariable("mentorId") Long mentorId) {
+            Authentication authentication, @PathVariable("mentorId") Long mentorId)
+            throws Exception {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(mentorService.getMentorDtoByIdWithJoin(mentorId)));
+                .body(
+                        ApiResponse.onSuccessOK(
+                                mentorService.getMentorDtoByIdWithJoin(
+                                        getUserNameByAuthentication(authentication), mentorId)));
     }
 
     @PatchMapping("/introductions")
@@ -99,9 +103,10 @@ public class MentorController {
             responseCode = "200",
             description = "DTO LIST형식으로 정보 반환")
     public ResponseEntity<ApiResponse<List<MentorListResponse>>> getMentorListByClub(
+            Authentication authentication,
             @RequestParam(value = "part", required = false) PartEnum part,
-            @RequestParam(value = "club", required = false) ClubEnum club) {
+            @RequestParam(value = "club", required = false) ClubEnum club) throws Exception {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(mentorService.getMentorList(part, club)));
+                .body(ApiResponse.onSuccessOK(mentorService.getMentorList(getUserNameByAuthentication(authentication), part, club)));
     }
 }

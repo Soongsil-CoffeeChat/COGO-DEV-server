@@ -64,7 +64,7 @@ public class ApplicationController {
     @GetMapping("/list")
     @Operation(
             summary = "신청 받은 COGO 조회 ",
-            description = "해당 사용자가 관여한 코고 시넝서를 status (unmatched/matched/rejected)로 필터링")
+            description = "해당 사용자가 관여한 코고 신청서를 status (unmatched/matched/rejected)로 필터링")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
             responseCode = "200",
             description = "Application 상대 이름, 날짜, 상태 반환")

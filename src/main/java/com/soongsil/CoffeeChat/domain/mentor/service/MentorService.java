@@ -28,11 +28,6 @@ public class MentorService {
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public List<MentorListResponse> getMentorList(PartEnum part, ClubEnum club) {
-        return mentorRepository.getMentorListByPartAndClub(part, club);
-    }
-
     private User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
@@ -40,7 +35,14 @@ public class MentorService {
     }
 
     @Transactional(readOnly = true)
-    public MentorDetailResponse getMentorDtoByIdWithJoin(Long mentorId) {
+    public List<MentorListResponse> getMentorList(String username, PartEnum part, ClubEnum club) {
+        User currentUser=findUserByUsername(username);
+        return mentorRepository.getMentorListByPartAndClub(part, club);
+    }
+
+    @Transactional(readOnly = true)
+    public MentorDetailResponse getMentorDtoByIdWithJoin(String username, Long mentorId) {
+        User currentUser=findUserByUsername(username);
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
 
@@ -72,7 +74,7 @@ public class MentorService {
 
     @Transactional(readOnly = true)
     public MentorIntroductionResponse getMentorIntroduction(String username) {
-        User findUser = userRepository.findByUsername(username).orElseThrow();
+        User findUser = findUserByUsername(username);
         Introduction introduction = findUser.getMentor().getIntroduction();
         return MentorConverter.toIntroductionResponse(introduction);
     }
