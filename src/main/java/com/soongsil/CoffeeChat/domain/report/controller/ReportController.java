@@ -35,7 +35,7 @@ public class ReportController {
                     """
                      - default : status=PENDING, reportedAt= 신고 요청 시간
                      - reason 값:
-                        - ABUSIVE_LANGUAGE, SPAM, INAPPROPRIATE_CONTENT, PRIVACY_VIOLATION, OTHER
+                        - NON_MENTORING_PURPOSE, DISPUTE, FALSE_INFORMATION, ABUSIVE_LANGUAGE, OTHER
                      - reason 이 OTHER 인 경우, otherReason 필수 입력
                      """)
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
