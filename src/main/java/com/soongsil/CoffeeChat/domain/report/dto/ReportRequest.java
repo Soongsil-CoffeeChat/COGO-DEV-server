@@ -25,15 +25,7 @@ public class ReportRequest {
 
         @NotNull private ReportReason reason;
 
-        private String otherReason;
-        private String additionalDetails;
+        @NotNull private String additionalDetails;
 
-        // ReportReason 타입이 OTHER 일 시, otherReason 필수 입력 검증
-        public void validateReason() {
-            if (reason == ReportReason.OTHER) {
-                if (otherReason == null || otherReason.isBlank())
-                    throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
-            }
-        }
     }
 }

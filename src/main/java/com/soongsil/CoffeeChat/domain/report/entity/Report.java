@@ -21,20 +21,22 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column private Long reporterId;
+    @Column
+    private Long reporterId;
 
-    @Column private Long reportedUserId;
+    @Column
+    private Long reportedUserId;
 
     @Enumerated(EnumType.STRING)
     @Column
     private ReportReason reason;
 
-    @Column private String otherReason;
-
-    @Column private String additionalDetails;
-
     @Column
+    private String additionalDetails;
+
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @Column
     private LocalDateTime reportedAt;
 
     @Enumerated(EnumType.STRING)
