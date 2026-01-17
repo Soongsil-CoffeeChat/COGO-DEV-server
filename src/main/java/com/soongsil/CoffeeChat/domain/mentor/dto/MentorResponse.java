@@ -46,6 +46,7 @@ public class MentorResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentorDetailResponse {
+        private Long userId;
         private Long mentorId;
         private String mentorName;
         private PartEnum part;

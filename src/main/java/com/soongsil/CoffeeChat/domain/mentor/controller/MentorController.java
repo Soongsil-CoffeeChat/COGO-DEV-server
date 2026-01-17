@@ -105,8 +105,12 @@ public class MentorController {
     public ResponseEntity<ApiResponse<List<MentorListResponse>>> getMentorListByClub(
             Authentication authentication,
             @RequestParam(value = "part", required = false) PartEnum part,
-            @RequestParam(value = "club", required = false) ClubEnum club) throws Exception {
+            @RequestParam(value = "club", required = false) ClubEnum club)
+            throws Exception {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(mentorService.getMentorList(getUserNameByAuthentication(authentication), part, club)));
+                .body(
+                        ApiResponse.onSuccessOK(
+                                mentorService.getMentorList(
+                                        getUserNameByAuthentication(authentication), part, club)));
     }
 }

@@ -57,6 +57,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                 .select(
                         Projections.constructor(
                                 MentorDetailResponse.class,
+                                user.id.as("userId"),
                                 mentor.id.as("mentorId"),
                                 user.name.as("mentorName"),
                                 mentor.part,

@@ -36,13 +36,13 @@ public class MentorService {
 
     @Transactional(readOnly = true)
     public List<MentorListResponse> getMentorList(String username, PartEnum part, ClubEnum club) {
-        User currentUser=findUserByUsername(username);
+        User currentUser = findUserByUsername(username);
         return mentorRepository.getMentorListByPartAndClub(part, club);
     }
 
     @Transactional(readOnly = true)
     public MentorDetailResponse getMentorDtoByIdWithJoin(String username, Long mentorId) {
-        User currentUser=findUserByUsername(username);
+        User currentUser = findUserByUsername(username);
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
 
