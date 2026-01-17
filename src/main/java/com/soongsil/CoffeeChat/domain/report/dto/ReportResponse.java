@@ -19,7 +19,6 @@ public class ReportResponse {
         private Long reporterId;
         private Long reportedUserId;
         private ReportReason reason;
-        private String otherReason;
         private String additionalDetails;
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
