@@ -28,6 +28,12 @@ public class MentorService {
     private final MentorRepository mentorRepository;
     private final UserRepository userRepository;
 
+    private User findActiveUserByUsername(String username){
+        return userRepository
+                .findByUsername(username)
+                .filter(u->Boolean.FALSE.equals(u.getIsDeleted()))
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+    }
     private User findUserByUsername(String username) {
         return userRepository
                 .findByUsername(username)
@@ -36,7 +42,7 @@ public class MentorService {
 
     @Transactional(readOnly = true)
     public List<MentorListResponse> getMentorList(String username, PartEnum part, ClubEnum club) {
-        User currentUser = findUserByUsername(username);
+        User currentUser = findActiveUserByUsername(username);
         return mentorRepository.getMentorListByPartAndClub(part, club);
     }
 

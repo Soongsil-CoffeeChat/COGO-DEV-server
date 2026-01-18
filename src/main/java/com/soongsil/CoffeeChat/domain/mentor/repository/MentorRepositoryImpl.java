@@ -41,6 +41,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                 .leftJoin(mentor.introduction, introduction)
                 .on(introduction.isNotNull())
                 .where(
+                        user.isDeleted.isFalse(),
                         clubEq(club),
                         partEq(part),
                         introduction.title.isNotNull(),
@@ -71,6 +72,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                 .join(user.mentor, mentor)
                 .join(mentor.introduction, introduction)
                 .where(
+                        user.isDeleted.isFalse(),
                         mentor.id.eq(mentorId),
                         introduction.title.isNotNull(),
                         introduction.description.isNotNull(),
