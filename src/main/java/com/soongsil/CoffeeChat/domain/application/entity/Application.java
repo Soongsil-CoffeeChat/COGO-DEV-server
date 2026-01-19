@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.domain.application.entity;
 
+import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import jakarta.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -36,6 +37,13 @@ public class Application {
     @JoinColumn(name = "mentee_id")
     private Mentee mentee;
 
+    @ManyToOne
+    @JoinColumn(name = "possible_date_id")
+    private PossibleDate possibleDate;
+
+    @OneToOne(mappedBy = "application", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private ChatRoom chatRoom;
+
     @Column private String memo;
 
     // application 생성 로직에 추가
@@ -46,10 +54,6 @@ public class Application {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'UNMATCHED'")
     private ApplicationStatus applicationStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "possible_date_id")
-    private PossibleDate possibleDate;
 
     public void acceptApplication() {
         this.applicationStatus = ApplicationStatus.MATCHED;
