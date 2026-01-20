@@ -141,6 +141,7 @@ public class ChatService {
                                     User otherUser = getOtherParty(room, username);
                                     ChatResponse.ChatParticipantResponse otherUserDto =
                                             ChatResponse.ChatParticipantResponse.builder()
+                                                    .isDeleted(otherUser.getIsDeleted())
                                                     .userId(otherUser.getId())
                                                     .username(otherUser.getUsername())
                                                     .name(otherUser.getName())
