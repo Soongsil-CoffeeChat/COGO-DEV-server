@@ -78,6 +78,7 @@ public class ChatResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ChatParticipantResponse {
+        private Boolean isDeleted;
         private Long userId;
         private String username;
         private String name;
@@ -88,7 +89,7 @@ public class ChatResponse {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class ChatApplicationResponse{
+    public static class ChatApplicationResponse {
         private Long applicationId;
         private LocalDate date;
         private LocalTime startTime;

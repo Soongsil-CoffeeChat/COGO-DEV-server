@@ -37,6 +37,7 @@ public class ChatConverter {
                         .map(
                                 p ->
                                         ChatParticipantResponse.builder()
+                                                .isDeleted(p.getUser().getIsDeleted())
                                                 .userId(p.getUser().getId())
                                                 .username(p.getUser().getUsername())
                                                 .name(p.getUser().getName())
