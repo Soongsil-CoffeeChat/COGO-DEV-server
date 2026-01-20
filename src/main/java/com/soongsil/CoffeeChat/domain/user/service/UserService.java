@@ -38,7 +38,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findUserByUsername(String username) {
         return userRepository
-                .findByUsername(username)
+                .findByUsernameAndIsDeletedFalse(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 

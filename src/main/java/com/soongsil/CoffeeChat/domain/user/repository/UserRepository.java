@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
     @Query(value = "select * from User where username = :username", nativeQuery = true)
     Optional<User> findByUsernameWithDeleted(@Param("username") String username);
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUsernameAndIsDeletedFalse(String username);
 
     User findByMentor(Mentor mentor);
 

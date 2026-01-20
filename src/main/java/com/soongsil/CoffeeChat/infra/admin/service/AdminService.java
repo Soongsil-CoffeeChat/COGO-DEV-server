@@ -29,7 +29,7 @@ public class AdminService {
             throw new GlobalException(GlobalErrorCode.ADMIN_INCORRECT_PASSWORD);
         }
         userRepository
-                .findByUsername(username)
+                .findByUsernameAndIsDeletedFalse(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
         return jwtUtil.createAccessToken(username, Role.ROLE_ADMIN);
     }

@@ -22,7 +22,7 @@ public class ReportService {
 
     private User findUserByUsername(String username) {
         return userRepository
-                .findByUsername(username)
+                .findByUsernameAndIsDeletedFalse(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 

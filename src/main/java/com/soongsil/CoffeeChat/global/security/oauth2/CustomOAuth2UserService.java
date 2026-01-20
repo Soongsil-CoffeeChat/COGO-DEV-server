@@ -51,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = response.getProvider() + " " + response.getProviderId();
         User user =
                 userRepository
-                        .findByUsername(username)
+                        .findByUsernameAndIsDeletedFalse(username)
                         .map(
                                 existing -> {
                                     existing.updateUser(response);

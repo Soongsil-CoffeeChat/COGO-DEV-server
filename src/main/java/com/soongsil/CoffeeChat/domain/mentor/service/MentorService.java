@@ -30,13 +30,13 @@ public class MentorService {
 
     private User findActiveUserByUsername(String username){
         return userRepository
-                .findByUsername(username)
+                .findByUsernameAndIsDeletedFalse(username)
                 .filter(u->Boolean.FALSE.equals(u.getIsDeleted()))
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
     private User findUserByUsername(String username) {
         return userRepository
-                .findByUsername(username)
+                .findByUsernameAndIsDeletedFalse(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 

@@ -43,7 +43,7 @@ public class ApplicationService {
 
     private User findUserByUsername(String username) {
         return userRepository
-                .findByUsername(username)
+                .findByUsernameWithDeleted(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
@@ -55,10 +55,7 @@ public class ApplicationService {
 
     @Transactional(readOnly = true)
     public User getOtherParty(Application application, String userName) {
-        User user =
-                userRepository
-                        .findByUsername(userName)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        User user = findUserByUsername(userName);
 
         if (user.isMentee()) return application.getMentor().getUser();
         else return application.getMentee().getUser();
@@ -107,7 +104,7 @@ public class ApplicationService {
             String userName, ApplicationStatus status) {
         User User =
                 userRepository
-                        .findByUsername(userName)
+                        .findByUsernameAndIsDeletedFalse(userName)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
 
         List<Application> applications =

@@ -49,19 +49,16 @@ public class ChatService {
 
     private User findUserByUsername(String username) {
         return userRepository
-                .findByUsername(username)
+                .findByUsernameWithDeleted(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
     private User getOtherParty(ChatRoom chatRoom, String username) {
-        User user =
-                userRepository
-                        .findByUsername(username)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        log.trace("user.isMentee: {}", user.isMentee());
-        log.trace("Application id: {}", chatRoom.getApplication().getId());
-        log.trace("Application getMentor: {}", chatRoom.getApplication().getMentor());
-        log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
+        User user = findUserByUsername(username);
+//        log.trace("user.isMentee: {}", user.isMentee());
+//        log.trace("Application id: {}", chatRoom.getApplication().getId());
+//        log.trace("Application getMentor: {}", chatRoom.getApplication().getMentor());
+//        log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
 
         if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
         else return chatRoom.getApplication().getMentee().getUser();

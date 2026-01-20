@@ -136,7 +136,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                                             String username = auth.getName();
                                             User user =
                                                     userRepository
-                                                            .findByUsername(username)
+                                                            .findByUsernameAndIsDeletedFalse(username)
                                                             .orElseThrow(
                                                                     () ->
                                                                             new GlobalException(
