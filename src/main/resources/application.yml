@@ -22,20 +22,20 @@ spring:
         show_sql: true
 
   jwt:
-    access-expiration: 86400000 # 24시간
-    refresh-expiration: 1209600000 # 14일
+    access-expiration: 2592000000 # 임시_30일
+    refresh-expiration: 2592000000 # 임시_30일
     secret: ${JWT_SECRET}
   security:
     oauth2:
       client:
         registration:
-          naver:
-            client-name: naver
-            client-id: ${NAVER_ID}
-            client-secret: ${NAVER_SECRET}
-            redirect-uri: ${NAVER_REDIRECT}
-            authorization-grant-type: authorization_code
-            scope: name,email
+#          naver:
+#            client-name: naver
+#            client-id: ${NAVER_ID}
+#            client-secret: ${NAVER_SECRET}
+#            redirect-uri: ${NAVER_REDIRECT}
+#            authorization-grant-type: authorization_code
+#            scope: name,email
           google:
             client-name: google
             client-id: ${GOOGLE_ID}
