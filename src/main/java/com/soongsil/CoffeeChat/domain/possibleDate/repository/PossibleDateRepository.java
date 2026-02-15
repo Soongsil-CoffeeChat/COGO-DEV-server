@@ -24,6 +24,5 @@ public interface PossibleDateRepository
     Optional<PossibleDate> findByIdAndMentor_Id(Long id, Long mentorId);
 
     Optional<PossibleDate> findByMentor_IdAndDateAndStartTimeAndEndTime(
-            Long mentorId, LocalDate date, LocalTime startTime, LocalTime endTime
-    );
+            Long mentorId, LocalDate date, LocalTime startTime, LocalTime endTime);
 }

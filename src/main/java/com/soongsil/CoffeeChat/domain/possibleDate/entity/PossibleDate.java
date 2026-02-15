@@ -49,7 +49,9 @@ public class PossibleDate {
         isActive = false;
     }
 
-    public void activate() { isActive=true; }
+    public void activate() {
+        isActive = true;
+    }
 
     public void updatePossibleDateTime(LocalDate newDate, LocalTime newStart, LocalTime newEnd) {
         this.date = newDate;

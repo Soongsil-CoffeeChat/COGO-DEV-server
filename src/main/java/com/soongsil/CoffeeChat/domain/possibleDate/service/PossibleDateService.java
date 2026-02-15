@@ -6,8 +6,6 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +13,7 @@ import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateConverter;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateRequest.PossibleDateCreateUpdateRequest;
+import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateCreateUpdateResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.dto.PossibleDateResponse.PossibleDateDetailResponse;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;
@@ -25,6 +24,7 @@ import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -61,22 +61,27 @@ public class PossibleDateService {
         LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate twoWeeksLater = today.plusWeeks(2);
 
-        List<PossibleDateDetailResponse> result= possibleDateRepository.getPossibleDatesByMentorId(mentorId).stream()
-                .filter(
-                        possibleDate ->
-                                !possibleDate.getDate().isBefore(today)
-                                        && !possibleDate.getDate().isAfter(twoWeeksLater))
-                .map(PossibleDateConverter::toResponse)
-                .collect(Collectors.toList());
-        log.debug("findSlots mentorId={}, range=[{} ~ {}], result={}",
-                mentorId, today, twoWeeksLater,result.size());
+        List<PossibleDateDetailResponse> result =
+                possibleDateRepository.getPossibleDatesByMentorId(mentorId).stream()
+                        .filter(
+                                possibleDate ->
+                                        !possibleDate.getDate().isBefore(today)
+                                                && !possibleDate.getDate().isAfter(twoWeeksLater))
+                        .map(PossibleDateConverter::toResponse)
+                        .collect(Collectors.toList());
+        log.debug(
+                "findSlots mentorId={}, range=[{} ~ {}], result={}",
+                mentorId,
+                today,
+                twoWeeksLater,
+                result.size());
         return result;
     }
 
     @Transactional(readOnly = true)
     public List<PossibleDateDetailResponse> findMentorPossibleDateListByUsername(String username) {
         User user = findUserByUsername(username);
-        if(!user.isMentor()){
+        if (!user.isMentor()) {
             throw new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND);
         }
 
@@ -123,34 +128,40 @@ public class PossibleDateService {
 
     @Transactional
     public List<PossibleDateResponse.PossibleDateDetailResponse> replaceMyPossibleDated(
-            List<PossibleDateCreateUpdateRequest> requests, String username){
+            List<PossibleDateCreateUpdateRequest> requests, String username) {
 
-        User user=findUserByUsername(username);
-        Mentor mentor=mentorRepository.findById(user.getMentor().getId())
-                .orElseThrow(()->new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+        User user = findUserByUsername(username);
+        Mentor mentor =
+                mentorRepository
+                        .findById(user.getMentor().getId())
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
 
         // 기존 슬롯 모두 비활성화
-        List<PossibleDate> current=possibleDateRepository.getPossibleDatesByMentorId(mentor.getId());
-        for(PossibleDate possibleDate:current){
+        List<PossibleDate> current =
+                possibleDateRepository.getPossibleDatesByMentorId(mentor.getId());
+        for (PossibleDate possibleDate : current) {
             possibleDate.deactivate();
         }
 
         // 요청 목록 기준 자연키 매칭 통한 Upsert
-        for(PossibleDateCreateUpdateRequest request: requests){
+        for (PossibleDateCreateUpdateRequest request : requests) {
             validateDate(request.getDate());
-            validateTime(request.getStartTime(),request.getEndTime());
+            validateTime(request.getStartTime(), request.getEndTime());
 
             possibleDateRepository
                     .findByMentor_IdAndDateAndStartTimeAndEndTime(
-                            mentor.getId(),request.getDate(),request.getStartTime(),request.getEndTime())
+                            mentor.getId(),
+                            request.getDate(),
+                            request.getStartTime(),
+                            request.getEndTime())
                     .ifPresentOrElse(
-                            exist-> exist.activate(),
-                            ()->{
-                                PossibleDate created=PossibleDateConverter.toEntity(request,mentor);
+                            exist -> exist.activate(),
+                            () -> {
+                                PossibleDate created =
+                                        PossibleDateConverter.toEntity(request, mentor);
                                 created.activate();
                                 possibleDateRepository.save(created);
-                            }
-                    );
+                            });
         }
         return findMentorPossibleDateListByUsername(username);
     }
