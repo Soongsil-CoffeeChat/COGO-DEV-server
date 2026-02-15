@@ -29,13 +29,13 @@ spring:
     oauth2:
       client:
         registration:
-#          naver:
-#            client-name: naver
-#            client-id: ${NAVER_ID}
-#            client-secret: ${NAVER_SECRET}
-#            redirect-uri: ${NAVER_REDIRECT}
-#            authorization-grant-type: authorization_code
-#            scope: name,email
+          #          naver:
+          #            client-name: naver
+          #            client-id: ${NAVER_ID}
+          #            client-secret: ${NAVER_SECRET}
+          #            redirect-uri: ${NAVER_REDIRECT}
+          #            authorization-grant-type: authorization_code
+          #            scope: name,email
           google:
             client-name: google
             client-id: ${GOOGLE_ID}
@@ -109,7 +109,7 @@ admin:
 
 firebase:
   credential:
-    json: ${FIREBASE_CREDENTIAL_JSON}
+    json: ${FIREBASE_CREDENTIALS_JSON}
 
   #  mail:
   #    host: smtp.gmail.com
