@@ -27,6 +27,7 @@ import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
+import com.soongsil.CoffeeChat.domain.push.DeviceToken;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -46,6 +47,7 @@ public class ChatService {
     private final ChatRoomUserRepository chatRoomUserRepository;
     private final UserRepository userRepository;
     private final ApplicationRepository applicationRepository;
+    private final DeviceToken.NotificationService notificationService;
 
     private User findUserByUsername(String username) {
         return userRepository
@@ -53,13 +55,8 @@ public class ChatService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
-    private User getOtherParty(ChatRoom chatRoom, String username) {
+    private User getOtherPartyByChatRoom(ChatRoom chatRoom, String username) {
         User user = findUserByUsername(username);
-//        log.trace("user.isMentee: {}", user.isMentee());
-//        log.trace("Application id: {}", chatRoom.getApplication().getId());
-//        log.trace("Application getMentor: {}", chatRoom.getApplication().getMentor());
-//        log.trace("Application getMentee: {}", chatRoom.getApplication().getMentee());
-
         if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
         else return chatRoom.getApplication().getMentee().getUser();
     }
@@ -94,7 +91,8 @@ public class ChatService {
         //                chatRooms.getContent().stream()
         //                        .map(
         //                                room -> {
-        //                                    User otherUser = getOtherParty(room, username);
+        //                                    User otherUser = getOtherPartyByChatRoom(room,
+        // username);
         //                                    ChatResponse.ChatParticipantResponse otherUserDto =
         //                                            ChatResponse.ChatParticipantResponse.builder()
         //                                                    .userId(otherUser.getId())
@@ -138,7 +136,7 @@ public class ChatService {
                 chatRooms.getContent().stream()
                         .map(
                                 room -> {
-                                    User otherUser = getOtherParty(room, username);
+                                    User otherUser = getOtherPartyByChatRoom(room, username);
                                     ChatResponse.ChatParticipantResponse otherUserDto =
                                             ChatResponse.ChatParticipantResponse.builder()
                                                     .isDeleted(otherUser.getIsDeleted())
@@ -271,7 +269,10 @@ public class ChatService {
                         .findById(request.getRoomId())
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND));
 
-        // 참여자 확인
+        // 채팅방 상대 참여자 확인 for push
+        User receiver = getOtherPartyByChatRoom(chatRoom, username);
+
+        // 참여자 본인 확인
         chatRoomUserRepository
                 .findByChatRoomIdAndUserId(request.getRoomId(), currentUser.getId())
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
@@ -285,6 +286,13 @@ public class ChatService {
                         .build();
 
         chatRepository.save(chat);
+
+        notificationService.sendChatPush(
+                receiver,
+                chatRoom.getId(),
+                currentUser.getName(), // title
+                request.getMessage() // body
+                );
 
         return ChatConverter.toChatMessageResponse(chat);
     }
@@ -303,3 +311,4 @@ public class ChatService {
         return ChatConverter.toChatApplicationResponse(application);
     }
 }
+// TODO: 사용자가 해당 채팅방을 현재 화면으로 보고있으면 알림 보낼 필요 없음
