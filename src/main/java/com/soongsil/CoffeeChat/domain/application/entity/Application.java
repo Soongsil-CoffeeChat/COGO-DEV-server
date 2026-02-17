@@ -1,6 +1,5 @@
 package com.soongsil.CoffeeChat.domain.application.entity;
 
-import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import jakarta.persistence.*;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -8,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationRejectReason;
 import com.soongsil.CoffeeChat.domain.application.enums.ApplicationStatus;
+import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.possibleDate.entity.PossibleDate;

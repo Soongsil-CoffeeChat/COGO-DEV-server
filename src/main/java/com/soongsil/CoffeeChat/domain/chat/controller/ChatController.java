@@ -1,8 +1,8 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
 import java.security.Principal;
-
 import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -81,7 +81,8 @@ public class ChatController {
 
     @GetMapping("/chatRoom/application/{chatRoomId}")
     @Operation(summary = "채팅방과 연결된 코고 조회")
-    public ResponseEntity<ChatResponse.ChatApplicationResponse> getApplication(@PathVariable("chatRoomId") Long chatRoomId) {
+    public ResponseEntity<ChatResponse.ChatApplicationResponse> getApplication(
+            @PathVariable("chatRoomId") Long chatRoomId) {
         return ResponseEntity.ok(chatService.getChatRoomApplication(chatRoomId));
     }
 }

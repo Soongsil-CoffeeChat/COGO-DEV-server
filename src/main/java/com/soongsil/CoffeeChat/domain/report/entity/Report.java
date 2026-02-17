@@ -34,7 +34,6 @@ public class Report {
     @Column
     private String additionalDetails;
 
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column
     private LocalDateTime reportedAt;

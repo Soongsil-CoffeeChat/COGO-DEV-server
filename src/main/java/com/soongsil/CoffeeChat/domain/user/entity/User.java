@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
-import lombok.*;
-//import org.hibernate.annotations.SQLRestriction;
-
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
@@ -17,12 +14,16 @@ import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
 import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
 
+import lombok.*;
+
+// import org.hibernate.annotations.SQLRestriction;
+
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@SQLRestriction("isDeleted = false")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +44,9 @@ public class User {
 
     @Column private String picture;
 
-    @Builder.Default @Column(nullable = false) private Boolean isDeleted = false;
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
 
     @Column private LocalDateTime deletedAt;
 

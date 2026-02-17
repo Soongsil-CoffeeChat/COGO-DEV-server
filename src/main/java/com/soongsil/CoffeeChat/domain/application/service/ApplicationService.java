@@ -130,10 +130,10 @@ public class ApplicationService {
         switch (request.getStatus()) {
             case MATCHED -> {
                 application.acceptApplication();
-                application.getPossibleDate().deactivate();;
+                application.getPossibleDate().deactivate();
             }
             case REJECTED -> {
-                if(request.getReason()==null){
+                if (request.getReason()== null) {
                     throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
                 }
                 application.rejectApplication(request.getReason());
@@ -147,5 +147,4 @@ public class ApplicationService {
 
         return ApplicationConverter.toUpdateResponse(application);
     }
-
 }

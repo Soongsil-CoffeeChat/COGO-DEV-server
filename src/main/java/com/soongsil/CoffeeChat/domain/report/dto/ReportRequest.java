@@ -3,8 +3,6 @@ package com.soongsil.CoffeeChat.domain.report.dto;
 import org.jetbrains.annotations.NotNull;
 
 import com.soongsil.CoffeeChat.domain.report.enums.ReportReason;
-import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
-import com.soongsil.CoffeeChat.global.exception.GlobalException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +24,5 @@ public class ReportRequest {
         @NotNull private ReportReason reason;
 
         @NotNull private String additionalDetails;
-
     }
 }
