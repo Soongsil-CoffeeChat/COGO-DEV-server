@@ -15,15 +15,13 @@ import com.google.firebase.FirebaseOptions;
 @Configuration
 public class FirebaseConfig {
 
-    // 임시! 서버에 반영 시 변경 필요
-    @Value("${firebase.credentials.json}")
+    @Value("${firebase.credential.json}")
     private String firebaseCredentialsJson;
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
         if (!FirebaseApp.getApps().isEmpty()) return FirebaseApp.getInstance();
 
-        // stream?? String 이랑 정확히 뭐가 어떻게 다른거지
         byte[] bytes = firebaseCredentialsJson.getBytes(StandardCharsets.UTF_8);
         GoogleCredentials credentials =
                 GoogleCredentials.fromStream(new ByteArrayInputStream(bytes));
