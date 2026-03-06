@@ -109,14 +109,3 @@ firebase:
   credential:
     json: ${FIREBASE_CREDENTIALS_JSON}
 
-  #  mail:
-  #    host: smtp.gmail.com
-  #    port: 587
-  #    sender: ${MAIL_SENDER}
-  #    password: ${MAIL_PW}
-  #    properties:
-  #      mail:
-  #        smtp:
-  #          auth: true
-  #          starttls:
-  #            enable: true
