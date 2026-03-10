@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.soongsil.CoffeeChat.domain.push.service.NotificationService;
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatConverter;
@@ -28,6 +27,7 @@ import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
+import com.soongsil.CoffeeChat.domain.push.service.NotificationService;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -66,7 +66,7 @@ public class ChatService {
         Pageable pageable = PageRequest.of(page, size);
 
         Page<ChatRoom> chatRooms =
-                chatRoomRepository.findAllByUserName(currentUser.getUsername(), pageable);
+                chatRoomRepository.findActiveChatRoomsByUserId(currentUser.getId(), pageable);
 
         log.trace(">>chatRooms 조회 로그: {}", chatRooms);
 

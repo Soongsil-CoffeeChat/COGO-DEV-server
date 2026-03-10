@@ -75,7 +75,6 @@ public class ApplicationService {
             throw new GlobalException(GlobalErrorCode.PREEMPTED_POSSIBLE_DATE);
         }
 
-        // COGO 저장
         User user = findUserByUsername(userName);
         Mentee findMentee = user.getMentee();
         Mentor findMentor =

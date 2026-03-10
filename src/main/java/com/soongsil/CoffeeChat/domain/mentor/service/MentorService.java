@@ -44,7 +44,7 @@ public class MentorService {
     @Transactional(readOnly = true)
     public List<MentorListResponse> getMentorList(String username, PartEnum part, ClubEnum club) {
         User currentUser = findActiveUserByUsername(username);
-        return mentorRepository.getMentorListByPartAndClub(part, club);
+        return mentorRepository.getMentorListByPartAndClub(currentUser.getId(), part, club);
     }
 
     @Transactional(readOnly = true)

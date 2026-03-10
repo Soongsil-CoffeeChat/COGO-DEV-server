@@ -10,7 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
+public interface ChatRoomRepository
+        extends JpaRepository<ChatRoom, Long>, ChatRoomRepositoryCustom {
 
     @Query(
             "SELECT DISTINCT cr FROM ChatRoom cr JOIN cr.participants p WHERE p.user.username = :username")
