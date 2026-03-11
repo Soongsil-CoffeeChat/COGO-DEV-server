@@ -57,6 +57,11 @@ public class UserService {
     }
 
     public User2FACodeResponse send2FACode(String to) {
+        // Apple 심사용 테스트 계정
+        if ("01099999999".equals(to)||"010-9999-9999".equals(to)){
+            log.info("App Store 리뷰용 테스트 계정 SMS 요청 우회");
+            return UserConverter.to2FACodeResponse("012345");
+        }
         return UserConverter.to2FACodeResponse(smsUtil.send2FACode(to));
     }
 
