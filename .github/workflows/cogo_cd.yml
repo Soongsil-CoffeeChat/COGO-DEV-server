@@ -35,16 +35,18 @@ jobs:
           instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
           working-directory: /home/ubuntu/cogo-server
           command: |
-            set -e 
-            
+            set -e
             cd /home/ubuntu/cogo-server
             echo "Deploy 시작"
             echo "${{ secrets.DOCKERHUB_PASSWORD }}" \
-              | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" \
-              --password-stdin
+              | sudo docker login \
+                -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+                --password-stdin
             sudo docker pull coffeego/cogo-server:latest
             sudo docker rm -f cogo-server || true
             sudo docker run -d \
               --name cogo-server \
               -p 8080:8080 \
               coffeego/cogo-server:latest
+            sudo docker ps -a
+          comment: "Deploy latest cogo-server"
