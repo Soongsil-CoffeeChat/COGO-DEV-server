@@ -41,7 +41,6 @@ jobs:
             docker rm -f cogo-server || true
             docker run -d \
               --name cogo-server \
-              --env-file /home/ubuntu/cogo-server/.env \
-              -p 80:8080 \
+              -p 8080:8080 \
               coffeego/cogo-server:latest
           comment: "Deploy latest cogo-server"

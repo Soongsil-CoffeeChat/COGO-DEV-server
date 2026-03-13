@@ -66,6 +66,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.37'
 
+    //aws parameter store
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 
     // Mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -76,10 +78,8 @@ dependencies {
     // Apache Commons Codec for Base64
     implementation 'commons-codec:commons-codec:1.15'
 
-    // Mail
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-// query dsl 버전 명시해야 jakarta사용 (javax X)
+    // query dsl 버전 명시해야 jakarta사용 (javax X)
     implementation 'com.querydsl:querydsl-apt:5.0.0'
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     implementation 'com.querydsl:querydsl-core:5.0.0'
@@ -98,10 +98,6 @@ dependencies {
     //Cool SMS
     implementation 'net.nurigo:sdk:4.2.7'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-
-    //SQS
-    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1")
-    implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs'
 
     // webflux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
