@@ -1,6 +1,6 @@
 spring:
   config:
-    import: "aws-parameterstore:/config/cogo-server/"
+    import: optional:aws-parameterstore:/config/cogo-server/
   jackson:
     time-zone: Asia/Seoul
   servlet:
@@ -59,8 +59,6 @@ cloud:
       auto: false
     stack:
       auto: false
-#    sqs:
-#      queue-name: ${SQS_NAME}
 
 logging.level:
   com.soongsil.CoffeeChat.domain.auth: debug
@@ -83,4 +81,3 @@ admin:
 firebase:
   credential:
     json: ${FIREBASE_CREDENTIALS_JSON}
-
