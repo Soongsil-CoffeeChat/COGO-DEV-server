@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:aws-parameterstore:/config/cogo-server/
+    import: aws-parameterstore:/config/cogo-server/
   jackson:
     time-zone: Asia/Seoul
   servlet:
