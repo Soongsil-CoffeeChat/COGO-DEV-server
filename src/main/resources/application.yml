@@ -1,17 +1,12 @@
 spring:
+  config:
+    import: "aws-parameterstore:/config/cogo-server/"
   jackson:
     time-zone: Asia/Seoul
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-  cloud:
-    aws:
-      paramstore:
-        enabled: true
-        prefix: /config
-        name: cogo-server
-        profile-separator: /
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${DB_URL}:3306/${DB_NAME}?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true

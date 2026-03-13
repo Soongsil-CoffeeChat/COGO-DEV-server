@@ -66,8 +66,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.37'
 
-    //aws parameter store
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
+    // AWS parameter store
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws-parameter-store:3.1.0'
 
     // Mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
