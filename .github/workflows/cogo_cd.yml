@@ -40,9 +40,9 @@ jobs:
             echo "${{ secrets.DOCKERHUB_PASSWORD }}" \
               | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" \
               --password-stdin
-            docker pull coffeego/cogo-server:latest
-            docker rm -f cogo-server || true
-            docker run -d \
+            sudo docker pull coffeego/cogo-server:latest
+            sudo docker rm -f cogo-server || true
+            sudo docker run -d \
               --name cogo-server \
               -p 8080:8080 \
               coffeego/cogo-server:latest
