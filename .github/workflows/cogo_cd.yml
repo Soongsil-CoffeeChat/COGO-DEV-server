@@ -10,7 +10,6 @@ on:
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: Deploy to EC2 via SSM
     runs-on: ubuntu-latest
 
     permissions:
@@ -25,28 +24,30 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_IAM_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Pull & restart on EC2 via SSM
-        uses: peterkimzz/aws-ssm-send-command@v1.1.1
-        id: ssm
-        with:
-          aws-region: ap-northeast-2
-          aws-access-key-id: ${{ secrets.AWS_IAM_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_IAM_SECRET_ACCESS_KEY }}
-          instance-ids: ${{ secrets.EC2_INSTANCE_ID }}
-          working-directory: /home/ubuntu/cogo-server
-          command: |
-            set -e
-            cd /home/ubuntu/cogo-server
-            echo "Deploy 시작"
-            echo "${{ secrets.DOCKERHUB_PASSWORD }}" \
-              | sudo docker login \
-                -u "${{ secrets.DOCKERHUB_USERNAME }}" \
-                --password-stdin
-            sudo docker pull coffeego/cogo-server:latest
-            sudo docker rm -f cogo-server || true
-            sudo docker run -d \
-              --name cogo-server \
-              -p 8080:8080 \
-              coffeego/cogo-server:latest
-            sudo docker ps -a
-          comment: "Deploy latest cogo-server"
+      - name: Send deploy command via AWS CLI
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --region ap-northeast-2 \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy latest cogo-server" \
+            --parameters 'commands=[
+              "set -e",
+              "cd /home/ubuntu",
+              "echo \"${{ secrets.DOCKERHUB_PASSWORD }}\" | sudo docker login -u \"${{ secrets.DOCKERHUB_USERNAME }}\" --password-stdin",
+              "sudo docker pull coffeego/cogo-server:latest",
+              "sudo docker rm -f cogo-server || true",
+              "sudo docker run -d --name cogo-server -p 8080:8080 coffeego/cogo-server:latest",
+              "sudo docker ps -a"
+            ]' \
+            --query "Command.CommandId" \
+            --output text)
+
+          echo "COMMAND_ID=$COMMAND_ID"
+
+          sleep 10
+
+          aws ssm get-command-invocation \
+            --region ap-northeast-2 \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
