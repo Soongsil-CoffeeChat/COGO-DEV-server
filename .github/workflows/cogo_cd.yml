@@ -37,10 +37,12 @@ jobs:
           command: |
             cd /home/ubuntu/cogo-server
             echo "Deploy 시작"
+            echo "${{ secrets.DOCKERHUB_PASSWORD }}" \
+              | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" \
+              --password-stdin
             docker pull coffeego/cogo-server:latest
             docker rm -f cogo-server || true
             docker run -d \
               --name cogo-server \
               -p 8080:8080 \
               coffeego/cogo-server:latest
-          comment: "Deploy latest cogo-server"
