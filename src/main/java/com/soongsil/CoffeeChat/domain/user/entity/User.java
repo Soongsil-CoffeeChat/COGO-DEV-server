@@ -23,7 +23,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

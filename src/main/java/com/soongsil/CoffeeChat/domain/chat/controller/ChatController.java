@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
 import java.security.Principal;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;

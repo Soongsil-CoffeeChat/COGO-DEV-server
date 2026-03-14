@@ -132,7 +132,7 @@ public class ApplicationService {
                 application.getPossibleDate().deactivate();
             }
             case REJECTED -> {
-                if (request.getReason()== null) {
+                if (request.getReason() == null) {
                     throw new GlobalException(GlobalErrorCode.APPLICATION_INVALID_MATCH_STATUS);
                 }
                 application.rejectApplication(request.getReason());

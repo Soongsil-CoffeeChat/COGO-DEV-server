@@ -1,10 +1,11 @@
 package com.soongsil.CoffeeChat.domain.push.service;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.soongsil.CoffeeChat.domain.push.DeviceToken;
@@ -39,13 +40,22 @@ public class NotificationService {
                                 .putData("roomId", String.valueOf(roomId))
                                 .build();
 
-                String response=FirebaseMessaging.getInstance().send(msg);
-                log.info("[FCM] sent ok. receiverId={}, roomId={}, messageId={}", receiver.getId(), roomId, response);
+                String response = FirebaseMessaging.getInstance().send(msg);
+                log.info(
+                        "[FCM] sent ok. receiverId={}, roomId={}, messageId={}",
+                        receiver.getId(),
+                        roomId,
+                        response);
 
             } catch (FirebaseMessagingException e) {
                 // TODO: 토큰 만료
-                log.warn("[FCM] send fail. receiverId={}, roomId={}, code={}, msg={}",
-                        receiver.getId(), roomId, e.getErrorCode(), e.getMessage(), e);
+                log.warn(
+                        "[FCM] send fail. receiverId={}, roomId={}, code={}, msg={}",
+                        receiver.getId(),
+                        roomId,
+                        e.getErrorCode(),
+                        e.getMessage(),
+                        e);
             }
         }
     }
