@@ -14,7 +14,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         servers = {
-            @Server(url = "https://back-coffeego.com", description = "Production server"),
+            @Server(url = "https://cogossu.store", description = "Production server"),
             @Server(url = "http://localhost:8080", description = "Local development server")
         })
 @SpringBootApplication
