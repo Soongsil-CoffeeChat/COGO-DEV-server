@@ -3,7 +3,7 @@
 # 프로젝트 설명 📄
 IT 관련 고민을 가지고 있는 멘티들이 자대에 재학중인 멘토들에게 커피챗을 신청할 수 있는 플랫폼입니다.
 # 서버 아키텍처
-<img src="https://github.com/user-attachments/assets/a4d2c5ac-e02c-43d0-9d8b-a8e28d91dc40" />
+![COGO 인프라 아키텍처](./images/cogo_architecture.png)
 
 # 팀원 소개 👥
 
