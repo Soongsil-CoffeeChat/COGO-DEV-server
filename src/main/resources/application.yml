@@ -7,11 +7,7 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_URL}:3306/${DB_NAME}?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: ${DB_USERNAME}
-    password: ${DB_PW}
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -22,6 +18,19 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_URL}:3306/${DB_NAME}?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PW}
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      ssl:
+        enabled: true
 
   jwt:
     access-expiration: 2592000000 # 임시_30일
@@ -43,10 +52,16 @@ spring:
     web-service-id: ${APPLE_SERVICE_ID}
     private-key: ${APPLE_P8}
     token-url: https://appleid.apple.com/auth/token
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: 6379
+
+# Admin
+admin:
+  password: ${ADMIN_PASSWORD}
+
+# 세부 로깅 레벨
+logging.level:
+  com.soongsil.CoffeeChat.domain.auth: debug
+
+# AWS 관련 설정
 cloud:
   aws:
     s3:
@@ -60,22 +75,19 @@ cloud:
     stack:
       auto: false
 
-logging.level:
-  com.soongsil.CoffeeChat.domain.auth: debug
-
-server:
-  servlet:
-    session:
-      tracking-modes: cookie # 세션 추적 방식을 쿠키로 제한
-
+# 전화번호 인증
 coolsms:
   from: ${SMS_FROM}
   api-key: ${SMS_KEY}
   api-secret: ${SMS_SECRET}
 
-admin:
-  password: ${ADMIN_PASSWORD}
-
+# google firebase 설정
 firebase:
   credential:
     json: ${FIREBASE_CREDENTIALS_JSON}
+
+# 세션 하이재킹 방지
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
