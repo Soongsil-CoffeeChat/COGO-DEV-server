@@ -36,8 +36,8 @@ public class SmsUtil {
     }
 
     // 단일 메시지 발송 예제
-    public String send2FACode(String to) {
-        String verificationCode = generateVerificationCode();
+    public int send2FACode(String to) {
+        int verificationCode = generateVerificationCode();
         sendMessage(to, "아래의 인증번호를 입력해주세요\n" + verificationCode);
         return verificationCode;
     }
@@ -53,9 +53,8 @@ public class SmsUtil {
                 "띵동~♪ 멘토님께 커피챗 신청서가 도착했어요! 지금 바로 코고 앱에서 확인해 보세요");
     }
 
-    private String generateVerificationCode() {
+    private int generateVerificationCode() {
         Random random = new Random();
-        int code = random.nextInt(9000) + 1000; // 4자리 랜덤 숫자 생성
-        return String.valueOf(code);
+        return random.nextInt(9000) + 1000;
     }
 }
