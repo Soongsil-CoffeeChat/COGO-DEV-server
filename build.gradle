@@ -94,6 +94,7 @@ dependencies {
 
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.42.0'
 
     // Cool SMS
     implementation 'net.nurigo:sdk:4.2.7'
@@ -115,6 +116,10 @@ dependencies {
 
     // fire base
     implementation 'com.google.firebase:firebase-admin:9.7.1'
+
+    // qr 생성 ZXing
+    implementation 'com.google.zxing:core:3.5.3'
+    implementation 'com.google.zxing:javase:3.5.3'
 
 }
 
