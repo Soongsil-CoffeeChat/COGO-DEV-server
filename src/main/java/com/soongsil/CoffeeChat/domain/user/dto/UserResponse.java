@@ -25,7 +25,7 @@ public class UserResponse {
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class User2FACodeResponse {
-        private String verificationCode;
+        private int verificationCode;
     }
 
     @Getter

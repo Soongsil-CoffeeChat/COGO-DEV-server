@@ -66,7 +66,7 @@ public class SecurityConfig {
                                                     Arrays.asList(
                                                             "https://localhost:3000",
                                                             "http://localhost:8080",
-                                                            "https://back-coffeego.com",
+                                                            "https://cogossu.store",
                                                             "https://soongsil-coffeechat.github.io"));
                                             configuration.setAllowedMethods(
                                                     Arrays.asList(
