@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
@@ -91,3 +91,8 @@ server:
   servlet:
     session:
       tracking-modes: cookie
+
+# 이벤트 매장 핀번호
+event:
+  store:
+    pin: ${EVENT_STORE_PIN:0000}

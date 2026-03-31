@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
 import com.soongsil.CoffeeChat.domain.event.dto.CouponIssuedEvent;
+import com.soongsil.CoffeeChat.domain.event.dto.EventStatusResponse;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -45,8 +46,9 @@ public class CouponService {
     @Transactional(readOnly = true)
     public String generateQrToken(Long applicationId, String username) {
         User user = findUserByUsername(username);
+
         if (!user.isMentor()) {
-            throw new IllegalStateException("멘토만 QR 코드를 발급할 수 있습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_NOT_MENTOR);
         }
 
         Application application =
@@ -56,7 +58,7 @@ public class CouponService {
                                 () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
 
         if (!application.getMentor().getId().equals(user.getMentor().getId())) {
-            throw new IllegalStateException("본인의 커피챗에 대해서만 QR을 발급할 수 있습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_NOT_YOUR_CHAT);
         }
 
         Boolean isAlreadyIssued =
@@ -64,11 +66,11 @@ public class CouponService {
                         .opsForSet()
                         .isMember("event:issued:applications", applicationId.toString());
         if (Boolean.TRUE.equals(isAlreadyIssued)) {
-            throw new IllegalStateException("이미 쿠폰이 발급된 커피챗입니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
         }
 
         if (application.getPossibleDate() == null) {
-            throw new IllegalStateException("커피챗 일정이 설정 되어 있지 않습니다.");
+            throw new GlobalException(GlobalErrorCode.POSSIBLE_DATE_NOT_FOUND);
         }
 
         LocalDateTime applicationEndTime =
@@ -81,7 +83,7 @@ public class CouponService {
         long ttlSeconds = Duration.between(LocalDateTime.now(), expireTime).getSeconds();
 
         if (ttlSeconds <= 0) {
-            throw new IllegalStateException("만료 기간(1주일)이 지난 커피챗 입니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_APPLICATION_EXPIRED);
         }
 
         String token = UUID.randomUUID().toString();
@@ -100,21 +102,21 @@ public class CouponService {
     @Transactional(readOnly = true)
     public String verifyQrAndIssueCoupon(String qrToken, String inputPin, String username) {
         if (!storePin.equals(inputPin)) {
-            throw new IllegalArgumentException("매장 핀 번호가 일치하지 않습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_PIN_MISMATCH);
         }
 
         // 1. 사용자 역할, 토큰 유효성 검증
         User user = findUserByUsername(username);
 
         if (!user.isMentee()) {
-            throw new IllegalStateException("멘티만 스캔하여 쿠폰을 발급받을 수 있습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_NOT_MENTEE);
         }
 
         String tokenKey = "event:qr:token:" + qrToken;
         String applicationIdString = redisTemplate.opsForValue().get(tokenKey);
 
         if (applicationIdString == null) {
-            throw new IllegalArgumentException("유효하지 않거나 만료된 QR 코드입니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_QR_EXPIRED);
         }
 
         Long applicationId = Long.parseLong(applicationIdString);
@@ -139,7 +141,7 @@ public class CouponService {
 
         try {
             if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("현재 처리 중인 요청입니다. 잠시 후 다시 시도해주세요.");
+                throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
             }
 
             // 1) 채팅방 1회 발급 제한 검증
@@ -148,7 +150,7 @@ public class CouponService {
                             .opsForSet()
                             .isMember("event:issued:applications", applicationIdString);
             if (Boolean.TRUE.equals(isAlreadyIssued)) {
-                throw new IllegalStateException("이미 쿠폰이 발급된 커피챗입니다.");
+                throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
             }
 
             // 2) 멘티 이벤트 참여 횟수 제한 검증
@@ -157,7 +159,7 @@ public class CouponService {
             // 3) 쿠폰 발급
             String couponUrl = redisTemplate.opsForList().leftPop("event:coupons");
             if (couponUrl == null) {
-                throw new IllegalStateException("준비된 쿠폰이 모두 소진되었습니다.");
+                throw new GlobalException(GlobalErrorCode.EVENT_COUPON_EXHAUSTED);
             }
 
             // 4) redis 상태 업데이트
@@ -183,12 +185,22 @@ public class CouponService {
         }
     }
 
+    public EventStatusResponse getEventStatus() {
+
+        Long size = redisTemplate.opsForList().size("event:coupons");
+
+        if (size != null && size > 0) {
+            return new EventStatusResponse("IN_PROGRESS", size);
+        }
+        return new EventStatusResponse("COMPLETED", 0L);
+    }
+
     private void checkMenteeLimit(Long menteeId) {
         String userKey = "event:user:participation:" + menteeId;
         String countString = redisTemplate.opsForValue().get(userKey);
 
         if (countString != null && Integer.parseInt(countString) >= 2) {
-            throw new IllegalStateException("이벤트 참여 횟수 (최대2회)를 초과했습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_LIMIT_EXCEEDED);
         }
     }
 }
