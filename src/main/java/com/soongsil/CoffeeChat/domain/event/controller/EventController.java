@@ -1,7 +1,8 @@
-package com.soongsil.CoffeeChat.domain.event;
+package com.soongsil.CoffeeChat.domain.event.controller;
 
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.domain.event.service.CouponService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

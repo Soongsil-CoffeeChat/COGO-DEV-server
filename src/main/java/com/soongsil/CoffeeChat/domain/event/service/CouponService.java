@@ -1,4 +1,4 @@
-package com.soongsil.CoffeeChat.domain.event;
+package com.soongsil.CoffeeChat.domain.event.service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
