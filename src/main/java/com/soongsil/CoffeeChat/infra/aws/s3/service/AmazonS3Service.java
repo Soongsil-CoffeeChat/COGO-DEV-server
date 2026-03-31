@@ -1,8 +1,10 @@
 package com.soongsil.CoffeeChat.infra.aws.s3.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -84,5 +86,24 @@ public class AmazonS3Service {
     private String getFilePath(String fileUrl) throws IOException {
         URI uri = URI.create(fileUrl);
         return uri.getPath().substring(1);
+    }
+
+    public String uploadJsonFile(String jsonData, String uploadDir, String fileNamePrefix) {
+        byte[] bytes = jsonData.getBytes(StandardCharsets.UTF_8);
+
+        // 파일 이름 설정
+        String fileName =
+                uploadDir + "/" + fileNamePrefix + "_" + System.currentTimeMillis() + ".json";
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(bytes.length);
+        objectMetadata.setContentType("application/json");
+
+        try (InputStream inputStream = new ByteArrayInputStream(bytes)) {
+            amazonS3Client.putObject(bucket, fileName, inputStream, objectMetadata);
+            return amazonS3Client.getUrl(bucket, fileName).toString();
+        } catch (IOException e) {
+            throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
+        }
     }
 }
