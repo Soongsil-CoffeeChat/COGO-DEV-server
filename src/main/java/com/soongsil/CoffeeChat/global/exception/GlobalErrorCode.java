@@ -40,6 +40,19 @@ public enum GlobalErrorCode {
     CHATROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "CHATROOM_404", "채팅방을 찾을 수 없습니다."),
     CHATROOM_NOT_PARTICIPANT(HttpStatus.FORBIDDEN, "CHATROOM_403", "채팅방 참여자가 아닙니다."),
 
+    // 이벤트 및 쿠폰 관련
+    EVENT_PIN_MISMATCH(HttpStatus.BAD_REQUEST, "EVENT_400_1", "매장 핀 번호가 일치하지 않습니다."),
+    EVENT_QR_EXPIRED(HttpStatus.BAD_REQUEST, "EVENT_400_2", "유효하지 않거나 만료된 QR 코드입니다."),
+    EVENT_APPLICATION_EXPIRED(HttpStatus.BAD_REQUEST, "EVENT_400_3", "만료 기간(1주일)이 지난 커피챗입니다."),
+    EVENT_NOT_MENTOR(HttpStatus.FORBIDDEN, "EVENT_403_1", "멘토 유저가 아닙니다."),
+    EVENT_NOT_MENTEE(HttpStatus.FORBIDDEN, "EVENT_403_2", "멘티 유저가 아닙니다."),
+    EVENT_NOT_YOUR_CHAT(HttpStatus.FORBIDDEN, "EVENT_403_3", "본인이 참여한 커피챗의 QR 코드만 스캔할 수 있습니다."),
+    EVENT_LIMIT_EXCEEDED(HttpStatus.FORBIDDEN, "EVENT_403_4", "이벤트 참여 횟수(최대 2회)를 초과했습니다."),
+    EVENT_ALREADY_ISSUED(HttpStatus.CONFLICT, "EVENT_409", "이미 쿠폰이 발급된 커피챗입니다."),
+    EVENT_COUPON_EXHAUSTED(HttpStatus.GONE, "EVENT_410", "준비된 쿠폰이 모두 소진되었습니다."),
+    EVENT_CONCURRENCY_ERROR(
+            HttpStatus.SERVICE_UNAVAILABLE, "EVENT_503", "현재 처리 중인 요청입니다. 잠시 후 다시 시도해주세요."),
+
     // JWT 관련
     JWT_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "JWT_001", "유효하지 않는 토큰입니다."),
     JWT_MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "JWT_002", "잘못된 형식의 토큰입니다."),
