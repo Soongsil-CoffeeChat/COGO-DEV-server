@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.soongsil.CoffeeChat.domain.event.dto.EventCheckResponse;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,45 @@ public class CouponService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
+    private boolean checkMenteeLimit(Long menteeId) {
+        String userKey = "event:user:participation:" + menteeId;
+        String countString = redisTemplate.opsForValue().get(userKey);
+        int currentCount=(countString!=null)?Integer.parseInt(countString):0;
+
+        return currentCount<2;
+    }
+
+    private boolean checkApplicationLimit(String applicationIdString){
+        Boolean isAlreadyIssued = redisTemplate
+                .opsForSet()
+                .isMember("event:issued:applications", applicationIdString);
+        return !Boolean.TRUE.equals(isAlreadyIssued);
+    }
+
+
+    // 이벤트 참여 이력 조회
+    public EventCheckResponse checkEligibility(String username, Long applicationId){
+        User user=findUserByUsername(username);
+
+        // 해당 코고 이벤트 참여 이력 확인
+        boolean issued=checkApplicationLimit(applicationId.toString());
+
+        // 멘티 일 시 참여 이력 상한 확인 (2회)
+        boolean limitExceeded;
+        if(user.isMentee()){
+            Long menteeId=user.getMentee().getId();
+            limitExceeded=checkMenteeLimit(menteeId);
+        } else {
+            limitExceeded=false;
+        }
+
+        return EventCheckResponse.builder()
+                .isAlreadyIssued(issued)
+                .isLimitExceeded(limitExceeded)
+                .canIssue(!issued&&!limitExceeded)
+                .build();
+    }
+
     // 멘토: QR 토큰 발급 로직
     @Transactional(readOnly = true)
     public String generateQrToken(Long applicationId, String username) {
@@ -61,11 +101,7 @@ public class CouponService {
             throw new GlobalException(GlobalErrorCode.EVENT_NOT_YOUR_CHAT);
         }
 
-        Boolean isAlreadyIssued =
-                redisTemplate
-                        .opsForSet()
-                        .isMember("event:issued:applications", applicationId.toString());
-        if (Boolean.TRUE.equals(isAlreadyIssued)) {
+        if(!checkApplicationLimit(applicationId.toString())){
             throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
         }
 
@@ -145,16 +181,13 @@ public class CouponService {
             }
 
             // 1) 채팅방 1회 발급 제한 검증
-            Boolean isAlreadyIssued =
-                    redisTemplate
-                            .opsForSet()
-                            .isMember("event:issued:applications", applicationIdString);
-            if (Boolean.TRUE.equals(isAlreadyIssued)) {
+            if(!checkApplicationLimit(applicationId.toString())){
                 throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
             }
-
             // 2) 멘티 이벤트 참여 횟수 제한 검증
-            checkMenteeLimit(menteeId);
+            if(!checkMenteeLimit(menteeId)){
+                throw new GlobalException(GlobalErrorCode.EVENT_LIMIT_EXCEEDED);
+            }
 
             // 3) 쿠폰 발급
             String couponUrl = redisTemplate.opsForList().leftPop("event:coupons");
@@ -195,12 +228,5 @@ public class CouponService {
         return new EventStatusResponse("COMPLETED", 0L);
     }
 
-    private void checkMenteeLimit(Long menteeId) {
-        String userKey = "event:user:participation:" + menteeId;
-        String countString = redisTemplate.opsForValue().get(userKey);
 
-        if (countString != null && Integer.parseInt(countString) >= 2) {
-            throw new GlobalException(GlobalErrorCode.EVENT_LIMIT_EXCEEDED);
-        }
-    }
 }

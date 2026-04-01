@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.event.controller;
 
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.domain.event.dto.EventCheckResponse;
 import com.soongsil.CoffeeChat.domain.event.service.CouponService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,21 @@ import lombok.RequiredArgsConstructor;
 public class EventController {
 
     private final CouponService couponService;
+
+    // 쿠폰 발급 자격 확인
+    @GetMapping("/check-eligibility")
+    @Operation(
+            summary = "쿠폰 발급 자격 확인",
+            description = "해당 채팅방의 발급 이력 및 멘티의 잔여 횟수를 확인하여 발급 가능 여부를 반환합니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "조회 성공 (result.canIssue 값이 true일 때만 버튼 활성화)")
+    public ResponseEntity<ApiResponse<EventCheckResponse>> checkEligibility(
+            Authentication authentication,
+            @RequestParam Long applicationId){
+        return ResponseEntity.ok()
+                .body(ApiResponse.onSuccessOK(couponService.checkEligibility(authentication.getName(), applicationId)));
+    }
 
     // 멘토- QR 코드 이미지 반환
     @GetMapping(value = "/qr", produces = MediaType.IMAGE_PNG_VALUE)
