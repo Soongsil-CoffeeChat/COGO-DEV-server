@@ -2,15 +2,15 @@ package com.soongsil.CoffeeChat.domain.event.controller;
 
 import java.util.Map;
 
-import com.soongsil.CoffeeChat.domain.event.dto.EventCheckResponse;
-import com.soongsil.CoffeeChat.domain.event.service.CouponService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
+import com.soongsil.CoffeeChat.domain.event.dto.EventCheckResponse;
 import com.soongsil.CoffeeChat.domain.event.dto.EventStatusResponse;
+import com.soongsil.CoffeeChat.domain.event.service.CouponService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 import com.soongsil.CoffeeChat.global.util.QrCodeUtil;
 
@@ -37,10 +37,12 @@ public class EventController {
             responseCode = "200",
             description = "조회 성공 (result.canIssue 값이 true일 때만 버튼 활성화)")
     public ResponseEntity<ApiResponse<EventCheckResponse>> checkEligibility(
-            Authentication authentication,
-            @RequestParam Long applicationId){
+            Authentication authentication, @RequestParam Long applicationId) {
         return ResponseEntity.ok()
-                .body(ApiResponse.onSuccessOK(couponService.checkEligibility(authentication.getName(), applicationId)));
+                .body(
+                        ApiResponse.onSuccessOK(
+                                couponService.checkEligibility(
+                                        authentication.getName(), applicationId)));
     }
 
     // 멘토- QR 코드 이미지 반환
@@ -65,7 +67,7 @@ public class EventController {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     public ResponseEntity<byte[]> generateQr(
             @RequestParam Long applicationId, Authentication authentication) {
-        String qrToken = couponService.generateQrToken(applicationId, authentication.getName());
+        String qrToken = couponService.generateQrToken(authentication.getName(), applicationId);
         byte[] qrImage = QrCodeUtil.generateQrCodeImage(qrToken, 250, 250);
 
         return ResponseEntity.ok(qrImage);
@@ -105,7 +107,7 @@ public class EventController {
             @RequestParam String storePin,
             Authentication authentication) {
         String couponUrl =
-                couponService.verifyQrAndIssueCoupon(qrToken, storePin, authentication.getName());
+                couponService.verifyQrAndIssueCoupon(authentication.getName(), qrToken, storePin);
         return ResponseEntity.ok(Map.of("couponUrl", couponUrl));
     }
 
