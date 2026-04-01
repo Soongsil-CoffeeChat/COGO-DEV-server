@@ -97,7 +97,7 @@ public class CouponService {
             throw new GlobalException(GlobalErrorCode.EVENT_NOT_YOUR_CHAT);
         }
 
-        if (!isAlreadyIssued(applicationId)) {
+        if (isAlreadyIssued(applicationId)) {
             throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
         }
 
@@ -193,10 +193,10 @@ public class CouponService {
                 throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
             }
 
-            if (!isAlreadyIssued(applicationId)) {
+            if (isAlreadyIssued(applicationId)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
             }
-            if (!isMenteeLimitExceeded(menteeId)) {
+            if (isMenteeLimitExceeded(menteeId)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_LIMIT_EXCEEDED);
             }
 
