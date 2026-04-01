@@ -43,20 +43,18 @@ public class CouponService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
-    private boolean checkMenteeLimit(Long menteeId) {
+    private boolean isMenteeLimitExceeded(Long menteeId) {
         String userKey = "event:user:participation:" + menteeId;
         String countString = redisTemplate.opsForValue().get(userKey);
         int currentCount = (countString != null) ? Integer.parseInt(countString) : 0;
 
-        return currentCount < 2;
+        return currentCount >= 2;
     }
 
-    private boolean checkApplicationLimit(Long applicationId) {
-        Boolean isAlreadyIssued =
-                redisTemplate
-                        .opsForSet()
-                        .isMember("event:issued:applications", applicationId.toString());
-        return !Boolean.TRUE.equals(isAlreadyIssued);
+    private boolean isAlreadyIssued(Long applicationId) {
+        return Boolean.TRUE.equals(
+                redisTemplate.opsForSet().isMember("event:issued:applications", applicationId.toString())
+        );
     }
 
     // 이벤트 참여 이력 조회
@@ -64,21 +62,19 @@ public class CouponService {
         User user = findUserByUsername(username);
 
         // 해당 코고 이벤트 참여 이력 확인
-        boolean issued = checkApplicationLimit(applicationId);
+        boolean alreadyIssued = isAlreadyIssued(applicationId);
+        boolean limitExceeded = false;
 
         // 멘티 일 시 참여 이력 상한 확인 (2회)
-        boolean limitExceeded;
         if (user.isMentee()) {
             Long menteeId = user.getMentee().getId();
-            limitExceeded = checkMenteeLimit(menteeId);
-        } else {
-            limitExceeded = false;
+            limitExceeded = isMenteeLimitExceeded(menteeId);
         }
 
         return EventCheckResponse.builder()
-                .isAlreadyIssued(issued)
+                .isAlreadyIssued(alreadyIssued)
                 .isLimitExceeded(limitExceeded)
-                .canIssue(!issued && !limitExceeded)
+                .canIssue(!alreadyIssued && !limitExceeded)
                 .build();
     }
 
@@ -101,7 +97,7 @@ public class CouponService {
             throw new GlobalException(GlobalErrorCode.EVENT_NOT_YOUR_CHAT);
         }
 
-        if (!checkApplicationLimit(applicationId)) {
+        if (!isAlreadyIssued(applicationId)) {
             throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
         }
 
@@ -197,10 +193,10 @@ public class CouponService {
                 throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
             }
 
-            if (!checkApplicationLimit(applicationId)) {
+            if (!isAlreadyIssued(applicationId)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
             }
-            if (!checkMenteeLimit(menteeId)) {
+            if (!isMenteeLimitExceeded(menteeId)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_LIMIT_EXCEEDED);
             }
 
