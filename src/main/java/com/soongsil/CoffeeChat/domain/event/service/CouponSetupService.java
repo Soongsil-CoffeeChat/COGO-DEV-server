@@ -1,7 +1,5 @@
 package com.soongsil.CoffeeChat.domain.event.service;
 
-import java.util.List;
-
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 public class CouponSetupService {
     private final StringRedisTemplate redisTemplate;
 
-    public void loadCouponsToRedis(List<String> s3Urls) {
-        String key = "event:coupons";
-        redisTemplate.opsForList().rightPushAll(key, s3Urls);
+    public void setupCouponLimit(long maxCoupons) {
+        redisTemplate.opsForValue().set("event:coupon:max", String.valueOf(maxCoupons));
+        redisTemplate.opsForValue().set("event:coupon:seq", "0");
     }
 }

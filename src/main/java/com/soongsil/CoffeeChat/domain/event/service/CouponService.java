@@ -134,14 +134,9 @@ public class CouponService {
         return token;
     }
 
-    // 멘티: qr 인증 -> 매장 핀 번호 인증
+    // 멘티: qr 검증 (1차 인증)
     @Transactional(readOnly = true)
-    public String verifyQrAndIssueCoupon(String username, String qrToken, String inputPin) {
-        if (!storePin.equals(inputPin)) {
-            throw new GlobalException(GlobalErrorCode.EVENT_PIN_MISMATCH);
-        }
-
-        // 1. 사용자 역할, 토큰 유효성 검증
+    public void verifyQrToken(String username, String qrToken) {
         User user = findUserByUsername(username);
 
         if (!user.isMentee()) {
@@ -167,11 +162,33 @@ public class CouponService {
         if (!application.getMentee().getId().equals(user.getMentee().getId())) {
             throw new IllegalStateException("본인이 참여한 커피챗의 QR 코드만 스캔할 수 있습니다.");
         }
+    }
+
+    // 멘티: qr 인증 -> 매장 핀 번호 인증 (2차 인증)
+    @Transactional(readOnly = true)
+    public String verifyPinAndIssueCoupon(String username, String qrToken, String inputPin) {
+        if (!storePin.equals(inputPin)) {
+            throw new GlobalException(GlobalErrorCode.EVENT_PIN_MISMATCH);
+        }
+
+        User user = findUserByUsername(username);
+        String tokenKey = "event:qr:token:" + qrToken;
+        String applicationIdString = redisTemplate.opsForValue().get(tokenKey);
+
+        if (applicationIdString == null) {
+            throw new GlobalException(GlobalErrorCode.EVENT_QR_EXPIRED);
+        }
+
+        Long applicationId = Long.parseLong(applicationIdString);
+        Application application =
+                applicationRepository
+                        .findById(applicationId)
+                        .orElseThrow(
+                                () -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
 
         Long menteeId = user.getMentee().getId();
         Long mentorId = application.getMentor().getId();
 
-        // 3. Redisson 분산 락 동시성 제어
         String lockKey = "lock:coupon:issue:" + applicationIdString;
         RLock lock = redissonClient.getLock(lockKey);
 
@@ -180,33 +197,38 @@ public class CouponService {
                 throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
             }
 
-            // 1) 채팅방 1회 발급 제한 검증
             if (!checkApplicationLimit(applicationId)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_ALREADY_ISSUED);
             }
-            // 2) 멘티 이벤트 참여 횟수 제한 검증
             if (!checkMenteeLimit(menteeId)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_LIMIT_EXCEEDED);
             }
 
-            // 3) 쿠폰 발급
-            String couponUrl = redisTemplate.opsForList().leftPop("event:coupons");
-            if (couponUrl == null) {
+            // 쿠폰 한도 및 번호 발급
+            String maxCouponsStr = redisTemplate.opsForValue().get("event:coupon:max");
+            long maxCoupons = maxCouponsStr != null ? Long.parseLong(maxCouponsStr) : 0L;
+
+            // Redis INCR -> 순차 번호 발급
+            Long currentSeq = redisTemplate.opsForValue().increment("event:coupon:seq");
+
+            if (currentSeq == null || currentSeq > maxCoupons) {
+                // 초과 시 롤백 처리
+                redisTemplate.opsForValue().decrement("event:coupon:seq");
                 throw new GlobalException(GlobalErrorCode.EVENT_COUPON_EXHAUSTED);
             }
 
-            // 4) redis 상태 업데이트
+            String couponNumber = String.valueOf(currentSeq);
+
+            // 상태 업데이트
             redisTemplate.opsForSet().add("event:issued:applications", applicationIdString);
             redisTemplate.opsForValue().increment("event:user:participation:" + menteeId);
-
-            // 5) 사용된 토큰 파기
             redisTemplate.delete(tokenKey);
 
-            // 6) 비동기 로그 저장 이벤트 발행
             eventPublisher.publishEvent(
                     new CouponIssuedEvent(
-                            applicationId, menteeId, mentorId, couponUrl, LocalDateTime.now()));
-            return couponUrl;
+                            applicationId, menteeId, mentorId, couponNumber, LocalDateTime.now()));
+
+            return couponNumber;
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -219,10 +241,16 @@ public class CouponService {
     }
 
     public EventStatusResponse getEventStatus() {
-        Long size = redisTemplate.opsForList().size("event:coupons");
+        String maxCouponsStr = redisTemplate.opsForValue().get("event:coupon:max");
+        String currentSeqStr = redisTemplate.opsForValue().get("event:coupon:seq");
 
-        if (size != null && size > 0) {
-            return new EventStatusResponse("IN_PROGRESS", size);
+        long maxCoupons = maxCouponsStr != null ? Long.parseLong(maxCouponsStr) : 0L;
+        long currentSeq = currentSeqStr != null ? Long.parseLong(currentSeqStr) : 0L;
+
+        long remaining = maxCoupons - currentSeq;
+
+        if (remaining > 0) {
+            return new EventStatusResponse("IN_PROGRESS", remaining);
         }
         return new EventStatusResponse("COMPLETED", 0L);
     }

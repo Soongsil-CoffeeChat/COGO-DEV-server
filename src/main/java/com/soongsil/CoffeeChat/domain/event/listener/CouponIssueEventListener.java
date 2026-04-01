@@ -27,11 +27,15 @@ public class CouponIssueEventListener {
     @EventListener
     public void handleCouponIssuedEvent(CouponIssuedEvent event) {
         try {
+            // CouponIssuedEvent JSON 직렬화
             String logJson = objectMapper.writeValueAsString(event);
-            String fileName = "event-logs/coupon-issue-" + event.applicationId();
-            String fileUrl = amazonS3Service.uploadJsonFile(logJson, "event-logs", fileName);
 
-            log.info("S3 발급 로그 업로드 완료: {}", fileName);
+            String fileNamePrefix = "coupon-issue-" + event.applicationId();
+
+            // event-logs 디렉토리에 저장
+            String fileUrl = amazonS3Service.uploadJsonFile(logJson, "event-logs", fileNamePrefix);
+
+            log.info("S3 발급 로그 업로드 완료: {} (URL: {})", fileNamePrefix, fileUrl);
 
         } catch (Exception e) {
             log.error("S3 발급 로그 업로드 실패. Application ID: {}", event.applicationId(), e);

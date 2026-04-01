@@ -19,10 +19,7 @@ public class UserConverter {
     }
 
     public static UserResponse.User2FACodeResponse to2FACodeResponse(int code) {
-        return UserResponse.User2FACodeResponse
-                .builder()
-                .verificationCode(code)
-                .build();
+        return UserResponse.User2FACodeResponse.builder().verificationCode(code).build();
     }
 
     public static User toEntity(String username, OAuth2Response oAuth2Response) {

@@ -26,7 +26,7 @@ public class AmazonS3Service {
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
-    private final String bucket;
+    private String bucket;
 
     public String uploadFile(MultipartFile file, String uploadDir) {
         String originalFileName = file.getOriginalFilename();
@@ -88,10 +88,11 @@ public class AmazonS3Service {
         return uri.getPath().substring(1);
     }
 
+    // 주석 해제 및 예외 처리 수정
     public String uploadJsonFile(String jsonData, String uploadDir, String fileNamePrefix) {
         byte[] bytes = jsonData.getBytes(StandardCharsets.UTF_8);
 
-        // 파일 이름 설정
+        // 파일 경로 및 이름 설정: uploadDir/prefix_timestamp.json
         String fileName =
                 uploadDir + "/" + fileNamePrefix + "_" + System.currentTimeMillis() + ".json";
 
@@ -102,7 +103,8 @@ public class AmazonS3Service {
         try (InputStream inputStream = new ByteArrayInputStream(bytes)) {
             amazonS3Client.putObject(bucket, fileName, inputStream, objectMetadata);
             return amazonS3Client.getUrl(bucket, fileName).toString();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // S3 업로드 중 발생하는 AWS 예외 등 포괄적 처리
             throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
         }
     }
