@@ -12,7 +12,7 @@ import com.soongsil.CoffeeChat.domain.mentor.dto.MentorConverter;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 
 import lombok.*;
 

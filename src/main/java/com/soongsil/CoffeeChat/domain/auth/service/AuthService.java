@@ -24,12 +24,10 @@ import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.domain.user.service.UserService;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.AppleTokenInfoResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2TokenResponse.GoogleTokenInfoResponse;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.oauth2TokenResponse.AppleTokenInfoResponse;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.oauth2TokenResponse.GoogleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.security.jwt.JwtUtil;
-import com.soongsil.CoffeeChat.global.security.service.AppleClientSecretService;
-import com.soongsil.CoffeeChat.global.security.service.AppleOAuthClient;
-import com.soongsil.CoffeeChat.global.security.service.AppleTokenService;
+import com.soongsil.CoffeeChat.domain.auth.client.AppleOAuthClient;
 
 import lombok.RequiredArgsConstructor;
 

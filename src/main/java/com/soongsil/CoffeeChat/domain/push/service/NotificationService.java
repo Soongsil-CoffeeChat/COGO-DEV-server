@@ -8,8 +8,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
-import com.soongsil.CoffeeChat.domain.push.DeviceToken;
-import com.soongsil.CoffeeChat.domain.push.DeviceTokenRepository;
+import com.soongsil.CoffeeChat.domain.push.entity.DeviceToken;
+import com.soongsil.CoffeeChat.domain.push.repository.DeviceTokenRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 import lombok.RequiredArgsConstructor;

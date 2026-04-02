@@ -10,7 +10,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
-import com.soongsil.CoffeeChat.global.security.dto.UserDto;
 
 public class CustomOAuth2User implements OAuth2User {
     private final UserDto userDTO;

@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.GoogleResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.KakaoResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.NaverResponse;
-import com.soongsil.CoffeeChat.global.security.dto.oauth2Response.OAuth2Response;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.GoogleResponse;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.KakaoResponse;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.NaverResponse;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,5 +1,6 @@
 package com.soongsil.CoffeeChat.domain.report.service;
 
+import com.soongsil.CoffeeChat.domain.report.dto.ReportConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

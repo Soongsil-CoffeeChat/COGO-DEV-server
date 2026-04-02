@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
-import com.soongsil.CoffeeChat.domain.event.dto.CouponIssuedEvent;
+import com.soongsil.CoffeeChat.domain.event.message.CouponIssuedEvent;
 import com.soongsil.CoffeeChat.domain.event.dto.EventCheckResponse;
 import com.soongsil.CoffeeChat.domain.event.dto.EventStatusResponse;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
