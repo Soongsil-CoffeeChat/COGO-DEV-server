@@ -59,8 +59,8 @@ public class AuthService {
     /**
      * Apple authorization code 를 교환 -> ID 토큰 검증 후 자체 JWT 를 발급합니다.
      *
-     * @param code 프론트로부터 받은 authorization code
-     * @param redirectUri 프론트가 인고요청하여 사용한 Return URL
+     * @param code         프론트로부터 받은 authorization code
+     * @param redirectUri  프론트가 인고요청하여 사용한 Return URL
      * @param codeVerifier PKCE 사용 (필수x)
      */
     @Transactional
@@ -145,7 +145,7 @@ public class AuthService {
     /**
      * 사용자 인증 처리 로직을 통합 관리합니다.
      *
-     * @param username 사용자 식별자
+     * @param username    사용자 식별자
      * @param userCreator 새 사용자 생성 함수
      * @return 인증 토큰 응답
      */
@@ -170,7 +170,12 @@ public class AuthService {
                 user.undoSoftDelete();
                 accountStatus = UserAccountStatus.RESTORED_ACCOUNT;
             } else {
-                accountStatus = UserAccountStatus.EXISTING_ACCOUNT;
+                // 회원 가입 미완료 상태일 시 NEW_ACCOUNT 반환
+                if (role == Role.ROLE_USER) {
+                    accountStatus = UserAccountStatus.NEW_ACCOUNT;
+                } else {
+                    accountStatus = UserAccountStatus.EXISTING_ACCOUNT;
+                }
             }
         }
 
@@ -181,7 +186,7 @@ public class AuthService {
      * 리프레시 토큰 정보를 데이터베이스에 저장합니다.
      *
      * @param username 사용자 식별자
-     * @param refresh 리프레시 토큰
+     * @param refresh  리프레시 토큰
      */
     private void addRefreshEntity(String username, String refresh) {
         Date expirationDate = new Date(System.currentTimeMillis() + refreshTokenExpiration);
@@ -228,7 +233,7 @@ public class AuthService {
      * 토큰 정보의 유효성을 검증합니다.
      *
      * @param tokenInfo 토큰 정보 객체
-     * @param provider 인증 제공자(Google, Apple 등)
+     * @param provider  인증 제공자(Google, Apple 등)
      * @throws GlobalException 토큰이 유효하지 않을 경우
      */
     private void validateTokenInfo(Object tokenInfo, String provider) {
@@ -248,8 +253,8 @@ public class AuthService {
     /**
      * 사용자 인증 토큰 응답을 생성합니다.
      *
-     * @param username 사용자 식별자
-     * @param role 사용자 역할
+     * @param username      사용자 식별자
+     * @param role          사용자 역할
      * @param accountStatus 계정 상태
      * @return 인증 토큰 응답
      */
