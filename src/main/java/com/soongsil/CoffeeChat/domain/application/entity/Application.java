@@ -37,14 +37,15 @@ public class Application {
     @JoinColumn(name = "mentee_id")
     private Mentee mentee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "possible_date_id")
     private PossibleDate possibleDate;
 
     @OneToOne(mappedBy = "application", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private ChatRoom chatRoom;
 
-    @Column private String memo;
+    @Column
+    private String memo;
 
     // application 생성 로직에 추가
     @Enumerated(EnumType.STRING)

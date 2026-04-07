@@ -31,7 +31,6 @@ public class MentorService {
     private User findActiveUserByUsername(String username) {
         return userRepository
                 .findByUsernameAndIsDeletedFalse(username)
-                .filter(u -> Boolean.FALSE.equals(u.getIsDeleted()))
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
@@ -57,16 +56,7 @@ public class MentorService {
     public MentorDetailResponse updateMentorInfo(
             String username, MentorUpdateRequest mentorUpdateRequest) {
         User findMentorUser = findUserByUsername(username);
-        User updatedMentorUser =
-                User.builder()
-                        .id(findMentorUser.getId())
-                        .name(mentorUpdateRequest.getMentorName())
-                        .email(mentorUpdateRequest.getMentorEmail())
-                        .role(findMentorUser.getRole())
-                        .phoneNum(mentorUpdateRequest.getMentorPhoneNumber())
-                        .picture(findMentorUser.getPicture())
-                        .build();
-        userRepository.save(updatedMentorUser);
+        findMentorUser.updateMentorInfo(mentorUpdateRequest);
         return null;
     }
 

@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.user.entity;
 
 import java.time.LocalDateTime;
 
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorUpdateRequest;
 import jakarta.persistence.*;
 
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
@@ -16,8 +17,6 @@ import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 
 import lombok.*;
 
-// import org.hibernate.annotations.SQLRestriction;
-
 @Entity
 @Getter
 @Builder
@@ -29,25 +28,31 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column private String username;
+    @Column
+    private String username;
 
-    @Column private String name;
+    @Column
+    private String name;
 
-    @Column private String email;
+    @Column
+    private String email;
 
     @Column
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column private String phoneNum; // 전화번호
+    @Column
+    private String phoneNum; // 전화번호
 
-    @Column private String picture;
+    @Column
+    private String picture;
 
     @Builder.Default
     @Column(nullable = false)
     private Boolean isDeleted = false;
 
-    @Column private LocalDateTime deletedAt;
+    @Column
+    private LocalDateTime deletedAt;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")
@@ -57,6 +62,8 @@ public class User {
     @JoinColumn(name = "user_mentee", referencedColumnName = "mentee_id")
     private Mentee mentee;
 
+
+    // 가입 관련
     public Mentor registerAsMentor(MentorJoinRequest dto) {
         this.mentor = MentorConverter.toEntity(dto, this);
         if (this.role != Role.ROLE_ADMIN) this.role = Role.ROLE_MENTOR;
@@ -69,6 +76,7 @@ public class User {
         return mentee;
     }
 
+    // 프로필 업데이트 관련
     public void updateUser(UserUpdateRequest request) {
         this.name = request.getName();
         this.phoneNum = request.getPhoneNum();
@@ -84,6 +92,13 @@ public class User {
         this.picture = picture;
     }
 
+    public void updateMentorInfo(MentorUpdateRequest request) {
+        this.name = request.getMentorName();
+        this.email = request.getMentorEmail();
+        this.phoneNum = request.getMentorPhoneNumber();
+    }
+
+    // 삭제 관련
     public void softDelete() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
@@ -94,6 +109,7 @@ public class User {
         this.deletedAt = null;
     }
 
+    // 멘토& 멘티 Role 관련
     public boolean isMentor() {
         return this.mentor != null;
     }

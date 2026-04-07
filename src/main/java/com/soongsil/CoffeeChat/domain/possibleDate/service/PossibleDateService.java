@@ -3,7 +3,9 @@ package com.soongsil.CoffeeChat.domain.possibleDate.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -92,10 +94,10 @@ public class PossibleDateService {
     public PossibleDateCreateUpdateResponse createPossibleDate(
             PossibleDateCreateUpdateRequest request, String userName) {
         User user = findUserByUsername(userName);
-        Mentor mentor =
-                mentorRepository
-                        .findById(user.getMentor().getId())
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+        Mentor mentor = user.getMentor();
+        if (mentor == null) {
+            throw new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND);
+        }
 
         PossibleDate possibleDate = PossibleDateConverter.toEntity(request, mentor);
 
@@ -107,10 +109,10 @@ public class PossibleDateService {
     public PossibleDateCreateUpdateResponse updatePossibleDate(
             Long possibleDateId, PossibleDateCreateUpdateRequest request, String userName) {
         User user = findUserByUsername(userName);
-        Mentor mentor =
-                mentorRepository
-                        .findById(user.getMentor().getId())
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+        Mentor mentor = user.getMentor();
+        if (mentor == null) {
+            throw new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND);
+        }
 
         // 본인 소유 PossibleDate 조회
         PossibleDate possibleDate =
@@ -131,38 +133,45 @@ public class PossibleDateService {
             List<PossibleDateCreateUpdateRequest> requests, String username) {
 
         User user = findUserByUsername(username);
-        Mentor mentor =
-                mentorRepository
-                        .findById(user.getMentor().getId())
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND));
+        Mentor mentor = user.getMentor();
+        if (mentor == null) {
+            throw new GlobalException(GlobalErrorCode.MENTOR_NOT_FOUND);
+        }
 
         // 기존 슬롯 모두 비활성화
         List<PossibleDate> current =
                 possibleDateRepository.getPossibleDatesByMentorId(mentor.getId());
-        for (PossibleDate possibleDate : current) {
-            possibleDate.deactivate();
-        }
 
-        // 요청 목록 기준 자연키 매칭 통한 Upsert
+        Map<String, PossibleDate> existingMap = current.stream()
+                .collect(Collectors.toMap(
+                        pd -> pd.getDate() + "|" + pd.getStartTime() + "|" + pd.getEndTime(),
+                        pd -> pd
+                ));
+
+        current.forEach(PossibleDate::deactivate);
+
+        List<PossibleDate> toSave = new ArrayList<>();
+
         for (PossibleDateCreateUpdateRequest request : requests) {
             validateDate(request.getDate());
             validateTime(request.getStartTime(), request.getEndTime());
 
-            possibleDateRepository
-                    .findByMentor_IdAndDateAndStartTimeAndEndTime(
-                            mentor.getId(),
-                            request.getDate(),
-                            request.getStartTime(),
-                            request.getEndTime())
-                    .ifPresentOrElse(
-                            exist -> exist.activate(),
-                            () -> {
-                                PossibleDate created =
-                                        PossibleDateConverter.toEntity(request, mentor);
-                                created.activate();
-                                possibleDateRepository.save(created);
-                            });
+            String key = request.getDate() + "|" + request.getStartTime() + "|" + request.getEndTime();
+            PossibleDate existing = existingMap.get(key);
+
+            if (existing != null) {
+                existing.activate();
+            } else {
+                PossibleDate created = PossibleDateConverter.toEntity(request, mentor);
+                created.activate();
+                toSave.add(created);
+            }
         }
+
+        if (!toSave.isEmpty()) {
+            possibleDateRepository.saveAll(toSave);
+        }
+
         return findMentorPossibleDateListByUsername(username);
     }
 }

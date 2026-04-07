@@ -6,6 +6,7 @@ import static com.soongsil.CoffeeChat.domain.report.entity.QReport.report;
 
 import java.util.List;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,61 +22,51 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+    // 활성 채팅방 조건 - currentUser 참여 중 방 + currentUser가 신고한 사람 존재하지 않음
+    private Predicate[] activeChatRoomConditions(Long currentUserId) {
+        return new Predicate[]{
+                chatRoom.id.in(
+                        JPAExpressions.select(chatRoomUser.chatRoom.id)
+                                .from(chatRoomUser)
+                                .where(chatRoomUser.user.id.eq(currentUserId))
+                ),
+                JPAExpressions.selectOne()
+                        .from(chatRoomUser)
+                        .where(
+                                chatRoomUser.chatRoom.id.eq(chatRoom.id),
+                                chatRoomUser.user.id.ne(currentUserId),
+                                chatRoomUser.user.id.in(
+                                        JPAExpressions.select(report.reportedUserId)
+                                                .from(report)
+                                                .where(report.reporterId.eq(currentUserId))))
+                        .notExists()
+        };
+    }
+
     @Override
     public Page<ChatRoom> findActiveChatRoomsByUserId(Long currentUserId, Pageable pageable) {
 
-        // 조건에 맞는 채팅방 리스트 조회
+        Predicate[] conditions = activeChatRoomConditions(currentUserId);
+
+        // 조건 충족 채팅방 리스트 조회
         List<ChatRoom> content =
                 queryFactory
                         .selectFrom(chatRoom)
-                        .where(
-                                // 조건 1. currentUser가 참여 중인 방
-                                chatRoom.id.in(
-                                        JPAExpressions.select(chatRoomUser.chatRoom.id)
-                                                .from(chatRoomUser)
-                                                .where(chatRoomUser.user.id.eq(currentUserId))),
-                                JPAExpressions.selectOne()
-                                        .from(chatRoomUser)
-                                        .where(
-                                                chatRoomUser.chatRoom.id.eq(chatRoom.id),
-                                                chatRoomUser.user.id.ne(currentUserId),
-                                                chatRoomUser.user.id.in(
-                                                        JPAExpressions.select(report.reportedUserId)
-                                                                .from(report)
-                                                                .where(
-                                                                        report.reporterId.eq(
-                                                                                currentUserId))))
-                                        .notExists())
+                        .where(conditions)
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())
                         .orderBy(chatRoom.updatedDate.desc())
                         .fetch();
 
-        // 조건 2. 방 참여자 중 currentUser가 신고한 사람 없어야 함
+        // 총 건수 조회
         Long total =
                 queryFactory
                         .select(chatRoom.count())
                         .from(chatRoom)
-                        .where(
-                                chatRoom.id.in(
-                                        JPAExpressions.select(chatRoomUser.chatRoom.id)
-                                                .from(chatRoomUser)
-                                                .where(chatRoomUser.user.id.eq(currentUserId))),
-                                JPAExpressions.selectOne()
-                                        .from(chatRoomUser)
-                                        .where(
-                                                chatRoomUser.chatRoom.id.eq(chatRoom.id),
-                                                chatRoomUser.user.id.ne(currentUserId),
-                                                chatRoomUser.user.id.in(
-                                                        JPAExpressions.select(report.reportedUserId)
-                                                                .from(report)
-                                                                .where(
-                                                                        report.reporterId.eq(
-                                                                                currentUserId))))
-                                        .notExists())
+                        .where(conditions)
                         .fetchOne();
-
         long totalCount = total != null ? total : 0L;
         return new PageImpl<>(content, pageable, totalCount);
     }
+
 }
