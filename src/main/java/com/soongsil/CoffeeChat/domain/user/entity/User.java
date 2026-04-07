@@ -18,6 +18,9 @@ import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 import lombok.*;
 
 @Entity
+@Table(indexes = {
+        @Index(name = "idx_user_username_isdeleted", columnList = "username, is_deleted")
+})
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
