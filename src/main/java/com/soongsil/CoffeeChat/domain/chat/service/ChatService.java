@@ -68,45 +68,6 @@ public class ChatService {
         Page<ChatRoom> chatRooms =
                 chatRoomRepository.findActiveChatRoomsByUserId(currentUser.getId(), pageable);
 
-        log.trace(">>chatRooms 조회 로그: {}", chatRooms);
-
-        //        // application get mentee null
-        //        // 각 채팅방의 마지막 메시지 조회
-        //        List<String> lastChats =
-        //                chatRooms.getContent().stream()
-        //                        .map(
-        //                                room -> {
-        //                                    Optional<Chat> lastChat =
-        //
-        // chatRepository.findTopByChatRoomIdOrderByCreatedAtDesc(
-        //                                                    room.getId());
-        //                                    return lastChat.map(Chat::getMessage).orElse("");
-        //                                })
-        //                        .collect(Collectors.toList());
-        //
-        //        log.trace(">>lastChats 조회 로그: {}", lastChats);
-        //
-        //        // 내가 아닌 채팅방 참여자 정보 조회
-        //        List<List<ChatResponse.ChatParticipantResponse>> partiesList =
-        //                chatRooms.getContent().stream()
-        //                        .map(
-        //                                room -> {
-        //                                    User otherUser = getOtherPartyByChatRoom(room,
-        // username);
-        //                                    ChatResponse.ChatParticipantResponse otherUserDto =
-        //                                            ChatResponse.ChatParticipantResponse.builder()
-        //                                                    .userId(otherUser.getId())
-        //                                                    .username(otherUser.getUsername())
-        //                                                    .name(otherUser.getName())
-        //                                                    .profileImage(otherUser.getPicture())
-        //                                                    .build();
-        //                                    return List.of(otherUserDto);
-        //                                })
-        //                        .toList();
-        //
-        //        log.trace(">>chatPartiesList 생성 로그: {}", partiesList);
-        //        return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList);
-
         List<Optional<Chat>> lastChatOptList =
                 chatRooms.getContent().stream()
                         .map(
@@ -181,6 +142,7 @@ public class ChatService {
         return ChatConverter.toChatRoomDetailResponse(chatRoom);
     }
 
+    @Transactional(readOnly = true)
     public ChatRoomDetailResponse getChatRoomDetail(String username, Long roomId) {
         User currentUser = findUserByUsername(username);
 
@@ -198,6 +160,7 @@ public class ChatService {
         return ChatConverter.toChatRoomDetailResponse(chatRoom);
     }
 
+    @Transactional(readOnly = true)
     public ChatMessagePageResponse getChatMessages(
             String username, Long roomId, int page, int size) {
         User currentUser = findUserByUsername(username);
@@ -311,4 +274,4 @@ public class ChatService {
         return ChatConverter.toChatApplicationResponse(application);
     }
 }
-// TODO: 사용자가 해당 채팅방을 현재 화면으로 보고있으면 알림 보낼 필요 없음
+
