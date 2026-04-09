@@ -142,11 +142,17 @@ public class PossibleDateService {
         List<PossibleDate> current =
                 possibleDateRepository.getPossibleDatesByMentorId(mentor.getId());
 
-        Map<String, PossibleDate> existingMap = current.stream()
-                .collect(Collectors.toMap(
-                        pd -> pd.getDate() + "|" + pd.getStartTime() + "|" + pd.getEndTime(),
-                        pd -> pd
-                ));
+        Map<String, PossibleDate> existingMap =
+                current.stream()
+                        .collect(
+                                Collectors.toMap(
+                                        pd ->
+                                                pd.getDate()
+                                                        + "|"
+                                                        + pd.getStartTime()
+                                                        + "|"
+                                                        + pd.getEndTime(),
+                                        pd -> pd));
 
         current.forEach(PossibleDate::deactivate);
 
@@ -156,7 +162,8 @@ public class PossibleDateService {
             validateDate(request.getDate());
             validateTime(request.getStartTime(), request.getEndTime());
 
-            String key = request.getDate() + "|" + request.getStartTime() + "|" + request.getEndTime();
+            String key =
+                    request.getDate() + "|" + request.getStartTime() + "|" + request.getEndTime();
             PossibleDate existing = existingMap.get(key);
 
             if (existing != null) {

@@ -2,25 +2,26 @@ package com.soongsil.CoffeeChat.domain.user.entity;
 
 import java.time.LocalDateTime;
 
-import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorUpdateRequest;
 import jakarta.persistence.*;
 
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorConverter;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorUpdateRequest;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
-import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 
 import lombok.*;
 
 @Entity
-@Table(indexes = {
-        @Index(name = "idx_user_username_isdeleted", columnList = "username, is_deleted")
-})
+@Table(
+        indexes = {
+            @Index(name = "idx_user_username_isdeleted", columnList = "username, is_deleted")
+        })
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,31 +32,25 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column
-    private String username;
+    @Column private String username;
 
-    @Column
-    private String name;
+    @Column private String name;
 
-    @Column
-    private String email;
+    @Column private String email;
 
     @Column
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column
-    private String phoneNum; // 전화번호
+    @Column private String phoneNum; // 전화번호
 
-    @Column
-    private String picture;
+    @Column private String picture;
 
     @Builder.Default
     @Column(nullable = false)
     private Boolean isDeleted = false;
 
-    @Column
-    private LocalDateTime deletedAt;
+    @Column private LocalDateTime deletedAt;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_mentor", referencedColumnName = "mentor_id")
@@ -64,7 +59,6 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_mentee", referencedColumnName = "mentee_id")
     private Mentee mentee;
-
 
     // 가입 관련
     public Mentor registerAsMentor(MentorJoinRequest dto) {

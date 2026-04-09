@@ -2,7 +2,6 @@ package com.soongsil.CoffeeChat.domain.mentor.service;
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.domain.report.repository.ReportRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -19,6 +18,7 @@ import com.soongsil.CoffeeChat.domain.mentor.entity.Introduction;
 import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 import com.soongsil.CoffeeChat.domain.mentor.repository.MentorRepository;
+import com.soongsil.CoffeeChat.domain.report.repository.ReportRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -52,25 +52,24 @@ public class MentorService {
         // 1. 캐시에서 전체 목록 가져옴
         List<MentorListResponse> allMentors = getCachedMentorList(part, club);
         // 2. 현재 유저의 신고 목록으로 필터링
-        List<Long> reportedUserIds = reportRepository.findReportedUserIdsByReporterId(currentUser.getId());
+        List<Long> reportedUserIds =
+                reportRepository.findReportedUserIdsByReporterId(currentUser.getId());
 
         if (reportedUserIds.isEmpty()) {
             return allMentors;
         }
 
-        return allMentors.stream()
-                .filter(m -> !reportedUserIds.contains(m.getUserId()))
-                .toList();
+        return allMentors.stream().filter(m -> !reportedUserIds.contains(m.getUserId())).toList();
     }
 
-    @Cacheable(value = "mentorDetail",key = "#mentorId")
+    @Cacheable(value = "mentorDetail", key = "#mentorId")
     @Transactional(readOnly = true)
     public MentorDetailResponse getMentorDtoByIdWithJoin(String username, Long mentorId) {
         User currentUser = findUserByUsername(username);
         return mentorRepository.getMentorInfoByMentorId(mentorId);
     }
 
-    @CacheEvict(value = "mentorList",allEntries = true)
+    @CacheEvict(value = "mentorList", allEntries = true)
     @Transactional
     public MentorDetailResponse updateMentorInfo(
             String username, MentorUpdateRequest mentorUpdateRequest) {
@@ -79,11 +78,15 @@ public class MentorService {
         return null;
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "mentorList", allEntries = true),
-            @CacheEvict(value = "mentorDetail", key = "#result.mentorId", condition = "#result != null"),
-            @CacheEvict(value = "mentorIntroduction", key = "#userName")
-    })
+    @Caching(
+            evict = {
+                @CacheEvict(value = "mentorList", allEntries = true),
+                @CacheEvict(
+                        value = "mentorDetail",
+                        key = "#result.mentorId",
+                        condition = "#result != null"),
+                @CacheEvict(value = "mentorIntroduction", key = "#userName")
+            })
     @Transactional
     public MentorIntroductionResponse updateMentorIntroduction(
             String userName, MentorIntroductionUpdateRequest dto) {

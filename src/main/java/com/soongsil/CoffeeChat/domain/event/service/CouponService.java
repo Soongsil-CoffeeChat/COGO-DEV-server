@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
-import com.soongsil.CoffeeChat.domain.event.message.CouponIssuedEvent;
 import com.soongsil.CoffeeChat.domain.event.dto.EventCheckResponse;
 import com.soongsil.CoffeeChat.domain.event.dto.EventStatusResponse;
+import com.soongsil.CoffeeChat.domain.event.message.CouponIssuedEvent;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
@@ -53,8 +53,9 @@ public class CouponService {
 
     private boolean isAlreadyIssued(Long applicationId) {
         return Boolean.TRUE.equals(
-                redisTemplate.opsForSet().isMember("event:issued:applications", applicationId.toString())
-        );
+                redisTemplate
+                        .opsForSet()
+                        .isMember("event:issued:applications", applicationId.toString()));
     }
 
     // 이벤트 참여 이력 조회

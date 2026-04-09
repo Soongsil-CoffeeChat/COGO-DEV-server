@@ -3,8 +3,9 @@ package com.soongsil.CoffeeChat.domain.push.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.soongsil.CoffeeChat.domain.push.entity.DeviceToken;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.soongsil.CoffeeChat.domain.push.entity.DeviceToken;
 
 // @Repository 유무 차이?
 public interface DeviceTokenRepository extends JpaRepository<DeviceToken, Long> {

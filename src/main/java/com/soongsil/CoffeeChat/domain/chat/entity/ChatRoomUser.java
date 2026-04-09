@@ -7,9 +7,7 @@ import com.soongsil.CoffeeChat.domain.user.entity.User;
 import lombok.*;
 
 @Entity
-@Table(indexes = {
-        @Index(name = "idx_chatroom_user", columnList = "chat_room_id, user_id")
-})
+@Table(indexes = {@Index(name = "idx_chatroom_user", columnList = "chat_room_id, user_id")})
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

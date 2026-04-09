@@ -10,13 +10,13 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
-import com.soongsil.CoffeeChat.domain.user.entity.User;
-import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.GoogleResponse;
 import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.KakaoResponse;
 import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.NaverResponse;
 import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
+import com.soongsil.CoffeeChat.domain.user.dto.UserConverter;
+import com.soongsil.CoffeeChat.domain.user.entity.User;
+import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

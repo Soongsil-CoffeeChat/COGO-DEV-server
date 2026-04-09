@@ -104,9 +104,10 @@ public class ApplicationService {
         return applications.stream()
                 .map(
                         application -> {
-                            User otherParty = crrentUser.isMentee()
-                                    ? application.getMentor().getUser()
-                                    : application.getMentee().getUser();
+                            User otherParty =
+                                    crrentUser.isMentee()
+                                            ? application.getMentor().getUser()
+                                            : application.getMentee().getUser();
 
                             return ApplicationConverter.toSummaryResponse(
                                     application, otherParty.getName());

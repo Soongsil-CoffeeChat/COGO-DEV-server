@@ -1,11 +1,11 @@
 package com.soongsil.CoffeeChat.domain.event.service;
 
+import java.util.Set;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

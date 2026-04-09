@@ -6,11 +6,11 @@ import static com.soongsil.CoffeeChat.domain.report.entity.QReport.report;
 
 import java.util.List;
 
-import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
@@ -24,22 +24,21 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
     // 활성 채팅방 조건 - currentUser 참여 중 방 + currentUser가 신고한 사람 존재하지 않음
     private Predicate[] activeChatRoomConditions(Long currentUserId) {
-        return new Predicate[]{
-                chatRoom.id.in(
-                        JPAExpressions.select(chatRoomUser.chatRoom.id)
-                                .from(chatRoomUser)
-                                .where(chatRoomUser.user.id.eq(currentUserId))
-                ),
-                JPAExpressions.selectOne()
-                        .from(chatRoomUser)
-                        .where(
-                                chatRoomUser.chatRoom.id.eq(chatRoom.id),
-                                chatRoomUser.user.id.ne(currentUserId),
-                                chatRoomUser.user.id.in(
-                                        JPAExpressions.select(report.reportedUserId)
-                                                .from(report)
-                                                .where(report.reporterId.eq(currentUserId))))
-                        .notExists()
+        return new Predicate[] {
+            chatRoom.id.in(
+                    JPAExpressions.select(chatRoomUser.chatRoom.id)
+                            .from(chatRoomUser)
+                            .where(chatRoomUser.user.id.eq(currentUserId))),
+            JPAExpressions.selectOne()
+                    .from(chatRoomUser)
+                    .where(
+                            chatRoomUser.chatRoom.id.eq(chatRoom.id),
+                            chatRoomUser.user.id.ne(currentUserId),
+                            chatRoomUser.user.id.in(
+                                    JPAExpressions.select(report.reportedUserId)
+                                            .from(report)
+                                            .where(report.reporterId.eq(currentUserId))))
+                    .notExists()
         };
     }
 
@@ -60,13 +59,8 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
         // 총 건수 조회
         Long total =
-                queryFactory
-                        .select(chatRoom.count())
-                        .from(chatRoom)
-                        .where(conditions)
-                        .fetchOne();
+                queryFactory.select(chatRoom.count()).from(chatRoom).where(conditions).fetchOne();
         long totalCount = total != null ? total : 0L;
         return new PageImpl<>(content, pageable, totalCount);
     }
-
 }

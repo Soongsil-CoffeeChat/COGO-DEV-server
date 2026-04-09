@@ -15,9 +15,9 @@ import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.*;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.oauth2TokenResponse.AppleTokenInfoResponse;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
-import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.oauth2TokenResponse.AppleTokenInfoResponse;
 
 @Service
 public class AppleTokenService {

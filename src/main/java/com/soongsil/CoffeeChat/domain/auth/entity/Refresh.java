@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(indexes = {
-        @Index(name = "idx_refresh_token", columnList = "refresh")
-})
+@Table(indexes = {@Index(name = "idx_refresh_token", columnList = "refresh")})
 @Getter
 @Setter
 @Builder
