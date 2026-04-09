@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
+import org.springframework.beans.factory.annotation.Value;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,6 +14,13 @@ import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SwaggerConfig {
+
+    @Value("${swagger.server-url}")
+    private String serverUrl;
+
+    @Value("${swagger.server-description}")
+    private String serverDescription;
+
     @Bean
     public OpenAPI openAPI() {
 
@@ -32,7 +40,7 @@ public class SwaggerConfig {
         addSecurityItem.addList("JWT");
 
         return new OpenAPI()
-                .addServersItem(new Server().url("/"))
+                .addServersItem(new Server().url(serverUrl).description(serverDescription))
                 // Security 인증 컴포넌트 설정
                 .components(new Components().addSecuritySchemes("JWT", bearerAuth))
                 // API 마다 Security 인증 컴포넌트 설정

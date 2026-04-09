@@ -12,11 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 
-@OpenAPIDefinition(
-        servers = {
-            @Server(url = "https://cogossu.store", description = "Production server"),
-            @Server(url = "http://localhost:8080", description = "Local development server")
-        })
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling

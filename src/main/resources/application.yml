@@ -115,6 +115,10 @@ spring:
     access-expiration: 2592000000 # 30일
     refresh-expiration: 2592000000
 
+swagger:
+  server-url: http://localhost:8080
+  server-description: Local development server
+
 logging.level:
   com.soongsil.CoffeeChat.domain.auth: debug
 
@@ -150,6 +154,10 @@ spring:
   jwt:
     access-expiration: 1800000 # 30분
     refresh-expiration: 1209600000 # 14일
+
+swagger:
+  server-url: https://cogossu.store
+  server-description: Production server
 
 logging.level:
   com.soongsil.CoffeeChat.domain.auth: warn
