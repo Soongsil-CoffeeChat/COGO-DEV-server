@@ -5,16 +5,20 @@ import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.soongsil.CoffeeChat.domain.auth.repository.RefreshRepository;
 import com.soongsil.CoffeeChat.global.security.filter.AuthExceptionHandlingFilter;
@@ -51,62 +55,75 @@ public class SecurityConfig {
                             ROLE_MENTEE > ROLE_USER
                             ROLE_MENTOR > ROLE_USER
                         """);
+
         return hierarchy;
     }
 
+    // 공통 CORS 설정 Bean
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(
-                        cors ->
-                                cors.configurationSource(
-                                        request -> {
-                                            CorsConfiguration configuration =
-                                                    new CorsConfiguration();
-                                            configuration.setAllowedOrigins(
-                                                    Arrays.asList(
-                                                            "https://localhost:3000",
-                                                            "http://localhost:8080",
-                                                            "https://cogossu.store",
-                                                            "https://soongsil-coffeechat.github.io"));
-                                            configuration.setAllowedMethods(
-                                                    Arrays.asList(
-                                                            "GET", "POST", "PUT", "DELETE", "PATCH",
-                                                            "OPTIONS"));
-                                            configuration.setAllowedHeaders(
-                                                    Collections.singletonList("*"));
-                                            configuration.setExposedHeaders(
-                                                    Arrays.asList(
-                                                            "Set-Cookie",
-                                                            "Authorization",
-                                                            "Access",
-                                                            "loginStatus"));
-                                            configuration.setAllowCredentials(true);
-                                            configuration.setMaxAge(3600L);
-                                            return configuration;
-                                        }))
-                .csrf(csrf -> csrf.disable())
-                .formLogin(formLogin -> formLogin.disable())
-                .httpBasic(httpBasic -> httpBasic.disable())
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(
+                Arrays.asList(
+                        "https://localhost:3000",
+                        "http://localhost:8080",
+                        "https://cogossu.store",
+                        "https://accounts.google.co.kr",
+                        "https://soongsil-coffeechat.github.io"));
+        configuration.setAllowedMethods(
+                Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setExposedHeaders(
+                Arrays.asList("Set-Cookie", "Authorization", "Access", "loginStatus"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
+    // 로컬 환경
+    @Bean
+    @Profile("local")
+    public SecurityFilterChain localFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+        return http.build();
+    }
+
+    // 운영 환경
+    @Bean
+    @Profile("prod")
+    public SecurityFilterChain prodFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .exceptionHandling(
                         exception ->
                                 exception
-                                        .authenticationEntryPoint(
-                                                jwtAuthenticationEntryPoint) // 401
+                                        .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 401
                                         .accessDeniedHandler(jwtAccessDeniedHandler) // 403
-                        )
+                )
                 .oauth2Login(
                         oauth2 ->
                                 oauth2.userInfoEndpoint(
-                                                userInfo ->
-                                                        userInfo.userService(
-                                                                customOAuth2UserService) // OAuth2:
-                                                // naver/kakao/구글(OAuth2)
-                                                )
+                                                userInfo -> userInfo.userService(customOAuth2UserService) // OAuth2
+                                        )
                                         .successHandler(customSuccessHandler))
                 .authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers(HttpMethod.OPTIONS, "/**")
-                                        .permitAll()
+                                auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight 요청 허용
                                         .requestMatchers(
                                                 "/v3/api-docs/**",
                                                 "/swagger-ui/**",
@@ -116,27 +133,17 @@ public class SecurityConfig {
                                                 "/security-check",
                                                 "/reissue",
                                                 "/auth/reissue",
-                                                "/auth/login/**")
-                                        .permitAll()
-                                        .requestMatchers("/api/v2/admin/**")
-                                        .permitAll()
-                                        .requestMatchers(
-                                                HttpMethod.GET, "/api/v2/mentors/{mentorId}/**")
-                                        .permitAll()
-                                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part")
-                                        .permitAll()
-                                        .requestMatchers("/api/v2/possibleDates/**")
-                                        .hasAnyRole("MENTOR", "MENTEE")
-                                        .requestMatchers("/api/v2/mentors/**")
-                                        .hasAnyRole("MENTOR", "MENTEE")
-                                        .requestMatchers("/api/v2/applications/**")
-                                        .hasAnyRole("MENTOR", "MENTEE")
-                                        .requestMatchers("/api/v2/chat/**")
-                                        .hasAnyRole("MENTOR", "MENTEE")
-                                        .requestMatchers("/ws/**")
-                                        .permitAll()
-                                        .anyRequest()
-                                        .authenticated())
+                                                "/auth/login/**",
+                                                "/ws/**" // WebSocket 허용
+                                        ).permitAll()
+                                        .requestMatchers("/api/v2/admin/**").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/{mentorId}/**").permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part").permitAll()
+                                        .requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/chat/**").hasAnyRole("MENTOR", "MENTEE")
+                                        .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(
