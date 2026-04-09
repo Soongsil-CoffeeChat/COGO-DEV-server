@@ -23,9 +23,40 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
+    //report 필터링 조회용
     @Override
     public List<MentorListResponse> getMentorListByPartAndClub(
             Long currentUserId, PartEnum part, ClubEnum club) { // 일반 join
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                MentorListResponse.class,
+                                user.picture,
+                                user.name.as("mentorName"),
+                                mentor.part,
+                                mentor.club,
+                                user.username,
+                                mentor.id.as("mentorId"),
+                                introduction.title,
+                                introduction.description))
+                .from(user)
+                .join(user.mentor, mentor)
+                .leftJoin(mentor.introduction, introduction)
+                .on(introduction.isNotNull())
+                .where( // 계정 삭제 X, reported 쌍으로 등록 되지 않은 mentor
+                        user.isDeleted.isFalse(),
+                        clubEq(club),
+                        partEq(part),
+                        introduction.title.isNotNull(),
+                        introduction.description.isNotNull(),
+                        introduction.answer1.isNotNull(),
+                        introduction.answer2.isNotNull())
+                .fetch();
+    }
+
+    //report 필터링 X, 공통 조회
+    @Override
+    public List<MentorListResponse> getMentorListByPartAndClub(PartEnum part, ClubEnum club){
         return queryFactory
                 .select(
                         Projections.constructor(

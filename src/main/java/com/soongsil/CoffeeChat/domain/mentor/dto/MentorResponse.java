@@ -37,6 +37,7 @@ public class MentorResponse {
         private ClubEnum club;
         private String username;
         private Long mentorId;
+        private Long userId;
         private String title;
         private String description;
     }

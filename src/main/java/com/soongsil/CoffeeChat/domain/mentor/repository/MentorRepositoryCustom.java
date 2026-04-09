@@ -12,4 +12,7 @@ public interface MentorRepositoryCustom {
             Long currentUserId, PartEnum part, ClubEnum club);
 
     MentorDetailResponse getMentorInfoByMentorId(Long mentorId);
+
+    // 캐시용
+    List<MentorListResponse> getMentorListByPartAndClub(PartEnum part, ClubEnum club);
 }
