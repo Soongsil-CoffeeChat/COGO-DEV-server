@@ -17,9 +17,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 100
 
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        maximum-pool-size: 20
+        minimum-idle: 5
+        connection-timeout: 3000 # 커넥션 대기 최대 3초
+        idle-timeout: 600000 # 유휴 커넥션 10분 후 반환
 
   jwt:
     access-expiration: 2592000000 # 임시_30일
@@ -125,6 +131,7 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
+        format_sql: false
         show_sql: false
 
   datasource:
