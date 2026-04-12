@@ -4,9 +4,9 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.soongsil.CoffeeChat.domain.push.dto.DeviceTokenRequest;
 import com.soongsil.CoffeeChat.domain.push.entity.DeviceToken;
 import com.soongsil.CoffeeChat.domain.push.repository.DeviceTokenRepository;
-import com.soongsil.CoffeeChat.domain.push.dto.DeviceTokenRequest;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;

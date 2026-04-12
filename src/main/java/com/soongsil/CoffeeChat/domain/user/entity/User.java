@@ -4,21 +4,24 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
+import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeConverter;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest.MenteeJoinRequest;
 import com.soongsil.CoffeeChat.domain.mentee.entity.Mentee;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorConverter;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorJoinRequest;
+import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest.MentorUpdateRequest;
 import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.dto.UserRequest.UserUpdateRequest;
-import com.soongsil.CoffeeChat.domain.auth.dto.oauth2.OAuth2Response;
 
 import lombok.*;
 
-// import org.hibernate.annotations.SQLRestriction;
-
 @Entity
+@Table(
+        indexes = {
+            @Index(name = "idx_user_username_isdeleted", columnList = "username, is_deleted")
+        })
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -57,6 +60,7 @@ public class User {
     @JoinColumn(name = "user_mentee", referencedColumnName = "mentee_id")
     private Mentee mentee;
 
+    // 가입 관련
     public Mentor registerAsMentor(MentorJoinRequest dto) {
         this.mentor = MentorConverter.toEntity(dto, this);
         if (this.role != Role.ROLE_ADMIN) this.role = Role.ROLE_MENTOR;
@@ -69,6 +73,7 @@ public class User {
         return mentee;
     }
 
+    // 프로필 업데이트 관련
     public void updateUser(UserUpdateRequest request) {
         this.name = request.getName();
         this.phoneNum = request.getPhoneNum();
@@ -84,6 +89,13 @@ public class User {
         this.picture = picture;
     }
 
+    public void updateMentorInfo(MentorUpdateRequest request) {
+        this.name = request.getMentorName();
+        this.email = request.getMentorEmail();
+        this.phoneNum = request.getMentorPhoneNumber();
+    }
+
+    // 삭제 관련
     public void softDelete() {
         this.isDeleted = true;
         this.deletedAt = LocalDateTime.now();
@@ -94,6 +106,7 @@ public class User {
         this.deletedAt = null;
     }
 
+    // 멘토& 멘티 Role 관련
     public boolean isMentor() {
         return this.mentor != null;
     }

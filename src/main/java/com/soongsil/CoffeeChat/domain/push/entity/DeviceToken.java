@@ -3,7 +3,6 @@ package com.soongsil.CoffeeChat.domain.push.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.soongsil.CoffeeChat.domain.push.repository.DeviceTokenRepository;
 import jakarta.persistence.*;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import com.soongsil.CoffeeChat.domain.push.repository.DeviceTokenRepository;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 import lombok.AccessLevel;

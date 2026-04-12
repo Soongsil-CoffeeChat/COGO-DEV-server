@@ -37,7 +37,7 @@ public class Application {
     @JoinColumn(name = "mentee_id")
     private Mentee mentee;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "possible_date_id")
     private PossibleDate possibleDate;
 

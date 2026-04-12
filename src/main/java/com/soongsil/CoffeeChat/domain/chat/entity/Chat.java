@@ -8,6 +8,10 @@ import com.soongsil.CoffeeChat.global.BaseEntity;
 import lombok.*;
 
 @Entity
+@Table(
+        indexes = {
+            @Index(name = "idx_chat_room_createdat", columnList = "chat_room_id, created_at")
+        })
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

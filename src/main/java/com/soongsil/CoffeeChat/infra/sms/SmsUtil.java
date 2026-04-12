@@ -38,7 +38,7 @@ public class SmsUtil {
     // 단일 메시지 발송 예제
     public int send2FACode(String to) {
         int verificationCode = generateVerificationCode();
-        sendMessage(to, "인증번호 ["+verificationCode+"] 를 앱에 입력해주세요. ");
+        sendMessage(to, "인증번호 [" + verificationCode + "] 를 앱에 입력해주세요. ");
         return verificationCode;
     }
 

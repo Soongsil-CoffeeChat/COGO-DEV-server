@@ -1,10 +1,10 @@
 package com.soongsil.CoffeeChat.domain.push.controller;
 
-import com.soongsil.CoffeeChat.domain.push.dto.DeviceTokenRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import com.soongsil.CoffeeChat.domain.push.dto.DeviceTokenRequest;
 import com.soongsil.CoffeeChat.domain.push.service.PushService;
 
 import lombok.RequiredArgsConstructor;

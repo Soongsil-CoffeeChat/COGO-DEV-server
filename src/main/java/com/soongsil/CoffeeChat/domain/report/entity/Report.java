@@ -11,6 +11,12 @@ import com.soongsil.CoffeeChat.domain.report.enums.ReportStatus;
 import lombok.*;
 
 @Entity
+@Table(
+        indexes = {
+            @Index(
+                    name = "idx_report_reporter_reported",
+                    columnList = "reporter_id, reported_user_id")
+        })
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

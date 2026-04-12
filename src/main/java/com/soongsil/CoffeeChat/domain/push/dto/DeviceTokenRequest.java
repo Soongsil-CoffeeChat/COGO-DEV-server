@@ -1,6 +1,7 @@
 package com.soongsil.CoffeeChat.domain.push.dto;
 
 import com.soongsil.CoffeeChat.domain.push.entity.Platform;
+
 import lombok.Getter;
 
 @Getter

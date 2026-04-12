@@ -43,7 +43,7 @@ public class ApplicationService {
 
     private User findUserByUsername(String username) {
         return userRepository
-                .findByUsernameWithDeleted(username)
+                .findByUsernameAndIsDeletedFalse(username)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
@@ -51,14 +51,6 @@ public class ApplicationService {
         return applicationRepository
                 .findById(applicationId)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.APPLICATION_NOT_FOUND));
-    }
-
-    @Transactional(readOnly = true)
-    public User getOtherParty(Application application, String userName) {
-        User user = findUserByUsername(userName);
-
-        if (user.isMentee()) return application.getMentor().getUser();
-        else return application.getMentee().getUser();
     }
 
     @Transactional
@@ -101,7 +93,7 @@ public class ApplicationService {
     @Transactional
     public List<ApplicationSummaryResponse> getApplications(
             String userName, ApplicationStatus status) {
-        User User =
+        User crrentUser =
                 userRepository
                         .findByUsernameAndIsDeletedFalse(userName)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
@@ -112,9 +104,13 @@ public class ApplicationService {
         return applications.stream()
                 .map(
                         application -> {
-                            User otherPartyUser = getOtherParty(application, userName);
+                            User otherParty =
+                                    crrentUser.isMentee()
+                                            ? application.getMentor().getUser()
+                                            : application.getMentee().getUser();
+
                             return ApplicationConverter.toSummaryResponse(
-                                    application, otherPartyUser.getName());
+                                    application, otherParty.getName());
                         })
                 .toList();
     }
