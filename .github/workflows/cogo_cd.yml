@@ -41,7 +41,7 @@ jobs:
               "sudo docker run -d --name cogo-server -p 8080:8080 \
               -v /home/ubuntu/logs:/var/log/cogo \
               -e SPRING_PROFILES_ACTIVE=prod \
-              coffeego/cogo-server:latest"
+              coffeego/cogo-server:latest",
               "sudo docker ps -a"
             ]' \
             --query "Command.CommandId" \
