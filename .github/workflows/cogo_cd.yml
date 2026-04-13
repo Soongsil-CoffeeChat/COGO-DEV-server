@@ -37,7 +37,11 @@ jobs:
               "echo \"${{ secrets.DOCKERHUB_PASSWORD }}\" | sudo docker login -u \"${{ secrets.DOCKERHUB_USERNAME }}\" --password-stdin",
               "sudo docker pull coffeego/cogo-server:latest",
               "sudo docker rm -f cogo-server || true",
-              "sudo docker run -d --name cogo-server -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod coffeego/cogo-server:latest",
+              "sudo mkdir -p /home/ubuntu/logs",
+              "sudo docker run -d --name cogo-server -p 8080:8080 \
+              -v /home/ubuntu/logs:/var/log/cogo \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              coffeego/cogo-server:latest"
               "sudo docker ps -a"
             ]' \
             --query "Command.CommandId" \

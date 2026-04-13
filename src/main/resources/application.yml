@@ -7,6 +7,7 @@ spring:
 
   profiles:
     active: local
+
   jackson:
     time-zone: Asia/Seoul
   servlet:
@@ -26,14 +27,16 @@ spring:
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
-        maximum-pool-size: 20
+        maximum-pool-size: 10
         minimum-idle: 5
         connection-timeout: 3000 # 커넥션 대기 최대 3초
         idle-timeout: 600000 # 유휴 커넥션 10분 후 반환
+        max-lifetime: 1800000        # RDS의 wait_timeout(28800초) > 30분
+        leak-detection-threshold: 10000  # 10초 이상 반환 안 될시 경고 로그
 
   jwt:
-    access-expiration: 2592000000 # 임시_30일
-    refresh-expiration: 2592000000 # 임시_30일
+    access-expiration: 2592000000
+    refresh-expiration: 2592000000
     secret: ${JWT_SECRET}
 
   security:
@@ -116,6 +119,9 @@ spring:
       ssl:
         enabled: false
 
+  flyway:
+    enabled: false
+
   jwt:
     access-expiration: 2592000000 # 30일
     refresh-expiration: 2592000000
@@ -130,15 +136,17 @@ logging.level:
 ---
 # === prod 환경 ===
 spring:
+  config:
+    activate:
+      on-profile: prod
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
         show_sql: false
-
   datasource:
     url: jdbc:mysql://${DB_URL}:3306/${DB_NAME}?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: ${DB_USERNAME}
@@ -150,6 +158,18 @@ spring:
       port: 6379
       ssl:
         enabled: true
+      timeout: 2000  # 2초
+      connect-timeout: 2000 # 2초
+      lettuce:
+        shutdown-timeout: 200ms
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0            # 기존 스키마를 version 0, V1__부터 새 마이그레이션 시작
+    locations: classpath:db/migration
+    out-of-order: false            # 마이그레이션 순서 보장
+    validate-on-migrate: true
 
   jwt:
     access-expiration: 1800000 # 30분
@@ -159,5 +179,18 @@ swagger:
   server-url: https://cogossu.store
   server-description: Production server
 
-logging.level:
-  com.soongsil.CoffeeChat.domain.auth: warn
+logging:
+  level:
+    root: INFO
+    com.soongsil.CoffeeChat: INFO
+    com.soongsil.CoffeeChat.domain.auth: WARN
+    org.hibernate.SQL: WARN
+    org.springframework.web: INFO
+  file:
+    name: /var/log/cogo/application.log
+  logback:
+    rollingpolicy:
+      max-file-size: 50MB
+      max-history: 30
+      total-size-cap: 1GB
+      file-name-pattern: /var/log/cogo/application.%d{yyyy-MM-dd}.%i.log
