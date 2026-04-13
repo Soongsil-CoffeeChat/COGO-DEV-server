@@ -1,15 +1,19 @@
-# === 공통 설정 ===
+spring:
+  profiles:
+    active: local
+
+---
 spring:
   config:
     activate:
       on-profile: prod
     import: aws-parameterstore:/config/cogo-server/
-
-  profiles:
-    active: local
-
+---
+# === 공통 설정 ===
+spring:
   jackson:
     time-zone: Asia/Seoul
+
   servlet:
     multipart:
       max-file-size: 50MB
