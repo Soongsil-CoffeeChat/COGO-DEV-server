@@ -3,6 +3,7 @@ package com.soongsil.CoffeeChat.global.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
+@Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
 public class GlobalExceptionAdvice {
 
     @ExceptionHandler(GlobalException.class)
     public ResponseEntity<ErrorResponse> handleCommonException(GlobalException e) {
+        log.warn("[GlobalException] {}", e.getGlobalErrorCode(), e);
         return new ResponseEntity<>(
                 new ErrorResponse(e.getGlobalErrorCode()), e.getGlobalErrorCode().getHttpStatus());
     }
@@ -70,6 +73,7 @@ public class GlobalExceptionAdvice {
     // Handle all exceptions: Default 500 server error
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        log.error("[Unhandled Exception] {}", e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(GlobalErrorCode.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
