@@ -35,6 +35,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                                 mentor.club,
                                 user.username,
                                 mentor.id.as("mentorId"),
+                                user.id.as("userId"),
                                 introduction.title,
                                 introduction.description))
                 .from(user)
@@ -65,6 +66,7 @@ public class MentorRepositoryImpl implements MentorRepositoryCustom {
                                 mentor.club,
                                 user.username,
                                 mentor.id.as("mentorId"),
+                                user.id.as("userId"),
                                 introduction.title,
                                 introduction.description))
                 .from(user)

@@ -22,10 +22,10 @@ public class PossibleDateRepositoryImpl implements PossibleDateRepositoryCustom 
                 .select(
                         Projections.constructor(
                                 PossibleDateDetailResponse.class,
+                                possibleDate.id.as("possibleDateId"),
                                 possibleDate.date,
                                 possibleDate.startTime,
                                 possibleDate.endTime,
-                                possibleDate.id.as("possibleDateId"),
                                 possibleDate.isActive))
                 .from(user)
                 .join(user.mentor, mentor)

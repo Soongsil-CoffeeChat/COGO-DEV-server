@@ -81,10 +81,7 @@ public class MentorService {
     @Caching(
             evict = {
                 @CacheEvict(value = "mentorList", allEntries = true),
-                @CacheEvict(
-                        value = "mentorDetail",
-                        key = "#result.mentorId",
-                        condition = "#result != null"),
+                @CacheEvict(value = "mentorDetail", allEntries = true),
                 @CacheEvict(value = "mentorIntroduction", key = "#userName")
             })
     @Transactional

@@ -42,7 +42,7 @@ public class RedisCacheConfig {
         Map<String, RedisCacheConfiguration> cacheConfigs =
                 Map.of(
                         "mentorList", defaultConfig.entryTtl(Duration.ofMinutes(3)),
-                        "mentorDeail", defaultConfig.entryTtl(Duration.ofMinutes(10)),
+                        "mentorDetail", defaultConfig.entryTtl(Duration.ofMinutes(10)),
                         "mentorIntroduction", defaultConfig.entryTtl(Duration.ofMinutes(20)));
 
         return RedisCacheManager.builder(connectionFactory)
