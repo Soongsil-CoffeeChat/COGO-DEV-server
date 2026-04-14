@@ -49,7 +49,7 @@ public class SmsUtil {
 
     public void sendMentorNotificationMessage(Application application) {
         sendMessage(
-                application.getMentee().getUser(),
+                application.getMentor().getUser(),
                 "띵동~♪ 멘토님께 커피챗 신청서가 도착했어요! 지금 바로 코고 앱에서 확인해 보세요");
     }
 
