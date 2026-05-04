@@ -120,6 +120,9 @@ dependencies {
     implementation 'com.google.zxing:core:3.5.3'
     implementation 'com.google.zxing:javase:3.5.3'
 
+    // 이미지 썸네일
+    implementation 'net.coobird:thumbnailator:0.4.20'
+
     // flyway
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
