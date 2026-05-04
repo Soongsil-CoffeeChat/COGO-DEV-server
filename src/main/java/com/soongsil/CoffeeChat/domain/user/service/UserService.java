@@ -88,8 +88,8 @@ public class UserService {
         User user = findUserByUsername(username);
         String picture =
                 user.getPicture() == null
-                        ? s3Service.uploadFile(image, "user")
-                        : s3Service.updateFile(user.getPicture(), image, "user");
+                        ? s3Service.uploadProfileImage(image, "user")
+                        : s3Service.updateProfileImage(user.getPicture(), image, "user");
         user.updatePicture(picture);
         return UserConverter.toResponse(user);
     }

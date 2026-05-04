@@ -62,6 +62,8 @@ cloud:
   aws:
     s3:
       bucket: ${BUCKET_NAME}
+    cloudfront:
+      domain: ${CLOUDFRONT_DOMAIN}
     credentials:
       access-key: ${S3_ACCESS}
       secret-key: ${S3_SECRET}
