@@ -159,42 +159,6 @@ public class ChatService {
         return ChatConverter.toChatRoomDetailResponse(chatRoom);
     }
 
-    //    @Transactional(readOnly = true)
-    //    public ChatMessagePageResponse getChatMessages(
-    //            String username, Long roomId, int page, int size) {
-    //        User currentUser = findUserByUsername(username);
-    //
-    //        // 채팅방 존재 확인
-    //        if (!chatRoomRepository.existsById(roomId)) {
-    //            throw new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND);
-    //        }
-    //
-    //        // 참여자 확인
-    //        chatRoomUserRepository
-    //                .findByChatRoomIdAndUserId(roomId, currentUser.getId())
-    //                .orElseThrow(() -> new
-    // GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
-    //
-    //        Pageable pageable = PageRequest.of(page, size);
-    //        Page<Chat> chats;
-    //
-    //        chats =
-    //                chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-    //                        roomId, LocalDateTime.now(), pageable);
-    //
-    //        // 날짜 맞게 조회 필요 시 이용
-    //        //        if (before != null) {
-    //        //            chats =
-    //        //
-    // chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-    //        //                            roomId, before, pageable);
-    //        //        } else {
-    //        //            chats = chatRepository.findByChatRoomIdOrderByCreatedAtDesc(roomId,
-    // pageable);
-    //        //        }
-    //
-    //        return ChatConverter.toChatMessagePageResponse(chats);
-    //    }
     @Transactional(readOnly = true)
     public ChatResponse.ChatMessageCursorResponse getChatMessages(
             String username,

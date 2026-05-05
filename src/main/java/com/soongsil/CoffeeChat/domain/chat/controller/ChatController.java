@@ -48,15 +48,6 @@ public class ChatController {
         return ResponseEntity.ok(chatService.createChatRoom(username, request));
     }
 
-    //    @GetMapping("/rooms/{roomId}/messages")
-    //    @Operation(summary = "채팅방 메시지 목록 조회")
-    //    public ResponseEntity<ChatResponse.ChatMessagePageResponse> getChatMessages(
-    //            @Parameter(hidden = true) @CurrentUsername String username,
-    //            @PathVariable Long roomId,
-    //            @RequestParam(defaultValue = "0") int page,
-    //            @RequestParam(defaultValue = "50") int size) {
-    //        return ResponseEntity.ok(chatService.getChatMessages(username, roomId, page, size));
-    //    }
     @GetMapping("/rooms/{roomId}/messages")
     @Operation(summary = "채팅방 메시지 목록 조회")
     public ResponseEntity<ChatResponse.ChatMessageCursorResponse> getChatMessages(
