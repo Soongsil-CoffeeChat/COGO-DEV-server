@@ -17,7 +17,6 @@ import com.soongsil.CoffeeChat.domain.application.repository.ApplicationReposito
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatConverter;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
-import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessagePageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomDetailResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomPageResponse;
@@ -160,9 +159,49 @@ public class ChatService {
         return ChatConverter.toChatRoomDetailResponse(chatRoom);
     }
 
+    //    @Transactional(readOnly = true)
+    //    public ChatMessagePageResponse getChatMessages(
+    //            String username, Long roomId, int page, int size) {
+    //        User currentUser = findUserByUsername(username);
+    //
+    //        // 채팅방 존재 확인
+    //        if (!chatRoomRepository.existsById(roomId)) {
+    //            throw new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND);
+    //        }
+    //
+    //        // 참여자 확인
+    //        chatRoomUserRepository
+    //                .findByChatRoomIdAndUserId(roomId, currentUser.getId())
+    //                .orElseThrow(() -> new
+    // GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
+    //
+    //        Pageable pageable = PageRequest.of(page, size);
+    //        Page<Chat> chats;
+    //
+    //        chats =
+    //                chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+    //                        roomId, LocalDateTime.now(), pageable);
+    //
+    //        // 날짜 맞게 조회 필요 시 이용
+    //        //        if (before != null) {
+    //        //            chats =
+    //        //
+    // chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
+    //        //                            roomId, before, pageable);
+    //        //        } else {
+    //        //            chats = chatRepository.findByChatRoomIdOrderByCreatedAtDesc(roomId,
+    // pageable);
+    //        //        }
+    //
+    //        return ChatConverter.toChatMessagePageResponse(chats);
+    //    }
     @Transactional(readOnly = true)
-    public ChatMessagePageResponse getChatMessages(
-            String username, Long roomId, int page, int size) {
+    public ChatResponse.ChatMessageCursorResponse getChatMessages(
+            String username,
+            Long roomId,
+            LocalDateTime cursorCreatedAt,
+            Long cursorChatId,
+            int size) {
         User currentUser = findUserByUsername(username);
 
         // 채팅방 존재 확인
@@ -175,23 +214,16 @@ public class ChatService {
                 .findByChatRoomIdAndUserId(roomId, currentUser.getId())
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Chat> chats;
-
-        chats =
-                chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-                        roomId, LocalDateTime.now(), pageable);
-
-        // 날짜 맞게 조회 필요 시 이용
-        //        if (before != null) {
-        //            chats =
-        //                    chatRepository.findByChatRoomIdAndCreatedAtBeforeOrderByCreatedAtDesc(
-        //                            roomId, before, pageable);
-        //        } else {
-        //            chats = chatRepository.findByChatRoomIdOrderByCreatedAtDesc(roomId, pageable);
-        //        }
-
-        return ChatConverter.toChatMessagePageResponse(chats);
+        // hasNext 판단 위해 size+1개 조회
+        List<Chat> chats;
+        if (cursorCreatedAt == null || cursorChatId == null) {
+            chats = chatRepository.findFirstPageChats(roomId, size + 1);
+        } else {
+            chats =
+                    chatRepository.findChatsByCursor(
+                            roomId, cursorCreatedAt, cursorChatId, size + 1);
+        }
+        return ChatConverter.toChatMessageCursorResponse(chats, size);
     }
 
     @Transactional
@@ -274,4 +306,3 @@ public class ChatService {
         return ChatConverter.toChatApplicationResponse(application);
     }
 }
-

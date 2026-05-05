@@ -9,7 +9,7 @@ import lombok.*;
 
 public class ChatResponse {
 
-    /** 채팅방 목록 페이징 응답 DTO */
+    // 채팅방 목록 페이징 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor
@@ -23,7 +23,7 @@ public class ChatResponse {
         private boolean last;
     }
 
-    /** 채팅방 응답 DTO */
+    // 채팅방 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor
@@ -36,7 +36,7 @@ public class ChatResponse {
         private List<ChatParticipantResponse> participants;
     }
 
-    /** 채팅 메시지 페이징 응답 DTO */
+    // 채팅 메시지 페이징 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor
@@ -50,7 +50,7 @@ public class ChatResponse {
         private boolean last;
     }
 
-    /** 채팅 메시지 응답 DTO */
+    // 채팅 메시지 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor
@@ -62,7 +62,7 @@ public class ChatResponse {
         private LocalDateTime createdAt;
     }
 
-    /** 채팅방 상세 정보 응답 DTO */
+    // 채팅방 상세 정보 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor
@@ -72,7 +72,7 @@ public class ChatResponse {
         private List<ChatParticipantResponse> participants;
     }
 
-    /** 채팅 참여자 정보 응답 DTO */
+    // 채팅 참여자 정보 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor
@@ -85,6 +85,19 @@ public class ChatResponse {
         private String profileImage;
     }
 
+    // 채팅 메시지 커서 페이징 응답 DTO
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ChatMessageCursorResponse {
+        private List<ChatMessageResponse> content;
+        private LocalDateTime nextCursorCreatedAt;
+        private Long nextCursorChatId;
+        private boolean hasNext; // 다음 데이터 존재 여부
+    }
+
+    // 채팅과 연결된 커피챗 응답 DTO
     @Getter
     @Builder
     @AllArgsConstructor

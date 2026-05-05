@@ -6,7 +6,7 @@ import lombok.*;
 
 public class ChatRequest {
 
-    /** 채팅방 생성 요청 DTO */
+    // 채팅방 생성 dto
     @Getter
     @Builder
     @AllArgsConstructor
@@ -16,7 +16,7 @@ public class ChatRequest {
         @NotNull private Long participantUserId;
     }
 
-    /** 채팅 메시지 전송 요청 DTO */
+    // 채팅 메시지 전송 요청 dto
     @Getter
     @Builder
     @AllArgsConstructor
@@ -24,5 +24,15 @@ public class ChatRequest {
     public static class SendMessageRequest {
         private Long roomId;
         private String message;
+    }
+
+    // 채팅 메시지 커서 페이징 요청 dto
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ChatMessageCursorRequest {
+        private String cursor;
+        private Integer size;
     }
 }
