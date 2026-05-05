@@ -4,5 +4,6 @@ public enum ClubEnum {
     GDGoC,
     YOURSSU,
     UMC,
-    LIKELION
+    LIKELION,
+    NO_CLUB
 }
