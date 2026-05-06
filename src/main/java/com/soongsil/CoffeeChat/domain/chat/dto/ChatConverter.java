@@ -1,8 +1,9 @@
 package com.soongsil.CoffeeChat.domain.chat.dto;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ public class ChatConverter {
                                                 .name(p.getUser().getName())
                                                 .profileImage(p.getUser().getPicture())
                                                 .build())
-                        .collect(Collectors.toList());
+                        .collect(toList());
 
         return ChatRoomDetailResponse.builder()
                 .roomId(chatRoom.getId())
@@ -60,11 +61,41 @@ public class ChatConverter {
                 .build();
     }
 
+    public static ChatMessageCursorResponse toChatMessageCursorResponse(
+            List<Chat> chats, int requestedSize) {
+        // 다음 데이터 존재 시 잘라냄
+        boolean hasNext = chats.size() > requestedSize;
+        List<Chat> currentCursorChats =
+                hasNext
+                        ? chats.subList(0, requestedSize) // 51번째 자름
+                        : chats;
+
+        LocalDateTime nextCreatedAt = null;
+        Long nextChatId = null;
+
+        // next cursor 정보 업데이트
+        if (hasNext && !currentCursorChats.isEmpty()) {
+            Chat last = currentCursorChats.get(currentCursorChats.size() - 1);
+            nextCreatedAt = last.getCreatedAt();
+            nextChatId = last.getId();
+        }
+
+        return ChatMessageCursorResponse.builder()
+                .content(
+                        currentCursorChats.stream()
+                                .map(ChatConverter::toChatMessageResponse)
+                                .toList())
+                .nextCursorCreatedAt(nextCreatedAt)
+                .nextCursorChatId(nextChatId)
+                .hasNext(hasNext)
+                .build();
+    }
+
     public static ChatMessagePageResponse toChatMessagePageResponse(Page<Chat> chatPage) {
         List<ChatMessageResponse> messages =
                 chatPage.getContent().stream()
                         .map(chat -> toChatMessageResponse(chat))
-                        .collect(Collectors.toList());
+                        .collect(toList());
 
         return ChatMessagePageResponse.builder()
                 .content(messages)

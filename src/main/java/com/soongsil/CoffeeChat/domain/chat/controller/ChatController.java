@@ -1,9 +1,11 @@
 package com.soongsil.CoffeeChat.domain.chat.controller;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 import jakarta.validation.Valid;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -46,22 +48,27 @@ public class ChatController {
         return ResponseEntity.ok(chatService.createChatRoom(username, request));
     }
 
-    //    @GetMapping("/rooms/{roomId}")
-    //    @Operation(summary = "채팅방 상세 조회")
-    //    public ResponseEntity<ChatResponse.ChatRoomDetailResponse> getChatRoomDetail(
-    //            @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long
-    // roomId) {
-    //        return ResponseEntity.ok(chatService.getChatRoomDetail(username, roomId));
-    //    }
-
     @GetMapping("/rooms/{roomId}/messages")
-    @Operation(summary = "채팅방 메시지 목록 조회")
+    @Operation(summary = "채팅방 메시지 목록 조회 (기존)")
     public ResponseEntity<ChatResponse.ChatMessagePageResponse> getChatMessages(
             @Parameter(hidden = true) @CurrentUsername String username,
             @PathVariable Long roomId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size) {
         return ResponseEntity.ok(chatService.getChatMessages(username, roomId, page, size));
+    }
+
+    @GetMapping("/rooms/{roomId}/cursor/messages")
+    @Operation(summary = "채팅방 메시지 목록 cursor 조회")
+    public ResponseEntity<ChatResponse.ChatMessageCursorResponse> getChatMessagesByCursor(
+            @Parameter(hidden = true) @CurrentUsername String username,
+            @PathVariable Long roomId,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                    LocalDateTime cursorCreatedAt,
+            @RequestParam(required = false) Long cursorChatId,
+            @RequestParam(defaultValue = "50") int size) {
+        return ResponseEntity.ok(
+                chatService.getChatMessagesByCursor(username, roomId, cursorCreatedAt, cursorChatId, size));
     }
 
     @PostMapping("/rooms/{roomId}/leave")

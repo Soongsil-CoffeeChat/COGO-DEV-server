@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
 
-public interface ChatRepository extends JpaRepository<Chat, Long> {
+public interface ChatRepository extends JpaRepository<Chat, Long>, ChatRepositoryCustom {
 
     Page<Chat> findByChatRoomIdOrderByCreatedAtDesc(Long roomId, Pageable pageable);
 
