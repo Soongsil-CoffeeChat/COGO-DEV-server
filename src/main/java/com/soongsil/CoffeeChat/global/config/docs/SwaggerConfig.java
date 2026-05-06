@@ -1,32 +1,34 @@
 package com.soongsil.CoffeeChat.global.config.docs;
 
+import java.util.List;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
-import org.springframework.beans.factory.annotation.Value;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import lombok.Getter;
+import lombok.Setter;
 
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${swagger.server-url}")
-    private String serverUrl;
+    private final SwaggerProperties swaggerProperties;
 
-    @Value("${swagger.server-description}")
-    private String serverDescription;
+    public SwaggerConfig(SwaggerProperties swaggerProperties) {
+        this.swaggerProperties = swaggerProperties;
+    }
 
     @Bean
     public OpenAPI openAPI() {
-
         Info info = new Info().title("COGO API 문서").description("이상 있으면 말씀 부탁드립니다.");
 
-        // Security 스키마 설정
         SecurityScheme bearerAuth =
                 new SecurityScheme()
                         .type(SecurityScheme.Type.HTTP)
@@ -35,16 +37,33 @@ public class SwaggerConfig {
                         .in(SecurityScheme.In.HEADER)
                         .name(HttpHeaders.AUTHORIZATION);
 
-        // Security 요청 설정
         SecurityRequirement addSecurityItem = new SecurityRequirement();
         addSecurityItem.addList("JWT");
 
+        List<Server> servers =
+                swaggerProperties.getServers().stream()
+                        .map(s -> new Server().url(s.getUrl()).description(s.getDescription()))
+                        .toList();
+
         return new OpenAPI()
-                .addServersItem(new Server().url(serverUrl).description(serverDescription))
-                // Security 인증 컴포넌트 설정
+                .servers(servers)
                 .components(new Components().addSecuritySchemes("JWT", bearerAuth))
-                // API 마다 Security 인증 컴포넌트 설정
                 .addSecurityItem(addSecurityItem)
                 .info(info);
+    }
+
+    @Configuration
+    @ConfigurationProperties(prefix = "swagger")
+    @Getter
+    @Setter
+    public static class SwaggerProperties {
+        private List<ServerEntry> servers;
+
+        @Getter
+        @Setter
+        public static class ServerEntry {
+            private String url;
+            private String description;
+        }
     }
 }
