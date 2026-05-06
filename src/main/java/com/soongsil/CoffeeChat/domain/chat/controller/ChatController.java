@@ -49,8 +49,18 @@ public class ChatController {
     }
 
     @GetMapping("/rooms/{roomId}/messages")
-    @Operation(summary = "채팅방 메시지 목록 조회")
-    public ResponseEntity<ChatResponse.ChatMessageCursorResponse> getChatMessages(
+    @Operation(summary = "채팅방 메시지 목록 조회 (기존)")
+    public ResponseEntity<ChatResponse.ChatMessagePageResponse> getChatMessages(
+            @Parameter(hidden = true) @CurrentUsername String username,
+            @PathVariable Long roomId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size) {
+        return ResponseEntity.ok(chatService.getChatMessages(username, roomId, page, size));
+    }
+
+    @GetMapping("/rooms/{roomId}/cursor/messages")
+    @Operation(summary = "채팅방 메시지 목록 cursor 조회")
+    public ResponseEntity<ChatResponse.ChatMessageCursorResponse> getChatMessagesByCursor(
             @Parameter(hidden = true) @CurrentUsername String username,
             @PathVariable Long roomId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -58,7 +68,7 @@ public class ChatController {
             @RequestParam(required = false) Long cursorChatId,
             @RequestParam(defaultValue = "50") int size) {
         return ResponseEntity.ok(
-                chatService.getChatMessages(username, roomId, cursorCreatedAt, cursorChatId, size));
+                chatService.getChatMessagesByCursor(username, roomId, cursorCreatedAt, cursorChatId, size));
     }
 
     @PostMapping("/rooms/{roomId}/leave")
