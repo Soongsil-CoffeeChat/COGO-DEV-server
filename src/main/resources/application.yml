@@ -73,6 +73,14 @@ cloud:
     stack:
       auto: false
 
+# swagger
+swagger:
+  servers:
+    - url: https://cogossu.store
+      description: Production server
+    - url: http://localhost:8080
+      description: Local development server
+
 # 전화번호 인증
 coolsms:
   from: ${SMS_FROM}
@@ -97,13 +105,15 @@ spring:
       on-profile: local
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
       hibernate:
         format_sql: true
         show_sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/cogo_db_local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3307/cogo_db_local?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: root
     password: root
 
@@ -120,10 +130,6 @@ spring:
   jwt:
     access-expiration: 2592000000 # 30일
     refresh-expiration: 2592000000
-
-swagger:
-  server-url: http://localhost:8080
-  server-description: Local development server
 
 logging.level:
   com.soongsil.CoffeeChat.domain.auth: debug
@@ -170,10 +176,6 @@ spring:
   jwt:
     access-expiration: 1800000 # 30분
     refresh-expiration: 1209600000 # 14일
-
-swagger:
-  server-url: https://cogossu.store
-  server-description: Production server
 
 logging:
   level:
