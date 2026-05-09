@@ -32,6 +32,7 @@ public class ChatResponse {
         private Long roomId;
         private String lastChat;
         private LocalDateTime updatedAt;
+        private Long unreadCount;
 
         private List<ChatParticipantResponse> participants;
     }

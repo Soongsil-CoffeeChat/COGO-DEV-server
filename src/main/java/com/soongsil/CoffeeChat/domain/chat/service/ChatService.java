@@ -3,7 +3,10 @@ package com.soongsil.CoffeeChat.domain.chat.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
@@ -66,6 +69,15 @@ public class ChatService {
 
         Page<ChatRoom> chatRooms =
                 chatRoomRepository.findActiveChatRoomsByUserId(currentUser.getId(), pageable);
+        List<Long> roomIds = chatRooms.getContent().stream().map(ChatRoom::getId).toList();
+        Map<Long, ChatRoomUser> participantMap =
+                chatRoomUserRepository
+                        .findByUserIdAndChatRoomIdIn(currentUser.getId(), roomIds)
+                        .stream()
+                        .collect(
+                                Collectors.toMap(
+                                        participant -> participant.getChatRoom().getId(),
+                                        Function.identity()));
 
         List<Optional<Chat>> lastChatOptList =
                 chatRooms.getContent().stream()
@@ -108,7 +120,25 @@ public class ChatService {
                                     return List.of(otherUserDto);
                                 })
                         .toList();
-        return ChatConverter.toChatRoomPageResponse(chatRooms, lastChats, partiesList, updatedAts);
+
+        List<Long> unreadCounts =
+                chatRooms.getContent().stream()
+                        .map(
+                                room -> {
+                                    ChatRoomUser participant = participantMap.get(room.getId());
+                                    if (participant == null) {
+                                        throw new GlobalException(
+                                                GlobalErrorCode.CHATROOM_NOT_PARTICIPANT);
+                                    }
+                                    return chatRepository.countUnreadMessages(
+                                            room.getId(),
+                                            currentUser.getId(),
+                                            participant.getLastReadChatId());
+                                })
+                        .toList();
+
+        return ChatConverter.toChatRoomPageResponse(
+                chatRooms, lastChats, partiesList, updatedAts, unreadCounts);
     }
 
     @Transactional
@@ -158,7 +188,6 @@ public class ChatService {
 
         return ChatConverter.toChatRoomDetailResponse(chatRoom);
     }
-
 
     @Transactional(readOnly = true)
     public ChatResponse.ChatMessagePageResponse getChatMessages(
@@ -223,6 +252,27 @@ public class ChatService {
                             roomId, cursorCreatedAt, cursorChatId, size + 1);
         }
         return ChatConverter.toChatMessageCursorResponse(chats, size);
+    }
+
+    @Transactional
+    public void readChatRoom(String username, Long roomId) {
+        User currentUser = findUserByUsername(username);
+
+        if (!chatRoomRepository.existsById(roomId)) {
+            throw new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND);
+        }
+
+        ChatRoomUser participant =
+                chatRoomUserRepository
+                        .findByChatRoomIdAndUserId(roomId, currentUser.getId())
+                        .orElseThrow(
+                                () ->
+                                        new GlobalException(
+                                                GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
+
+        chatRepository
+                .findTopByChatRoomIdOrderByCreatedAtDescIdDesc(roomId)
+                .ifPresent(chat -> participant.updateLastReadChatId(chat.getId()));
     }
 
     @Transactional

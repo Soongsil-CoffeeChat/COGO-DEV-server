@@ -68,7 +68,8 @@ public class ChatController {
             @RequestParam(required = false) Long cursorChatId,
             @RequestParam(defaultValue = "50") int size) {
         return ResponseEntity.ok(
-                chatService.getChatMessagesByCursor(username, roomId, cursorCreatedAt, cursorChatId, size));
+                chatService.getChatMessagesByCursor(
+                        username, roomId, cursorCreatedAt, cursorChatId, size));
     }
 
     @PostMapping("/rooms/{roomId}/leave")
@@ -76,6 +77,14 @@ public class ChatController {
     public ResponseEntity<Void> leaveChatRoom(
             @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long roomId) {
         chatService.leaveChatRoom(username, roomId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/rooms/{roomId}/read")
+    @Operation(summary = "채팅방 읽음 처리")
+    public ResponseEntity<Void> readChatRoom(
+            @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long roomId) {
+        chatService.readChatRoom(username, roomId);
         return ResponseEntity.ok().build();
     }
 

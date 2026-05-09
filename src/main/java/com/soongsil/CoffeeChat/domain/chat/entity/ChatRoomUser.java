@@ -25,4 +25,18 @@ public class ChatRoomUser {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "last_read_chat_id")
+    private Long lastReadChatId;
+
+    public void updateLastReadChatId(Long chatId) {
+        if (chatId == null) {
+            return;
+        }
+
+        if (lastReadChatId == null || chatId > lastReadChatId) {
+            lastReadChatId = chatId;
+        }
+    }
+
 }
