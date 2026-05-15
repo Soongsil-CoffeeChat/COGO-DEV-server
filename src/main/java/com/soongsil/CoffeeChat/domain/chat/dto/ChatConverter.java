@@ -21,13 +21,15 @@ public class ChatConverter {
             ChatRoom chatRoom,
             String lastChat,
             List<ChatParticipantResponse> participants,
-            LocalDateTime updatedAt) {
+            LocalDateTime updatedAt,
+            Long unreadCount) {
 
         return ChatRoomResponse.builder()
                 .roomId(chatRoom.getId())
                 .lastChat(lastChat)
                 .participants(participants)
                 .updatedAt(updatedAt)
+                .unreadCount(unreadCount)
                 .build();
     }
 
@@ -111,7 +113,8 @@ public class ChatConverter {
             Page<ChatRoom> chatRoomPage,
             List<String> lastChats,
             List<List<ChatParticipantResponse>> partiesList,
-            List<LocalDateTime> updatedAts) {
+            List<LocalDateTime> updatedAts,
+            List<Long> unreadCounts) {
 
         final List<ChatRoom> rooms = chatRoomPage.getContent();
         final int n = rooms.size();
@@ -139,7 +142,15 @@ public class ChatConverter {
                                                             && updatedAts.get(i) != null)
                                                     ? updatedAts.get(i)
                                                     : room.getUpdatedDate();
-                                    return toChatRoomResponse(room, last, parties, updatedAt);
+
+                                    Long unreadCount =
+                                            (unreadCounts != null
+                                                            && i < unreadCounts.size()
+                                                            && unreadCounts.get(i) != null)
+                                                    ? unreadCounts.get(i)
+                                                    : 0L;
+                                    return toChatRoomResponse(
+                                            room, last, parties, updatedAt, unreadCount);
                                 })
                         .toList();
 
