@@ -95,7 +95,11 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtUtil),
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authExceptionHandlingFilter, JwtAuthenticationFilter.class);
 
         return http.build();
     }
