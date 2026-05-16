@@ -16,9 +16,9 @@ import lombok.*;
 @Entity
 @Table(
         indexes = {
-                @Index(
-                        name = "idx_pd_mentor_datetime",
-                        columnList = "mentor_id, date, start_time, end_time")
+            @Index(
+                    name = "idx_pd_mentor_datetime",
+                    columnList = "mentor_id, date, start_time, end_time")
         })
 @Builder
 @NoArgsConstructor

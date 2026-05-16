@@ -2,11 +2,9 @@ package com.soongsil.CoffeeChat.domain.assignedcoupon.dto;
 
 import java.time.LocalDateTime;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -22,9 +20,6 @@ public class AssignedCouponCheckResponse {
     private LocalDateTime usedAt;
 
     public static AssignedCouponCheckResponse notEligible() {
-        return AssignedCouponCheckResponse.builder()
-                .eligible(false)
-                .alreadyIssued(false)
-                .build();
+        return AssignedCouponCheckResponse.builder().eligible(false).alreadyIssued(false).build();
     }
 }

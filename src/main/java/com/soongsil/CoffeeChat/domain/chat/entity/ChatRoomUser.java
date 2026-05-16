@@ -38,5 +38,4 @@ public class ChatRoomUser {
             lastReadChatId = chatId;
         }
     }
-
 }

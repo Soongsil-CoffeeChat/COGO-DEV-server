@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.soongsil.CoffeeChat.domain.assignedcoupon.dto.*;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.soongsil.CoffeeChat.domain.assignedcoupon.dto.*;
 import com.soongsil.CoffeeChat.domain.assignedcoupon.message.AssignedCouponIssuedEvent;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
@@ -192,11 +192,16 @@ public class AssignedCouponService {
                     .putAll(
                             targetKey,
                             Map.of(
-                                    "status", "USED",
-                                    "couponNumber", couponNumber,
-                                    "issuedAt", now.toString(),
-                                    "usedAt", now.toString(),
-                                    "claimedBy", username));
+                                    "status",
+                                    "USED",
+                                    "couponNumber",
+                                    couponNumber,
+                                    "issuedAt",
+                                    now.toString(),
+                                    "usedAt",
+                                    now.toString(),
+                                    "claimedBy",
+                                    username));
             redisTemplate.opsForValue().increment("assigned-coupon:used:count");
 
             // 비동기 로깅 이벤트 발행

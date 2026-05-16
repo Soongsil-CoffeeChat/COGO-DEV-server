@@ -2,12 +2,12 @@ package com.soongsil.CoffeeChat.domain.assignedcoupon.controller;
 
 import java.util.List;
 
-import com.soongsil.CoffeeChat.domain.assignedcoupon.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
+import com.soongsil.CoffeeChat.domain.assignedcoupon.dto.*;
 import com.soongsil.CoffeeChat.domain.assignedcoupon.service.AssignedCouponService;
 import com.soongsil.CoffeeChat.global.api.ApiResponse;
 
