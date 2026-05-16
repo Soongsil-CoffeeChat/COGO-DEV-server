@@ -231,7 +231,7 @@ public class AssignedCouponService {
         } catch (InterruptedException e) {
             // 인터럽트 처리 -> 플래그 복원
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("동시성 처리 중 인터럽트가 발생했습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
         } finally {
             // 락 소유권 확인후 해제
             if (lock.isLocked() && lock.isHeldByCurrentThread()) {
