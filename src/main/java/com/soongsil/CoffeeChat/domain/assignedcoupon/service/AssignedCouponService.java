@@ -64,9 +64,20 @@ public class AssignedCouponService {
         List<String> failed = new ArrayList<>();
 
         for (AssignedCouponTargetRequest target : targets) {
-            String phoneNum = normalizePhoneNum(target.phoneNum());
+            // null 요소 가드 (배치 중단 방지)
+            if (target == null) {
+                failed.add(null);
+                continue;
+            }
 
-            if (phoneNum == null || phoneNum.isBlank() || target.name() == null) {
+            String phoneNum = normalizePhoneNum(target.phoneNum());
+            String name = target.name();
+
+            // name, phoneNum blank 검증
+            if (phoneNum == null
+                    || phoneNum.isBlank()
+                    || name == null
+                    || name.isBlank()) {
                 failed.add(target.phoneNum());
                 continue;
             }
