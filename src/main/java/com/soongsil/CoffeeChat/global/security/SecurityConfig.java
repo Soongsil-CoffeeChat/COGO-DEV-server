@@ -136,13 +136,27 @@ public class SecurityConfig {
                                                 "/auth/login/**",
                                                 "/ws/**" // WebSocket 허용
                                         ).permitAll()
-                                        .requestMatchers("/api/v2/admin/**").permitAll()
+
+                                        // ADMIN 토큰 발급 -> pw로 보호
+                                        .requestMatchers("/api/v2/admin/users/issue").permitAll()
+
+                                        // ADMIN 권한
+                                        .requestMatchers("/api/v2/admin/**").hasRole("ADMIN")
+                                        .requestMatchers("/api/v2/events/admin/**").hasRole("ADMIN")
+                                        .requestMatchers("/api/v2/assigned-coupons/admin/**").hasRole("ADMIN")
+
+                                        // 일반 GET 허용
                                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/{mentorId}/**").permitAll()
                                         .requestMatchers(HttpMethod.GET, "/api/v2/mentors/part").permitAll()
+
+                                        // 멘토/ 멘티 권한
                                         .requestMatchers("/api/v2/possibleDates/**").hasAnyRole("MENTOR", "MENTEE")
                                         .requestMatchers("/api/v2/mentors/**").hasAnyRole("MENTOR", "MENTEE")
                                         .requestMatchers("/api/v2/applications/**").hasAnyRole("MENTOR", "MENTEE")
                                         .requestMatchers("/api/v2/chat/**").hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/events/**").hasAnyRole("MENTOR", "MENTEE")
+                                        .requestMatchers("/api/v2/assigned-coupons/**").hasAnyRole("MENTOR", "MENTEE")
+
                                         .anyRequest().authenticated())
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
