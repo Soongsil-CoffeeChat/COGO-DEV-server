@@ -1,5 +1,9 @@
 package com.soongsil.CoffeeChat.global.dev;
 
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+
 import com.soongsil.CoffeeChat.domain.auth.enums.Role;
 import com.soongsil.CoffeeChat.domain.mentee.dto.MenteeRequest;
 import com.soongsil.CoffeeChat.domain.mentor.dto.MentorRequest;
@@ -7,11 +11,9 @@ import com.soongsil.CoffeeChat.domain.mentor.enums.ClubEnum;
 import com.soongsil.CoffeeChat.domain.mentor.enums.PartEnum;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 
 @Component
 @Profile("local")
@@ -31,15 +33,17 @@ public class DevDataInitializer implements CommandLineRunner {
 
     private void createDevUser(String username, String name, Role role) {
         if (userRepository.findByUsernameAndIsDeletedFalse(username).isEmpty()) {
-            User user = User.builder()
-                    .username(username)
-                    .name(name)
-                    .email(username + "@dev.local")
-                    .role(role)
-                    .build();
+            User user =
+                    User.builder()
+                            .username(username)
+                            .name(name)
+                            .email(username + "@dev.local")
+                            .role(role)
+                            .build();
 
             if (role == Role.ROLE_MENTOR) {
-                user.registerAsMentor(new MentorRequest.MentorJoinRequest(PartEnum.BE, ClubEnum.GDGoC));
+                user.registerAsMentor(
+                        new MentorRequest.MentorJoinRequest(PartEnum.BE, ClubEnum.GDGoC));
             }
             if (role == Role.ROLE_MENTEE) {
                 user.registerAsMentee(new MenteeRequest.MenteeJoinRequest(PartEnum.BE));
