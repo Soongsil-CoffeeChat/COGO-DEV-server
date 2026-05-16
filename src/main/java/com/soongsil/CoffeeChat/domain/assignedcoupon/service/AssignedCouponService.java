@@ -162,7 +162,7 @@ public class AssignedCouponService {
         RLock lock = redissonClient.getLock(lockKey);
 
         try {
-            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
+            if (!lock.tryLock(3, TimeUnit.SECONDS)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
             }
 

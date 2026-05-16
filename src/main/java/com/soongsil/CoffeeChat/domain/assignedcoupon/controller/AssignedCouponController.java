@@ -2,6 +2,7 @@ package com.soongsil.CoffeeChat.domain.assignedcoupon.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.ErrorResponse;
@@ -69,12 +70,13 @@ public class AssignedCouponController {
             description = "EVENT_503: 동시성 처리 오류",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     public ResponseEntity<ApiResponse<AssignedCouponResponse>> issueCoupon(
-            @RequestParam String storePin, Authentication authentication) {
+            @Valid @RequestBody AssignedCouponIssueRequest request,
+            Authentication authentication) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(
                                 assignedCouponService.issueCoupon(
-                                        authentication.getName(), storePin)));
+                                        authentication.getName(), request.storePin())));
     }
 
     // ************ 관리자용 api ************
@@ -92,7 +94,7 @@ public class AssignedCouponController {
     @PostMapping("/admin/register/one")
     @Operation(summary = "지정 쿠폰 대상자 단건 등록 (관리자)")
     public ResponseEntity<ApiResponse<AssignedCouponRegisterResult>> registerOneTarget(
-            @RequestBody AssignedCouponTargetRequest target) {
+            @Valid @RequestBody AssignedCouponTargetRequest target) {
         return ResponseEntity.ok()
                 .body(
                         ApiResponse.onSuccessOK(

@@ -1,4 +1,8 @@
 package com.soongsil.CoffeeChat.domain.assignedcoupon.dto;
 
-public record AssignedCouponTargetRequest(String name, String phoneNum) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AssignedCouponTargetRequest(
+        @NotBlank String name,
+        @NotBlank String phoneNum) {
 }
