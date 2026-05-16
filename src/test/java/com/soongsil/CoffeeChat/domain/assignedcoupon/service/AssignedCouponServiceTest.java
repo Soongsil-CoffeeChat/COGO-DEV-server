@@ -5,10 +5,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -305,7 +302,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(false);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(false);
 
             // when, then
             assertThatThrownBy(() -> assignedCouponService.issueCoupon(USERNAME, STORE_PIN))
@@ -325,7 +322,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(true);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(true);
             given(rLock.isLocked()).willReturn(true);
             given(rLock.isHeldByCurrentThread()).willReturn(true);
             given(redisTemplate.opsForHash()).willReturn(hashOperations);
@@ -349,7 +346,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(true);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(true);
             given(rLock.isLocked()).willReturn(true);
             given(rLock.isHeldByCurrentThread()).willReturn(true);
             given(redisTemplate.opsForHash()).willReturn(hashOperations);
@@ -373,7 +370,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(true);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(true);
             given(rLock.isLocked()).willReturn(true);
             given(rLock.isHeldByCurrentThread()).willReturn(true);
             given(redisTemplate.opsForHash()).willReturn(hashOperations);
@@ -398,7 +395,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(true);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(true);
             given(rLock.isLocked()).willReturn(true);
             given(rLock.isHeldByCurrentThread()).willReturn(true);
             given(redisTemplate.opsForHash()).willReturn(hashOperations);
@@ -449,7 +446,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(true);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(true);
             given(rLock.isLocked()).willReturn(true);
             given(rLock.isHeldByCurrentThread()).willReturn(true);
             given(redisTemplate.opsForHash()).willReturn(hashOperations);
@@ -472,7 +469,7 @@ class AssignedCouponServiceTest {
             given(userRepository.findByUsernameAndIsDeletedFalse(USERNAME))
                     .willReturn(Optional.of(user));
             given(redissonClient.getLock(anyString())).willReturn(rLock);
-            given(rLock.tryLock(anyLong(), anyLong(), any(TimeUnit.class))).willReturn(true);
+            given(rLock.tryLock(anyLong(), any(TimeUnit.class))).willReturn(true);
             given(rLock.isLocked()).willReturn(true);
             given(rLock.isHeldByCurrentThread()).willReturn(true);
             given(redisTemplate.opsForHash()).willReturn(hashOperations);
@@ -487,5 +484,40 @@ class AssignedCouponServiceTest {
             // then
             assertThat(response.getCouponNumber()).isEqualTo("AC-0042");
         }
+    }
+
+    @Test
+    @DisplayName("null 요소가 섞여있어도 배치가 중단되지 않고 failed로 처리")
+    void registerWithNullElement() {
+        // given
+        List<AssignedCouponTargetRequest> requests = new ArrayList<>();
+        requests.add(null);
+        requests.add(new AssignedCouponTargetRequest("가나다", "010-1111-2222"));
+        given(redisTemplate.hasKey(anyString())).willReturn(false);
+        given(redisTemplate.opsForHash()).willReturn(hashOperations);
+
+        // when
+        AssignedCouponRegisterResult result =
+                assignedCouponService.registerTargets(requests);
+
+        // then
+        assertThat(result.newlyRegistered()).isEqualTo(1);
+        assertThat(result.failedPhoneNums()).contains((String) null);
+    }
+
+    @Test
+    @DisplayName("공백 이름은 failed 처리 (좀비 데이터 방지)")
+    void registerWithBlankName() {
+        // given
+        List<AssignedCouponTargetRequest> requests =
+                List.of(new AssignedCouponTargetRequest("   ", "010-1111-2222"));
+
+        // when
+        AssignedCouponRegisterResult result =
+                assignedCouponService.registerTargets(requests);
+
+        // then
+        assertThat(result.newlyRegistered()).isZero();
+        assertThat(result.failedPhoneNums()).containsExactly("010-1111-2222");
     }
 }
