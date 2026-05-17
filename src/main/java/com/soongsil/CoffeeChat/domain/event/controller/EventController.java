@@ -2,6 +2,9 @@ package com.soongsil.CoffeeChat.domain.event.controller;
 
 import java.util.Map;
 
+import com.soongsil.CoffeeChat.domain.event.dto.EventCouponIssueRequest;
+import com.soongsil.CoffeeChat.domain.event.dto.EventVerifyQrRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -82,8 +85,9 @@ public class EventController {
                     "EVENT_403_2: 멘티가 아님 | EVENT_403_3: 타인 커피챗 스캔 | EVENT_403_4: 참여 횟수 초과(2회)",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     public ResponseEntity<ApiResponse<Void>> verifyQr(
-            @RequestParam String qrToken, Authentication authentication) {
-        couponService.verifyQrToken(authentication.getName(), qrToken);
+            @Valid @RequestBody EventVerifyQrRequest request,
+            Authentication authentication) {
+        couponService.verifyQrToken(authentication.getName(), request.qrToken());
         return ResponseEntity.ok(ApiResponse.onSuccessOK(null));
     }
 
@@ -112,11 +116,10 @@ public class EventController {
             description = "EVENT_503: 동시성 처리 오류",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     public ResponseEntity<ApiResponse<Map<String, String>>> issueCoupon(
-            @RequestParam String qrToken,
-            @RequestParam String storePin,
+            @Valid @RequestBody EventCouponIssueRequest request,
             Authentication authentication) {
         String couponNumber =
-                couponService.verifyPinAndIssueCoupon(authentication.getName(), qrToken, storePin);
+                couponService.verifyPinAndIssueCoupon(authentication.getName(), request.qrToken(), request.storePin());
         return ResponseEntity.ok(ApiResponse.onSuccessOK(Map.of("couponNumber", couponNumber)));
     }
 

@@ -190,7 +190,7 @@ public class CouponService {
         RLock lock = redissonClient.getLock(lockKey);
 
         try {
-            if (!lock.tryLock(3, 3, TimeUnit.SECONDS)) {
+            if (!lock.tryLock(3, TimeUnit.SECONDS)) {
                 throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
             }
 
@@ -229,7 +229,7 @@ public class CouponService {
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new IllegalStateException("동시성 처리 중 인터럽트가 발생했습니다.");
+            throw new GlobalException(GlobalErrorCode.EVENT_CONCURRENCY_ERROR);
         } finally {
             if (lock.isLocked() && lock.isHeldByCurrentThread()) {
                 lock.unlock();
