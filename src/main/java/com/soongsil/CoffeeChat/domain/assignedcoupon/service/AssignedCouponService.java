@@ -71,7 +71,7 @@ public class AssignedCouponService {
             }
 
             String phoneNum = normalizePhoneNum(target.phoneNum());
-            String name = target.name().trim();
+            String name = target.name() != null ? target.name().trim() : null;
 
             // name, phoneNum blank 검증
             if (phoneNum == null
