@@ -71,7 +71,7 @@ public class AssignedCouponService {
             }
 
             String phoneNum = normalizePhoneNum(target.phoneNum());
-            String name = target.name();
+            String name = target.name().trim();
 
             // name, phoneNum blank 검증
             if (phoneNum == null
@@ -96,7 +96,7 @@ public class AssignedCouponService {
                         .putAll(
                                 targetKey,
                                 Map.of(
-                                        "name", target.name(),
+                                        "name", name,
                                         "status", "TARGETED",
                                         "registeredAt", LocalDateTime.now().toString()));
                 newCount++;
