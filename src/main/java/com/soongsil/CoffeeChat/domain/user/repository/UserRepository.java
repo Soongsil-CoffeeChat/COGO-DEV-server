@@ -10,7 +10,7 @@ import com.soongsil.CoffeeChat.domain.mentor.entity.Mentor;
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
-    @Query(value = "select * from User where username = :username", nativeQuery = true)
+    @Query("select u from User u where u.username = :username")
     Optional<User> findByUsernameWithDeleted(@Param("username") String username);
 
     Optional<User> findByUsernameAndIsDeletedFalse(String username);
