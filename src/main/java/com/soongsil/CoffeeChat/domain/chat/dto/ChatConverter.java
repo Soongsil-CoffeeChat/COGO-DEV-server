@@ -55,16 +55,28 @@ public class ChatConverter {
     }
 
     public static ChatMessageResponse toChatMessageResponse(Chat chat) {
+        return toChatMessageResponse(chat, null, null);
+    }
+
+    public static ChatMessageResponse toChatMessageResponse(
+            Chat chat, Long currentUserId, Long otherLastReadChatId) {
+        boolean isRead = isRead(chat, currentUserId, otherLastReadChatId);
         return ChatMessageResponse.builder()
                 .chatId(chat.getId())
                 .senderId(chat.getSender().getId())
                 .message(chat.getMessage())
                 .createdAt(chat.getCreatedAt())
+                .isRead(isRead)
                 .build();
     }
 
     public static ChatMessageCursorResponse toChatMessageCursorResponse(
             List<Chat> chats, int requestedSize) {
+        return toChatMessageCursorResponse(chats, requestedSize, null, null);
+    }
+
+    public static ChatMessageCursorResponse toChatMessageCursorResponse(
+            List<Chat> chats, int requestedSize, Long currentUserId, Long otherLastReadChatId) {
         // 다음 데이터 존재 시 잘라냄
         boolean hasNext = chats.size() > requestedSize;
         List<Chat> currentCursorChats =
@@ -85,7 +97,10 @@ public class ChatConverter {
         return ChatMessageCursorResponse.builder()
                 .content(
                         currentCursorChats.stream()
-                                .map(ChatConverter::toChatMessageResponse)
+                                .map(
+                                        chat ->
+                                                toChatMessageResponse(
+                                                        chat, currentUserId, otherLastReadChatId))
                                 .toList())
                 .nextCursorCreatedAt(nextCreatedAt)
                 .nextCursorChatId(nextChatId)
@@ -94,9 +109,17 @@ public class ChatConverter {
     }
 
     public static ChatMessagePageResponse toChatMessagePageResponse(Page<Chat> chatPage) {
+        return toChatMessagePageResponse(chatPage, null, null);
+    }
+
+    public static ChatMessagePageResponse toChatMessagePageResponse(
+            Page<Chat> chatPage, Long currentUserId, Long otherLastReadChatId) {
         List<ChatMessageResponse> messages =
                 chatPage.getContent().stream()
-                        .map(chat -> toChatMessageResponse(chat))
+                        .map(
+                                chat ->
+                                        toChatMessageResponse(
+                                                chat, currentUserId, otherLastReadChatId))
                         .collect(toList());
 
         return ChatMessagePageResponse.builder()
@@ -107,6 +130,26 @@ public class ChatConverter {
                 .totalPages(chatPage.getTotalPages())
                 .last(chatPage.isLast())
                 .build();
+    }
+
+    public static ReadReceiptResponse toReadReceiptResponse(
+            Long roomId, Long readerId, Long lastReadChatId, LocalDateTime readAt) {
+        return ReadReceiptResponse.builder()
+                .roomId(roomId)
+                .readerId(readerId)
+                .lastReadChatId(lastReadChatId)
+                .readAt(readAt)
+                .build();
+    }
+
+    private static boolean isRead(Chat chat, Long currentUserId, Long otherLastReadChatId) {
+        if (currentUserId != null && !chat.getSender().getId().equals(currentUserId)) {
+            return true;
+        }
+
+        return otherLastReadChatId != null
+                && chat.getId() != null
+                && otherLastReadChatId >= chat.getId();
     }
 
     public static ChatRoomPageResponse toChatRoomPageResponse(

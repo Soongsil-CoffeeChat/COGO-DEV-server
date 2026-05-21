@@ -127,9 +127,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                                     if (destination != null
                                             && destination.startsWith("/topic/room.")) {
                                         try {
-                                            // "/topic/room.123" 형식에서 룸 ID 추출
-                                            String roomIdStr =
+                                            // "/topic/room.123", "/topic/room.123.read" 형식에서 룸 ID
+                                            // 추출
+                                            String roomIdPart =
                                                     destination.substring("/topic/room.".length());
+                                            String roomIdStr = roomIdPart.split("\\.")[0];
                                             Long roomId = Long.parseLong(roomIdStr);
 
                                             // 사용자가 해당 채팅방의 참여자인지 확인
