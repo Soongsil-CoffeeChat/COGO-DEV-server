@@ -55,18 +55,18 @@ public class ChatConverter {
     }
 
     public static ChatMessageResponse toChatMessageResponse(Chat chat) {
-        return toChatMessageResponse(chat, null, null);
+        return toChatMessageResponse(chat, chat.getSender().getId(), null);
     }
 
     public static ChatMessageResponse toChatMessageResponse(
             Chat chat, Long currentUserId, Long otherLastReadChatId) {
-        boolean isRead = isRead(chat, currentUserId, otherLastReadChatId);
+        Boolean isReadByOtherUser = isReadByOtherUser(chat, currentUserId, otherLastReadChatId);
         return ChatMessageResponse.builder()
                 .chatId(chat.getId())
                 .senderId(chat.getSender().getId())
                 .message(chat.getMessage())
                 .createdAt(chat.getCreatedAt())
-                .isRead(isRead)
+                .isReadByOtherUser(isReadByOtherUser)
                 .build();
     }
 
@@ -142,9 +142,12 @@ public class ChatConverter {
                 .build();
     }
 
-    private static boolean isRead(Chat chat, Long currentUserId, Long otherLastReadChatId) {
-        if (currentUserId != null && !chat.getSender().getId().equals(currentUserId)) {
-            return true;
+    private static Boolean isReadByOtherUser(
+            Chat chat, Long currentUserId, Long otherLastReadChatId) {
+
+        // 현재 사용자가 보낸 메시지가 아니면 상대방 읽음 여부 판단 대상이 아님
+        if (!chat.getSender().getId().equals(currentUserId)) {
+            return null;
         }
 
         return otherLastReadChatId != null

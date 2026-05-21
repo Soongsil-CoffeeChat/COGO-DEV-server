@@ -61,7 +61,7 @@ public class ChatResponse {
         private Long senderId;
         private String message;
         private LocalDateTime createdAt;
-        private Boolean isRead;
+        private Boolean isReadByOtherUser;
     }
 
     // 채팅방 상세 정보 응답 DTO
