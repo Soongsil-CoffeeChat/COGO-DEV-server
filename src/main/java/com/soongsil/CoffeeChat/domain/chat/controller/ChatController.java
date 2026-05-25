@@ -82,10 +82,11 @@ public class ChatController {
 
     @PostMapping("/rooms/{roomId}/read")
     @Operation(summary = "채팅방 읽음 처리")
-    public ResponseEntity<Void> readChatRoom(
+    public ResponseEntity<ChatResponse.ReadReceiptResponse> readChatRoom(
             @Parameter(hidden = true) @CurrentUsername String username, @PathVariable Long roomId) {
-        chatService.readChatRoom(username, roomId);
-        return ResponseEntity.ok().build();
+        ChatResponse.ReadReceiptResponse response = chatService.readChatRoom(username, roomId);
+        messagingTemplate.convertAndSend("/topic/room." + roomId + ".read", response);
+        return ResponseEntity.ok(response);
     }
 
     /** 메시지 전송 (STOMP 웹소켓) */

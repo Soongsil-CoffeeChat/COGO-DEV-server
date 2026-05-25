@@ -61,6 +61,7 @@ public class ChatResponse {
         private Long senderId;
         private String message;
         private LocalDateTime createdAt;
+        private Boolean isReadByOtherUser;
     }
 
     // 채팅방 상세 정보 응답 DTO
@@ -96,6 +97,18 @@ public class ChatResponse {
         private LocalDateTime nextCursorCreatedAt;
         private Long nextCursorChatId;
         private boolean hasNext; // 다음 데이터 존재 여부
+    }
+
+    // 채팅방 읽음 처리 응답 DTO
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ReadReceiptResponse {
+        private Long roomId;
+        private Long readerId;
+        private Long lastReadChatId;
+        private LocalDateTime readAt;
     }
 
     // 채팅과 연결된 커피챗 응답 DTO

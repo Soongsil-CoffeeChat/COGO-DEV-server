@@ -23,6 +23,7 @@ import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatMessageResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomDetailResponse;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ChatRoomPageResponse;
+import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ReadReceiptResponse;
 import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
@@ -204,6 +205,16 @@ public class ChatService {
                 .findByChatRoomIdAndUserId(roomId, currentUser.getId())
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
 
+        // 내가 보낸 메시지의 읽음 여부 계산을 위해 상대방의 마지막 읽은 메시지 ID를 조회
+        Long otherLastReadChatId =
+                chatRoomUserRepository.findByChatRoomId(roomId).stream()
+                        .filter(
+                                participant ->
+                                        !participant.getUser().getId().equals(currentUser.getId()))
+                        .map(ChatRoomUser::getLastReadChatId)
+                        .findFirst()
+                        .orElse(null);
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Chat> chats;
 
@@ -220,7 +231,8 @@ public class ChatService {
         //            chats = chatRepository.findByChatRoomIdOrderByCreatedAtDesc(roomId, pageable);
         //        }
 
-        return ChatConverter.toChatMessagePageResponse(chats);
+        return ChatConverter.toChatMessagePageResponse(
+                chats, currentUser.getId(), otherLastReadChatId);
     }
 
     @Transactional(readOnly = true)
@@ -242,6 +254,16 @@ public class ChatService {
                 .findByChatRoomIdAndUserId(roomId, currentUser.getId())
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
 
+        // 내가 보낸 메시지의 읽음 여부 계산을 위해 상대방의 마지막 읽은 메시지 ID를 조회
+        Long otherLastReadChatId =
+                chatRoomUserRepository.findByChatRoomId(roomId).stream()
+                        .filter(
+                                participant ->
+                                        !participant.getUser().getId().equals(currentUser.getId()))
+                        .map(ChatRoomUser::getLastReadChatId)
+                        .findFirst()
+                        .orElse(null);
+
         // hasNext 판단 위해 size+1개 조회
         List<Chat> chats;
         if (cursorCreatedAt == null || cursorChatId == null) {
@@ -251,11 +273,12 @@ public class ChatService {
                     chatRepository.findChatsByCursor(
                             roomId, cursorCreatedAt, cursorChatId, size + 1);
         }
-        return ChatConverter.toChatMessageCursorResponse(chats, size);
+        return ChatConverter.toChatMessageCursorResponse(
+                chats, size, currentUser.getId(), otherLastReadChatId);
     }
 
     @Transactional
-    public void readChatRoom(String username, Long roomId) {
+    public ReadReceiptResponse readChatRoom(String username, Long roomId) {
         User currentUser = findUserByUsername(username);
 
         if (!chatRoomRepository.existsById(roomId)) {
@@ -273,6 +296,9 @@ public class ChatService {
         chatRepository
                 .findTopByChatRoomIdOrderByCreatedAtDescIdDesc(roomId)
                 .ifPresent(chat -> participant.updateLastReadChatId(chat.getId()));
+
+        return ChatConverter.toReadReceiptResponse(
+                roomId, currentUser.getId(), participant.getLastReadChatId(), LocalDateTime.now());
     }
 
     @Transactional
