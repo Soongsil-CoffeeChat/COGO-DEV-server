@@ -1,10 +1,7 @@
 package com.soongsil.CoffeeChat.domain.chat.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -261,6 +258,7 @@ public class ChatService {
                                 participant ->
                                         !participant.getUser().getId().equals(currentUser.getId()))
                         .map(ChatRoomUser::getLastReadChatId)
+                        .filter(Objects::nonNull)
                         .findFirst()
                         .orElse(null);
 
