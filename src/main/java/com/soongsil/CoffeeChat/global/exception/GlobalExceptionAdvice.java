@@ -12,6 +12,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -67,6 +68,21 @@ public class GlobalExceptionAdvice {
     // JsonParseException: JSON structure errors
     @ExceptionHandler(JsonParseException.class)
     public ResponseEntity<ErrorResponse> handleJsonParseException(JsonParseException e) {
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(GlobalErrorCode.BAD_REQUEST, e.getMessage()));
+    }
+
+    // IllegalArgumentException: 잘못된 인자(예: 허용되지 않는 이미지 형식)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse(GlobalErrorCode.BAD_REQUEST, e.getMessage()));
+    }
+
+    // MissingServletRequestPartException: multipart part 누락(예: image 파트 없음)
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ErrorResponse> handleMissingServletRequestPartException(
+            MissingServletRequestPartException e) {
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse(GlobalErrorCode.BAD_REQUEST, e.getMessage()));
     }

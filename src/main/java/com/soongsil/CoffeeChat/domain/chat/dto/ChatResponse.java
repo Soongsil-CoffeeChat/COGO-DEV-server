@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.soongsil.CoffeeChat.domain.chat.entity.MessageType;
+
 import lombok.*;
 
 public class ChatResponse {
@@ -60,6 +62,7 @@ public class ChatResponse {
         private Long chatId;
         private Long senderId;
         private String message;
+        private MessageType type;
         private LocalDateTime createdAt;
         private Boolean isReadByOtherUser;
     }

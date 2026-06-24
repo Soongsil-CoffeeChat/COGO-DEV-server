@@ -2,6 +2,8 @@ package com.soongsil.CoffeeChat.domain.chat.entity;
 
 import jakarta.persistence.*;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.global.BaseEntity;
 
@@ -33,4 +35,10 @@ public class Chat extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String message;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'TEXT'")
+    @Column(name = "message_type", nullable = false)
+    private MessageType type = MessageType.TEXT;
 }

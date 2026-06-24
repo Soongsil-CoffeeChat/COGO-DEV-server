@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.soongsil.CoffeeChat.domain.application.entity.Application;
 import com.soongsil.CoffeeChat.domain.application.repository.ApplicationRepository;
@@ -24,6 +25,7 @@ import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse.ReadReceiptResponse;
 import com.soongsil.CoffeeChat.domain.chat.entity.Chat;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoom;
 import com.soongsil.CoffeeChat.domain.chat.entity.ChatRoomUser;
+import com.soongsil.CoffeeChat.domain.chat.entity.MessageType;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomRepository;
 import com.soongsil.CoffeeChat.domain.chat.repository.ChatRoomUserRepository;
@@ -32,6 +34,7 @@ import com.soongsil.CoffeeChat.domain.user.entity.User;
 import com.soongsil.CoffeeChat.domain.user.repository.UserRepository;
 import com.soongsil.CoffeeChat.global.exception.GlobalErrorCode;
 import com.soongsil.CoffeeChat.global.exception.GlobalException;
+import com.soongsil.CoffeeChat.infra.aws.s3.service.AmazonS3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +51,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final ApplicationRepository applicationRepository;
     private final NotificationService notificationService;
+    private final AmazonS3Service amazonS3Service;
 
     private User findUserByUsername(String username) {
         return userRepository
@@ -59,6 +63,10 @@ public class ChatService {
         User user = findUserByUsername(username);
         if (user.isMentee()) return chatRoom.getApplication().getMentor().getUser();
         else return chatRoom.getApplication().getMentee().getUser();
+    }
+
+    private static String resolveLastChatPreview(Chat chat) {
+        return chat.getType() == MessageType.IMAGE ? "사진" : chat.getMessage();
     }
 
     public ChatRoomPageResponse getChatRooms(String username, int page, int size) {
@@ -86,7 +94,9 @@ public class ChatService {
                         .toList();
 
         List<String> lastChats =
-                lastChatOptList.stream().map(opt -> opt.map(Chat::getMessage).orElse("")).toList();
+                lastChatOptList.stream()
+                        .map(opt -> opt.map(ChatService::resolveLastChatPreview).orElse(""))
+                        .toList();
 
         List<LocalDateTime> updatedAts =
                 IntStream.range(0, chatRooms.getContent().size())
@@ -361,6 +371,48 @@ public class ChatService {
                 currentUser.getName(), // title
                 request.getMessage() // body
                 );
+
+        return ChatConverter.toChatMessageResponse(chat);
+    }
+
+    @Transactional
+    public ChatMessageResponse sendImageMessage(String username, Long roomId, MultipartFile image) {
+        if (image == null || image.isEmpty() || image.getOriginalFilename() == null) {
+            throw new GlobalException(GlobalErrorCode.BAD_REQUEST);
+        }
+
+        User currentUser = findUserByUsername(username);
+
+        // 채팅방 조회
+        ChatRoom chatRoom =
+                chatRoomRepository
+                        .findById(roomId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_FOUND));
+
+        // 채팅방 상대 참여자 확인 for push
+        User receiver = getOtherPartyByChatRoom(chatRoom, username);
+
+        // 참여자 본인 확인
+        chatRoomUserRepository
+                .findByChatRoomIdAndUserId(roomId, currentUser.getId())
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHATROOM_NOT_PARTICIPANT));
+
+        // 이미지 S3 업로드
+        String imageUrl = amazonS3Service.uploadFile(image, "chat/" + roomId);
+
+        // 채팅 메시지 저장 (이미지)
+        Chat chat =
+                Chat.builder()
+                        .chatRoom(chatRoom)
+                        .sender(currentUser)
+                        .message(imageUrl)
+                        .type(MessageType.IMAGE)
+                        .build();
+
+        chatRepository.save(chat);
+
+        notificationService.sendChatPush(
+                receiver, chatRoom.getId(), currentUser.getName(), "사진을 보냈습니다.");
 
         return ChatConverter.toChatMessageResponse(chat);
     }
