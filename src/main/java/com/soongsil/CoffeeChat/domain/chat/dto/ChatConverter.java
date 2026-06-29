@@ -65,6 +65,7 @@ public class ChatConverter {
                 .chatId(chat.getId())
                 .senderId(chat.getSender().getId())
                 .message(chat.getMessage())
+                .type(chat.getType())
                 .createdAt(chat.getCreatedAt())
                 .isReadByOtherUser(isReadByOtherUser)
                 .build();

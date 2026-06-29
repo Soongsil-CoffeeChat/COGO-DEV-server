@@ -6,11 +6,13 @@ import java.time.LocalDateTime;
 import jakarta.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatRequest;
 import com.soongsil.CoffeeChat.domain.chat.dto.ChatResponse;
@@ -87,6 +89,18 @@ public class ChatController {
         ChatResponse.ReadReceiptResponse response = chatService.readChatRoom(username, roomId);
         messagingTemplate.convertAndSend("/topic/room." + roomId + ".read", response);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/rooms/{roomId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "채팅방 이미지 전송")
+    public ResponseEntity<ChatResponse.ChatMessageResponse> sendImage(
+            @Parameter(hidden = true) @CurrentUsername String username,
+            @PathVariable Long roomId,
+            @RequestPart("image") MultipartFile image) {
+        ChatResponse.ChatMessageResponse message =
+                chatService.sendImageMessage(username, roomId, image);
+        messagingTemplate.convertAndSend("/topic/room." + roomId, message);
+        return ResponseEntity.ok(message);
     }
 
     /** 메시지 전송 (STOMP 웹소켓) */
